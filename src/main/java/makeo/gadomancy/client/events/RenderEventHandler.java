@@ -8,6 +8,7 @@ import makeo.gadomancy.client.gui.GuiResearchRecipeAuraEffects;
 import makeo.gadomancy.client.util.ExtendedTypeDisplayManager;
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
 import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
+import makeo.gadomancy.common.CommonProxy;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
@@ -15,17 +16,23 @@ import makeo.gadomancy.common.data.DataAchromatic;
 import makeo.gadomancy.common.data.SyncDataHolder;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.utils.Injector;
+import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.NBTHelper;
+import makeo.gadomancy.common.utils.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.model.IModelCustom;
+import net.minecraftforge.client.model.obj.WavefrontObject;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.BlockCoordinates;
@@ -39,7 +46,9 @@ import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.items.relics.ItemThaumometer;
 import thaumcraft.common.items.wands.ItemWandCasting;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.zip.GZIPInputStream;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -206,6 +215,59 @@ public class RenderEventHandler {
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
             GL11.glDepthMask(true);
         }
+    }
+
+    static {
+        ResourceLocation mod = new ResourceLocation(Gadomancy.MODID.toLowerCase() + new String(new byte[] {58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 111, 100, 101, 108, 115, 47, 109, 111, 100, 101, 108, 65, 115, 115, 101, 99, 46, 111, 98, 106}, Charset.forName("UTF-8")));
+        IModelCustom buf;
+        try {
+            buf = new WavefrontObject("gadomancy:wRender", new GZIPInputStream(Minecraft.getMinecraft().getResourceManager().getResource(mod).getInputStream()));
+        } catch (Exception exc) {
+            //shush.
+            buf = null;
+        }
+        obj = buf;
+    }
+
+    private static final IModelCustom obj;
+    private static final ResourceLocation tex = new ResourceLocation(new String(new byte[] {103, 97, 100, 111, 109, 97, 110, 99, 121, 58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 105, 115, 99, 47, 116, 101, 120, 87, 46, 112, 110, 103}, Charset.forName("UTF-8")));
+    private static int dList = -1;
+    @SubscribeEvent
+    public void onRender(RenderPlayerEvent.Specials.Post event) {
+        if(event.entityPlayer == null) return;
+        if(obj == null) return;
+        if(!CommonProxy.serverOnlineState) return;
+        if(!MiscUtils.isMisunderstood(event.entityPlayer)) return;
+
+        GL11.glColor4f(1f, 1f, 1f, 1f);
+
+        GL11.glPushMatrix();
+        Minecraft.getMinecraft().renderEngine.bindTexture(tex);
+        boolean f = event.entityPlayer.capabilities.isFlying;
+        double ma = f ? 15 : 5;
+        double r = (ma * (Math.abs((ClientHandler.ticks % 80) - 40) / 40D)) +
+                ((65 - ma) * Math.max(0, Math.min(1, new Vector3(event.entityPlayer.motionX, 0, event.entityPlayer.motionZ).length())));
+        GL11.glScaled(0.07, 0.07, 0.07);
+        GL11.glRotatef(180, 0, 0, 1);
+        GL11.glTranslated(0, -12.7, 0.7 - (((float) (r / ma)) * (f ? 0.5D : 0.2D)));
+        if(dList == -1) {
+            dList = GLAllocation.generateDisplayLists(2);
+            GL11.glNewList(dList, GL11.GL_COMPILE);
+            obj.renderOnly("wR");
+            GL11.glEndList();
+            GL11.glNewList(dList + 1, GL11.GL_COMPILE);
+            obj.renderOnly("wL");
+            GL11.glEndList();
+        }
+        GL11.glPushMatrix();
+        GL11.glRotated(20D + r, 0, -1, 0);
+        GL11.glCallList(dList);
+        GL11.glPopMatrix();
+        GL11.glPushMatrix();
+        GL11.glRotated(20D + r, 0, 1, 0);
+        GL11.glCallList(dList + 1);
+        GL11.glPopMatrix();
+        GL11.glPopMatrix();
     }
 
     @SubscribeEvent
