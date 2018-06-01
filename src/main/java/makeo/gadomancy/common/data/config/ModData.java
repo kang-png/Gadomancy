@@ -1,6 +1,9 @@
 package makeo.gadomancy.common.data.config;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
+
 import cpw.mods.fml.common.FMLLog;
 import makeo.gadomancy.common.Gadomancy;
 import net.minecraft.server.MinecraftServer;
@@ -75,17 +78,26 @@ public class ModData {
 
     public boolean load() {
         if(file.exists()) {
-
+        	ObjectInputStream inOBJ = null;
             FileInputStream in = null;
             try {
                 in = new FileInputStream(file);
-                data = (Map<String, Object>) new ObjectInputStream(in).readObject();
-            } catch (Exception e) { //IOException | ClassCastException | JsonSyntaxException | ClassNotFoundException
+                inOBJ = new ObjectInputStream(in);
+                data = (Map<String, Object>) inOBJ.readObject();
+            } catch (IOException | ClassCastException | JsonSyntaxException | ClassNotFoundException e) { //
                 e.printStackTrace();
+                try {
+					inOBJ.close();
+					in.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
                 return false;
             } finally {
                 if(in != null)
                     try {
+                    	inOBJ.close();
                         in.close();
                     } catch (IOException ignored) { }
             }
@@ -100,19 +112,27 @@ public class ModData {
         }
 
         FileOutputStream out = null;
+        ObjectOutputStream outOBJ = null;
         try {
             if(!file.exists())
                 file.createNewFile();
 
             out = new FileOutputStream(file);
-            new ObjectOutputStream(out).writeObject(data);
-
-        } catch (Exception e) {//JsonIOException | IOException
+            outOBJ = new ObjectOutputStream(out);
+            outOBJ.writeObject(data);
+        } catch (JsonIOException | IOException e) {
             e.printStackTrace();
+            try {
+				outOBJ.close();
+				out.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
             return false;
         } finally {
             if(out != null)
                 try {
+                	outOBJ.close();
                     out.close();
                 } catch (IOException ignored) { }
         }

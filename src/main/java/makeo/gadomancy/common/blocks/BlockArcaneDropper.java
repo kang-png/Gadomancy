@@ -138,6 +138,8 @@ public class BlockArcaneDropper extends BlockTransparent {
                 case EAST:
                     yaw += 90;
                     break;
+			default:
+				break;
             }
             flipped = Math.abs(yaw) < Math.abs(pitch);
         }

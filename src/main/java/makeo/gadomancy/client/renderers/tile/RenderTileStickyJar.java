@@ -91,6 +91,8 @@ public class RenderTileStickyJar extends TileEntitySpecialRenderer {
                 case EAST: GL11.glRotatef(-90, 0, 1, 0); break;
                 case SOUTH: GL11.glRotatef(180, 0, 1, 0); break;
                 case WEST: GL11.glRotatef(90, 0, 1, 0); break;
+			default:
+				break;
             }
 
             GL11.glTranslatef(-0.5f, -0.5f, -0.5f);

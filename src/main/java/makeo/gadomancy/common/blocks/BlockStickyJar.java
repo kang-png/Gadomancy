@@ -176,6 +176,8 @@ public class BlockStickyJar extends BlockJar implements IBlockTransparent {
                 case EAST:
                     yaw += 90;
                     break;
+			default:
+				break;
             }
 
             if (Math.abs(yaw) < Math.abs(pitch)) {

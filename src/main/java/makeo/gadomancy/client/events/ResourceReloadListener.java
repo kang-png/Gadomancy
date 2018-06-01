@@ -32,8 +32,9 @@ public class ResourceReloadListener implements IResourceManagerReloadListener {
     public static Map languageList;
 
     private ResourceReloadListener() {
-        Injector instance = new Injector(new Injector(StringTranslate.class)
-                .getField(Injector.findField(StringTranslate.class, StringTranslate.class)));
+    	Injector inner = new Injector(StringTranslate.class);
+    	Object O = inner.getField(Injector.findField(StringTranslate.class, StringTranslate.class));
+        Injector instance = new Injector(O);
         languageList = instance.getField(instance.findField(Map.class));
     }
 

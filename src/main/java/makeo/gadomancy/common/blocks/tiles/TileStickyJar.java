@@ -360,6 +360,8 @@ public class TileStickyJar extends TileJarFillable {
             case EAST: return face == ForgeDirection.NORTH ? ForgeDirection.WEST : ForgeDirection.EAST;
             case SOUTH: return face.getOpposite();
             case WEST: return face == ForgeDirection.SOUTH ? ForgeDirection.WEST : ForgeDirection.EAST;
+		default:
+			break;
         }
 
         return face;
