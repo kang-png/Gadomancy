@@ -229,6 +229,17 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements IInvento
 
         ClickBehavior behavior = getClickBehavior(world, x, y, z);
         if(behavior != null) {
+            
+            if (world == null){
+                try { 
+                    world = getWorldObj();
+                }
+                catch(NullPointerException e){
+                    makeo.gadomancy.common.log.error("fatal error, world == null! at InfusionClaw");
+                    return;
+                }
+            }
+            
             AdvancedFakePlayer fakePlayer = new AdvancedFakePlayer((WorldServer) world, FAKE_UUID);
             loadResearch(fakePlayer);
 
@@ -246,6 +257,11 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements IInvento
                 im.setWorld((WorldServer) world);
             }
 
+            if(fakePlayer == null){
+                makeo.gadomancy.common.log.warn("Infusion Claw was build inside of a protected area! You need to allow FakePlayers here!");
+                return;
+            }
+            
             fakePlayer.setHeldItem(wandStack);
             this.im.activateBlockOrUseItem(fakePlayer, world, wandStack, x, y, z, ForgeDirection.UP.ordinal(), 0.5F, 0.5F, 0.5F);
             addInstability(behavior);
