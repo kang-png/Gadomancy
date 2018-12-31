@@ -24,6 +24,7 @@ import java.util.Map;
  * for more read the LICENSE file
  *
  * Created by makeo @ 26.07.2015 18:15
+ * Modified by bartimaeusnek @ 31.12.2018, 19:00 GMT+1
  */
 public class ModData {
     private static final Gson GSON = new Gson();
@@ -77,7 +78,7 @@ public class ModData {
     }
 
     public boolean load() {
-        if(file.exists()) {
+        if(file != null && file.exists()) {
         	ObjectInputStream inOBJ = null;
             FileInputStream in = null;
             try {
@@ -87,18 +88,21 @@ public class ModData {
             } catch (IOException | ClassCastException | JsonSyntaxException | ClassNotFoundException e) { //
                 e.printStackTrace();
                 try {
-					inOBJ.close();
-					in.close();
+                    if (inOBJ != null)
+					    inOBJ.close();
+                    if (in != null)
+					    in.close();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
                 return false;
             } finally {
-                if(in != null)
                     try {
-                    	inOBJ.close();
-                        in.close();
+                        if (inOBJ != null)
+                    	    inOBJ.close();
+                        if (in != null)
+                            in.close();
                     } catch (IOException ignored) { }
             }
         }
@@ -123,17 +127,20 @@ public class ModData {
         } catch (JsonIOException | IOException e) {
             e.printStackTrace();
             try {
-				outOBJ.close();
-				out.close();
+                if (outOBJ != null)
+				    outOBJ.close();
+                if(out != null)
+				    out.close();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
             return false;
         } finally {
-            if(out != null)
                 try {
-                	outOBJ.close();
-                    out.close();
+                    if(outOBJ != null)
+                	    outOBJ.close();
+                    if(out != null)
+                        out.close();
                 } catch (IOException ignored) { }
         }
         return true;
