@@ -48,4 +48,6 @@ hs_err_pid*
 *.ipr
 *.iws
 .idea/
-/out
+.gradle/
+out/
+*.bat
