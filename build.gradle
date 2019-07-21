@@ -17,7 +17,7 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.7.10-1.0.7.4QF"
+version = "1.7.10-1.0.7.5"
 group= "makeo.gadomancy"
 archivesBaseName = "gadomancy"
 
