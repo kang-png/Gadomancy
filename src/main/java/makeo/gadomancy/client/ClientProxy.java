@@ -16,28 +16,18 @@ import makeo.gadomancy.client.renderers.block.RenderBlockStoneMachine;
 import makeo.gadomancy.client.renderers.block.RenderBlockTransparent;
 import makeo.gadomancy.client.renderers.entity.RenderAdditionalGolemBase;
 import makeo.gadomancy.client.renderers.entity.RenderEntityAuraCore;
-import makeo.gadomancy.client.renderers.item.ItemCreativeNodeRenderer;
-import makeo.gadomancy.client.renderers.item.ItemExNodeRenderer;
-import makeo.gadomancy.client.renderers.item.ItemJarExtendedNodeRenderer;
-import makeo.gadomancy.client.renderers.item.ItemRenderFamiliar;
-import makeo.gadomancy.client.renderers.item.ItemRenderRemoteJar;
-import makeo.gadomancy.client.renderers.item.ItemRenderStoneMachine;
-import makeo.gadomancy.client.renderers.item.ItemRenderTEKnowledgeBook;
-import makeo.gadomancy.client.renderers.item.ItemRenderTileEntity;
-import makeo.gadomancy.client.renderers.item.ItemRenderTileEntityMulti;
+import makeo.gadomancy.client.renderers.item.*;
 import makeo.gadomancy.client.renderers.tile.*;
 import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
 import makeo.gadomancy.common.CommonProxy;
 import makeo.gadomancy.common.blocks.tiles.*;
 import makeo.gadomancy.common.entities.EntityAuraCore;
-import makeo.gadomancy.common.entities.EntityItemElement;
 import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import net.minecraft.entity.Entity;
@@ -59,8 +49,6 @@ import thaumcraft.common.tiles.TileEldritchCap;
 import thaumcraft.common.tiles.TileEldritchObelisk;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
@@ -82,7 +70,7 @@ public class ClientProxy extends CommonProxy {
     public void initalize() {
         super.initalize();
 
-        injectGolemTextures();
+        ClientProxy.injectGolemTextures();
 
         //Tiles
         ClientRegistry.bindTileEntitySpecialRenderer(TileStickyJar.class, new RenderTileStickyJar());
@@ -170,9 +158,9 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityAuraCore.class, new RenderEntityAuraCore());
 
         //Blocks
-        RegisteredBlocks.rendererTransparentBlock = registerBlockRenderer(new RenderBlockTransparent());
-        RegisteredBlocks.rendererExtendedNodeJarBlock = registerBlockRenderer(new BlockExtendedNodeJarRenderer());
-        RegisteredBlocks.rendererBlockStoneMachine = registerBlockRenderer(new RenderBlockStoneMachine());
+        RegisteredBlocks.rendererTransparentBlock = this.registerBlockRenderer(new RenderBlockTransparent());
+        RegisteredBlocks.rendererExtendedNodeJarBlock = this.registerBlockRenderer(new BlockExtendedNodeJarRenderer());
+        RegisteredBlocks.rendererBlockStoneMachine = this.registerBlockRenderer(new RenderBlockStoneMachine());
     }
 
     @Override
@@ -221,7 +209,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     public static void injectGolemTextures() {
-        RenderGolemBase render = unregisterRenderer(EntityGolemBase.class, RenderGolemBase.class);
+        RenderGolemBase render = ClientProxy.unregisterRenderer(EntityGolemBase.class, RenderGolemBase.class);
         if(render != null) {
             RenderingRegistry.registerEntityRenderingHandler(EntityGolemBase.class, new RenderAdditionalGolemBase());
         }
@@ -256,6 +244,6 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void runDelayedClientSide(Runnable run) {
-        clientActions.add(run);
+        this.clientActions.add(run);
     }
 }

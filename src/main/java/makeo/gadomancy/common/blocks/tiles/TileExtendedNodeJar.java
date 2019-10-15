@@ -34,15 +34,15 @@ public class TileExtendedNodeJar extends TileJarNode {
     private AspectList aspects = new AspectList();
     private AspectList aspectsBase = new AspectList();
     private NodeType nodeType = NodeType.NORMAL;
-    private NodeModifier nodeModifier = null;
-    private ExtendedNodeType extendedNodeType = null;
-    private NBTTagCompound behaviorSnapshot = null;
+    private NodeModifier nodeModifier;
+    private ExtendedNodeType extendedNodeType;
+    private NBTTagCompound behaviorSnapshot;
     private String id = "";
-    public long animate = 0L;
+    public long animate;
 
     @Override
     public ResourceLocation getTexture() {
-        return tex;
+        return TileExtendedNodeJar.tex;
     }
 
     public boolean canUpdate() {
@@ -70,13 +70,13 @@ public class TileExtendedNodeJar extends TileJarNode {
         } else {
             this.aspectsBase = al.copy();
         }
-        setNodeType(NodeType.values()[nbttagcompound.getByte("type")]);
+        this.setNodeType(NodeType.values()[nbttagcompound.getByte("type")]);
         byte mod = nbttagcompound.getByte("modifier");
-        if(mod >= 0) setNodeModifier(NodeModifier.values()[mod]); else setNodeModifier(null);
+        if(mod >= 0) this.setNodeModifier(NodeModifier.values()[mod]); else this.setNodeModifier(null);
         byte exType = nbttagcompound.getByte("extendedNodeType");
-        if(exType >= 0) setExtendedNodeType(ExtendedNodeType.values()[exType]); else setExtendedNodeType(null);
+        if(exType >= 0) this.setExtendedNodeType(ExtendedNodeType.values()[exType]); else this.setExtendedNodeType(null);
         if(nbttagcompound.hasKey("Behavior")) {
-            behaviorSnapshot = nbttagcompound.getCompoundTag("Behavior");
+            this.behaviorSnapshot = nbttagcompound.getCompoundTag("Behavior");
         }
     }
 
@@ -93,11 +93,11 @@ public class TileExtendedNodeJar extends TileJarNode {
                 tlist.appendTag(f);
             }
         }
-        nbttagcompound.setByte("type", (byte) getNodeType().ordinal());
-        nbttagcompound.setByte("modifier", getNodeModifier() == null ? -1 : (byte) getNodeModifier().ordinal());
-        nbttagcompound.setByte("extendedNodeType", getExtendedNodeType() == null ? -1 : (byte) getExtendedNodeType().ordinal());
-        if(behaviorSnapshot != null) {
-            nbttagcompound.setTag("Behavior", behaviorSnapshot);
+        nbttagcompound.setByte("type", (byte) this.getNodeType().ordinal());
+        nbttagcompound.setByte("modifier", this.getNodeModifier() == null ? -1 : (byte) this.getNodeModifier().ordinal());
+        nbttagcompound.setByte("extendedNodeType", this.getExtendedNodeType() == null ? -1 : (byte) this.getExtendedNodeType().ordinal());
+        if(this.behaviorSnapshot != null) {
+            nbttagcompound.setTag("Behavior", this.behaviorSnapshot);
         }
     }
 
@@ -121,7 +121,7 @@ public class TileExtendedNodeJar extends TileJarNode {
         }
         this.aspects.add(tt, am - out);
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-        markDirty();
+        this.markDirty();
         return out;
     }
 
@@ -129,7 +129,7 @@ public class TileExtendedNodeJar extends TileJarNode {
         if (this.aspects.getAmount(tt) >= am) {
             this.aspects.remove(tt, am);
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-            markDirty();
+            this.markDirty();
             return true;
         }
         return false;
@@ -140,10 +140,7 @@ public class TileExtendedNodeJar extends TileJarNode {
     }
 
     public boolean doesContainerContainAmount(Aspect tag, int amt) {
-        if (this.aspects.getAmount(tag) >= amt) {
-            return true;
-        }
-        return false;
+        return this.aspects.getAmount(tag) >= amt;
     }
 
     public boolean doesContainerContain(AspectList ot) {
@@ -176,7 +173,7 @@ public class TileExtendedNodeJar extends TileJarNode {
     }
 
     public ExtendedNodeType getExtendedNodeType() {
-        return extendedNodeType;
+        return this.extendedNodeType;
     }
 
     public void setExtendedNodeType(ExtendedNodeType extendedNodeType) {
@@ -200,7 +197,7 @@ public class TileExtendedNodeJar extends TileJarNode {
     }
 
     public NBTTagCompound getBehaviorSnapshot() {
-        return behaviorSnapshot;
+        return this.behaviorSnapshot;
     }
 
     public void setNodeVisBase(Aspect aspect, short nodeVisBase) {
@@ -236,12 +233,12 @@ public class TileExtendedNodeJar extends TileJarNode {
             world.setBlock(x, y, z, ConfigBlocks.blockAiry, 0, 3);
             TileExtendedNode tn = (TileExtendedNode) world.getTileEntity(x, y, z);
             if (tn != null) {
-                tn.setAspects(getAspects());
-                tn.setNodeModifier(getNodeModifier());
-                tn.setNodeType(getNodeType());
-                tn.setExtendedNodeType(getExtendedNodeType());
-                new Injector(tn, TileNode.class).setField("id", getId());
-                tn.readBehaviorSnapshot(getBehaviorSnapshot());
+                tn.setAspects(this.getAspects());
+                tn.setNodeModifier(this.getNodeModifier());
+                tn.setNodeType(this.getNodeType());
+                tn.setExtendedNodeType(this.getExtendedNodeType());
+                new Injector(tn, TileNode.class).setField("id", this.getId());
+                tn.readBehaviorSnapshot(this.getBehaviorSnapshot());
                 world.markBlockForUpdate(x, y, z);
                 tn.markDirty();
             }

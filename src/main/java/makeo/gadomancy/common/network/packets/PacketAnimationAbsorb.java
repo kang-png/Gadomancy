@@ -64,15 +64,15 @@ public class PacketAnimationAbsorb implements IMessage, IMessageHandler<PacketAn
 
     @Override
     public void toBytes(ByteBuf buf) {
-        buf.writeInt(x);
-        buf.writeInt(y);
-        buf.writeInt(z);
-        buf.writeInt(targetX);
-        buf.writeInt(targetY);
-        buf.writeInt(targetZ);
-        buf.writeInt(tickCap);
-        buf.writeInt(bid);
-        buf.writeInt(bmd);
+        buf.writeInt(this.x);
+        buf.writeInt(this.y);
+        buf.writeInt(this.z);
+        buf.writeInt(this.targetX);
+        buf.writeInt(this.targetY);
+        buf.writeInt(this.targetZ);
+        buf.writeInt(this.tickCap);
+        buf.writeInt(this.bid);
+        buf.writeInt(this.bmd);
     }
 
     @Override

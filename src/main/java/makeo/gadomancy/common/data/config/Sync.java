@@ -3,6 +3,7 @@ package makeo.gadomancy.common.data.config;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
 import static java.lang.annotation.ElementType.FIELD;
 
 /**
@@ -14,6 +15,6 @@ import static java.lang.annotation.ElementType.FIELD;
  * Created by makeo @ 15.11.2015 22:00
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value={FIELD})
+@Target(FIELD)
 public @interface Sync {
 }

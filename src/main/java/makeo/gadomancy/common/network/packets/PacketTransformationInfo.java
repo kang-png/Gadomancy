@@ -24,7 +24,7 @@ import thaumcraft.common.entities.golems.EnumGolemType;
 public class PacketTransformationInfo implements IMessage, IMessageHandler<PacketTransformationInfo, IMessage> {
     private static final World WORLD = new FakeWorld();
 
-    private EntityGolemBase golem = null;
+    private EntityGolemBase golem;
 
     public PacketTransformationInfo(EntityGolemBase golem) {
         this.golem = golem;
@@ -34,13 +34,13 @@ public class PacketTransformationInfo implements IMessage, IMessageHandler<Packe
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        this.golem = (EntityGolemBase) EntityList.createEntityFromNBT(ByteBufUtils.readTag(buf), WORLD);
+        this.golem = (EntityGolemBase) EntityList.createEntityFromNBT(ByteBufUtils.readTag(buf), PacketTransformationInfo.WORLD);
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
         NBTTagCompound compound = new NBTTagCompound();
-        golem.writeEntityToNBT(compound);
+        this.golem.writeEntityToNBT(compound);
         ByteBufUtils.writeTag(buf, compound);
     }
 
@@ -53,12 +53,12 @@ public class PacketTransformationInfo implements IMessage, IMessageHandler<Packe
 
         @Override
         public void fromBytes(ByteBuf buf) {
-            player = buf.readInt();
+            this.player = buf.readInt();
         }
 
         @Override
         public void toBytes(ByteBuf buf) {
-            buf.writeInt(player);
+            buf.writeInt(this.player);
         }
 
         @Override
@@ -72,7 +72,7 @@ public class PacketTransformationInfo implements IMessage, IMessageHandler<Packe
 
             }*/
 
-            return new PacketTransformationInfo(new EntityGolemBase(WORLD, EnumGolemType.CLAY, true));
+            return new PacketTransformationInfo(new EntityGolemBase(PacketTransformationInfo.WORLD, EnumGolemType.CLAY, true));
         }
     }
 

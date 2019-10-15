@@ -18,8 +18,8 @@ public class ItemBlockAuraPylon extends ItemBlock {
 
     public ItemBlockAuraPylon(Block block) {
         super(block);
-        setMaxDamage(0);
-        setHasSubtypes(true);
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class ItemBlockAuraPylon extends ItemBlock {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return getUnlocalizedName() + "." + stack.getItemDamage();
+        return this.getUnlocalizedName() + "." + stack.getItemDamage();
     }
 
     @Override

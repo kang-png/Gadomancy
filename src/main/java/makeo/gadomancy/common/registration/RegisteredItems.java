@@ -59,40 +59,40 @@ public class RegisteredItems {
     public static ItemElement itemElement;
 
     public static void preInit() {
-        creativeTab = new CreativeTabs(Gadomancy.MODID) {
+        RegisteredItems.creativeTab = new CreativeTabs(Gadomancy.MODID) {
             @Override
             public Item getTabIconItem() {
-                return itemFakeModIcon;
+                return RegisteredItems.itemFakeModIcon;
             }
         };
     }
 
     public static void init() {
-        registerItems();
+        RegisteredItems.registerItems();
 
-        registerDefaultStickyJars();
+        RegisteredItems.registerDefaultStickyJars();
     }
 
     public static void postInit() {
-        registerItemAspects();
+        RegisteredItems.registerItemAspects();
     }
 
     //Items
     private static void registerItems() {
-        itemTransformationFocus = registerItem(new ItemTransformationFocus());
-        itemGolemCoreBreak = registerItem(new ItemGolemCoreBreak());
-        itemFamiliar_old = registerItem(new ItemFamiliar_Old(), "ItemFamiliar");
-        itemEtherealFamiliar = registerItem(new ItemEtherealFamiliar());
-        itemAuraCore = registerItem(new ItemAuraCore());
-        itemElement = registerItem(new ItemElement());
+        RegisteredItems.itemTransformationFocus = RegisteredItems.registerItem(new ItemTransformationFocus());
+        RegisteredItems.itemGolemCoreBreak = RegisteredItems.registerItem(new ItemGolemCoreBreak());
+        RegisteredItems.itemFamiliar_old = RegisteredItems.registerItem(new ItemFamiliar_Old(), "ItemFamiliar");
+        RegisteredItems.itemEtherealFamiliar = RegisteredItems.registerItem(new ItemEtherealFamiliar());
+        RegisteredItems.itemAuraCore = RegisteredItems.registerItem(new ItemAuraCore());
+        RegisteredItems.itemElement = RegisteredItems.registerItem(new ItemElement());
 
-        itemCreativeNode = registerItem(new ItemCreativeNode());
-        itemPackage = registerItem(new ItemArcanePackage());
-        itemFakeLootbag = registerItem(Thaumcraft.MODID, new ItemFakeLootbag());
-        itemFakeGolemPlacer = registerItem(new ItemFakeGolemPlacer());
-        itemFakeGolemShield = registerItem(new ItemFakeGolemShield());
-        itemExtendedNodeJar = registerItem(new ItemExtendedNodeJar());
-        itemFakeModIcon = registerItem(new ItemFakeModIcon());
+        RegisteredItems.itemCreativeNode = RegisteredItems.registerItem(new ItemCreativeNode());
+        RegisteredItems.itemPackage = RegisteredItems.registerItem(new ItemArcanePackage());
+        RegisteredItems.itemFakeLootbag = RegisteredItems.registerItem(Thaumcraft.MODID, new ItemFakeLootbag());
+        RegisteredItems.itemFakeGolemPlacer = RegisteredItems.registerItem(new ItemFakeGolemPlacer());
+        RegisteredItems.itemFakeGolemShield = RegisteredItems.registerItem(new ItemFakeGolemShield());
+        RegisteredItems.itemExtendedNodeJar = RegisteredItems.registerItem(new ItemExtendedNodeJar());
+        RegisteredItems.itemFakeModIcon = RegisteredItems.registerItem(new ItemFakeModIcon());
     }
 
     private static <T extends Item> T registerItem(T item, String name) {
@@ -101,11 +101,11 @@ public class RegisteredItems {
     }
 
     private static <T extends Item> T registerItem(T item) {
-        return registerItem(item, item.getClass().getSimpleName());
+        return RegisteredItems.registerItem(item, item.getClass().getSimpleName());
     }
 
     private static <T extends Item> T registerItem(String modId, T item) {
-        return registerItem(modId, item, item.getClass().getSimpleName());
+        return RegisteredItems.registerItem(modId, item, item.getClass().getSimpleName());
     }
 
     private static <T extends Item> T registerItem(String modId, T item, String name) {
@@ -153,21 +153,21 @@ public class RegisteredItems {
 
     //Sticky jars
     private static void registerDefaultStickyJars() {
-        registerStickyJar(ConfigItems.itemJarFilled, 0);
-        registerStickyJar(ConfigItems.itemJarFilled, 3);
+        RegisteredItems.registerStickyJar(ConfigItems.itemJarFilled, 0);
+        RegisteredItems.registerStickyJar(ConfigItems.itemJarFilled, 3);
 
         Item itemBlockJar = Item.getItemFromBlock(ConfigBlocks.blockJar);
-        registerStickyJar(itemBlockJar, 0, new ItemStack(itemBlockJar, 1, 0), "JARLABEL");
-        registerStickyJar(itemBlockJar, 3, new ItemStack(itemBlockJar, 1, 3), "JARVOID");
+        RegisteredItems.registerStickyJar(itemBlockJar, 0, new ItemStack(itemBlockJar, 1, 0), "JARLABEL");
+        RegisteredItems.registerStickyJar(itemBlockJar, 3, new ItemStack(itemBlockJar, 1, 3), "JARVOID");
 
         Item itemRemoteJar = Item.getItemFromBlock(RegisteredBlocks.blockRemoteJar);
-        registerStickyJar(itemRemoteJar, 0, new ItemStack(itemRemoteJar), SimpleResearchItem.getFullName("REMOTEJAR"));
+        RegisteredItems.registerStickyJar(itemRemoteJar, 0, new ItemStack(itemRemoteJar), SimpleResearchItem.getFullName("REMOTEJAR"));
     }
 
     private static List<StickyJarItemInfo> stickyJarItems = new ArrayList<StickyJarItemInfo>();
 
     public static void registerStickyJar(Item item, int damage, ItemStack recipeStack) {
-        registerStickyJar(item, damage, recipeStack, null);
+        RegisteredItems.registerStickyJar(item, damage, recipeStack, null);
     }
 
     public static void registerStickyJar(Item item, int damage, ItemStack recipeStack, String research) {
@@ -176,19 +176,19 @@ public class RegisteredItems {
         info.damage = damage;
         info.recipeStack = recipeStack;
         info.research = research;
-        stickyJarItems.add(info);
+        RegisteredItems.stickyJarItems.add(info);
     }
 
     public static void registerStickyJar(Item item, int damage) {
-        registerStickyJar(item, damage, null);
+        RegisteredItems.registerStickyJar(item, damage, null);
     }
 
     public static void registerStickyJar(Item item) {
-        registerStickyJar(item, Short.MAX_VALUE);
+        RegisteredItems.registerStickyJar(item, Short.MAX_VALUE);
     }
 
     public static boolean isStickyableJar(Item item, int damage) {
-        for(StickyJarItemInfo info : stickyJarItems) {
+        for(StickyJarItemInfo info : RegisteredItems.stickyJarItems) {
             if(info.item == item && (info.damage == damage || info.damage == Short.MAX_VALUE)) {
                 return true;
             }
@@ -197,16 +197,16 @@ public class RegisteredItems {
     }
 
     public static boolean isStickyableJar(ItemStack stack) {
-        return stack != null && isStickyableJar(stack.getItem(), stack.getItemDamage());
+        return stack != null && RegisteredItems.isStickyableJar(stack.getItem(), stack.getItemDamage());
     }
 
     public static List<ItemStack> getStickyJarStacks() {
-        return getStickyJarStacks(null);
+        return RegisteredItems.getStickyJarStacks(null);
     }
 
     public static List<ItemStack> getStickyJarStacks(EntityPlayer player) {
         List<ItemStack> stacks = new ArrayList<ItemStack>();
-        for(StickyJarItemInfo info : stickyJarItems) {
+        for(StickyJarItemInfo info : RegisteredItems.stickyJarItems) {
             if(info.recipeStack != null && (player == null || info.research == null
                     || ResearchManager.isResearchComplete(player.getCommandSenderName(), info.research))) {
                 stacks.add(info.recipeStack);
@@ -219,6 +219,6 @@ public class RegisteredItems {
         public Item item;
         public int damage;
         public ItemStack recipeStack;
-        public String research = null;
+        public String research;
     }
 }

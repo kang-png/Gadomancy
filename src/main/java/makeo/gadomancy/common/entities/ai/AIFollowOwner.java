@@ -12,7 +12,7 @@ import net.minecraft.entity.passive.EntityTameable;
  * Created by makeo @ 31.10.2015 15:55
  */
 public class AIFollowOwner extends EntityAIFollowOwner {
-    EntityTameable entity;
+    private EntityTameable entity;
 
     public AIFollowOwner(EntityTameable entity, float minDist, float maxDist) {
         super(entity, 0, minDist, maxDist);
@@ -21,21 +21,21 @@ public class AIFollowOwner extends EntityAIFollowOwner {
 
     @Override
     public void startExecuting() {
-        boolean avoidWater = entity.getNavigator().getAvoidsWater();
+        boolean avoidWater = this.entity.getNavigator().getAvoidsWater();
         super.startExecuting();
-        entity.getNavigator().setAvoidsWater(avoidWater);
+        this.entity.getNavigator().setAvoidsWater(avoidWater);
     }
 
     @Override
     public void resetTask() {
-        boolean avoidWater = entity.getNavigator().getAvoidsWater();
+        boolean avoidWater = this.entity.getNavigator().getAvoidsWater();
         super.resetTask();
-        entity.getNavigator().setAvoidsWater(avoidWater);
+        this.entity.getNavigator().setAvoidsWater(avoidWater);
     }
 
     @Override
     public void updateTask() {
-        super.field_75336_f = entity.getAIMoveSpeed();
+        super.field_75336_f = this.entity.getAIMoveSpeed();
         super.updateTask();
     }
 }

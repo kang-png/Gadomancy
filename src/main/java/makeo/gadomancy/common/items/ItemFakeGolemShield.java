@@ -24,22 +24,22 @@ public class ItemFakeGolemShield extends Item {
     private IIcon shieldIcon;
 
     public ItemFakeGolemShield() {
-        setCreativeTab(null);
+        this.setCreativeTab(null);
     }
 
     @SideOnly(Side.CLIENT)
     public int getRenderPasses(int metadata) {
-        return golemItem.getRenderPasses(metadata) + 1;
+        return this.golemItem.getRenderPasses(metadata) + 1;
     }
 
     @Override
     public boolean getHasSubtypes() {
-        return golemItem.getHasSubtypes();
+        return this.golemItem.getHasSubtypes();
     }
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
-        golemItem.getSubItems(item, tab, list);
+        this.golemItem.getSubItems(item, tab, list);
     }
 
     @SideOnly(Side.CLIENT)
@@ -49,16 +49,16 @@ public class ItemFakeGolemShield extends Item {
 
     @Override
     public void registerIcons(IIconRegister ir) {
-        shieldIcon = ir.registerIcon(Gadomancy.MODID + ":r_runicupg");
-        golemItem.registerIcons(ir);
+        this.shieldIcon = ir.registerIcon(Gadomancy.MODID + ":r_runicupg");
+        this.golemItem.registerIcons(ir);
     }
 
     @Override
     public IIcon getIcon(ItemStack stack, int pass) {
-        if(pass == getRenderPasses(stack.getItemDamage()) - 1) {
-            return shieldIcon;
+        if(pass == this.getRenderPasses(stack.getItemDamage()) - 1) {
+            return this.shieldIcon;
         } else {
-            return golemItem.getIcon(stack, pass);
+            return this.golemItem.getIcon(stack, pass);
         }
     }
 }

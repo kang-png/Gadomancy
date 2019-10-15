@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public class FamiliarHandlerClient {
 
-    private static EntityWisp ENTITY_WISP = null;
+    private static EntityWisp ENTITY_WISP;
 
     private static RenderWisp fallbackRenderer;
 
@@ -44,7 +44,7 @@ public class FamiliarHandlerClient {
     public static void processBoltPacket(PacketFamiliarBolt pkt) {
         EntityPlayer p = Minecraft.getMinecraft().theWorld.getPlayerEntityByName(pkt.owner);
         if(p == null || p.getDistanceSqToEntity(Minecraft.getMinecraft().thePlayer) > 1024) return; //32^2
-        ExFamiliarData data = clientFamiliars.get(p.getCommandSenderName());
+        ExFamiliarData data = FamiliarHandlerClient.clientFamiliars.get(p.getCommandSenderName());
         if(data == null) return;
         PartialEntityFamiliar fam = data.familiar;
         float y = (float) (fam.posY + 1.22F);
@@ -60,16 +60,16 @@ public class FamiliarHandlerClient {
     @SideOnly(Side.CLIENT)
     public static void playerRenderEvent(EntityPlayer player, float partialTicks) {
         String ownerName = player.getCommandSenderName();
-        if(!clientFamiliars.containsKey(ownerName)) return;
+        if(!FamiliarHandlerClient.clientFamiliars.containsKey(ownerName)) return;
 
-        ExFamiliarData data = clientFamiliars.get(ownerName);
+        ExFamiliarData data = FamiliarHandlerClient.clientFamiliars.get(ownerName);
         PartialEntityFamiliar fam = data.familiar;
 
         Aspect aspect = Aspect.getAspect(data.data.aspectTag);
 
-        if(ENTITY_WISP == null) ENTITY_WISP = new EntityWisp(new FakeWorld());
-        ENTITY_WISP.setType(aspect.getTag());
-        ENTITY_WISP.ticksExisted = fam.dummyEntity.ticksExisted;
+        if(FamiliarHandlerClient.ENTITY_WISP == null) FamiliarHandlerClient.ENTITY_WISP = new EntityWisp(new FakeWorld());
+        FamiliarHandlerClient.ENTITY_WISP.setType(aspect.getTag());
+        FamiliarHandlerClient.ENTITY_WISP.ticksExisted = fam.dummyEntity.ticksExisted;
         GL11.glPushMatrix();
         if(fam.owner == null || fam.owner.get() == null) {
             fam.owner = new WeakReference<EntityPlayer>(player);
@@ -91,35 +91,35 @@ public class FamiliarHandlerClient {
             diffZ -= ((entity.posZ - entity.lastTickPosZ) * partialTicks);
         }
 
-        ItemRenderFamiliar.renderEntityWispFor(fam.owner.get(), ENTITY_WISP, diffX, diffY, diffZ, 0, partialTicks);
+        ItemRenderFamiliar.renderEntityWispFor(fam.owner.get(), FamiliarHandlerClient.ENTITY_WISP, diffX, diffY, diffZ, 0, partialTicks);
         GL11.glPopMatrix();
     }
 
     @SideOnly(Side.CLIENT)
     public static void playerTickEvent() {
         if(Minecraft.getMinecraft().theWorld == null) return;
-        for(ExFamiliarData data : clientFamiliars.values()) {
+        for(ExFamiliarData data : FamiliarHandlerClient.clientFamiliars.values()) {
             data.familiar.tick();
         }
         PartialEntityFamiliar.DUMMY_FAMILIAR.tick();
     }
 
     static {
-        fallbackRenderer = new RenderWisp();
-        fallbackRenderer.setRenderManager(RenderManager.instance);
+        FamiliarHandlerClient.fallbackRenderer = new RenderWisp();
+        FamiliarHandlerClient.fallbackRenderer.setRenderManager(RenderManager.instance);
     }
 
     public static void handleAdditions(List<DataFamiliar.FamiliarData> toAdd) {
         for(DataFamiliar.FamiliarData data : toAdd) {
             PartialEntityFamiliar familiar = new PartialEntityFamiliar(Minecraft.getMinecraft().theWorld.getPlayerEntityByName(data.owner), data.owner);
             ExFamiliarData exData = new ExFamiliarData(data, familiar);
-            clientFamiliars.put(data.owner, exData);
+            FamiliarHandlerClient.clientFamiliars.put(data.owner, exData);
         }
     }
 
     public static void handleRemovals(List<DataFamiliar.FamiliarData> toRemove) {
         for(DataFamiliar.FamiliarData data : toRemove) {
-            clientFamiliars.remove(data.owner);
+            FamiliarHandlerClient.clientFamiliars.remove(data.owner);
         }
     }
 
@@ -136,18 +136,18 @@ public class FamiliarHandlerClient {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (o == null || this.getClass() != o.getClass()) return false;
 
             ExFamiliarData that = (ExFamiliarData) o;
 
-            return !(data != null ? !data.equals(that.data) : that.data != null) && !(familiar != null ? !familiar.equals(that.familiar) : that.familiar != null);
+            return (this.data != null ? this.data.equals(that.data) : that.data == null) && (this.familiar != null ? this.familiar.equals(that.familiar) : that.familiar == null);
 
         }
 
         @Override
         public int hashCode() {
-            int result = data != null ? data.hashCode() : 0;
-            result = 31 * result + (familiar != null ? familiar.hashCode() : 0);
+            int result = this.data != null ? this.data.hashCode() : 0;
+            result = 31 * result + (this.familiar != null ? this.familiar.hashCode() : 0);
             return result;
         }
     }
@@ -182,7 +182,7 @@ public class FamiliarHandlerClient {
         public double posX, posY, posZ;
         public double renderX, renderY, renderZ;
         public double prevPosX, prevPosY, prevPosZ;
-        public int ticksExisted = 0;
+        public int ticksExisted;
 
         public PartialEntityFamiliar(EntityPlayer owner, String ownerNameToSearch) {
             this.owner = new WeakReference<EntityPlayer>(owner);
@@ -190,14 +190,14 @@ public class FamiliarHandlerClient {
         }
 
         public void tick() {
-            ticksExisted++;
-            dummyEntity.ticksExisted = ticksExisted;
+            this.ticksExisted++;
+            this.dummyEntity.ticksExisted = this.ticksExisted;
 
-            if(owner.get() == null) {
-                if(potentialOwnerName != null) {
-                    EntityPlayer player = Minecraft.getMinecraft().theWorld.getPlayerEntityByName(potentialOwnerName);
+            if(this.owner.get() == null) {
+                if(this.potentialOwnerName != null) {
+                    EntityPlayer player = Minecraft.getMinecraft().theWorld.getPlayerEntityByName(this.potentialOwnerName);
                     if(player != null) {
-                        owner = new WeakReference<EntityPlayer>(player);
+                        this.owner = new WeakReference<EntityPlayer>(player);
                     } else {
                         return;
                     }
@@ -205,8 +205,8 @@ public class FamiliarHandlerClient {
                     return;
                 }
             } else {
-                if(owner.get().worldObj.provider.dimensionId != Minecraft.getMinecraft().renderViewEntity.worldObj.provider.dimensionId) {
-                    owner = new WeakReference<EntityPlayer>(null);
+                if(this.owner.get().worldObj.provider.dimensionId != Minecraft.getMinecraft().renderViewEntity.worldObj.provider.dimensionId) {
+                    this.owner = new WeakReference<EntityPlayer>(null);
                     return;
                 }
             }
@@ -215,15 +215,15 @@ public class FamiliarHandlerClient {
             this.prevPosY = this.posY;
             this.prevPosZ = this.posZ;
 
-            double part = ((double) ticksExisted) / ((double) CRICLE_TIME_TICKS);
-            double theta = RAD_CAP * part;
-            this.renderX = RADIUS * Math.cos(theta);
-            this.renderZ = RADIUS * Math.sin(theta);
+            double part = ((double) this.ticksExisted) / ((double) PartialEntityFamiliar.CRICLE_TIME_TICKS);
+            double theta = PartialEntityFamiliar.RAD_CAP * part;
+            this.renderX = PartialEntityFamiliar.RADIUS * Math.cos(theta);
+            this.renderZ = PartialEntityFamiliar.RADIUS * Math.sin(theta);
             this.renderY = Math.sin(theta * 2) / 2D;
 
-            this.posX = owner.get().posX + renderX;
-            this.posZ = owner.get().posZ + renderZ;
-            this.posY = owner.get().posY + renderY;
+            this.posX = this.owner.get().posX + this.renderX;
+            this.posZ = this.owner.get().posZ + this.renderZ;
+            this.posY = this.owner.get().posY + this.renderY;
         }
     }
 

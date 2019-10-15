@@ -26,27 +26,27 @@ public class PacketAbortTransform implements IMessage, IMessageHandler<PacketAbo
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        reason = buf.readByte();
+        this.reason = buf.readByte();
 
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        buf.writeByte(reason);
+        buf.writeByte(this.reason);
     }
 
-    public static enum AbortReason {
+    public enum AbortReason {
         PLAYER_EXIT, NO_VIS, FOREIGN_TRANSFORMATION, TRANSFORMATION_FAILED, DAMAGE, MOVE
     }
 
     @Override
     public IMessage onMessage(PacketAbortTransform message, MessageContext ctx) {
         if(ctx.side == Side.SERVER) {
-            if(ctx.getServerHandler().playerEntity.getEntityId() == entityId) {
+            if(ctx.getServerHandler().playerEntity.getEntityId() == this.entityId) {
 
             }
         } else {
-            TransformationHelper.onAbortTransformation(entityId);
+            TransformationHelper.onAbortTransformation(this.entityId);
         }
         return null;
     }

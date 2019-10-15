@@ -38,11 +38,11 @@ public class BlockEssentiaCompressor extends BlockContainer implements IBlockTra
 
     public BlockEssentiaCompressor() {
         super(Material.wood);
-        setHardness(5F);
-        setResistance(20F);
-        setHarvestLevel("axe", 1);
-        setBlockBounds(0, 0, 0, 1, 1, 1);
-        setCreativeTab(RegisteredItems.creativeTab);
+        this.setHardness(5F);
+        this.setResistance(20F);
+        this.setHarvestLevel("axe", 1);
+        this.setBlockBounds(0, 0, 0, 1, 1, 1);
+        this.setCreativeTab(RegisteredItems.creativeTab);
     }
 
     @Override
@@ -57,13 +57,13 @@ public class BlockEssentiaCompressor extends BlockContainer implements IBlockTra
 
     @Override
     public void registerBlockIcons(IIconRegister ir) {
-        icon = ir.registerIcon(Gadomancy.MODID + ":transparent");
+        this.icon = ir.registerIcon(Gadomancy.MODID + ":transparent");
         super.registerBlockIcons(ir);
     }
 
     @Override
     public IIcon getTransparentIcon() {
-        return icon;
+        return this.icon;
     }
 
     @Override
@@ -108,13 +108,13 @@ public class BlockEssentiaCompressor extends BlockContainer implements IBlockTra
         }
         if(((TileEssentiaCompressor) te).isMultiblockFormed()) {
             if(((TileEssentiaCompressor) te).isMasterTile()) {
-                setBlockBounds(0, 0, 0, 1, 3, 1); //master is lowest tile here.
+                this.setBlockBounds(0, 0, 0, 1, 3, 1); //master is lowest tile here.
             } else {
                 int yM = ((TileEssentiaCompressor) te).getMultiblockYIndex();
-                setBlockBounds(0, -yM, 0, 1, 3 - yM, 1);
+                this.setBlockBounds(0, -yM, 0, 1, 3 - yM, 1);
             }
         } else {
-            setBlockBounds(0, 0, 0, 1, 1, 1);
+            this.setBlockBounds(0, 0, 0, 1, 1, 1);
         }
     }
 
@@ -132,8 +132,8 @@ public class BlockEssentiaCompressor extends BlockContainer implements IBlockTra
             ItemStack heldItem = player.getHeldItem();
             if(heldItem != null && heldItem.getItem() instanceof ItemWandCasting &&
                     ResearchManager.isResearchComplete(player.getCommandSenderName(), SimpleResearchItem.getFullName("ESSENTIA_COMPRESSOR"))) {
-                ChunkCoordinates lowest = findLowestCompressorBlock(world, x, y, z);
-                boolean canForm = lowest != null && isMuliblockPossible(world, lowest);
+                ChunkCoordinates lowest = this.findLowestCompressorBlock(world, x, y, z);
+                boolean canForm = lowest != null && this.isMuliblockPossible(world, lowest);
                 if(canForm && ThaumcraftApiHelper.consumeVisFromWandCrafting(player.getCurrentEquippedItem(), player, RegisteredRecipes.costsCompressorMultiblock, true)) {
                     int multiblockID = TileEssentiaCompressor.getAndIncrementNewMultiblockId();
                     TileEssentiaCompressor compressor = (TileEssentiaCompressor) world.getTileEntity(lowest.posX, lowest.posY, lowest.posZ);
@@ -159,15 +159,15 @@ public class BlockEssentiaCompressor extends BlockContainer implements IBlockTra
 
     private boolean isMuliblockPossible(World world, ChunkCoordinates lowest) {
         return lowest != null &&
-                isMultiblockable(world, lowest.posX, lowest.posY    , lowest.posZ) &&
-                isMultiblockable(world, lowest.posX, lowest.posY + 1, lowest.posZ) &&
-                isMultiblockable(world, lowest.posX, lowest.posY + 2, lowest.posZ);
+                this.isMultiblockable(world, lowest.posX, lowest.posY    , lowest.posZ) &&
+                this.isMultiblockable(world, lowest.posX, lowest.posY + 1, lowest.posZ) &&
+                this.isMultiblockable(world, lowest.posX, lowest.posY + 2, lowest.posZ);
     }
 
     private ChunkCoordinates findLowestCompressorBlock(World world, int x, int y, int z) {
         ChunkCoordinates result = null;
         for (int i = 0; i <= y; i++) {
-            if(!isMultiblockable(world, x, y - i, z)) break;
+            if(!this.isMultiblockable(world, x, y - i, z)) break;
             result = new ChunkCoordinates(x, y - i, z);
         }
         return result;

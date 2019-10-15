@@ -31,7 +31,7 @@ public class TileStickyJar extends TileJarFillable {
     private Block parentBlock;
     private Integer parentMetadata = 0;
 
-    private TileJarFillable parent = null;
+    private TileJarFillable parent;
 
     public ForgeDirection placedOn;
 
@@ -39,42 +39,42 @@ public class TileStickyJar extends TileJarFillable {
     private Field fieldCount;
 
     public TileStickyJar() {
-        injector = new Injector(null, TileJarFillable.class);
-        fieldCount = Injector.getField("count", TileJarFillable.class);
+        this.injector = new Injector(null, TileJarFillable.class);
+        this.fieldCount = Injector.getField("count", TileJarFillable.class);
     }
 
     public Block getParentBlock() {
-        return parentBlock;
+        return this.parentBlock;
     }
 
     public TileJarFillable getParent() {
-        return parent;
+        return this.parent;
     }
 
     public boolean isValid() {
-        return parentBlock != null && parent != null;
+        return this.parentBlock != null && this.parent != null;
     }
 
-    private boolean needsRenderUpdate = false;
+    private boolean needsRenderUpdate;
 
     public void init(TileJarFillable parent, Block parentBlock, int parentMetadata, ForgeDirection placedOn) {
         this.parent = parent;
 
         this.placedOn = placedOn;
 
-        parent.xCoord = xCoord;
-        parent.yCoord = yCoord;
-        parent.zCoord = zCoord;
+        parent.xCoord = this.xCoord;
+        parent.yCoord = this.yCoord;
+        parent.zCoord = this.zCoord;
 
-        syncFromParent();
+        this.syncFromParent();
 
-        this.parent.setWorldObj(getWorldObj());
+        this.parent.setWorldObj(this.getWorldObj());
         this.parentBlock = parentBlock;
         this.parentMetadata = parentMetadata;
         this.injector.setObject(this.parent);
 
-        markDirty();
-        needsRenderUpdate = true;
+        this.markDirty();
+        this.needsRenderUpdate = true;
     }
 
     private void sync(TileJarFillable from, TileJarFillable to) {
@@ -88,60 +88,60 @@ public class TileStickyJar extends TileJarFillable {
     }
     
     public void syncToParent() {
-        sync(this, parent);
+        this.sync(this, this.parent);
     }
     
     public void syncFromParent() {
-        sync(parent, this);
+        this.sync(this.parent, this);
     }
 
     public Integer getParentMetadata() {
-        return parentMetadata;
+        return this.parentMetadata;
     }
 
     private int count;
 
     @Override
     public void updateEntity() {
-        if(!isValid()) {
-            if(!getWorldObj().isRemote) {
-                getWorldObj().setBlock(this.xCoord, this.yCoord, this.zCoord, Blocks.air);
+        if(!this.isValid()) {
+            if(!this.getWorldObj().isRemote) {
+                this.getWorldObj().setBlock(this.xCoord, this.yCoord, this.zCoord, Blocks.air);
             }
             return;
         }
 
-        if(getWorldObj().isRemote && needsRenderUpdate) {
-            needsRenderUpdate = false;
-            Minecraft.getMinecraft().renderGlobal.markBlockForUpdate(xCoord, yCoord, zCoord);
+        if(this.getWorldObj().isRemote && this.needsRenderUpdate) {
+            this.needsRenderUpdate = false;
+            Minecraft.getMinecraft().renderGlobal.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         }
 
-        syncToParent();
+        this.syncToParent();
 
         boolean canTakeEssentia = this.amount < this.maxAmount;
-        if(parent instanceof TileJarFillableVoid) canTakeEssentia = true;
+        if(this.parent instanceof TileJarFillableVoid) canTakeEssentia = true;
 
         if ((!this.worldObj.isRemote) && (++this.count % 5 == 0) && canTakeEssentia) {
-            fillJar();
+            this.fillJar();
         }
 
-        injector.setField(fieldCount, 1);
+        this.injector.setField(this.fieldCount, 1);
 
-        parent.updateEntity();
+        this.parent.updateEntity();
 
-        syncFromParent();
+        this.syncFromParent();
     }
 
     @Override
     public void setWorldObj(World world) {
         super.setWorldObj(world);
-        if(parent != null)
-            parent.setWorldObj(worldObj);
+        if(this.parent != null)
+            this.parent.setWorldObj(this.worldObj);
     }
 
     private void fillJar() {
-        ForgeDirection inputDir = placedOn.getOpposite();
+        ForgeDirection inputDir = this.placedOn.getOpposite();
 
-        TileEntity te = ThaumcraftApiHelper.getConnectableTile(parent.getWorldObj(), parent.xCoord, parent.yCoord, parent.zCoord, inputDir);
+        TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.parent.getWorldObj(), this.parent.xCoord, this.parent.yCoord, this.parent.zCoord, inputDir);
         if (te != null)
         {
             IEssentiaTransport ic = (IEssentiaTransport)te;
@@ -149,16 +149,16 @@ public class TileStickyJar extends TileJarFillable {
                 return;
             }
             Aspect ta = null;
-            if (parent.aspectFilter != null) {
-                ta = parent.aspectFilter;
-            } else if ((parent.aspect != null) && (parent.amount > 0)) {
-                ta = parent.aspect;
+            if (this.parent.aspectFilter != null) {
+                ta = this.parent.aspectFilter;
+            } else if ((this.parent.aspect != null) && (this.parent.amount > 0)) {
+                ta = this.parent.aspect;
             } else if ((ic.getEssentiaAmount(inputDir.getOpposite()) > 0) &&
-                    (ic.getSuctionAmount(inputDir.getOpposite()) < getSuctionAmount(ForgeDirection.UP)) && (getSuctionAmount(ForgeDirection.UP) >= ic.getMinimumSuction())) {
+                    (ic.getSuctionAmount(inputDir.getOpposite()) < this.getSuctionAmount(ForgeDirection.UP)) && (this.getSuctionAmount(ForgeDirection.UP) >= ic.getMinimumSuction())) {
                 ta = ic.getEssentiaType(inputDir.getOpposite());
             }
-            if ((ta != null) && (ic.getSuctionAmount(inputDir.getOpposite()) < getSuctionAmount(ForgeDirection.UP))) {
-                addToContainer(ta, ic.takeEssentia(ta, 1, inputDir.getOpposite()));
+            if ((ta != null) && (ic.getSuctionAmount(inputDir.getOpposite()) < this.getSuctionAmount(ForgeDirection.UP))) {
+                this.addToContainer(ta, ic.takeEssentia(ta, 1, inputDir.getOpposite()));
             }
         }
     }
@@ -171,42 +171,42 @@ public class TileStickyJar extends TileJarFillable {
             if(block != null && compound.hasKey("parent") && compound.hasKey("parentMetadata")) {
                 NBTTagCompound data = compound.getCompoundTag("parent");
                 int metadata = compound.getInteger("parentMetadata");
-                TileEntity tile = block.createTileEntity(getWorldObj(), metadata);
+                TileEntity tile = block.createTileEntity(this.getWorldObj(), metadata);
                 if(tile instanceof TileJarFillable) {
-                    placedOn = ForgeDirection.getOrientation(compound.getInteger("placedOn"));
+                    this.placedOn = ForgeDirection.getOrientation(compound.getInteger("placedOn"));
                     tile.readFromNBT(data);
-                    init((TileJarFillable) tile, block, metadata, placedOn);
+                    this.init((TileJarFillable) tile, block, metadata, this.placedOn);
                 }
             }
         }
 
-        if(!isValid() && !getWorldObj().isRemote) {
-            getWorldObj().setBlockToAir(xCoord, yCoord, zCoord);
+        if(!this.isValid() && !this.getWorldObj().isRemote) {
+            this.getWorldObj().setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
         }
     }
 
     @Override
     public void writeCustomNBT(NBTTagCompound compound) {
-        if(isValid()) {
-            compound.setString("parentType", GameData.getBlockRegistry().getNameForObject(parentBlock));
-            compound.setInteger("parentMetadata", parentMetadata);
+        if(this.isValid()) {
+            compound.setString("parentType", GameData.getBlockRegistry().getNameForObject(this.parentBlock));
+            compound.setInteger("parentMetadata", this.parentMetadata);
 
-            syncToParent();
+            this.syncToParent();
 
             NBTTagCompound data = new NBTTagCompound();
-            parent.writeToNBT(data);
+            this.parent.writeToNBT(data);
             compound.setTag("parent", data);
 
-            compound.setInteger("placedOn", placedOn.ordinal());
+            compound.setInteger("placedOn", this.placedOn.ordinal());
         }
     }
 
     @Override
     public AspectList getAspects() {
-        if(isValid()) {
-            syncToParent();
-            AspectList result = parent.getAspects();
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            AspectList result = this.parent.getAspects();
+            this.syncFromParent();
             return result;
         }
         return new AspectList();
@@ -214,19 +214,19 @@ public class TileStickyJar extends TileJarFillable {
 
     @Override
     public void setAspects(AspectList paramAspectList) {
-        if(isValid()) {
-            syncToParent();
-            parent.getAspects();
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            this.parent.getAspects();
+            this.syncFromParent();
         }
     }
 
     @Override
     public boolean doesContainerAccept(Aspect paramAspect) {
-        if(isValid()) {
-            syncToParent();
-            boolean result = parent.doesContainerAccept(paramAspect);
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            boolean result = this.parent.doesContainerAccept(paramAspect);
+            this.syncFromParent();
             return result;
         }
         return false;
@@ -234,10 +234,10 @@ public class TileStickyJar extends TileJarFillable {
 
     @Override
     public int addToContainer(Aspect paramAspect, int paramInt) {
-        if(isValid()) {
-            syncToParent();
-            int result = parent.addToContainer(paramAspect, paramInt);
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            int result = this.parent.addToContainer(paramAspect, paramInt);
+            this.syncFromParent();
             return result;
         }
         return paramInt;
@@ -245,10 +245,10 @@ public class TileStickyJar extends TileJarFillable {
 
     @Override
     public boolean takeFromContainer(Aspect paramAspect, int paramInt) {
-        if(isValid()) {
-            syncToParent();
-            boolean result = parent.takeFromContainer(paramAspect, paramInt);
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            boolean result = this.parent.takeFromContainer(paramAspect, paramInt);
+            this.syncFromParent();
             return result;
         }
         return false;
@@ -256,10 +256,10 @@ public class TileStickyJar extends TileJarFillable {
 
     @Override
     public boolean takeFromContainer(AspectList paramAspectList) {
-        if(isValid()) {
-            syncToParent();
-            boolean result = parent.takeFromContainer(paramAspectList);
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            boolean result = this.parent.takeFromContainer(paramAspectList);
+            this.syncFromParent();
             return result;
         }
         return false;
@@ -267,10 +267,10 @@ public class TileStickyJar extends TileJarFillable {
 
     @Override
     public boolean doesContainerContainAmount(Aspect paramAspect, int paramInt) {
-        if(isValid()) {
-            syncToParent();
-            boolean result = parent.doesContainerContainAmount(paramAspect, paramInt);
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            boolean result = this.parent.doesContainerContainAmount(paramAspect, paramInt);
+            this.syncFromParent();
             return result;
         }
         return false;
@@ -278,10 +278,10 @@ public class TileStickyJar extends TileJarFillable {
 
     @Override
     public boolean doesContainerContain(AspectList paramAspectList) {
-        if(isValid()) {
-            syncToParent();
-            boolean result = parent.doesContainerContain(paramAspectList);
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            boolean result = this.parent.doesContainerContain(paramAspectList);
+            this.syncFromParent();
             return result;
         }
         return false;
@@ -289,10 +289,10 @@ public class TileStickyJar extends TileJarFillable {
 
     @Override
     public int containerContains(Aspect paramAspect) {
-        if(isValid()) {
-            syncToParent();
-            int result = parent.containerContains(paramAspect);
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            int result = this.parent.containerContains(paramAspect);
+            this.syncFromParent();
             return result;
         }
         return 0;
@@ -300,19 +300,19 @@ public class TileStickyJar extends TileJarFillable {
 
     @Override
     public boolean isConnectable(ForgeDirection face) {
-        if(isValid()) {
-            syncToParent();
-            return parent.isConnectable(changeDirection(face));
+        if(this.isValid()) {
+            this.syncToParent();
+            return this.parent.isConnectable(this.changeDirection(face));
         }
         return false;
     }
 
     @Override
     public boolean canInputFrom(ForgeDirection face) {
-        if(isValid()) {
-            syncToParent();
-            boolean result = parent.canInputFrom(changeDirection(face));
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            boolean result = this.parent.canInputFrom(this.changeDirection(face));
+            this.syncFromParent();
             return result;
         }
         return false;
@@ -320,24 +320,24 @@ public class TileStickyJar extends TileJarFillable {
 
     @Override
     public boolean canOutputTo(ForgeDirection face) {
-        if(isValid()) {
-            syncToParent();
-            boolean result = parent.canOutputTo(changeDirection(face));
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            boolean result = this.parent.canOutputTo(this.changeDirection(face));
+            this.syncFromParent();
             return result;
         }
         return false;
     }
 
     public ForgeDirection changeDirection(ForgeDirection face) {
-        if(placedOn == ForgeDirection.UP) {
+        if(this.placedOn == ForgeDirection.UP) {
             if(face == ForgeDirection.UP || face == ForgeDirection.DOWN) {
                 return face.getOpposite();
             }
             return face;
         }
 
-        if(placedOn == ForgeDirection.DOWN) {
+        if(this.placedOn == ForgeDirection.DOWN) {
             return face;
         }
 
@@ -348,15 +348,15 @@ public class TileStickyJar extends TileJarFillable {
         if(face == ForgeDirection.DOWN) {
             return ForgeDirection.SOUTH;
         }
-        if(face == placedOn) {
+        if(face == this.placedOn) {
             return ForgeDirection.DOWN;
         }
-        if(face == placedOn.getOpposite()) {
+        if(face == this.placedOn.getOpposite()) {
             return ForgeDirection.UP;
         }
 
 
-        switch (placedOn) {
+        switch (this.placedOn) {
             case EAST: return face == ForgeDirection.NORTH ? ForgeDirection.WEST : ForgeDirection.EAST;
             case SOUTH: return face.getOpposite();
             case WEST: return face == ForgeDirection.SOUTH ? ForgeDirection.WEST : ForgeDirection.EAST;
@@ -369,19 +369,19 @@ public class TileStickyJar extends TileJarFillable {
 
     @Override
     public void setSuction(Aspect paramAspect, int paramInt) {
-        if(isValid()) {
-            syncToParent();
-            parent.setSuction(paramAspect, paramInt);
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            this.parent.setSuction(paramAspect, paramInt);
+            this.syncFromParent();
         }
     }
 
     @Override
     public Aspect getSuctionType(ForgeDirection paramForgeDirection) {
-        if(isValid()) {
-            syncToParent();
-            Aspect result = parent.getSuctionType(changeDirection(paramForgeDirection));
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            Aspect result = this.parent.getSuctionType(this.changeDirection(paramForgeDirection));
+            this.syncFromParent();
             return result;
         }
         return null;
@@ -389,10 +389,10 @@ public class TileStickyJar extends TileJarFillable {
 
     @Override
     public int getSuctionAmount(ForgeDirection paramForgeDirection) {
-        if(isValid()) {
-            syncToParent();
-            int result = parent.getSuctionAmount(changeDirection(paramForgeDirection));
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            int result = this.parent.getSuctionAmount(this.changeDirection(paramForgeDirection));
+            this.syncFromParent();
             return result;
         }
         return 0;
@@ -400,10 +400,10 @@ public class TileStickyJar extends TileJarFillable {
 
     @Override
     public int takeEssentia(Aspect paramAspect, int paramInt, ForgeDirection paramForgeDirection) {
-        if(isValid()) {
-            syncToParent();
-            int result = parent.takeEssentia(paramAspect, paramInt, changeDirection(paramForgeDirection));
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            int result = this.parent.takeEssentia(paramAspect, paramInt, this.changeDirection(paramForgeDirection));
+            this.syncFromParent();
             return result;
         }
         return paramInt;
@@ -411,10 +411,10 @@ public class TileStickyJar extends TileJarFillable {
 
     @Override
     public int addEssentia(Aspect paramAspect, int paramInt, ForgeDirection paramForgeDirection) {
-        if(isValid()) {
-            syncToParent();
-            int result = parent.addEssentia(paramAspect, paramInt, changeDirection(paramForgeDirection));
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            int result = this.parent.addEssentia(paramAspect, paramInt, this.changeDirection(paramForgeDirection));
+            this.syncFromParent();
             return result;
         }
         return paramInt;
@@ -422,10 +422,10 @@ public class TileStickyJar extends TileJarFillable {
 
     @Override
     public Aspect getEssentiaType(ForgeDirection paramForgeDirection) {
-        if(isValid()) {
-            syncToParent();
-            Aspect result = parent.getEssentiaType(changeDirection(paramForgeDirection));
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            Aspect result = this.parent.getEssentiaType(this.changeDirection(paramForgeDirection));
+            this.syncFromParent();
             return result;
         }
         return null;
@@ -433,10 +433,10 @@ public class TileStickyJar extends TileJarFillable {
 
     @Override
     public int getEssentiaAmount(ForgeDirection paramForgeDirection) {
-        if(isValid()) {
-            syncToParent();
-            int result = parent.getEssentiaAmount(changeDirection(paramForgeDirection));
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            int result = this.parent.getEssentiaAmount(this.changeDirection(paramForgeDirection));
+            this.syncFromParent();
             return result;
         }
         return 0;
@@ -444,10 +444,10 @@ public class TileStickyJar extends TileJarFillable {
 
     @Override
     public int getMinimumSuction() {
-        if(isValid()) {
-            syncToParent();
-            int result = parent.getMinimumSuction();
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            int result = this.parent.getMinimumSuction();
+            this.syncFromParent();
             return result;
         }
         return 0;
@@ -455,10 +455,10 @@ public class TileStickyJar extends TileJarFillable {
 
     @Override
     public boolean renderExtendedTube() {
-        if(isValid()) {
-            syncToParent();
-            boolean result = parent.renderExtendedTube();
-            syncFromParent();
+        if(this.isValid()) {
+            this.syncToParent();
+            boolean result = this.parent.renderExtendedTube();
+            this.syncFromParent();
             return result;
         }
         return false;

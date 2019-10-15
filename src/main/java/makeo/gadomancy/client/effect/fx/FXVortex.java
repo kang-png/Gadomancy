@@ -29,10 +29,10 @@ public class FXVortex {
     public static final ResourceLocation TC_VORTEX_TEXTURE = new ResourceLocation("thaumcraft", "textures/misc/vortex.png");
     private static final float RAD = (float) (Math.PI * 2);
 
-    private TileEssentiaCompressor parent = null;
+    private TileEssentiaCompressor parent;
     private long lastUpdateCall;
     private double x, y, z;
-    public boolean registered = false;
+    public boolean registered;
 
     public FXVortex(double x, double y, double z) {
         this.lastUpdateCall = System.currentTimeMillis();
@@ -64,26 +64,26 @@ public class FXVortex {
         float agescale = (float) (ClientHandler.ticks % 800) / 400F;
         if(agescale >= 1.0F) agescale = 2 - agescale;
         float size = 0.2F + 0.1F * agescale;
-        if(parent != null) {
-            size += size * (((float) parent.getSizeStage()) * 0.04F);
+        if(this.parent != null) {
+            size += size * (((float) this.parent.getSizeStage()) * 0.04F);
         }
 
         float anglePerc = (float) (ClientHandler.ticks % 300) / 300F;
-        float angle = RAD - RAD * anglePerc;
+        float angle = FXVortex.RAD - FXVortex.RAD * anglePerc;
 
         Vector3 iV = MiscUtils.interpolateEntityPosition(Minecraft.getMinecraft().renderViewEntity, pTicks);
-        if(parent != null && parent.getSizeStage() > 4) {
-            float mult = 0.001F * (parent.getSizeStage() - 4F);
+        if(this.parent != null && this.parent.getSizeStage() > 4) {
+            float mult = 0.001F * (this.parent.getSizeStage() - 4F);
             Vector3 shake = new Vector3(
-                    RAND.nextFloat() * mult * (RAND.nextBoolean() ? 1 : -1),
-                    RAND.nextFloat() * mult * (RAND.nextBoolean() ? 1 : -1),
-                    RAND.nextFloat() * mult * (RAND.nextBoolean() ? 1 : -1));
+                    FXVortex.RAND.nextFloat() * mult * (FXVortex.RAND.nextBoolean() ? 1 : -1),
+                    FXVortex.RAND.nextFloat() * mult * (FXVortex.RAND.nextBoolean() ? 1 : -1),
+                    FXVortex.RAND.nextFloat() * mult * (FXVortex.RAND.nextBoolean() ? 1 : -1));
             iV.add(shake);
         }
 
         GL11.glTranslated(-iV.getX(), -iV.getY(), -iV.getZ());
 
-        UtilsFX.bindTexture(TC_VORTEX_TEXTURE);
+        UtilsFX.bindTexture(FXVortex.TC_VORTEX_TEXTURE);
 
         tessellator.startDrawingQuads();
         tessellator.setBrightness(220);
@@ -95,7 +95,7 @@ public class FXVortex {
         Vec3 v4 = Vec3.createVectorHelper(arX * size - arYZ * size, -arXZ * size, arZ * size - arXY * size);
         if (angle != 0.0F) {
             Vec3 pvec = Vec3.createVectorHelper(iV.getX(), iV.getY(), iV.getZ());
-            Vec3 tvec = Vec3.createVectorHelper(x, y, z);
+            Vec3 tvec = Vec3.createVectorHelper(this.x, this.y, this.z);
             Vec3 qvec = pvec.subtract(tvec).normalize();
             QuadHelper.setAxis(qvec, angle).rotate(v1);
             QuadHelper.setAxis(qvec, angle).rotate(v2);
@@ -103,10 +103,10 @@ public class FXVortex {
             QuadHelper.setAxis(qvec, angle).rotate(v4);
         }
         tessellator.setNormal(0.0F, 0.0F, -1.0F);
-        tessellator.addVertexWithUV(x + v1.xCoord, y + v1.yCoord, z + v1.zCoord, 0, 1);
-        tessellator.addVertexWithUV(x + v2.xCoord, y + v2.yCoord, z + v2.zCoord, 1, 1);
-        tessellator.addVertexWithUV(x + v3.xCoord, y + v3.yCoord, z + v3.zCoord, 1, 0);
-        tessellator.addVertexWithUV(x + v4.xCoord, y + v4.yCoord, z + v4.zCoord, 0, 0);
+        tessellator.addVertexWithUV(this.x + v1.xCoord, this.y + v1.yCoord, this.z + v1.zCoord, 0, 1);
+        tessellator.addVertexWithUV(this.x + v2.xCoord, this.y + v2.yCoord, this.z + v2.zCoord, 1, 1);
+        tessellator.addVertexWithUV(this.x + v3.xCoord, this.y + v3.yCoord, this.z + v3.zCoord, 1, 0);
+        tessellator.addVertexWithUV(this.x + v4.xCoord, this.y + v4.yCoord, this.z + v4.zCoord, 0, 0);
         tessellator.draw();
 
         GL11.glDisable(GL11.GL_BLEND);

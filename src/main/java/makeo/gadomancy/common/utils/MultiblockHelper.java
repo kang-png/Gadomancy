@@ -18,7 +18,7 @@ public class MultiblockHelper {
 
     public static boolean isAnyMultiblockPresent(World world, int x, int y, int z, List<MultiblockPattern> patternList) {
         for(MultiblockPattern pattern : patternList) {
-            if(isMultiblockPresent(world, x, y, z, pattern)) return true;
+            if(MultiblockHelper.isMultiblockPresent(world, x, y, z, pattern)) return true;
         }
         return false;
     }
@@ -36,11 +36,11 @@ public class MultiblockHelper {
     public static class MultiblockPattern extends LinkedHashMap<IntVec3, BlockInfo> {
 
         public MultiblockPattern(Block originBlock, int originMeta) {
-            put(createIntVec3(0, 0, 0), new BlockInfo(originBlock, originMeta));
+            this.put(this.createIntVec3(0, 0, 0), new BlockInfo(originBlock, originMeta));
         }
 
         public MultiblockPattern addBlock(int relativeX, int relativeY, int relativeZ, Block expectedBlock, int expectedMeta) {
-            put(createIntVec3(relativeX, relativeY, relativeZ), new BlockInfo(expectedBlock, expectedMeta));
+            this.put(this.createIntVec3(relativeX, relativeY, relativeZ), new BlockInfo(expectedBlock, expectedMeta));
             return this;
         }
 
@@ -62,17 +62,17 @@ public class MultiblockHelper {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (o == null || this.getClass() != o.getClass()) return false;
             IntVec3 intVec3 = (IntVec3) o;
-            return x == intVec3.x && y == intVec3.y && z == intVec3.z;
+            return this.x == intVec3.x && this.y == intVec3.y && this.z == intVec3.z;
 
         }
 
         @Override
         public int hashCode() {
-            int result = x;
-            result = 31 * result + y;
-            result = 31 * result + z;
+            int result = this.x;
+            result = 31 * result + this.y;
+            result = 31 * result + this.z;
             return result;
         }
     }

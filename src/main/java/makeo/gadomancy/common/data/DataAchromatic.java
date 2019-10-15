@@ -26,7 +26,7 @@ public class DataAchromatic extends AbstractData {
     private List<Integer> removeClientQueue = new ArrayList<Integer>();
 
     public boolean isAchromatic(EntityPlayer player) {
-        return achromaticEntities.contains(player.getEntityId());
+        return this.achromaticEntities.contains(player.getEntityId());
     }
 
     public void handleApplication(EntityLivingBase entity) {
@@ -35,18 +35,18 @@ public class DataAchromatic extends AbstractData {
         int entityId = entity.getEntityId();
 
         boolean needsUpdate = false;
-        if(!addClientQueue.contains(entityId) && !achromaticEntities.contains(entityId)) {
-            addClientQueue.add(entityId);
-            achromaticEntities.add(entityId);
+        if(!this.addClientQueue.contains(entityId) && !this.achromaticEntities.contains(entityId)) {
+            this.addClientQueue.add(entityId);
+            this.achromaticEntities.add(entityId);
             needsUpdate = true;
         }
-        if(removeClientQueue.contains(entityId)) {
-            removeClientQueue.remove(Integer.valueOf(entityId));
-            addClientQueue.remove(Integer.valueOf(entityId));
+        if(this.removeClientQueue.contains(entityId)) {
+            this.removeClientQueue.remove(Integer.valueOf(entityId));
+            this.addClientQueue.remove(Integer.valueOf(entityId));
             needsUpdate = false;
         }
         if(needsUpdate) {
-            markDirty();
+            this.markDirty();
         }
     }
 
@@ -56,37 +56,37 @@ public class DataAchromatic extends AbstractData {
         int entityId = entity.getEntityId();
 
         boolean needsUpdate = false;
-        if(!removeClientQueue.contains(entityId) && achromaticEntities.contains(entityId)) {
-            removeClientQueue.add(entityId);
-            achromaticEntities.remove(Integer.valueOf(entityId));
+        if(!this.removeClientQueue.contains(entityId) && this.achromaticEntities.contains(entityId)) {
+            this.removeClientQueue.add(entityId);
+            this.achromaticEntities.remove(Integer.valueOf(entityId));
             needsUpdate = true;
         }
-        if(addClientQueue.contains(entityId)) {
-            addClientQueue.remove(Integer.valueOf(entityId));
-            removeClientQueue.remove(Integer.valueOf(entityId));
+        if(this.addClientQueue.contains(entityId)) {
+            this.addClientQueue.remove(Integer.valueOf(entityId));
+            this.removeClientQueue.remove(Integer.valueOf(entityId));
             needsUpdate = false;
         }
         if(needsUpdate) {
-            markDirty();
+            this.markDirty();
         }
     }
 
     public void checkPotionEffect(EntityPlayerMP p) {
         if(p.isPotionActive(RegisteredPotions.ACHROMATIC)) {
-            handleApplication(p);
+            this.handleApplication(p);
         }
     }
 
     @Override
     public boolean needsUpdate() {
-        return !addClientQueue.isEmpty() || !removeClientQueue.isEmpty();
+        return !this.addClientQueue.isEmpty() || !this.removeClientQueue.isEmpty();
     }
 
     @Override
     public void writeAllDataToPacket(NBTTagCompound compound) {
-        int[] array = new int[achromaticEntities.size()];
-        for (int i = 0; i < achromaticEntities.size(); i++) {
-            array[i] = achromaticEntities.get(i);
+        int[] array = new int[this.achromaticEntities.size()];
+        for (int i = 0; i < this.achromaticEntities.size(); i++) {
+            array[i] = this.achromaticEntities.get(i);
         }
         compound.setTag("additions", new NBTTagIntArray(array));
         compound.setTag("removals", new NBTTagIntArray(new int[0]));
@@ -94,19 +94,19 @@ public class DataAchromatic extends AbstractData {
 
     @Override
     public void writeToPacket(NBTTagCompound compound) {
-        int[] array = new int[removeClientQueue.size()];
-        for (int i = 0; i < removeClientQueue.size(); i++) {
-            array[i] = removeClientQueue.get(i);
+        int[] array = new int[this.removeClientQueue.size()];
+        for (int i = 0; i < this.removeClientQueue.size(); i++) {
+            array[i] = this.removeClientQueue.get(i);
         }
         compound.setTag("removals", new NBTTagIntArray(array));
-        array = new int[addClientQueue.size()];
-        for (int i = 0; i < addClientQueue.size(); i++) {
-            array[i] = addClientQueue.get(i);
+        array = new int[this.addClientQueue.size()];
+        for (int i = 0; i < this.addClientQueue.size(); i++) {
+            array[i] = this.addClientQueue.get(i);
         }
         compound.setTag("additions", new NBTTagIntArray(array));
 
-        removeClientQueue.clear();
-        addClientQueue.clear();
+        this.removeClientQueue.clear();
+        this.addClientQueue.clear();
     }
 
     @Override
@@ -114,13 +114,13 @@ public class DataAchromatic extends AbstractData {
         int[] array = compound.getIntArray("removals");
         if(array != null && array.length > 0) {
             for(int i : array) {
-                removeClientQueue.add(i);
+                this.removeClientQueue.add(i);
             }
         }
         array = compound.getIntArray("additions");
         if(array != null && array.length > 0) {
             for(int i : array) {
-                addClientQueue.add(i);
+                this.addClientQueue.add(i);
             }
         }
     }
@@ -129,12 +129,12 @@ public class DataAchromatic extends AbstractData {
     public void handleIncomingData(AbstractData serverData) {
         DataAchromatic achromatic = (DataAchromatic) serverData;
         List<Integer> toRemove = achromatic.removeClientQueue;
-        achromaticEntities.removeAll(toRemove);
+        this.achromaticEntities.removeAll(toRemove);
         List<Integer> toAdd = achromatic.addClientQueue;
-        achromaticEntities.addAll(toAdd);
+        this.achromaticEntities.addAll(toAdd);
     }
 
-    public static class Provider extends ProviderAutoAllocate<DataAchromatic> {
+    public static class Provider extends AbstractData.ProviderAutoAllocate<DataAchromatic> {
 
         public Provider(String key) {
             super(key);

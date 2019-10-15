@@ -17,21 +17,21 @@ public class ModelInfusionClawPart extends ModelBase {
     ModelRenderer shape1;
 
     public ModelInfusionClawPart(int num) {
-        textureWidth = 32;
-        textureHeight = 64;
+        this.textureWidth = 32;
+        this.textureHeight = 64;
 
-        shape1 = new ModelRenderer(this, 0, 8*num);
-        shape1.addBox(-3F, -1F, -3F, 6, 2, 6);
-        shape1.setRotationPoint(0F, 0F, 0F);
-        shape1.setTextureSize(32, 64);
-        shape1.mirror = true;
-        setRotation(shape1, 0F, 0F, 0F);
+        this.shape1 = new ModelRenderer(this, 0, 8*num);
+        this.shape1.addBox(-3F, -1F, -3F, 6, 2, 6);
+        this.shape1.setRotationPoint(0F, 0F, 0F);
+        this.shape1.setTextureSize(32, 64);
+        this.shape1.mirror = true;
+        this.setRotation(this.shape1, 0F, 0F, 0F);
     }
 
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        shape1.render(f5);
+        this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        this.shape1.render(f5);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {

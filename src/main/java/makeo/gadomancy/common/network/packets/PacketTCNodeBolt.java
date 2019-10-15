@@ -72,14 +72,14 @@ public class PacketTCNodeBolt implements IMessage, IMessageHandler<PacketTCNodeB
 
     @Override
     public void toBytes(ByteBuf buf) {
-        buf.writeFloat(x);
-        buf.writeFloat(y);
-        buf.writeFloat(z);
-        buf.writeFloat(targetX);
-        buf.writeFloat(targetY);
-        buf.writeFloat(targetZ);
-        buf.writeInt(type);
-        buf.writeBoolean(mightGetLong);
+        buf.writeFloat(this.x);
+        buf.writeFloat(this.y);
+        buf.writeFloat(this.z);
+        buf.writeFloat(this.targetX);
+        buf.writeFloat(this.targetY);
+        buf.writeFloat(this.targetZ);
+        buf.writeInt(this.type);
+        buf.writeBoolean(this.mightGetLong);
     }
 
     @Override

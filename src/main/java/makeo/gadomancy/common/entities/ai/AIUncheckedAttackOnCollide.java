@@ -25,16 +25,16 @@ public class AIUncheckedAttackOnCollide extends AIGolemAttackOnCollide {
 
     @Override
     public boolean shouldExecute() {
-        EntityLivingBase target = golem.getAttackTarget();
+        EntityLivingBase target = this.golem.getAttackTarget();
         if (target == null) {
             return false;
         }
 
-        PathEntity pathEntity = golem.getNavigator().getPathToEntityLiving(target);
+        PathEntity pathEntity = this.golem.getNavigator().getPathToEntityLiving(target);
         if(pathEntity != null) {
-            INJECTOR.setObject(this);
-            INJECTOR.setField("entityPathEntity", pathEntity);
-            INJECTOR.setField("entityTarget", target);
+            AIUncheckedAttackOnCollide.INJECTOR.setObject(this);
+            AIUncheckedAttackOnCollide.INJECTOR.setField("entityPathEntity", pathEntity);
+            AIUncheckedAttackOnCollide.INJECTOR.setField("entityTarget", target);
             return true;
         }
 

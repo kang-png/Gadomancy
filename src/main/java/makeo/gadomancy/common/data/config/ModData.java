@@ -3,17 +3,11 @@ package makeo.gadomancy.common.data.config;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
-
 import cpw.mods.fml.common.FMLLog;
 import makeo.gadomancy.common.Gadomancy;
 import net.minecraft.server.MinecraftServer;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +37,7 @@ public class ModData {
     }
 
     public ModData(String name) {
-        this(name, geDefaultDirectory());
+        this(name, ModData.geDefaultDirectory());
     }
 
     private static File geDefaultDirectory() {
@@ -58,33 +52,33 @@ public class ModData {
     }
 
     public <T> T get(String key, T defaultValue) {
-        if(data.containsKey(key)) {
-            return (T) data.get(key);
+        if(this.data.containsKey(key)) {
+            return (T) this.data.get(key);
         }
-        data.put(key, defaultValue);
+        this.data.put(key, defaultValue);
         return defaultValue;
     }
 
     public <T> T get(String key) {
-        return get(key, null);
+        return this.get(key, null);
     }
 
     public void set(String key, Object value) {
-        data.put(key, value);
+        this.data.put(key, value);
     }
 
     public boolean contains(String key) {
-        return data.containsKey(key);
+        return this.data.containsKey(key);
     }
 
     public boolean load() {
-        if(file != null && file.exists()) {
+        if(this.file != null && this.file.exists()) {
         	ObjectInputStream inOBJ = null;
             FileInputStream in = null;
             try {
-                in = new FileInputStream(file);
+                in = new FileInputStream(this.file);
                 inOBJ = new ObjectInputStream(in);
-                data = (Map<String, Object>) inOBJ.readObject();
+                this.data = (Map<String, Object>) inOBJ.readObject();
             } catch (IOException | ClassCastException | JsonSyntaxException | ClassNotFoundException e) { //
                 e.printStackTrace();
                 try {
@@ -110,20 +104,20 @@ public class ModData {
     }
 
     public boolean save() {
-        if(!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
-            FMLLog.warning("Failed to create directory: \"" + file.toString() + "\"!");
+        if(!this.file.getParentFile().exists() && !this.file.getParentFile().mkdirs()) {
+            FMLLog.warning("Failed to create directory: \"" + this.file.toString() + "\"!");
             return false;
         }
 
         FileOutputStream out = null;
         ObjectOutputStream outOBJ = null;
         try {
-            if(!file.exists())
-                file.createNewFile();
+            if(!this.file.exists())
+                this.file.createNewFile();
 
-            out = new FileOutputStream(file);
+            out = new FileOutputStream(this.file);
             outOBJ = new ObjectOutputStream(out);
-            outOBJ.writeObject(data);
+            outOBJ.writeObject(this.data);
         } catch (JsonIOException | IOException e) {
             e.printStackTrace();
             try {

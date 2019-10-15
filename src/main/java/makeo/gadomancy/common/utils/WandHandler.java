@@ -58,19 +58,19 @@ public class WandHandler {
         if(ModConfig.enableAdditionalNodeTypes) {
             if (target.equals(Blocks.glass)) {
                 if (ResearchManager.isResearchComplete(entityPlayer.getCommandSenderName(), "NODEJAR")) {
-                    tryTCJarNodeCreation(i, entityPlayer, world, x, y, z);
+                    WandHandler.tryTCJarNodeCreation(i, entityPlayer, world, x, y, z);
                 }
             } else if (target.equals(ConfigBlocks.blockWarded)) {
                 if (RegisteredIntegrations.automagy.isPresent() &&
                         ResearchManager.isResearchComplete(entityPlayer.getCommandSenderName(), "ADVNODEJAR")) {
-                    tryAutomagyJarNodeCreation(i, entityPlayer, world, x, y, z);
+                    WandHandler.tryAutomagyJarNodeCreation(i, entityPlayer, world, x, y, z);
                 }
             }
         }
 
         if(target.equals(ConfigBlocks.blockCrystal)) {
             if (ResearchManager.isResearchComplete(entityPlayer.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".AURA_CORE"))
-                tryAuraCoreCreation(i, entityPlayer, world, x, y, z);
+                WandHandler.tryAuraCoreCreation(i, entityPlayer, world, x, y, z);
         }
     }
 
@@ -151,7 +151,7 @@ public class WandHandler {
             public boolean isValidPieceAt(World world, int absX, int absY, int absZ, EntityPlayer player) {
                 Block block = world.getBlock(absX, absY, absZ);
                 int md = world.getBlockMetadata(absX, absY, absZ);
-                return containsMatch(false, OreDictionary.getOres("slabWood"), new ItemStack(block, 1, md));
+                return WandHandler.containsMatch(false, OreDictionary.getOres("slabWood"), new ItemStack(block, 1, md));
             }
         };
         WandHandler.JarPieceEvaluationRunnable glassRunnable = new WandHandler.JarPieceEvaluationRunnable() {
@@ -164,10 +164,7 @@ public class WandHandler {
             @Override
             public boolean isValidPieceAt(World world, int absX, int absY, int absZ, EntityPlayer player) {
                 TileEntity tile = world.getTileEntity(absX, absY, absZ);
-                if ((tile == null) || (!(tile instanceof INode)) || ((tile instanceof TileJarNode))) {
-                    return false;
-                }
-                return true;
+                return (tile != null) && (tile instanceof INode) && ((!(tile instanceof TileJarNode)));
             }
         };
         int[] result = WandHandler.evaluateIfValidJarIsPresent(world, x, y, z, player, slabRunnable, glassRunnable, nodeRunnable);
@@ -180,7 +177,7 @@ public class WandHandler {
             return;
 
         if(world.isRemote) return;
-        replaceJar(world, result[0], result[1], result[2], true);
+        WandHandler.replaceJar(world, result[0], result[1], result[2], true);
     }
 
     private static void tryAutomagyJarNodeCreation(ItemStack wandStack, EntityPlayer player, World world, int x, int y, int z) {
@@ -213,10 +210,7 @@ public class WandHandler {
             @Override
             public boolean isValidPieceAt(World world, int absX, int absY, int absZ, EntityPlayer player) {
                 TileEntity tile = world.getTileEntity(absX, absY, absZ);
-                if ((tile == null) || (!(tile instanceof INode)) || ((tile instanceof TileJarNode))) {
-                    return false;
-                }
-                return true;
+                return (tile != null) && (tile instanceof INode) && ((!(tile instanceof TileJarNode)));
             }
         };
         int[] result = WandHandler.evaluateIfValidJarIsPresent(world, x, y, z, player, silverWoodRunnable, glassRunnable, nodeRunnable);
@@ -229,7 +223,7 @@ public class WandHandler {
 
         if(world.isRemote) return;
         if(!RegisteredIntegrations.automagy.isPresent()) return;
-        replaceJar(world, result[0], result[1], result[2], false);
+        WandHandler.replaceJar(world, result[0], result[1], result[2], false);
     }
 
     private static boolean containsMatch(boolean strict, List<ItemStack> inputs, ItemStack... targets) {
@@ -247,7 +241,7 @@ public class WandHandler {
         for (int xx = x - 2; xx <= x; xx++) {
             for (int yy = y - 3; yy <= y; yy++) {
                 for (int zz = z - 2; zz <= z; zz++) {
-                    if (isValidJarAt(world, xx, yy, zz, player, topRunnable, glassRunnable, centerRunnable)) {
+                    if (WandHandler.isValidJarAt(world, xx, yy, zz, player, topRunnable, glassRunnable, centerRunnable)) {
                         return new int[] {xx, yy, zz};
                     }
                 }
@@ -283,7 +277,7 @@ public class WandHandler {
             for (int xx = 0; xx < 3; xx++) {
                 for (int zz = 0; zz < 3; zz++) {
                     if (blueprint[yy][xx][zz] == 3) {
-                        handleJarForming(world, x, y, z, xx, yy, zz, isThaumcraft);
+                        WandHandler.handleJarForming(world, x, y, z, xx, yy, zz, isThaumcraft);
                     } else {
                         world.setBlockToAir(x + xx, y - yy + 2, z + zz);
                     }

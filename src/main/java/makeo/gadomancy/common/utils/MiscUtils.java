@@ -1,7 +1,6 @@
 package makeo.gadomancy.common.utils;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +13,6 @@ import net.minecraftforge.common.util.FakePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -36,10 +34,10 @@ public final class MiscUtils {
             return String.valueOf(number);
         }
         String roman = "";
-        for (int i = 0; i < R_NUMBERS.length; i++) {
-            while (number >= R_NUMBERS[i]) {
-                roman += R_CHARS[i];
-                number -= R_NUMBERS[i];
+        for (int i = 0; i < MiscUtils.R_NUMBERS.length; i++) {
+            while (number >= MiscUtils.R_NUMBERS[i]) {
+                roman += MiscUtils.R_CHARS[i];
+                number -= MiscUtils.R_NUMBERS[i];
             }
         }
         return roman;
@@ -53,15 +51,15 @@ public final class MiscUtils {
     }
     
     public static int ticksForDays(int days) {
-        return ticksForHours(days * 24);
+        return MiscUtils.ticksForHours(days * 24);
     }
     
     public static int ticksForHours(int hours) {
-        return ticksForMinutes(hours * 60);
+        return MiscUtils.ticksForMinutes(hours * 60);
     }
 
     public static int ticksForMinutes(int minutes) {
-        return ticksForSeconds(minutes * 60);
+        return MiscUtils.ticksForSeconds(minutes * 60);
     }
 
     public static int ticksForSeconds(int seconds) {
@@ -81,11 +79,11 @@ public final class MiscUtils {
     }
 
     public static NetworkRegistry.TargetPoint getTargetPoint(World world, Entity entity, double range) {
-        return getTargetPoint(world, range, getPositionVector(entity));
+        return MiscUtils.getTargetPoint(world, range, MiscUtils.getPositionVector(entity));
     }
 
     public static NetworkRegistry.TargetPoint getTargetPoint(World world, TileEntity tileEntity, double range) {
-        return getTargetPoint(world, range, new Vector3(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord));
+        return MiscUtils.getTargetPoint(world, range, new Vector3(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord));
     }
 
     public static NetworkRegistry.TargetPoint getTargetPoint(World world, double range, Vector3 target) {
@@ -94,7 +92,7 @@ public final class MiscUtils {
 
     //Nothing to see here. Please move on.
     public static boolean isANotApprovedOrMisunderstoodPersonFromMoreDoor(EntityPlayer player) {
-        return isNotApproved(player) || isMisunderstood(player);
+        return MiscUtils.isNotApproved(player) || MiscUtils.isMisunderstood(player);
     }
 
     public static boolean isNotApproved(EntityPlayer player) {
@@ -109,7 +107,7 @@ public final class MiscUtils {
 
     //For ppl we like. OK?!?!?!!!111111ELEVEN!!111
     public static boolean isPrivilegedUser(EntityPlayer player) {
-        if(isANotApprovedOrMisunderstoodPersonFromMoreDoor(player)) return true;
+        if(MiscUtils.isANotApprovedOrMisunderstoodPersonFromMoreDoor(player)) return true;
         int uuHashOther = player.getUniqueID().hashCode();
         switch (uuHashOther) {
             case -1899266570: //SH_F

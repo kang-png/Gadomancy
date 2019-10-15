@@ -23,7 +23,7 @@ public class RenderEntityItem extends Render {
     @Override
     public void doRender(Entity entity, double x, double y, double z, float parf1, float parf2) {
         if(!(entity instanceof EntityItem)) return;
-        ri.doRender(entity, x, y, z, parf1, parf2);
+        RenderEntityItem.ri.doRender(entity, x, y, z, parf1, parf2);
     }
 
     @Override
@@ -32,8 +32,8 @@ public class RenderEntityItem extends Render {
     }
 
     static {
-        ri = new RenderItem();
-        ri.setRenderManager(RenderManager.instance);
+        RenderEntityItem.ri = new RenderItem();
+        RenderEntityItem.ri.setRenderManager(RenderManager.instance);
     }
 
 }

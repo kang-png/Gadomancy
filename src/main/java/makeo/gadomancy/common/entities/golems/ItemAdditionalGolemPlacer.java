@@ -28,15 +28,15 @@ public class ItemAdditionalGolemPlacer extends Item {
     private final AdditionalGolemType type;
 
     public ItemAdditionalGolemPlacer(AdditionalGolemType type) {
-        setCreativeTab(RegisteredItems.creativeTab);
-        setMaxStackSize(1);
+        this.setCreativeTab(RegisteredItems.creativeTab);
+        this.setMaxStackSize(1);
         this.type = type;
     }
 
     @Override
     public void registerIcons(IIconRegister ir) {
-        placer.registerIcons(ir);
-        type.registerIcons(ir);
+        this.placer.registerIcons(ir);
+        this.type.registerIcons(ir);
     }
 
     @Override
@@ -46,25 +46,25 @@ public class ItemAdditionalGolemPlacer extends Item {
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
-        list.add(new ItemStack(type.getPlacerItem(), 1, type.getEnumEntry().ordinal()));
+        list.add(new ItemStack(this.type.getPlacerItem(), 1, this.type.getEnumEntry().ordinal()));
     }
 
     public IIcon getIcon(ItemStack stack, int pass) {
-        int typePasses = type.getRenderPasses();
+        int typePasses = this.type.getRenderPasses();
         if(pass < typePasses) {
-            return type.getIcon(stack, pass);
+            return this.type.getIcon(stack, pass);
         }
-        return placer.getIcon(stack, pass - typePasses + 1);
+        return this.placer.getIcon(stack, pass - typePasses + 1);
     }
 
     @SideOnly(Side.CLIENT)
     public int getRenderPasses(int metadata) {
-        return type.getRenderPasses() + placer.getRenderPasses(metadata) - 1;
+        return this.type.getRenderPasses() + this.placer.getRenderPasses(metadata) - 1;
     }
 
     @Override
     public IIcon getIconFromDamage(int damage) {
-        return type.getIcon(new ItemStack(this, 1, damage), 0);
+        return this.type.getIcon(new ItemStack(this, 1, damage), 0);
     }
 
     @SideOnly(Side.CLIENT)
@@ -73,29 +73,29 @@ public class ItemAdditionalGolemPlacer extends Item {
     }
 
     public String getUnlocalizedName(ItemStack stack) {
-        return getUnlocalizedName();
+        return this.getUnlocalizedName();
     }
 
     @Override
     public String getUnlocalizedName() {
-        return type.getUnlocalizedName();
+        return this.type.getUnlocalizedName();
     }
 
     public boolean getShareTag() {
-        return placer.getShareTag();
+        return this.placer.getShareTag();
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
-        placer.addInformation(stack, player, list, par4);
+        this.placer.addInformation(stack, player, list, par4);
     }
 
     public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
-        return placer.doesSneakBypassUse(world, x, y, z, player);
+        return this.placer.doesSneakBypassUse(world, x, y, z, player);
     }
 
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-        return placer.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+        return this.placer.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
     }
 }

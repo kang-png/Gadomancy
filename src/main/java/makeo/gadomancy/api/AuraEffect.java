@@ -98,7 +98,7 @@ public abstract class AuraEffect {
     /**
      * A EntityEffect AuraEffect class for convenience
      */
-    public static abstract class EntityAuraEffect extends AuraEffect {
+    public abstract static class EntityAuraEffect extends AuraEffect {
 
         @Override
         public final EffectType getEffectType() {
@@ -123,7 +123,7 @@ public abstract class AuraEffect {
     /**
      * A BlockEffect AuraEffect class for convenience
      */
-    public static abstract class BlockAuraEffect extends AuraEffect {
+    public abstract static class BlockAuraEffect extends AuraEffect {
 
         @Override
         public final EffectType getEffectType() {
@@ -140,7 +140,7 @@ public abstract class AuraEffect {
 
     }
 
-    public static enum EffectType {
+    public enum EffectType {
 
         ENTITY_EFFECT,
         BLOCK_EFFECT

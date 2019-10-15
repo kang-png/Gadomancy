@@ -15,21 +15,21 @@ public class ModelPackedCompressorBlock extends ModelBase {
     ModelRenderer block;
 
     public ModelPackedCompressorBlock() {
-        textureHeight = 16;
-        textureWidth = 16;
+        this.textureHeight = 16;
+        this.textureWidth = 16;
 
-        block = new ModelRenderer(this, 0, 0);
-        block.addBox(0F, 0F, 0F, 16, 16, 16);
-        block.setRotationPoint(-8F, 22F, -8F);
+        this.block = new ModelRenderer(this, 0, 0);
+        this.block.addBox(0F, 0F, 0F, 16, 16, 16);
+        this.block.setRotationPoint(-8F, 22F, -8F);
         //block.setTextureSize(16, 16);
-        block.mirror = true;
+        this.block.mirror = true;
     }
 
     @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        block.render(f5);
+        this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        this.block.render(f5);
     }
 
     @Override

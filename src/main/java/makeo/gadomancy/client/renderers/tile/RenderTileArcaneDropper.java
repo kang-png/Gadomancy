@@ -53,12 +53,12 @@ public class RenderTileArcaneDropper extends TileEntitySpecialRenderer {
             GL11.glRotatef(90, 0, 1, 0);
         }
 
-        bindTexture(RESOURCE);
-        MODEL.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        this.bindTexture(RenderTileArcaneDropper.RESOURCE);
+        RenderTileArcaneDropper.MODEL.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
-        renderBellow();
+        this.renderBellow();
         GL11.glRotatef(180, 0, 1, 0);
-        renderBellow();
+        this.renderBellow();
 
         GL11.glPopMatrix();
     }
@@ -71,7 +71,7 @@ public class RenderTileArcaneDropper extends TileEntitySpecialRenderer {
         GL11.glTranslatef(-0.05f, 0.03f, 0f);
         GL11.glScalef(0.6f, 0.44f, 0.55f);
 
-        BELLOWS_RENDERER.renderEntityAt(BELLOWS_TILE, 0, 0, 0, 0);
+        RenderTileArcaneDropper.BELLOWS_RENDERER.renderEntityAt(RenderTileArcaneDropper.BELLOWS_TILE, 0, 0, 0, 0);
 
         GL11.glPopMatrix();
     }

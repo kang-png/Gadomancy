@@ -4,12 +4,10 @@ import makeo.gadomancy.api.AuraEffect;
 import makeo.gadomancy.common.events.EventHandlerEntity;
 import makeo.gadomancy.common.integration.IntegrationThaumicTinkerer;
 import makeo.gadomancy.common.registration.RegisteredIntegrations;
-import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.registration.RegisteredPotions;
 import makeo.gadomancy.common.utils.MiscUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -38,18 +36,16 @@ import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigEntities;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.monster.EntityBrainyZombie;
-import thaumcraft.common.entities.monster.boss.EntityThaumcraftBoss;
-import thaumcraft.common.entities.monster.mods.ChampionModifier;
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
-import static makeo.gadomancy.common.utils.MiscUtils.*;
+import static makeo.gadomancy.common.utils.MiscUtils.ticksForMinutes;
+import static makeo.gadomancy.common.utils.MiscUtils.ticksForSeconds;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -252,9 +248,9 @@ public class AuraEffects {
 
         @Override
         public void doEntityEffect(ChunkCoordinates originTile, Entity e) {
-            addOrExtendPotionEffect(Potion.damageBoost, (EntityLivingBase) e, ticksForMinutes(3), 30, 1, false);
-            addOrExtendPotionEffect(Potion.moveSpeed, (EntityLivingBase) e, ticksForMinutes(3), 30, 0, false);
-            addOrExtendPotionEffect(Potion.regeneration, (EntityLivingBase) e, ticksForMinutes(3), 30, 0, false);
+            AuraEffects.addOrExtendPotionEffect(Potion.damageBoost, (EntityLivingBase) e, ticksForMinutes(3), 30, 1, false);
+            AuraEffects.addOrExtendPotionEffect(Potion.moveSpeed, (EntityLivingBase) e, ticksForMinutes(3), 30, 0, false);
+            AuraEffects.addOrExtendPotionEffect(Potion.regeneration, (EntityLivingBase) e, ticksForMinutes(3), 30, 0, false);
         }
 
         @Override
@@ -270,10 +266,10 @@ public class AuraEffects {
         @Override
         public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
             EntityBrainyZombie zombie = new EntityBrainyZombie(world);
-            boolean canSpawn = setAndCheckPosition(zombie, selectedBlock, world, true) && zombie.getCanSpawnHere(); //Position for getCanSpawn here is updated.
+            boolean canSpawn = AuraEffects.setAndCheckPosition(zombie, selectedBlock, world, true) && zombie.getCanSpawnHere(); //Position for getCanSpawn here is updated.
             if(canSpawn) {
                 ChunkCoordinates pos = new ChunkCoordinates((int) zombie.posX, (int) zombie.posY, (int) zombie.posZ);
-                pos = iterateDown(pos, world);
+                pos = AuraEffects.iterateDown(pos, world);
                 zombie.setPosition(pos.posX + 0.5, pos.posY, pos.posZ + 0.5);
                 world.spawnEntityInWorld(zombie);
             }
@@ -350,7 +346,7 @@ public class AuraEffects {
         public void doEntityEffect(ChunkCoordinates originTile, Entity e) {
             EntityGolemBase golem = (EntityGolemBase) e;
 
-            addOrExtendPotionEffect(RegisteredPotions.BUFF_GOLEM, golem, ticksForMinutes(6), 10, 0, false);
+            AuraEffects.addOrExtendPotionEffect(RegisteredPotions.BUFF_GOLEM, golem, ticksForMinutes(6), 10, 0, false);
         }
 
         @Override
@@ -371,7 +367,7 @@ public class AuraEffects {
 
         @Override
         public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
-            waterLocation(selectedBlock, world);
+            AuraEffects.waterLocation(selectedBlock, world);
         }
 
         @Override
@@ -387,7 +383,7 @@ public class AuraEffects {
 
         @Override
         public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
-            waterLocation(selectedBlock, world);
+            AuraEffects.waterLocation(selectedBlock, world);
         }
 
         @Override
@@ -461,7 +457,7 @@ public class AuraEffects {
         @Override
         public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
             EntityLiving mob = world.rand.nextBoolean() ? new EntitySkeleton(world) : new EntityZombie(world);
-            if(setAndCheckPosition(mob, selectedBlock, world, true) && world.difficultySetting != EnumDifficulty.PEACEFUL) {
+            if(AuraEffects.setAndCheckPosition(mob, selectedBlock, world, true) && world.difficultySetting != EnumDifficulty.PEACEFUL) {
                 for(int i = 0; i < 5; i++) {
                     mob.setCurrentItemOrArmor(i, null);
                 }
@@ -471,7 +467,7 @@ public class AuraEffects {
                 do {
                     int slot = mob.getEquipmentInSlot(0) == null ? 0 : (mob.getEquipmentInSlot(4) == null ? 4 : (world.rand.nextInt(3)+1));
                     if(mob.getEquipmentInSlot(slot) == null) {
-                        ItemStack[] items = ITEMS_SOUL[slot];
+                        ItemStack[] items = AuraEffects.ITEMS_SOUL[slot];
                         ItemStack stack = items[world.rand.nextInt(items.length)];
                         if(stack.getItem() != Items.bow || mob instanceof EntitySkeleton) {
                             totalCount--;
@@ -486,7 +482,7 @@ public class AuraEffects {
                     mob.addPotionEffect(new PotionEffect(Potion.invisibility.getId(), MiscUtils.ticksForMinutes(60*24*365), 1, true));
 
                     ChunkCoordinates pos = new ChunkCoordinates((int) mob.posX, (int) mob.posY, (int) mob.posZ);
-                    pos = iterateDown(pos, world);
+                    pos = AuraEffects.iterateDown(pos, world);
                     mob.setPosition(pos.posX + 0.5, pos.posY, pos.posZ + 0.5);
                     world.spawnEntityInWorld(mob);
                 }
@@ -507,10 +503,10 @@ public class AuraEffects {
             slime.writeEntityToNBT(data);
             data.setInteger("Size", 0);
             slime.readEntityFromNBT(data);
-            boolean canSpawn = setAndCheckPosition(slime, selectedBlock, world, true) && world.difficultySetting != EnumDifficulty.PEACEFUL;
+            boolean canSpawn = AuraEffects.setAndCheckPosition(slime, selectedBlock, world, true) && world.difficultySetting != EnumDifficulty.PEACEFUL;
             if(canSpawn) {
                 ChunkCoordinates pos = new ChunkCoordinates((int) slime.posX, (int) slime.posY, (int) slime.posZ);
-                pos = iterateDown(pos, world);
+                pos = AuraEffects.iterateDown(pos, world);
                 slime.setPosition(pos.posX + 0.5, pos.posY, pos.posZ + 0.5);
                 world.spawnEntityInWorld(slime);
             }
@@ -523,7 +519,7 @@ public class AuraEffects {
     }.register(Aspect.SLIME);
     public static final AuraEffect BESTIA = new AuraEffect.BlockAuraEffect() {
 
-        private final Class[] animalClasses = new Class[] { EntitySheep.class, EntityCow.class, EntityChicken.class, EntityPig.class };
+        private final Class[] animalClasses = { EntitySheep.class, EntityCow.class, EntityChicken.class, EntityPig.class };
 
         @Override
         public int getBlockCount(Random random) {
@@ -532,17 +528,17 @@ public class AuraEffects {
 
         @Override
         public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
-            Class animalClass = animalClasses[world.rand.nextInt(animalClasses.length)];
+            Class animalClass = this.animalClasses[world.rand.nextInt(this.animalClasses.length)];
             EntityLivingBase animal;
             try {
                 animal = (EntityLivingBase) animalClass.getConstructor(World.class).newInstance(world);
             } catch (Exception e) {
                 return;
             }
-            boolean canSpawn = setAndCheckPosition(animal, selectedBlock, world, true);
+            boolean canSpawn = AuraEffects.setAndCheckPosition(animal, selectedBlock, world, true);
             if(canSpawn) {
                 ChunkCoordinates pos = new ChunkCoordinates((int) animal.posX, (int) animal.posY, (int) animal.posZ);
-                pos = iterateDown(pos, world);
+                pos = AuraEffects.iterateDown(pos, world);
                 animal.setPosition(pos.posX + 0.5, pos.posY, pos.posZ + 0.5);
                 world.spawnEntityInWorld(animal);
             }
@@ -584,12 +580,12 @@ public class AuraEffects {
             if (e == null || !(e instanceof EntityLivingBase)) return;
 
             EntityLivingBase living = (EntityLivingBase) e;
-            addOrExtendPotionEffect(potion, living, durationCap, addedDuration, amplifier);
+            AuraEffects.addOrExtendPotionEffect(this.potion, living, this.durationCap, this.addedDuration, this.amplifier);
         }
 
         @Override
         public int getTickInterval() {
-            return tickInterval;
+            return this.tickInterval;
         }
     }
 
@@ -622,7 +618,7 @@ public class AuraEffects {
     }
 
     private static void addOrExtendPotionEffect(Potion potion, EntityLivingBase entityLiving, int cap, int durToAdd, int amplifier) {
-        addOrExtendPotionEffect(potion, entityLiving, cap, durToAdd, amplifier, true);
+        AuraEffects.addOrExtendPotionEffect(potion, entityLiving, cap, durToAdd, amplifier, true);
     }
 
     private static ChunkCoordinates iterateDown(ChunkCoordinates pos, World world) {
@@ -639,11 +635,11 @@ public class AuraEffects {
         if(!world.isAirBlock(cc.posX, cc.posY, cc.posZ)) {
             if(!mayVary) return false;
             ChunkCoordinates up = new ChunkCoordinates(cc.posX, cc.posY + 1, cc.posZ);
-            if(setAndCheckPosition(entity, up, world, false)) {
+            if(AuraEffects.setAndCheckPosition(entity, up, world, false)) {
                 return true;
             }
             ChunkCoordinates down = new ChunkCoordinates(cc.posX, cc.posY - 1, cc.posZ);
-            return setAndCheckPosition(entity, down, world, false);
+            return AuraEffects.setAndCheckPosition(entity, down, world, false);
         }
         ChunkCoordinates up = new ChunkCoordinates(cc.posX, cc.posY + 1, cc.posZ);
         if(world.isAirBlock(up.posX, up.posY, up.posZ)) {
@@ -657,14 +653,13 @@ public class AuraEffects {
         }
         if(!mayVary) return false;
         ChunkCoordinates hMove = new ChunkCoordinates(cc.posX + 1, cc.posY, cc.posZ    );
-        if(setAndCheckPosition(entity, hMove, world, false)) return true;
+        if(AuraEffects.setAndCheckPosition(entity, hMove, world, false)) return true;
         hMove =                  new ChunkCoordinates(cc.posX    , cc.posY, cc.posZ + 1);
-        if(setAndCheckPosition(entity, hMove, world, false)) return true;
+        if(AuraEffects.setAndCheckPosition(entity, hMove, world, false)) return true;
         hMove =                  new ChunkCoordinates(cc.posX - 1, cc.posY, cc.posZ    );
-        if(setAndCheckPosition(entity, hMove, world, false)) return true;
+        if(AuraEffects.setAndCheckPosition(entity, hMove, world, false)) return true;
         hMove =                  new ChunkCoordinates(cc.posX    , cc.posY, cc.posZ - 1);
-        if(setAndCheckPosition(entity, hMove, world, false)) return true;
-        return false;
+        return AuraEffects.setAndCheckPosition(entity, hMove, world, false);
     }
 
 }

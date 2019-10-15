@@ -16,8 +16,8 @@ public class ItemBlockEssentiaCompressor extends ItemBlock {
 
     public ItemBlockEssentiaCompressor(Block block) {
         super(block);
-        setMaxDamage(0);
-        setCreativeTab(RegisteredItems.creativeTab);
+        this.setMaxDamage(0);
+        this.setCreativeTab(RegisteredItems.creativeTab);
     }
 
     @Override

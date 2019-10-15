@@ -21,8 +21,8 @@ import java.util.List;
  */
 public class ItemFakeLootbag extends ItemLootBag {
     public ItemFakeLootbag() {
-        setCreativeTab(null);
-        setUnlocalizedName("ItemLootBag");
+        this.setCreativeTab(null);
+        this.setUnlocalizedName("ItemLootBag");
     }
 
     @Override

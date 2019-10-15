@@ -71,7 +71,7 @@ public abstract class AdditionalGolemCore {
     public abstract ItemStack getItem();
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     @Deprecated

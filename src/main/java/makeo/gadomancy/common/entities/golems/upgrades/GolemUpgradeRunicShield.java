@@ -27,19 +27,19 @@ public class GolemUpgradeRunicShield extends GolemUpgrade {
     }
 
     public float absorb(EntityGolemBase golem, float amount, DamageSource source) {
-        float charge = getCharge(golem);
+        float charge = this.getCharge(golem);
 
         if(Math.floor(charge) > 0) {
-            sendShieldEffect(golem, source);
+            this.sendShieldEffect(golem, source);
 
             float rest = (float)(Math.floor(charge) - amount);
             float chargeRest = charge - (float)Math.floor(charge);
 
             if(rest <= 0) {
-                setCharge(golem, chargeRest);
+                this.setCharge(golem, chargeRest);
                 return rest * -1;
             } else {
-                setCharge(golem, (float)Math.floor(rest) + chargeRest);
+                this.setCharge(golem, (float)Math.floor(rest) + chargeRest);
                 return 0;
             }
         }
@@ -61,28 +61,28 @@ public class GolemUpgradeRunicShield extends GolemUpgrade {
     }
 
     public float getCharge(EntityGolemBase golem) {
-        int elapsed = golem.ticksExisted - getLastDischarge(golem);
-        float charge = elapsed * getRechargeSpeed(golem);
-        float limit = getChargeLimit(golem);
+        int elapsed = golem.ticksExisted - this.getLastDischarge(golem);
+        float charge = elapsed * this.getRechargeSpeed(golem);
+        float limit = this.getChargeLimit(golem);
         return charge > limit ? limit : charge;
     }
 
     private void setCharge(EntityGolemBase golem, float charge) {
-        int ticksNeeded = Math.round(charge / getRechargeSpeed(golem));
-        setLastDischarge(golem, golem.ticksExisted - ticksNeeded);
+        int ticksNeeded = Math.round(charge / this.getRechargeSpeed(golem));
+        this.setLastDischarge(golem, golem.ticksExisted - ticksNeeded);
     }
 
     private void setLastDischarge(EntityGolemBase golem, Integer ticks) {
-        golem.getEntityData().setInteger(LAST_DISCHARGE_TAG, ticks);
+        golem.getEntityData().setInteger(GolemUpgradeRunicShield.LAST_DISCHARGE_TAG, ticks);
     }
 
     private int getLastDischarge(EntityGolemBase golem) {
         NBTTagCompound compound = golem.getEntityData();
-        if(!compound.hasKey(LAST_DISCHARGE_TAG)) {
-            compound.setInteger(LAST_DISCHARGE_TAG, golem.ticksExisted);
+        if(!compound.hasKey(GolemUpgradeRunicShield.LAST_DISCHARGE_TAG)) {
+            compound.setInteger(GolemUpgradeRunicShield.LAST_DISCHARGE_TAG, golem.ticksExisted);
             return golem.ticksExisted;
         }
-        return compound.getInteger(LAST_DISCHARGE_TAG);
+        return compound.getInteger(GolemUpgradeRunicShield.LAST_DISCHARGE_TAG);
     }
 
     private float getRechargeSpeed(EntityGolemBase golem) {
@@ -90,7 +90,7 @@ public class GolemUpgradeRunicShield extends GolemUpgrade {
     }
 
     public int getChargeLimit(EntityGolemBase golem) {
-        return getChargeLimit(golem.getGolemType(), golem.getMaxHealth());
+        return this.getChargeLimit(golem.getGolemType(), golem.getMaxHealth());
     }
 
     public int getChargeLimit(ItemStack stack) {
@@ -100,7 +100,7 @@ public class GolemUpgradeRunicShield extends GolemUpgrade {
                 && stack.getTagCompound().getString("deco").contains("H")) {
             maxHealth += 5;
         }
-        return getChargeLimit(type, maxHealth);
+        return this.getChargeLimit(type, maxHealth);
     }
 
     private int getChargeLimit(EnumGolemType type, float maxHealth) {

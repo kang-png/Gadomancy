@@ -33,12 +33,12 @@ public class AdvancedFakePlayer extends FakePlayer {
     }
 
     public AdvancedFakePlayer(WorldServer world) {
-        this(world, DEFAULT_UUID);
+        this(world, AdvancedFakePlayer.DEFAULT_UUID);
     }
 
     public void setHeldItem(ItemStack item) {
-        inventory.currentItem = 0;
-        inventory.mainInventory[0] = item;
+        this.inventory.currentItem = 0;
+        this.inventory.mainInventory[0] = item;
     }
 
     public static boolean isFakePlayer(EntityPlayer player) {

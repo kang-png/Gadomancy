@@ -29,20 +29,20 @@ public class InfusionUpgradeRecipe extends InfusionRecipe {
     private final GolemUpgrade upgrade;
 
     private InfusionUpgradeRecipe(String research, GolemUpgrade upgrade, int inst, AspectList aspects2, ItemStack input, ItemStack[] recipe) {
-        super(research, DEFAULT_OUTPUT, inst, aspects2, input, recipe);
+        super(research, InfusionUpgradeRecipe.DEFAULT_OUTPUT, inst, aspects2, input, recipe);
 
         this.upgrade = upgrade;
     }
 
     @Override
     public boolean matches(ArrayList<ItemStack> input, ItemStack central, World world, EntityPlayer player) {
-        return super.matches(input, central, world, player) && !upgrade.hasUpgrade(central);
+        return super.matches(input, central, world, player) && !this.upgrade.hasUpgrade(central);
     }
 
     @Override
     public Object getRecipeOutput(ItemStack input) {
         ItemStack output = input.copy();
-        upgrade.addUpgrade(output);
+        this.upgrade.addUpgrade(output);
         return output;
     }
 

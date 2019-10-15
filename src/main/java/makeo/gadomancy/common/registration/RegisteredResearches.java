@@ -8,17 +8,13 @@ import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.items.ItemAuraCore;
 import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
 import makeo.gadomancy.common.research.*;
-import makeo.gadomancy.common.utils.NBTHelper;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
@@ -88,23 +84,23 @@ public class RegisteredResearches {
 
     public static void init() {
 
-        ResearchCategories.registerCategory(Gadomancy.MODID, CATEGORY_ICON, CATEGORY_BACKGROUND);
+        ResearchCategories.registerCategory(Gadomancy.MODID, RegisteredResearches.CATEGORY_ICON, RegisteredResearches.CATEGORY_BACKGROUND);
 
         ResearchItem researchTallowGolem = PseudoResearchItem.create("GOLEMTALLOW", 0, -5).registerResearchItem();
 
-        researchGolemSilverwood = new SimpleResearchItem("GOLEMSILVERWOOD", 1, -2, 3, (ItemStack) RegisteredRecipes.recipeGolemSilverwood.getRecipeOutput(),
+        RegisteredResearches.researchGolemSilverwood = new SimpleResearchItem("GOLEMSILVERWOOD", 1, -2, 3, (ItemStack) RegisteredRecipes.recipeGolemSilverwood.getRecipeOutput(),
                 new AspectList().add(Aspect.MOTION, 10).add(Aspect.TREE, 10).add(Aspect.MAGIC, 8).add(Aspect.ORDER, 8).add(Aspect.FLESH, 6).add(Aspect.EXCHANGE, 5))
                 .setParents(researchTallowGolem.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.GOLEMSILVERWOOD.1"), new ResearchPage(RegisteredRecipes.recipeGolemSilverwood)).registerResearchItem();
 
-        researchGolemRunicShield = new SimpleResearchItem("GOLEMRUNICSHIELD", 0, 0, 4, new ItemStack(RegisteredItems.itemFakeGolemShield, 1, 32767),
+        RegisteredResearches.researchGolemRunicShield = new SimpleResearchItem("GOLEMRUNICSHIELD", 0, 0, 4, new ItemStack(RegisteredItems.itemFakeGolemShield, 1, 32767),
                 new AspectList().add(Aspect.AURA, 16).add(Aspect.ARMOR, 6).add(Aspect.MAGIC, 4).add(Aspect.MOTION, 8))
-                .setParents(researchGolemSilverwood.key).setConcealed()
+                .setParents(RegisteredResearches.researchGolemSilverwood.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.GOLEMRUNICSHIELD.1"), new ResearchPage(RegisteredRecipes.recipesGolemRunicShield)).registerResearchItem();
 
         ResearchItem researchBellows = PseudoResearchItem.create("BELLOWS", -2, -5).registerResearchItem();
 
-        researchArcaneDropper = new SimpleResearchItem("ARCANEDROPPER", -1, -3, 2, new ItemStack(RegisteredBlocks.blockArcaneDropper),
+        RegisteredResearches.researchArcaneDropper = new SimpleResearchItem("ARCANEDROPPER", -1, -3, 2, new ItemStack(RegisteredBlocks.blockArcaneDropper),
                 new AspectList().add(Aspect.ORDER, 4).add(Aspect.AIR, 6).add(Aspect.EARTH, 5).add(Aspect.SENSES, 5).add(Aspect.MECHANISM, 7))
                 .setParents("DISTILESSENTIA", researchBellows.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.ARCANEDROPPER.1"), new ResearchPage(RegisteredRecipes.recipeArcaneDropper)).registerResearchItem();
@@ -117,14 +113,14 @@ public class RegisteredResearches {
         ResearchItem researchVEleToolShovel = new ResearchItem("ELEMENTALSHOVEL", Gadomancy.MODID).registerResearchItem();
         ResearchItem researchVEleSword = new ResearchItem("ELEMENTALSWORD", Gadomancy.MODID).registerResearchItem();
 
-        researchGolemCoreBreak = new SimpleResearchItem("GOLEMCOREBREAK", 3, -3, 3, new ItemStack(RegisteredItems.itemGolemCoreBreak),
+        RegisteredResearches.researchGolemCoreBreak = new SimpleResearchItem("GOLEMCOREBREAK", 3, -3, 3, new ItemStack(RegisteredItems.itemGolemCoreBreak),
                 new AspectList().add(Aspect.TOOL, 8).add(Aspect.ENTROPY, 8).add(Aspect.MECHANISM, 8))
                 .setParents(researchHarvestGather.key, researchVEleToolAxe.key, researchVEleToolPick.key, researchVEleToolShovel.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.GOLEMCOREBREAK.1"), new ResearchPage(RegisteredRecipes.recipeGolemCoreBreak)).registerResearchItem();
 
         ResearchItem researchVBootsTraveller = new ResearchItem("BOOTSTRAVELLER", Gadomancy.MODID).registerResearchItem();
 
-        researchGolemCoreBodyguard = new SimpleResearchItem("GOLEMCOREBODYGUARD", 5, -3, 2, new ItemStack(RegisteredItems.itemGolemCoreBreak, 1, 1),
+        RegisteredResearches.researchGolemCoreBodyguard = new SimpleResearchItem("GOLEMCOREBODYGUARD", 5, -3, 2, new ItemStack(RegisteredItems.itemGolemCoreBreak, 1, 1),
                 new AspectList().add(Aspect.TOOL, 8).add(Aspect.ORDER, 8).add(Aspect.MECHANISM, 10).add(Aspect.ARMOR, 8).add(Aspect.WEAPON, 8))
                 .setParents(researchVBootsTraveller.key, researchVEleSword.key, researchCoreGuard.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.GOLEMCOREBODYGUARD.1"), new ResearchPage(RegisteredRecipes.recipeGolemCoreBodyguard)).registerResearchItem();
@@ -139,31 +135,31 @@ public class RegisteredResearches {
 
         ResearchItem researchOculus = PseudoResearchItem.create("OCULUS", -11, -2).setRound().setSpecial().registerResearchItem();
 
-        researchInfusionClaw = new SimpleResearchItem("INFUSIONCLAW", -6, -7, 5, new ItemStack(RegisteredBlocks.blockInfusionClaw),
+        RegisteredResearches.researchInfusionClaw = new SimpleResearchItem("INFUSIONCLAW", -6, -7, 5, new ItemStack(RegisteredBlocks.blockInfusionClaw),
                 new AspectList().add(Aspect.ELDRITCH, 8).add(Aspect.MECHANISM, 8).add(Aspect.MAGIC, 8).add(Aspect.ORDER, 8).add(Aspect.DARKNESS, 4))
                 .setParents(researchVFocusPrimal.key, researchItemVoidMetal.key, researchWandPedestal.key, researchVCoreUse.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.INFUSIONCLAW.1"), new ResearchPage(RegisteredRecipes.recipeInfusionClaw), new ResearchPage("gadomancy.research_page.INFUSIONCLAW.2")).registerResearchItem();
 
-        researchNodeManipulator = new SimpleResearchItem("NODE_MANIPULATOR", -9, -4, 2, new ItemStack(RegisteredBlocks.blockNodeManipulator, 1, 5),
+        RegisteredResearches.researchNodeManipulator = new SimpleResearchItem("NODE_MANIPULATOR", -9, -4, 2, new ItemStack(RegisteredBlocks.blockNodeManipulator, 1, 5),
                 new AspectList().add(Aspect.ELDRITCH, 8).add(Aspect.AURA, 6).add(Aspect.DARKNESS, 4).add(Aspect.MAGIC, 8).add(Aspect.GREED, 4).add(Aspect.VOID, 10).add(Aspect.MECHANISM, 6).add(Aspect.EXCHANGE, 4))
                 .setConcealed().setSpecial()
                 .setParents(researchItemVoidMetal.key, researchVNodeStabilizer.key, researchVWardingStone.key, researchWandPedestal.key)
                 .setPages(new ResearchPage("gadomancy.research_page.NODE_MANIPULATOR.1"), new ResearchPage(RegisteredRecipes.recipeNodeManipulator), new ResearchPage("gadomancy.research_page.NODE_MANIPULATOR.3"), new ResearchPage(RegisteredRecipes.recipeRandomizationFocus), new ResearchPage(RegisteredRecipes.multiblockNodeManipulator), new ResearchPage("gadomancy.research_page.NODE_MANIPULATOR.6")).registerResearchItem();
 
-        researchEldritchPortalCreator = new SimpleResearchItem("E_PORTAL_CREATOR", -10, 0, 2, new ItemStack(RegisteredBlocks.blockAdditionalEldrichPortal, 1, 0),
+        RegisteredResearches.researchEldritchPortalCreator = new SimpleResearchItem("E_PORTAL_CREATOR", -10, 0, 2, new ItemStack(RegisteredBlocks.blockAdditionalEldrichPortal, 1, 0),
                 new AspectList().add(Aspect.ELDRITCH, 6).add(Aspect.DARKNESS, 10).add(Aspect.TRAVEL, 8).add(Aspect.AURA, 10).add(Aspect.VOID, 6).add(Aspect.MECHANISM, 4))
                 .setConcealed().setSpecial()
-                .setParents(researchNodeManipulator.key, researchOculus.key)
+                .setParents(RegisteredResearches.researchNodeManipulator.key, researchOculus.key)
                 .setPages(new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.1"), new ResearchPage(RegisteredRecipes.recipeAncientPedestal), new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.3"), new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.4"), new ResearchPage(RegisteredRecipes.recipePortalFocus), new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.6"), new ResearchPage(RegisteredRecipes.multiblockEldritchPortalCreator), new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.8")).registerResearchItem();
 
-        researchBlockProtector = new SimpleResearchItem("BLOCK_PROTECTOR", -6, -2, 2, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 2),
+        RegisteredResearches.researchBlockProtector = new SimpleResearchItem("BLOCK_PROTECTOR", -6, -2, 2, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 2),
                 new AspectList().add(Aspect.ORDER, 10).add(Aspect.ARMOR, 8).add(Aspect.EARTH, 12).add(Aspect.LIGHT, 10).add(Aspect.AURA, 8))
                 .setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.BLOCK_PROTECTOR.1"), new ResearchPage(RegisteredRecipes.recipeBlockProtector), new ResearchPage("gadomancy.research_page.BLOCK_PROTECTOR.3"), new ResearchPage("gadomancy.research_page.BLOCK_PROTECTOR.4")).registerResearchItem();
 
         ItemStack displayFamiliar = new ItemStack(RegisteredItems.itemEtherealFamiliar);
         ItemEtherealFamiliar.setFamiliarAspect(displayFamiliar, Aspect.MAGIC);
-        researchEtherealFamiliar = new SimpleResearchItem("ETHEREAL_FAMILIAR", 5, 1, 2, displayFamiliar,
+        RegisteredResearches.researchEtherealFamiliar = new SimpleResearchItem("ETHEREAL_FAMILIAR", 5, 1, 2, displayFamiliar,
                 new AspectList().add(Aspect.MAGIC, 8).add(Aspect.FIRE, 6).add(Aspect.AURA, 4))
                 .setConcealed().setSpecial()
                 .setParents(researchVRunicShielding.key)
@@ -171,89 +167,89 @@ public class RegisteredResearches {
                         new ResearchPage("gadomancy.research_page.ETHEREAL_FAMILIAR.3"))
                 .registerResearchItem();
 
-        researchFamiliarElementLightning = new SimpleResearchItem("FAMILIAR_SHOCK", 4, -1, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Lightning.png"),
+        RegisteredResearches.researchFamiliarElementLightning = new SimpleResearchItem("FAMILIAR_SHOCK", 4, -1, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Lightning.png"),
                 new AspectList().add(Aspect.WEATHER, 4).add(Aspect.WEAPON, 4).add(Aspect.AIR, 8))
                 .setConcealed()
-                .setParents(researchEtherealFamiliar.key)
+                .setParents(RegisteredResearches.researchEtherealFamiliar.key)
                 .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_SHOCK.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[0]),
                         new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[1]), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[2]))
                 .registerResearchItem();
 
-        researchFamiliarElementFire = new SimpleResearchItem("FAMILIAR_FIRE", 6, -1, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Fire.png"),
+        RegisteredResearches.researchFamiliarElementFire = new SimpleResearchItem("FAMILIAR_FIRE", 6, -1, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Fire.png"),
                 new AspectList().add(Aspect.FIRE, 8).add(Aspect.WEAPON, 4).add(Aspect.MAGIC, 4))
                 .setConcealed()
-                .setParents(researchEtherealFamiliar.key)
+                .setParents(RegisteredResearches.researchEtherealFamiliar.key)
                 .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_FIRE.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[3]),
                         new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[4]), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[5]))
                 .registerResearchItem();
 
-        researchFamiliarElementPoison = new SimpleResearchItem("FAMILIAR_POISON", 3, 2, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Poison.png"),
+        RegisteredResearches.researchFamiliarElementPoison = new SimpleResearchItem("FAMILIAR_POISON", 3, 2, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Poison.png"),
                 new AspectList().add(Aspect.POISON, 8).add(Aspect.WEAPON, 4).add(Aspect.ENTROPY, 4))
                 .setConcealed()
-                .setParents(researchEtherealFamiliar.key)
+                .setParents(RegisteredResearches.researchEtherealFamiliar.key)
                 .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_POISON.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[6]),
                         new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[7]), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[8]))
                 .registerResearchItem();
 
-        researchFamiliarElementWeakness = new SimpleResearchItem("FAMILIAR_WEAKNESS", 2, 0, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Enervation.png"),
+        RegisteredResearches.researchFamiliarElementWeakness = new SimpleResearchItem("FAMILIAR_WEAKNESS", 2, 0, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Enervation.png"),
                 new AspectList().add(Aspect.TRAP, 8).add(Aspect.WEAPON, 8).add(Aspect.TAINT, 6))
                 .setConcealed()
-                .setParents(researchEtherealFamiliar.key)
+                .setParents(RegisteredResearches.researchEtherealFamiliar.key)
                 .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_WEAKNESS.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[9]),
                         new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[10]), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[11]))
                 .registerResearchItem();
 
-        researchFamiliarAugmentDamage = new IfAnyParentResearchItem("FAMILIAR_DAMAGE", 8, 2, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Damage.png"),
+        RegisteredResearches.researchFamiliarAugmentDamage = new IfAnyParentResearchItem("FAMILIAR_DAMAGE", 8, 2, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Damage.png"),
                 new AspectList().add(Aspect.WEAPON, 8).add(Aspect.ENERGY, 8).add(Aspect.MAGIC, 4))
-                .setAnyParents(researchFamiliarElementFire.key, researchFamiliarElementLightning.key,
-                        researchFamiliarElementPoison.key, researchFamiliarElementWeakness.key)
+                .setAnyParents(RegisteredResearches.researchFamiliarElementFire.key, RegisteredResearches.researchFamiliarElementLightning.key,
+                        RegisteredResearches.researchFamiliarElementPoison.key, RegisteredResearches.researchFamiliarElementWeakness.key)
                 .setConcealed()
-                .setParents(researchEtherealFamiliar.key, "VOIDMETAL")
+                .setParents(RegisteredResearches.researchEtherealFamiliar.key, "VOIDMETAL")
                 .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_DAMAGE.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[12]),
                         new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[13]), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[14]))
                 .registerResearchItem();
 
-        researchFamiliarAugmentRange = new IfAnyParentResearchItem("FAMILIAR_RANGE", 6, 4, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Range.png"),
+        RegisteredResearches.researchFamiliarAugmentRange = new IfAnyParentResearchItem("FAMILIAR_RANGE", 6, 4, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Range.png"),
                 new AspectList().add(Aspect.MAGIC, 8).add(Aspect.ELDRITCH, 8).add(Aspect.ORDER, 4))
-                .setAnyParents(researchFamiliarElementFire.key, researchFamiliarElementLightning.key,
-                        researchFamiliarElementPoison.key, researchFamiliarElementWeakness.key)
+                .setAnyParents(RegisteredResearches.researchFamiliarElementFire.key, RegisteredResearches.researchFamiliarElementLightning.key,
+                        RegisteredResearches.researchFamiliarElementPoison.key, RegisteredResearches.researchFamiliarElementWeakness.key)
                 .setConcealed()
-                .setParents(researchEtherealFamiliar.key)
+                .setParents(RegisteredResearches.researchEtherealFamiliar.key)
                 .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_RANGE.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[15]),
                         new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[16]))
                 .registerResearchItem();
 
-        researchFamiliarAugmentSpeed = new SimpleResearchItem("FAMILIAR_SPEED", 8, 5, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Speed.png"),
+        RegisteredResearches.researchFamiliarAugmentSpeed = new SimpleResearchItem("FAMILIAR_SPEED", 8, 5, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Speed.png"),
                 new AspectList().add(Aspect.MOTION, 10).add(Aspect.MAGIC, 4).add(Aspect.AURA, 4))
                 .setConcealed()
-                .setParents(researchFamiliarAugmentDamage.key, researchFamiliarAugmentRange.key, "PRIMPEARL")
+                .setParents(RegisteredResearches.researchFamiliarAugmentDamage.key, RegisteredResearches.researchFamiliarAugmentRange.key, "PRIMPEARL")
                 .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_SPEED.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[17]),
                         new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[18]))
                 .registerResearchItem();
 
 
         if(ModConfig.enableAdditionalNodeTypes) {
-            researchGrowingNodes = new SimpleResearchItem("GROWING", -8, -1, 5, new ResourceLocation("thaumcraft", "textures/misc/r_nodes.png"), new AspectList())
+            RegisteredResearches.researchGrowingNodes = new SimpleResearchItem("GROWING", -8, -1, 5, new ResourceLocation("thaumcraft", "textures/misc/r_nodes.png"), new AspectList())
                     .setSpecial().setLost().setConcealed()
                     .setParents(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR")
                     .setPages(new ResearchPage("gadomancy.research_page.GROWING.1"), new ResearchPage("gadomancy.research_page.GROWING.2")).registerResearchItem();
 
-            researchGrowingNodeAgression = new SimpleResearchItem("GROWING_AGGRESSION", -5, 0, 6, new ItemStack(ConfigBlocks.blockAiry, 1, 5), new AspectList())
+            RegisteredResearches.researchGrowingNodeAgression = new SimpleResearchItem("GROWING_AGGRESSION", -5, 0, 6, new ItemStack(ConfigBlocks.blockAiry, 1, 5), new AspectList())
                     .setLost()
                     .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING")
                     .setPages(new ResearchPage("gadomancy.research_page.GROWING_AGGRESSION.1")).registerResearchItem();
 
-            researchGrowingNodeGrowth = new SimpleResearchItem("GROWING_GROWTH", -7, 2, 6, new ResourceLocation("gadomancy", "textures/misc/r_node_star.png"), new AspectList())
+            RegisteredResearches.researchGrowingNodeGrowth = new SimpleResearchItem("GROWING_GROWTH", -7, 2, 6, new ResourceLocation("gadomancy", "textures/misc/r_node_star.png"), new AspectList())
                     .setLost()
                     .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING")
                     .setPages(new ResearchPage("gadomancy.research_page.GROWING_GROWTH.1"), new ResearchPage("gadomancy.research_page.GROWING_GROWTH.2")).registerResearchItem();
 
-            researchGrowingNodeAttackNodes = new SimpleResearchItem("GROWING_ATTACK", -6, 1, 6, new ResourceLocation("gadomancy", "textures/misc/r_node_dark.png"), new AspectList())
+            RegisteredResearches.researchGrowingNodeAttackNodes = new SimpleResearchItem("GROWING_ATTACK", -6, 1, 6, new ResourceLocation("gadomancy", "textures/misc/r_node_dark.png"), new AspectList())
                     .setLost()
                     .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING")
                     .setPages(new ResearchPage("gadomancy.research_page.GROWING_ATTACK.1")).registerResearchItem();
 
-            researchGrowingNodeGrowthClue = new SimpleResearchItem("GROWING_GROWTHCLUE", -4, 3, 2, new ItemStack(ConfigBlocks.blockAiry, 1, 5),
+            RegisteredResearches.researchGrowingNodeGrowthClue = new SimpleResearchItem("GROWING_GROWTHCLUE", -4, 3, 2, new ItemStack(ConfigBlocks.blockAiry, 1, 5),
                     new AspectList().add(Aspect.AURA, 10).add(Aspect.MAGIC, 15).add(Aspect.ELDRITCH, 5).add(Aspect.VOID, 12).add(Aspect.ENERGY, 12).add(Aspect.ENTROPY, 8).add(Aspect.DEATH, 3)
                             .add(Aspect.GREED, 10).add(Aspect.HUNGER, 10).add(Aspect.MECHANISM, 12).add(Aspect.DARKNESS, 12))
                     .setSpecial().setRound().setConcealed()
@@ -263,7 +259,7 @@ public class RegisteredResearches {
         }
 
         if(ModConfig.ancientStoneRecipes)
-            researchAncientStones = new AlternatingResearchItem("ANCIENT_STONES",
+            RegisteredResearches.researchAncientStones = new AlternatingResearchItem("ANCIENT_STONES",
                 -12, 1, 3,
                 new AspectList().add(Aspect.ELDRITCH, 10).add(Aspect.EARTH, 8).add(Aspect.EXCHANGE, 6).add(Aspect.ENTROPY, 8),
                 new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11), new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15))
@@ -280,7 +276,7 @@ public class RegisteredResearches {
         }
 
         //Cores and stuff related to it.
-        researchAuraCore = new AlternatingResearchItem("AURA_CORE",
+        RegisteredResearches.researchAuraCore = new AlternatingResearchItem("AURA_CORE",
                 -1, 6, 2,
                 new AspectList().add(Aspect.AURA, 22).add(Aspect.MAGIC, 10).add(Aspect.AIR, 8).add(Aspect.WATER, 8)
                         .add(Aspect.EARTH, 8).add(Aspect.FIRE, 8).add(Aspect.ORDER, 8).add(Aspect.ENTROPY, 8),
@@ -289,44 +285,44 @@ public class RegisteredResearches {
                 .setParents("INFUSION", "THAUMIUM")
                 .setPages(new ResearchPage("gadomancy.research_page.AURA_CORE.1"), new ResearchPage(RegisteredRecipes.recipeAuraCore), new ResearchPage("gadomancy.research_page.AURA_CORE.3"), new MultiResearchPage(RegisteredRecipes.auraCoreRecipes)).registerResearchItem();
 
-        researchCleanAuraCore = new SimpleResearchItem("CLEAN_AURA_CORE",
+        RegisteredResearches.researchCleanAuraCore = new SimpleResearchItem("CLEAN_AURA_CORE",
                 1, 5, 0, new ItemStack(RegisteredItems.itemAuraCore),
                 new AspectList().add(Aspect.HEAL, 8).add(Aspect.AURA, 6).add(Aspect.MAGIC, 8).add(Aspect.WATER, 10))
                 .setConcealed().setSecondary()
-                .setParents(researchAuraCore.key)
+                .setParents(RegisteredResearches.researchAuraCore.key)
                 .setPages(new ResearchPage("gadomancy.research_page.CLEAN_AURA_CORE.1"), new ResearchPage(RegisteredRecipes.recipesWashAuraCore), new ResearchPage(RegisteredRecipes.recipesUndoAuraCore)).registerResearchItem();
 
-        researchAuraPylon = new SimpleResearchItem("AURA_PYLON",
+        RegisteredResearches.researchAuraPylon = new SimpleResearchItem("AURA_PYLON",
                 0, 9, 2, new ItemStack(RegisteredBlocks.blockAuraPylon, 1, 1),
                 new AspectList().add(Aspect.ORDER, 12).add(Aspect.AURA, 20).add(Aspect.MAGIC, 12).add(Aspect.MECHANISM, 8))
                 .setHidden()
-                .setParents(researchAuraCore.key, "TUBEFILTER")
+                .setParents(RegisteredResearches.researchAuraCore.key, "TUBEFILTER")
                 .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.FIRE.ordinal()))
                 .setPages(new ResearchPage("gadomancy.research_page.AURA_PYLON.1"), new ResearchPage(RegisteredRecipes.recipeAuraPylon), new ResearchPage(RegisteredRecipes.recipeAuraPylonPeak), new ResearchPage("gadomancy.research_page.AURA_PYLON.4"), new ResearchPage(RegisteredRecipes.multiblockAuraPylon)).registerResearchItem();
 
-        researchAuraEffects = new SimpleResearchItem("AURA_EFFECTS",
+        RegisteredResearches.researchAuraEffects = new SimpleResearchItem("AURA_EFFECTS",
                 1, 10, 2, new ResourceLocation("thaumcraft", "textures/misc/r_aspects.png"),
                 new AspectList().add(Aspect.AURA, 6).add(Aspect.MIND, 8).add(Aspect.MAGIC, 4).add(Aspect.ORDER, 4))
                 .setConcealed().setSecondary()
-                .setParents(researchAuraPylon.key)
+                .setParents(RegisteredResearches.researchAuraPylon.key)
                 .setPages(new ResearchPage("gadomancy.research_page.AURA_EFFECTS.1")).registerResearchItem();
 
-        researchKnowledgeBook = new SimpleResearchItem("KNOWLEDGE_BOOK",
+        RegisteredResearches.researchKnowledgeBook = new SimpleResearchItem("KNOWLEDGE_BOOK",
                 -2, 8, 2, new ItemStack(RegisteredBlocks.blockKnowledgeBook),
                 new AspectList().add(Aspect.MIND, 12).add(Aspect.MAGIC, 8).add(Aspect.MOTION, 6).add(Aspect.ORDER, 10).add(Aspect.MECHANISM, 8).add(Aspect.CRAFT, 8))
                 .setHidden()
-                .setParents(researchAuraCore.key, "GOGGLES", "THAUMATORIUM")
+                .setParents(RegisteredResearches.researchAuraCore.key, "GOGGLES", "THAUMATORIUM")
                 .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.ORDER.ordinal()))
                 .setPages(new ResearchPage("gadomancy.research_page.KNOWLEDGE_BOOK.1"), new ResearchPage(RegisteredRecipes.recipeKnowledgeBook),
                         new ResearchPage("gadomancy.research_page.KNOWLEDGE_BOOK.3"), new ResearchPage("gadomancy.research_page.KNOWLEDGE_BOOK.4")).registerResearchItem();
 
         ResearchItem researchVReservoir = PseudoResearchItem.create("ESSENTIARESERVOIR", -5, 9).registerResearchItem();
 
-        researchEssentiaCompressor = new SimpleResearchItem("ESSENTIA_COMPRESSOR",
+        RegisteredResearches.researchEssentiaCompressor = new SimpleResearchItem("ESSENTIA_COMPRESSOR",
                 -4, 7, 2, new ItemStack(RegisteredBlocks.blockEssentiaCompressor),
                 new AspectList().add(Aspect.VOID, 12).add(Aspect.WATER, 10).add(Aspect.ENTROPY, 12).add(Aspect.MAGIC, 6).add(Aspect.MECHANISM, 12))
                 .setHidden()
-                .setParents(researchAuraCore.key, researchVReservoir.key)
+                .setParents(RegisteredResearches.researchAuraCore.key, researchVReservoir.key)
                 .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.WATER.ordinal()))
                 .setPages(new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.1"), new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.2"),
                         new ResearchPage(RegisteredRecipes.recipeElementVoid), new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.4"),
@@ -343,8 +339,8 @@ public class RegisteredResearches {
                 .setPages(new ResearchPage("gadomancy.research_page.AI_SHUTDOWN.1"), new ResearchPage(RegisteredRecipes.recipeAiShutdown))
                 .registerResearchItem();*/
 
-        String[] packagerParents = Config.wardedStone ? new String[] { researchAuraCore.key, "WARDEDARCANA" } : new String[] { researchAuraCore.key };
-                researchArcanePackager = new SimpleResearchItem("ARCANE_PACKAGER",
+        String[] packagerParents = Config.wardedStone ? new String[] {RegisteredResearches.researchAuraCore.key, "WARDEDARCANA" } : new String[] {RegisteredResearches.researchAuraCore.key };
+        RegisteredResearches.researchArcanePackager = new SimpleResearchItem("ARCANE_PACKAGER",
                 2, 7, 2, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 4),
                         new AspectList().add(Aspect.AIR, 12).add(Aspect.MECHANISM, 16).add(Aspect.VOID, 10).add(Aspect.MAGIC, 10))
                 .setHidden()
@@ -357,11 +353,11 @@ public class RegisteredResearches {
 
         ItemStack goggles = new ItemStack(ConfigItems.itemGoggles);
         goggles.addEnchantment(Enchantment.protection, 1);
-        researchRevealer = new SimpleResearchItem("REVEALER", 1, 3, 1, goggles, new AspectList().add(Aspect.SENSES, 4).add(Aspect.MAGIC, 4))
+        RegisteredResearches.researchRevealer = new SimpleResearchItem("REVEALER", 1, 3, 1, goggles, new AspectList().add(Aspect.SENSES, 4).add(Aspect.MAGIC, 4))
                 .setParents(researchInfusionEnch.key, "GOGGLES").setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.REVEALER.1"), new ResearchPage(RegisteredRecipes.recipeRevealer)).registerResearchItem();
 
-        researchArmorDisguise = new DisguiseResearchItem("ARMORDISGUISE", -2, 0, 1, new AspectList().add(Aspect.SLIME, 8).add(Aspect.MAGIC, 4).add(Aspect.ARMOR, 4))
+        RegisteredResearches.researchArmorDisguise = new DisguiseResearchItem("ARMORDISGUISE", -2, 0, 1, new AspectList().add(Aspect.SLIME, 8).add(Aspect.MAGIC, 4).add(Aspect.ARMOR, 4))
                 .setParents(researchInfusionEnch.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.ARMORDISGUISE.1"), new ResearchPage(new InfusionVisualDisguiseArmor(false)), new ResearchPage(new InfusionVisualDisguiseArmor(true)), new ResearchPage("gadomancy.research_page.ARMORDISGUISE.4")).registerResearchItem();
 
@@ -379,17 +375,17 @@ public class RegisteredResearches {
         RecipeVisualStickyJar visualRecipe = new RecipeVisualStickyJar();
         ResearchPage page = new ResearchPage(visualRecipe);
 
-        researchStickyJar = new StickyJarResearchItem("STICKYJAR", -5, -5, 2,
+        RegisteredResearches.researchStickyJar = new StickyJarResearchItem("STICKYJAR", -5, -5, 2,
                 new AspectList().add(Aspect.SLIME, 8).add(Aspect.EARTH, 8))
                 .setParents(researchJar.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.STICKYJAR.1"), page).registerResearchItem();
 
-        if(researchBlockProtector != null) {
-            researchBlockProtector.setParents(researchStickyJar.key);
+        if(RegisteredResearches.researchBlockProtector != null) {
+            RegisteredResearches.researchBlockProtector.setParents(RegisteredResearches.researchStickyJar.key);
         }
 
         String[] parents = Config.allowMirrors ? new String[] { researchJar.key, "MIRRORESSENTIA" } : new String[] { researchJar.key };
-        researchRemoteJar = new SimpleResearchItem("REMOTEJAR", -4, -3, 3,
+        RegisteredResearches.researchRemoteJar = new SimpleResearchItem("REMOTEJAR", -4, -3, 3,
                 RegisteredRecipes.recipeRemoteJar.getRecipeOutput(),
                 new AspectList().add(Aspect.WATER, 4).add(Aspect.MECHANISM, 8).add(Aspect.EARTH, 4).add(Aspect.ORDER, 8))
                 .setParents(parents).setConcealed()

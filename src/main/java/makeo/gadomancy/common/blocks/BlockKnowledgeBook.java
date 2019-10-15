@@ -7,7 +7,6 @@ import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +15,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 
@@ -34,8 +32,8 @@ public class BlockKnowledgeBook extends BlockContainer implements IBlockTranspar
 
     public BlockKnowledgeBook() {
         super(Material.circuits);
-        setBlockBounds(0.0625F, 0.125F, 0.0625F, 0.9375F, 0.5F, 0.9375F);
-        setCreativeTab(RegisteredItems.creativeTab);
+        this.setBlockBounds(0.0625F, 0.125F, 0.0625F, 0.9375F, 0.5F, 0.9375F);
+        this.setCreativeTab(RegisteredItems.creativeTab);
     }
 
     @Override
@@ -50,7 +48,7 @@ public class BlockKnowledgeBook extends BlockContainer implements IBlockTranspar
 
     @Override
     public void registerBlockIcons(IIconRegister ir) {
-        icon = ir.registerIcon(Gadomancy.MODID + ":transparent");
+        this.icon = ir.registerIcon(Gadomancy.MODID + ":transparent");
         super.registerBlockIcons(ir);
     }
 
@@ -75,16 +73,16 @@ public class BlockKnowledgeBook extends BlockContainer implements IBlockTranspar
         Block lower = world.getBlock(x, y - 1, z);
         int metaLower = world.getBlockMetadata(x, y - 1, z);
         if(!lower.equals(ConfigBlocks.blockStoneDevice) || metaLower != 1) {
-            breakThisBlock(world, x, y, z);
+            this.breakThisBlock(world, x, y, z);
         }
         if(!world.isAirBlock(x, y + 1, z)) {
-            breakThisBlock(world, x, y, z);
+            this.breakThisBlock(world, x, y, z);
         }
     }
 
-    public void breakThisBlock(World world, int x, int y, int z) {
+    private void breakThisBlock(World world, int x, int y, int z) {
         if(world.isRemote) return;
-        ArrayList<ItemStack> stacks = getDrops(world, x, y, z, 0, 0);
+        ArrayList<ItemStack> stacks = this.getDrops(world, x, y, z, 0, 0);
         for(ItemStack i : stacks) {
             EntityItem item = new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, i);
             world.spawnEntityInWorld(item);
@@ -103,7 +101,7 @@ public class BlockKnowledgeBook extends BlockContainer implements IBlockTranspar
     @Override
     public int getComparatorInputOverride(World world, int x, int y, int z, int p_149736_5_) {
         TileEntity te = world.getTileEntity(x, y, z);
-        if(te != null && te instanceof TileKnowledgeBook) {
+        if (te instanceof TileKnowledgeBook) {
             if(((TileKnowledgeBook) te).isResearching()) {
                 if(((TileKnowledgeBook) te).hasCognitio()) {
                     return 15;
@@ -121,7 +119,7 @@ public class BlockKnowledgeBook extends BlockContainer implements IBlockTranspar
 
     @Override
     public IIcon getTransparentIcon() {
-        return icon;
+        return this.icon;
     }
 
     @Override

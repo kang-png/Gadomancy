@@ -38,7 +38,7 @@ public class TransformationHelper {
         DEFAULT_GOLEM = new FakeEntityGolemBase(golem, null);
     }
 
-    private static PlayerCameraRenderer renderer = null;
+    private static PlayerCameraRenderer renderer;
 
     private static Map<Integer, Integer> transformedPlayers = new HashMap<Integer, Integer>();
 
@@ -50,7 +50,7 @@ public class TransformationHelper {
         Minecraft mc = Minecraft.getMinecraft();
         return mc.thePlayer.equals(mc.renderViewEntity) && !RegisteredIntegrations.morph.isMorphed()
                 && mc.entityRenderer.getClass().equals(EntityRenderer.class)
-                && (renderer == null || renderer.isRemoved());
+                && (TransformationHelper.renderer == null || TransformationHelper.renderer.isRemoved());
     }
 
     public static boolean isForeignTransformed() {
@@ -62,24 +62,24 @@ public class TransformationHelper {
     }
 
     public static boolean isTransformed() {
-        return renderer != null && !renderer.isMarkedForRemoval();
+        return TransformationHelper.renderer != null && !TransformationHelper.renderer.isMarkedForRemoval();
     }
 
     public static boolean isTransformed(EntityPlayer player) {
         if(player.equals(Minecraft.getMinecraft().thePlayer))
-            return isTransformed();
-        return getTransformedEntityId(player) != -1;
+            return TransformationHelper.isTransformed();
+        return TransformationHelper.getTransformedEntityId(player) != -1;
     }
 
     public static FakeEntityGolemBase getTransformedEntity(EntityPlayer player) {
-        Integer entityId = transformedPlayers.get(player.getEntityId());
+        Integer entityId = TransformationHelper.transformedPlayers.get(player.getEntityId());
         if(entityId != null) {
-            FakeEntityGolemBase golem = entityCache.get(entityId);
+            FakeEntityGolemBase golem = TransformationHelper.entityCache.get(entityId);
             if(golem == null) {
-                EntityGolemBase rawGolem = findGolem(entityId);
+                EntityGolemBase rawGolem = TransformationHelper.findGolem(entityId);
                 if(rawGolem != null) {
                     golem = new FakeEntityGolemBase(rawGolem, player);
-                    entityCache.put(entityId, golem);
+                    TransformationHelper.entityCache.put(entityId, golem);
                 }
             }
 
@@ -87,7 +87,7 @@ public class TransformationHelper {
                 return golem;
             }
         }
-        return DEFAULT_GOLEM;
+        return TransformationHelper.DEFAULT_GOLEM;
     }
 
     private static EntityGolemBase findGolem(int entityId) {
@@ -102,47 +102,47 @@ public class TransformationHelper {
     }
 
     public static FakeEntityGolemBase getTransformedEntity() {
-        return getTransformedEntity(Minecraft.getMinecraft().thePlayer);
+        return TransformationHelper.getTransformedEntity(Minecraft.getMinecraft().thePlayer);
     }
 
     private static int getTransformedEntityId(EntityPlayer player) {
-        Integer entityId = transformedPlayers.get(player.getEntityId());
+        Integer entityId = TransformationHelper.transformedPlayers.get(player.getEntityId());
         return entityId == null ? -1 : entityId;
     }
 
     public static int getTransformedEntityId() {
-        return getTransformedEntityId(Minecraft.getMinecraft().thePlayer);
+        return TransformationHelper.getTransformedEntityId(Minecraft.getMinecraft().thePlayer);
     }
 
     public static void cancelTransformation(PacketAbortTransform.AbortReason reason) {
-        if(isTransformed()) {
+        if(TransformationHelper.isTransformed()) {
             PacketHandler.INSTANCE.sendToServer(new PacketAbortTransform(reason));
-            onAbortTransformation(Minecraft.getMinecraft().thePlayer.getEntityId());
+            TransformationHelper.onAbortTransformation(Minecraft.getMinecraft().thePlayer.getEntityId());
         }
     }
 
     public static void onStartTransformation(int targetId, int appearanceId) {
         if(Minecraft.getMinecraft().thePlayer.getEntityId() == targetId) {
-            if(isTransformable()) {
-                transformedPlayers.put(targetId, appearanceId);
+            if(TransformationHelper.isTransformable()) {
+                TransformationHelper.transformedPlayers.put(targetId, appearanceId);
 
                 Minecraft mc = Minecraft.getMinecraft();
-                renderer = new PlayerCameraRenderer(mc, mc.entityRenderer);
-                mc.entityRenderer = renderer;
+                TransformationHelper.renderer = new PlayerCameraRenderer(mc, mc.entityRenderer);
+                mc.entityRenderer = TransformationHelper.renderer;
             } else {
-                cancelTransformation(PacketAbortTransform.AbortReason.TRANSFORMATION_FAILED);
+                TransformationHelper.cancelTransformation(PacketAbortTransform.AbortReason.TRANSFORMATION_FAILED);
             }
         } else {
-            transformedPlayers.put(targetId, appearanceId);
+            TransformationHelper.transformedPlayers.put(targetId, appearanceId);
         }
     }
 
     public static void onAbortTransformation(int targetId) {
-        transformedPlayers.remove(targetId);
-        entityCache.remove(targetId);
+        TransformationHelper.transformedPlayers.remove(targetId);
+        TransformationHelper.entityCache.remove(targetId);
 
-        if(Minecraft.getMinecraft().thePlayer.getEntityId() == targetId && isTransformed()) {
-            renderer.markForRemoval();
+        if(Minecraft.getMinecraft().thePlayer.getEntityId() == targetId && TransformationHelper.isTransformed()) {
+            TransformationHelper.renderer.markForRemoval();
         }
     }
 }

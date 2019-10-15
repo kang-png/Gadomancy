@@ -24,7 +24,7 @@ public class RenderTileManipulationFocus extends TileEntitySpecialRenderer {
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
 
-        bindTexture(new SimpleResourceLocation("models/manipulation_focus_" + tile.getBlockMetadata() + ".png"));
+        this.bindTexture(new SimpleResourceLocation("models/manipulation_focus_" + tile.getBlockMetadata() + ".png"));
 
         GL11.glRotatef(180, 1, 0, 0);
         GL11.glTranslatef(0.5f, -1.5f + (2/16f), -0.5f);
@@ -33,9 +33,9 @@ public class RenderTileManipulationFocus extends TileEntitySpecialRenderer {
             GL11.glPushMatrix();
             for(int i = 0; i < 4; i++) {
                 if(tile.getBlockMetadata() == 0) {
-                    RANDOM_FOCUS.render(null, 0, 0, 0, 0, 0, 0.0625f);
+                    RenderTileManipulationFocus.RANDOM_FOCUS.render(null, 0, 0, 0, 0, 0, 0.0625f);
                 } else {
-                    PORTAL_FOCUS.render(null, 0, 0, 0, 0, 0, 0.0625f);
+                    RenderTileManipulationFocus.PORTAL_FOCUS.render(null, 0, 0, 0, 0, 0, 0.0625f);
                 }
 
                 GL11.glRotatef(90, 0, 1, 0);
@@ -48,6 +48,6 @@ public class RenderTileManipulationFocus extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
-        renderTileEntityAt((TileManipulationFocus)tile, x, y, z, partialTicks);
+        this.renderTileEntityAt((TileManipulationFocus)tile, x, y, z, partialTicks);
     }
 }

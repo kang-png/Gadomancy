@@ -9,10 +9,8 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -35,7 +33,7 @@ public class EffectHandler {
     public static final Object lockEffects = new Object();
 
     public static EffectHandler getInstance() {
-        return instance;
+        return EffectHandler.instance;
     }
 
     @SubscribeEvent
@@ -43,14 +41,14 @@ public class EffectHandler {
         Tessellator tessellator = Tessellator.instance;
 
         FXFlow.FXFlowBase.sheduleRender(tessellator);
-        Orbital.sheduleRenders(orbitals, event.partialTicks);
-        FXVortex.sheduleRender(fxVortexes, tessellator, event.partialTicks);
+        Orbital.sheduleRenders(EffectHandler.orbitals, event.partialTicks);
+        FXVortex.sheduleRender(EffectHandler.fxVortexes, tessellator, event.partialTicks);
     }
 
     public FXFlow effectFlow(World world, Vector3 origin, FXFlow.EntityFlowProperties properties) {
         FXFlow flow = new FXFlow(world);
         flow.applyProperties(properties).setPosition(origin);
-        registerFlow(flow);
+        this.registerFlow(flow);
         return flow;
     }
 
@@ -59,8 +57,8 @@ public class EffectHandler {
             @Override
             public void run() {
                 //System.out.println("register");
-                synchronized (lockEffects) {
-                    fxVortexes.add(vortex);
+                synchronized (EffectHandler.lockEffects) {
+                    EffectHandler.fxVortexes.add(vortex);
                     vortex.registered = true;
                 }
             }
@@ -72,8 +70,8 @@ public class EffectHandler {
             @Override
             public void run() {
                 //System.out.println("unregister");
-                synchronized (lockEffects) {
-                    fxVortexes.remove(vortex);
+                synchronized (EffectHandler.lockEffects) {
+                    EffectHandler.fxVortexes.remove(vortex);
                     vortex.registered = false;
                 }
             }
@@ -84,8 +82,8 @@ public class EffectHandler {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                synchronized (lockEffects) {
-                    fxFlows.add(flow);
+                synchronized (EffectHandler.lockEffects) {
+                    EffectHandler.fxFlows.add(flow);
                 }
             }
         }).start();
@@ -95,8 +93,8 @@ public class EffectHandler {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                synchronized (lockEffects) {
-                    fxFlows.remove(flow);
+                synchronized (EffectHandler.lockEffects) {
+                    EffectHandler.fxFlows.remove(flow);
                 }
             }
         }).start();
@@ -106,8 +104,8 @@ public class EffectHandler {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                synchronized (lockEffects) {
-                    orbitals.add(orbital);
+                synchronized (EffectHandler.lockEffects) {
+                    EffectHandler.orbitals.add(orbital);
                     orbital.registered = true;
                 }
             }
@@ -118,8 +116,8 @@ public class EffectHandler {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                synchronized (lockEffects) {
-                    orbitals.remove(orbital);
+                synchronized (EffectHandler.lockEffects) {
+                    EffectHandler.orbitals.remove(orbital);
                     orbital.registered = false;
                 }
             }
@@ -127,19 +125,19 @@ public class EffectHandler {
     }
 
     public void tick() {
-        Orbital.tickOrbitals(orbitals);
-        FXFlow.tickFlows(fxFlows);
-        FXVortex.tickVortexes(fxVortexes);
+        Orbital.tickOrbitals(EffectHandler.orbitals);
+        FXFlow.tickFlows(EffectHandler.fxFlows);
+        FXVortex.tickVortexes(EffectHandler.fxVortexes);
     }
 
     public void clear() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                synchronized (lockEffects) {
-                    orbitals.clear();
-                    fxFlows.clear();
-                    fxVortexes.clear();
+                synchronized (EffectHandler.lockEffects) {
+                    EffectHandler.orbitals.clear();
+                    EffectHandler.fxFlows.clear();
+                    EffectHandler.fxVortexes.clear();
                 }
             }
         }).start();

@@ -23,7 +23,7 @@ public class RenderTileKnowledgeBook extends TileEntitySpecialRenderer {
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks) {
         if(te == null || !(te instanceof TileKnowledgeBook)) return;
 
-        renderFloatingBook((TileKnowledgeBook) te, x, y, z, partialTicks);
+        this.renderFloatingBook((TileKnowledgeBook) te, x, y, z, partialTicks);
     }
 
     private void renderFloatingBook(TileKnowledgeBook te, double x, double y, double z, float partialTicks) {
@@ -45,11 +45,11 @@ public class RenderTileKnowledgeBook extends TileEntitySpecialRenderer {
         float f3 = attributes.field_145925_p + f2 * partialTicks;
         GL11.glRotatef(-f3 * 180.0F / (float)Math.PI, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(80.0F, 0.0F, 0.0F, 1.0F);
-        this.bindTexture(bookTexture);
+        this.bindTexture(RenderTileKnowledgeBook.bookTexture);
         float f4 = attributes.field_145931_j + (attributes.field_145933_i - attributes.field_145931_j) * partialTicks + 0.25F;
         float f5 = attributes.field_145931_j + (attributes.field_145933_i - attributes.field_145931_j) * partialTicks + 0.75F;
-        f4 = (f4 - (float)MathHelper.truncateDoubleToInt((double)f4)) * 1.6F - 0.3F;
-        f5 = (f5 - (float)MathHelper.truncateDoubleToInt((double)f5)) * 1.6F - 0.3F;
+        f4 = (f4 - (float)MathHelper.truncateDoubleToInt(f4)) * 1.6F - 0.3F;
+        f5 = (f5 - (float)MathHelper.truncateDoubleToInt(f5)) * 1.6F - 0.3F;
 
         if (f4 < 0.0F)
         {
@@ -73,7 +73,7 @@ public class RenderTileKnowledgeBook extends TileEntitySpecialRenderer {
 
         //float f6 = attributes.field_145927_n + (attributes.field_145930_m - attributes.field_145927_n) * partialTicks; We don't want it to close..
         GL11.glEnable(GL11.GL_CULL_FACE);
-        modelBook.render(null, 45F, f4, f5, 0.9F, 0.0F, 0.0625F);
+        RenderTileKnowledgeBook.modelBook.render(null, 45F, f4, f5, 0.9F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
     }
 

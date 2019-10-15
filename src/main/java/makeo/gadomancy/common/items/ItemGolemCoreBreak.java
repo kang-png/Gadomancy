@@ -25,8 +25,8 @@ import java.util.List;
 public class ItemGolemCoreBreak extends Item {
 
     public ItemGolemCoreBreak() {
-        setHasSubtypes(true);
-        setCreativeTab(RegisteredItems.creativeTab);
+        this.setHasSubtypes(true);
+        this.setCreativeTab(RegisteredItems.creativeTab);
     }
 
     private IIcon breakIcon;
@@ -34,16 +34,16 @@ public class ItemGolemCoreBreak extends Item {
 
     @Override
     public void registerIcons(IIconRegister ir) {
-        breakIcon = ir.registerIcon(Gadomancy.MODID + ":golem_core_break");
-        bodyguardIcon = ir.registerIcon("thaumcraft:golem_core_bodyguard");
+        this.breakIcon = ir.registerIcon(Gadomancy.MODID + ":golem_core_break");
+        this.bodyguardIcon = ir.registerIcon("thaumcraft:golem_core_bodyguard");
     }
 
     @Override
     public IIcon getIconFromDamage(int damage) {
         if(damage == 0) {
-            return breakIcon;
+            return this.breakIcon;
         } else if(damage == 1) {
-            return bodyguardIcon;
+            return this.bodyguardIcon;
         }
 
         return super.getIconFromDamage(damage);
@@ -62,7 +62,7 @@ public class ItemGolemCoreBreak extends Item {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return getUnlocalizedName();
+        return this.getUnlocalizedName();
     }
 
     @Override

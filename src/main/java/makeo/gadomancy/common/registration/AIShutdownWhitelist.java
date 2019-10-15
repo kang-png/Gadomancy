@@ -27,23 +27,23 @@ public class AIShutdownWhitelist {
             new HashMap<Class<? extends EntityLiving>, List<Class<? extends EntityAIBase>>>();
 
     public static void whitelistAIClass(Class<? extends EntityLiving> entityClass, Class<? extends EntityAIBase> aiClass) {
-        if(!whitelistedAI.containsKey(entityClass)) {
-            whitelistedAI.put(entityClass, new LinkedList<Class<? extends EntityAIBase>>());
+        if(!AIShutdownWhitelist.whitelistedAI.containsKey(entityClass)) {
+            AIShutdownWhitelist.whitelistedAI.put(entityClass, new LinkedList<Class<? extends EntityAIBase>>());
         }
-        whitelistedAI.get(entityClass).add(aiClass);
+        AIShutdownWhitelist.whitelistedAI.get(entityClass).add(aiClass);
     }
 
     public static void whitelistAIClass(EntityLiving entity, Class<? extends EntityAIBase> aiClass) {
-        whitelistAIClass(entity.getClass(), aiClass);
+        AIShutdownWhitelist.whitelistAIClass(entity.getClass(), aiClass);
     }
 
     public static List<Class<? extends EntityAIBase>> getWhitelistedAIClasses(EntityLiving entity) {
-        if(!whitelistedAI.containsKey(entity.getClass())) return Lists.newArrayList();
-        return whitelistedAI.get(entity.getClass());
+        if(!AIShutdownWhitelist.whitelistedAI.containsKey(entity.getClass())) return Lists.newArrayList();
+        return AIShutdownWhitelist.whitelistedAI.get(entity.getClass());
     }
 
     static {
-        whitelistAIClass(EntitySheep.class, EntityAIEatGrass.class);
+        AIShutdownWhitelist.whitelistAIClass(EntitySheep.class, EntityAIEatGrass.class);
     }
 
 }

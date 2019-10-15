@@ -31,8 +31,8 @@ public class ItemTransformationFocus extends ItemFocusBasic {
 
     public ItemTransformationFocus() {
         //setCreativeTab(RegisteredItems.creativeTab);
-        setCreativeTab(null);
-        setUnlocalizedName("ItemTransformationFocus");
+        this.setCreativeTab(null);
+        this.setUnlocalizedName("ItemTransformationFocus");
     }
 
     @Override
@@ -59,12 +59,12 @@ public class ItemTransformationFocus extends ItemFocusBasic {
 
     @Override
     public AspectList getVisCost(ItemStack item) {
-        return VIS_USAGE;
+        return ItemTransformationFocus.VIS_USAGE;
     }
 
     @Override
     public IIcon getOrnament(ItemStack item) {
-        return iconOrnament;
+        return this.iconOrnament;
     }
 
     @Override
@@ -79,7 +79,7 @@ public class ItemTransformationFocus extends ItemFocusBasic {
 
     @Override
     public IIcon getFocusDepthLayerIcon(ItemStack item) {
-        return iconDepth;
+        return this.iconDepth;
     }
 
     @SideOnly(Side.CLIENT)
@@ -95,9 +95,9 @@ public class ItemTransformationFocus extends ItemFocusBasic {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister ir) {
-        iconOrnament = ir.registerIcon("thaumcraft:focus_whatever_orn");
-        iconDepth = ir.registerIcon(Gadomancy.MODID + ":focus_transformation_depth");
-        icon = ir.registerIcon(Gadomancy.MODID + ":focus_transformation");
+        this.iconOrnament = ir.registerIcon("thaumcraft:focus_whatever_orn");
+        this.iconDepth = ir.registerIcon(Gadomancy.MODID + ":focus_transformation_depth");
+        this.icon = ir.registerIcon(Gadomancy.MODID + ":focus_transformation");
     }
 
     @Override

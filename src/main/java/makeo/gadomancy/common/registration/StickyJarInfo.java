@@ -24,18 +24,18 @@ public class StickyJarInfo {
     }
 
     public Block getBlock() {
-        return block;
+        return this.block;
     }
 
     public int getMetadata() {
-        return metadata;
+        return this.metadata;
     }
 
     public boolean needsLabelHandling() {
-        return needsLabelHandling;
+        return this.needsLabelHandling;
     }
 
     public boolean needsPhialHandling() {
-        return needsPhialHandling;
+        return this.needsPhialHandling;
     }
 }

@@ -24,7 +24,7 @@ public class DisguiseResearchItem extends AlternatingResearchItem {
 
     @Override
     protected ItemStack getIcon() {
-        return recipe == null ? new ItemStack(Items.cookie) : recipe.getRecipeInput();
+        return this.recipe == null ? new ItemStack(Items.cookie) : this.recipe.getRecipeInput();
     }
 
     @Override
@@ -32,7 +32,7 @@ public class DisguiseResearchItem extends AlternatingResearchItem {
         for(ResearchPage page : pages) {
             if(page.type == ResearchPage.PageType.INFUSION_CRAFTING
                     && page.recipe instanceof InfusionVisualDisguiseArmor) {
-                recipe = (InfusionVisualDisguiseArmor) page.recipe;
+                this.recipe = (InfusionVisualDisguiseArmor) page.recipe;
             }
         }
         return super.setPages(pages);

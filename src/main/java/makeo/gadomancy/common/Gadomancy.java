@@ -2,11 +2,7 @@ package makeo.gadomancy.common;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLConstructionEvent;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLInterModComms;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.*;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.common.api.DefaultApiHandler;
 import makeo.gadomancy.common.data.config.ModConfig;
@@ -33,53 +29,53 @@ public class Gadomancy {
     private static final String PROXY_CLIENT = "makeo.gadomancy.client.ClientProxy";
     private static final String PROXY_SERVER = "makeo.gadomancy.common.CommonProxy";
 
-    @Mod.Instance(value = Gadomancy.MODID)
+    @Mod.Instance(Gadomancy.MODID)
     public static Gadomancy instance;
 
-    @SidedProxy(clientSide = PROXY_CLIENT, serverSide = PROXY_SERVER)
+    @SidedProxy(clientSide = Gadomancy.PROXY_CLIENT, serverSide = Gadomancy.PROXY_SERVER)
     public static CommonProxy proxy;
 
     public static Logger log = LogManager.getLogger("Gadomancy");
-    private static ModData modData = null;
+    private static ModData modData;
 
     public static ModData getModData() {
-        return modData;
+        return Gadomancy.modData;
     }
 
     public static void loadModData() {
-        modData = new ModData("data");
-        modData.load();
+        Gadomancy.modData = new ModData("data");
+        Gadomancy.modData.load();
     }
 
     public static void unloadModData() {
-        if(modData != null) {
-            modData.save();
-            modData = null;
+        if(Gadomancy.modData != null) {
+            Gadomancy.modData.save();
+            Gadomancy.modData = null;
         }
     }
 
     @Mod.EventHandler
     public void onConstruct(FMLConstructionEvent event) {
         GadomancyApi.setInstance(new DefaultApiHandler());
-        proxy.onConstruct();
+        Gadomancy.proxy.onConstruct();
     }
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        event.getModMetadata().version = VERSION;
+        event.getModMetadata().version = Gadomancy.VERSION;
         ModConfig.init(event.getSuggestedConfigurationFile());
-        proxy.preInitalize();
+        Gadomancy.proxy.preInitalize();
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        proxy.initalize();
+        Gadomancy.proxy.initalize();
 
         FMLInterModComms.sendMessage(Thaumcraft.MODID, "dimensionBlacklist", ModConfig.dimOuterId + ":0");
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        proxy.postInitalize();
+        Gadomancy.proxy.postInitalize();
     }
 }

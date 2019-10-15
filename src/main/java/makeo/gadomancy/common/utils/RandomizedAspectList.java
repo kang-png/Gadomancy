@@ -19,11 +19,11 @@ public class RandomizedAspectList extends AspectList {
 
     private static final Random RANDOM = new Random();
     private Map<Aspect, Integer> aspectMap = new HashMap<Aspect, Integer>();
-    private long lastRandomization = 0;
-    private boolean halfCap = false;
+    private long lastRandomization;
+    private boolean halfCap;
 
     public RandomizedAspectList addAspectRandomBase(Aspect aspect, int amount) {
-        aspectMap.put(aspect, amount);
+        this.aspectMap.put(aspect, amount);
         return this;
     }
 
@@ -33,52 +33,52 @@ public class RandomizedAspectList extends AspectList {
     }
 
     private void checkRandomization() {
-        if((System.currentTimeMillis() - lastRandomization) > 500) {
+        if((System.currentTimeMillis() - this.lastRandomization) > 500) {
             super.aspects.clear();
-            for(Aspect a : aspectMap.keySet()) {
+            for(Aspect a : this.aspectMap.keySet()) {
                 if(a == null) continue;
                 int am;
-                if(halfCap) {
-                    int c = aspectMap.get(a);
-                    am = (c / 2) + RANDOM.nextInt(c / 2);
+                if(this.halfCap) {
+                    int c = this.aspectMap.get(a);
+                    am = (c / 2) + RandomizedAspectList.RANDOM.nextInt(c / 2);
                 } else {
-                    am = RANDOM.nextInt(aspectMap.get(a));
+                    am = RandomizedAspectList.RANDOM.nextInt(this.aspectMap.get(a));
                 }
                 if(am > 0) {
                     super.add(a, am);
                 }
             }
-            lastRandomization = System.currentTimeMillis();
+            this.lastRandomization = System.currentTimeMillis();
         }
     }
 
     @Override
     public Aspect[] getAspects() {
-        checkRandomization();
+        this.checkRandomization();
         return super.getAspects();
     }
 
     @Override
     public Aspect[] getAspectsSorted() {
-        checkRandomization();
+        this.checkRandomization();
         return super.getAspectsSorted();
     }
 
     @Override
     public Aspect[] getAspectsSortedAmount() {
-        checkRandomization();
+        this.checkRandomization();
         return super.getAspectsSortedAmount();
     }
 
     @Override
     public int getAmount(Aspect key) {
-        checkRandomization();
+        this.checkRandomization();
         return super.getAmount(key);
     }
 
     @Override
     public Aspect[] getPrimalAspects() {
-        checkRandomization();
+        this.checkRandomization();
         return super.getPrimalAspects();
     }
 

@@ -32,11 +32,7 @@ import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.TilePedestal;
 import thaumcraft.common.tiles.TileWandPedestal;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -46,7 +42,7 @@ import java.util.Map;
  *
  * Created by HellFirePvP @ 26.10.2015 20:16
  */
-public class TileNodeManipulator extends TileWandPedestal implements IAspectContainer, IWandable {
+public class TileNodeManipulator extends TileWandPedestal implements IWandable {
 
     private static final int NODE_MANIPULATION_POSSIBLE_WORK_START = 70;
     private static final int NODE_MANIPULATION_WORK_ASPECT_CAP = 120;
@@ -55,89 +51,89 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     private static final int ELDRITCH_PORTAL_CREATOR_ASPECT_CAP = 150;
 
     //Already set when only multiblock would be present. aka is set, if 'isMultiblockPresent()' returns true.
-    private MultiblockType multiblockType = null;
-    private boolean multiblockStructurePresent = false;
-    private boolean isMultiblock = false;
+    private MultiblockType multiblockType;
+    private boolean multiblockStructurePresent;
+    private boolean isMultiblock;
 
     private AspectList workAspectList = new AspectList();
 
     private List<ChunkCoordinates> bufferedCCPedestals = new ArrayList<ChunkCoordinates>();
 
-    private boolean isWorking = false;
-    private int workTick = 0;
+    private boolean isWorking;
+    private int workTick;
 
     @Override
     public void updateEntity() {
 
-        if(worldObj.isRemote) return;
+        if(this.worldObj.isRemote) return;
 
-        if(isInMultiblock()) {
-            checkMultiblockTick();
+        if(this.isInMultiblock()) {
+            this.checkMultiblockTick();
         }
-        if(isInMultiblock()) {
-            multiblockTick();
+        if(this.isInMultiblock()) {
+            this.multiblockTick();
         }
     }
 
     private void multiblockTick() {
-        if(multiblockType == null) {
-            if(MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, RegisteredMultiblocks.completeNodeManipulatorMultiblock)) {
-                multiblockType = MultiblockType.NODE_MANIPULATOR;
-            } else if(MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, RegisteredMultiblocks.completeEldritchPortalCreator) && checkEldritchEyes(false)) {
-                multiblockType = MultiblockType.E_PORTAL_CREATOR;
+        if(this.multiblockType == null) {
+            if(MultiblockHelper.isMultiblockPresent(this.worldObj, this.xCoord, this.yCoord, this.zCoord, RegisteredMultiblocks.completeNodeManipulatorMultiblock)) {
+                this.multiblockType = MultiblockType.NODE_MANIPULATOR;
+            } else if(MultiblockHelper.isMultiblockPresent(this.worldObj, this.xCoord, this.yCoord, this.zCoord, RegisteredMultiblocks.completeEldritchPortalCreator) && this.checkEldritchEyes(false)) {
+                this.multiblockType = MultiblockType.E_PORTAL_CREATOR;
             }
         }
-        if(multiblockType == null) {
-            breakMultiblock();
+        if(this.multiblockType == null) {
+            this.breakMultiblock();
             return;
         }
-        switch (multiblockType) {
+        switch (this.multiblockType) {
             case NODE_MANIPULATOR:
-                if(!isWorking) {
-                    doAspectChecks(NODE_MANIPULATION_WORK_ASPECT_CAP, NODE_MANIPULATION_POSSIBLE_WORK_START);
+                if(!this.isWorking) {
+                    this.doAspectChecks(TileNodeManipulator.NODE_MANIPULATION_WORK_ASPECT_CAP, TileNodeManipulator.NODE_MANIPULATION_POSSIBLE_WORK_START);
                 } else {
-                    manipulationTick();
+                    this.manipulationTick();
                 }
                 break;
             case E_PORTAL_CREATOR:
-                if(!isWorking) {
-                    doAspectChecks(ELDRITCH_PORTAL_CREATOR_ASPECT_CAP, ELDRITCH_PORTAL_CREATOR_WORK_START);
+                if(!this.isWorking) {
+                    this.doAspectChecks(TileNodeManipulator.ELDRITCH_PORTAL_CREATOR_ASPECT_CAP, TileNodeManipulator.ELDRITCH_PORTAL_CREATOR_WORK_START);
                 } else {
-                    if(!checkEldritchEyes(true)) {
-                        if(workTick > 1) {
-                            workAspectList = new AspectList();
-                            workTick = 0;
-                            isWorking = false;
-                            markDirty();
-                            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    if(!this.checkEldritchEyes(true)) {
+                        if(this.workTick > 1) {
+                            this.workAspectList = new AspectList();
+                            this.workTick = 0;
+                            this.isWorking = false;
+                            this.markDirty();
+                            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                         }
                         return;
                     }
-                    eldritchPortalCreationTick();
+                    this.eldritchPortalCreationTick();
                 }
                 break;
         }
     }
 
     private boolean checkEldritchEyes(boolean checkForEyes) {
-        bufferedCCPedestals.clear();
+        this.bufferedCCPedestals.clear();
 
         int validPedestalsFound = 0;
 
         labelIt: for (int xDiff = -8; xDiff <= 8; xDiff++) {
             labelZ: for (int zDiff = -8; zDiff <= 8; zDiff++) {
                 for (int yDiff = -5; yDiff <= 10; yDiff++) {
-                    int itX = xCoord + xDiff;
-                    int itY = yCoord + yDiff;
-                    int itZ = zCoord + zDiff;
+                    int itX = this.xCoord + xDiff;
+                    int itY = this.yCoord + yDiff;
+                    int itZ = this.zCoord + zDiff;
 
-                    Block block = worldObj.getBlock(itX, itY, itZ);
-                    int meta = worldObj.getBlockMetadata(itX, itY, itZ);
-                    TileEntity te = worldObj.getTileEntity(itX, itY, itZ);
+                    Block block = this.worldObj.getBlock(itX, itY, itZ);
+                    int meta = this.worldObj.getBlockMetadata(itX, itY, itZ);
+                    TileEntity te = this.worldObj.getTileEntity(itX, itY, itZ);
                     if(block != null && block.equals(RegisteredBlocks.blockStoneMachine) && meta == 1
-                            && te != null && te instanceof TilePedestal && (!checkForEyes || checkTile((TilePedestal) te))) {
+                            && te != null && te instanceof TilePedestal && (!checkForEyes || this.checkTile((TilePedestal) te))) {
                         validPedestalsFound++;
-                        bufferedCCPedestals.add(new ChunkCoordinates(itX, itY, itZ));
+                        this.bufferedCCPedestals.add(new ChunkCoordinates(itX, itY, itZ));
                         if(validPedestalsFound >= 4) {
                             break labelIt;
                         }
@@ -155,86 +151,86 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     }
 
     private void eldritchPortalCreationTick() {
-        workTick++;
-        if(workTick < 400) {
-            if((workTick & 15) == 0) {
-                PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, xCoord, yCoord, zCoord, (byte) 1);
-                PacketHandler.INSTANCE.sendToAllAround(packet, getTargetPoint(32));
+        this.workTick++;
+        if(this.workTick < 400) {
+            if((this.workTick & 15) == 0) {
+                PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, this.xCoord, this.yCoord, this.zCoord, (byte) 1);
+                PacketHandler.INSTANCE.sendToAllAround(packet, this.getTargetPoint(32));
             }
-            if((workTick & 7) == 0) {
-                int index = (workTick >> 3) & 3;
+            if((this.workTick & 7) == 0) {
+                int index = (this.workTick >> 3) & 3;
                 try {
-                    ChunkCoordinates cc = bufferedCCPedestals.get(index);
+                    ChunkCoordinates cc = this.bufferedCCPedestals.get(index);
                     PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, cc.posX, cc.posY, cc.posZ, (byte) 1);
-                    PacketHandler.INSTANCE.sendToAllAround(packet, getTargetPoint(32));
+                    PacketHandler.INSTANCE.sendToAllAround(packet, this.getTargetPoint(32));
                 } catch (Exception exc) {}
             }
-            if(worldObj.rand.nextBoolean()) {
-                Vec3 rel = getRelPillarLoc(worldObj.rand.nextInt(4));
-                PacketTCNodeBolt bolt = new PacketTCNodeBolt(xCoord + 0.5F, yCoord + 2.5F, zCoord + 0.5F, (float) (xCoord + 0.5F + rel.xCoord), (float) (yCoord + 2.5F + rel.yCoord), (float) (zCoord + 0.5F + rel.zCoord), 2, false);
-                PacketHandler.INSTANCE.sendToAllAround(bolt, getTargetPoint(32));
+            if(this.worldObj.rand.nextBoolean()) {
+                Vec3 rel = this.getRelPillarLoc(this.worldObj.rand.nextInt(4));
+                PacketTCNodeBolt bolt = new PacketTCNodeBolt(this.xCoord + 0.5F, this.yCoord + 2.5F, this.zCoord + 0.5F, (float) (this.xCoord + 0.5F + rel.xCoord), (float) (this.yCoord + 2.5F + rel.yCoord), (float) (this.zCoord + 0.5F + rel.zCoord), 2, false);
+                PacketHandler.INSTANCE.sendToAllAround(bolt, this.getTargetPoint(32));
             }
-            if(worldObj.rand.nextInt(4) == 0) {
-                Vec3 relPed = getRelPedestalLoc(worldObj.rand.nextInt(4));
-                PacketTCNodeBolt bolt = new PacketTCNodeBolt(xCoord + 0.5F, yCoord + 2.5F, zCoord + 0.5F, (float) (xCoord + 0.5F - relPed.xCoord), (float) (yCoord + 1.5 + relPed.yCoord), (float) (zCoord + 0.5F - relPed.zCoord), 2, false);
-                PacketHandler.INSTANCE.sendToAllAround(bolt, getTargetPoint(32));
+            if(this.worldObj.rand.nextInt(4) == 0) {
+                Vec3 relPed = this.getRelPedestalLoc(this.worldObj.rand.nextInt(4));
+                PacketTCNodeBolt bolt = new PacketTCNodeBolt(this.xCoord + 0.5F, this.yCoord + 2.5F, this.zCoord + 0.5F, (float) (this.xCoord + 0.5F - relPed.xCoord), (float) (this.yCoord + 1.5 + relPed.yCoord), (float) (this.zCoord + 0.5F - relPed.zCoord), 2, false);
+                PacketHandler.INSTANCE.sendToAllAround(bolt, this.getTargetPoint(32));
             }
         } else {
-            schedulePortalCreation();
+            this.schedulePortalCreation();
         }
     }
 
     private void schedulePortalCreation() {
-        workTick = 0;
-        isWorking = false;
-        workAspectList = new AspectList();
+        this.workTick = 0;
+        this.isWorking = false;
+        this.workAspectList = new AspectList();
 
-        TileEntity te = worldObj.getTileEntity(xCoord, yCoord + 2, zCoord);
+        TileEntity te = this.worldObj.getTileEntity(this.xCoord, this.yCoord + 2, this.zCoord);
         if(te == null || !(te instanceof INode)) return;
 
-        consumeEldritchEyes();
+        this.consumeEldritchEyes();
 
-        worldObj.removeTileEntity(xCoord, yCoord + 2, zCoord);
-        worldObj.setBlockToAir(xCoord, yCoord + 2, zCoord);
-        worldObj.setBlock(xCoord, yCoord + 2, zCoord, RegisteredBlocks.blockAdditionalEldrichPortal);
+        this.worldObj.removeTileEntity(this.xCoord, this.yCoord + 2, this.zCoord);
+        this.worldObj.setBlockToAir(this.xCoord, this.yCoord + 2, this.zCoord);
+        this.worldObj.setBlock(this.xCoord, this.yCoord + 2, this.zCoord, RegisteredBlocks.blockAdditionalEldrichPortal);
 
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        worldObj.markBlockForUpdate(xCoord, yCoord + 2, zCoord);
-        markDirty();
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord + 2, this.zCoord);
+        this.markDirty();
     }
 
     private void consumeEldritchEyes() {
-        for (ChunkCoordinates cc : bufferedCCPedestals) {
+        for (ChunkCoordinates cc : this.bufferedCCPedestals) {
             try {
-                TilePedestal pedestal = (TilePedestal) worldObj.getTileEntity(cc.posX, cc.posY, cc.posZ);
+                TilePedestal pedestal = (TilePedestal) this.worldObj.getTileEntity(cc.posX, cc.posY, cc.posZ);
                 pedestal.setInventorySlotContents(0, null);
                 PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, cc.posX, cc.posY, cc.posZ);
-                PacketHandler.INSTANCE.sendToAllAround(packet, getTargetPoint(32));
+                PacketHandler.INSTANCE.sendToAllAround(packet, this.getTargetPoint(32));
             } catch (Exception exc) {}
         }
     }
 
     private void manipulationTick() {
-        workTick++;
-        if(workTick < 300) {
-            if(workTick % 16 == 0) {
-                PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, xCoord, yCoord, zCoord);
-                PacketHandler.INSTANCE.sendToAllAround(packet, getTargetPoint(32));
+        this.workTick++;
+        if(this.workTick < 300) {
+            if(this.workTick % 16 == 0) {
+                PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, this.xCoord, this.yCoord, this.zCoord);
+                PacketHandler.INSTANCE.sendToAllAround(packet, this.getTargetPoint(32));
             }
-            if(worldObj.rand.nextInt(4) == 0) {
-                Vec3 rel = getRelPillarLoc(worldObj.rand.nextInt(4));
-                PacketTCNodeBolt bolt = new PacketTCNodeBolt(xCoord + 0.5F, yCoord + 2.5F, zCoord + 0.5F, (float) (xCoord + 0.5F + rel.xCoord), (float) (yCoord + 2.5F + rel.yCoord), (float) (zCoord + 0.5F + rel.zCoord), 0, false);
-                PacketHandler.INSTANCE.sendToAllAround(bolt, getTargetPoint(32));
+            if(this.worldObj.rand.nextInt(4) == 0) {
+                Vec3 rel = this.getRelPillarLoc(this.worldObj.rand.nextInt(4));
+                PacketTCNodeBolt bolt = new PacketTCNodeBolt(this.xCoord + 0.5F, this.yCoord + 2.5F, this.zCoord + 0.5F, (float) (this.xCoord + 0.5F + rel.xCoord), (float) (this.yCoord + 2.5F + rel.yCoord), (float) (this.zCoord + 0.5F + rel.zCoord), 0, false);
+                PacketHandler.INSTANCE.sendToAllAround(bolt, this.getTargetPoint(32));
             }
         } else {
-            scheduleManipulation();
+            this.scheduleManipulation();
         }
     }
 
     private Vec3 getRelPedestalLoc(int pedestalId) {
         try {
-            ChunkCoordinates cc = bufferedCCPedestals.get(pedestalId);
-            return Vec3.createVectorHelper(xCoord - cc.posX, yCoord - cc.posY, zCoord - cc.posZ);
+            ChunkCoordinates cc = this.bufferedCCPedestals.get(pedestalId);
+            return Vec3.createVectorHelper(this.xCoord - cc.posX, this.yCoord - cc.posY, this.zCoord - cc.posZ);
         } catch (Exception exc) {}
         return Vec3.createVectorHelper(0, 0, 0);
     }
@@ -254,75 +250,75 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     }
 
     private void scheduleManipulation() {
-        float overSized = calcOversize(NODE_MANIPULATION_POSSIBLE_WORK_START);
+        float overSized = this.calcOversize(TileNodeManipulator.NODE_MANIPULATION_POSSIBLE_WORK_START);
 
-        workTick = 0;
-        isWorking = false;
-        workAspectList = new AspectList();
+        this.workTick = 0;
+        this.isWorking = false;
+        this.workAspectList = new AspectList();
 
-        TileEntity te = worldObj.getTileEntity(xCoord, yCoord + 2, zCoord);
+        TileEntity te = this.worldObj.getTileEntity(this.xCoord, this.yCoord + 2, this.zCoord);
         if(te == null || !(te instanceof INode)) return;
         INode node = (INode) te;
-        int areaRange = NODE_MANIPULATION_WORK_ASPECT_CAP - NODE_MANIPULATION_POSSIBLE_WORK_START;
+        int areaRange = TileNodeManipulator.NODE_MANIPULATION_WORK_ASPECT_CAP - TileNodeManipulator.NODE_MANIPULATION_POSSIBLE_WORK_START;
         int percChanceForBetter = 0;
         if(areaRange > 0) {
             percChanceForBetter = (int) ((overSized / ((float) areaRange)) * 100);
         }
         NodeManipulatorResult result;
         do {
-            result = NodeManipulatorResultHandler.getRandomResult(worldObj, node, percChanceForBetter);
-        } while (!result.affect(worldObj, node));
-        PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, xCoord, yCoord + 2, zCoord);
-        PacketHandler.INSTANCE.sendToAllAround(packet, getTargetPoint(32));
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        worldObj.markBlockForUpdate(xCoord, yCoord + 2, zCoord);
-        markDirty();
+            result = NodeManipulatorResultHandler.getRandomResult(this.worldObj, node, percChanceForBetter);
+        } while (!result.affect(this.worldObj, node));
+        PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, this.xCoord, this.yCoord + 2, this.zCoord);
+        PacketHandler.INSTANCE.sendToAllAround(packet, this.getTargetPoint(32));
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord + 2, this.zCoord);
+        this.markDirty();
         ((TileEntity) node).markDirty();
     }
 
     private float calcOversize(int neededAspects) {
         int overall = 0;
         for(Aspect a : Aspect.getPrimalAspects()) {
-            overall += workAspectList.getAmount(a) - neededAspects;
+            overall += this.workAspectList.getAmount(a) - neededAspects;
         }
         return ((float) overall) / 6F;
     }
 
     private void doAspectChecks(int aspectCap, int possibleWorkStart) {
-        if(canDrainFromWand(aspectCap)) {
-            Aspect a = drainAspectFromWand(aspectCap);
+        if(this.canDrainFromWand(aspectCap)) {
+            Aspect a = this.drainAspectFromWand(aspectCap);
             if(a != null) {
-                playAspectDrainFromWand(a);
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                markDirty();
+                this.playAspectDrainFromWand(a);
+                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                this.markDirty();
             }
         } else {
-            checkIfEnoughVis(possibleWorkStart);
+            this.checkIfEnoughVis(possibleWorkStart);
         }
     }
 
     private void checkIfEnoughVis(int start) {
         boolean enough = true;
         for(Aspect a : Aspect.getPrimalAspects()) {
-            if(workAspectList.getAmount(a) < start) {
+            if(this.workAspectList.getAmount(a) < start) {
                 enough = false;
                 break;
             }
         }
         if(enough) {
-            isWorking = true;
+            this.isWorking = true;
         }
     }
 
     private Aspect drainAspectFromWand(int cap) {
-        ItemStack stack = getStackInSlot(0);
+        ItemStack stack = this.getStackInSlot(0);
         if(stack == null || !(stack.getItem() instanceof ItemWandCasting)) return null; //Should never happen..
         AspectList aspects = ((ItemWandCasting) stack.getItem()).getAllVis(stack);
-        for(Aspect a : getRandomlyOrderedPrimalAspectList()) {
-            if(aspects.getAmount(a) >= 100 && workAspectList.getAmount(a) < cap) {
+        for(Aspect a : this.getRandomlyOrderedPrimalAspectList()) {
+            if(aspects.getAmount(a) >= 100 && this.workAspectList.getAmount(a) < cap) {
                 int amt = aspects.getAmount(a);
                 ((ItemWandCasting) stack.getItem()).storeVis(stack, a, amt - 100);
-                workAspectList.add(a, 1);
+                this.workAspectList.add(a, 1);
                 return a;
             }
         }
@@ -336,49 +332,49 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     }
 
     private boolean canDrainFromWand(int cap) {
-        ItemStack stack = getStackInSlot(0);
+        ItemStack stack = this.getStackInSlot(0);
         if(stack == null || !(stack.getItem() instanceof ItemWandCasting)) return false;
         AspectList aspects = ((ItemWandCasting) stack.getItem()).getAllVis(stack);
         for(Aspect a : Aspect.getPrimalAspects()) {
             if(aspects.getAmount(a) < 100) continue;
-            if(workAspectList.getAmount(a) < cap) return true;
+            if(this.workAspectList.getAmount(a) < cap) return true;
         }
         return false;
     }
 
     private void checkMultiblockTick() {
-        checkMultiblock();
-        if(!isMultiblockStructurePresent()) {
-            breakMultiblock();
-            isMultiblock = false;
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-            markDirty();
+        this.checkMultiblock();
+        if(!this.isMultiblockStructurePresent()) {
+            this.breakMultiblock();
+            this.isMultiblock = false;
+            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            this.markDirty();
         }
     }
 
     private void playAspectDrainFromWand(Aspect drained) {
         if(drained == null) return;
-        NetworkRegistry.TargetPoint point = getTargetPoint(32);
-        PacketTCWispyLine line = new PacketTCWispyLine(worldObj.provider.dimensionId, xCoord + 0.5, yCoord + 0.8, zCoord + 0.5,
-                xCoord + 0.5, yCoord + 1.4 + (((double) worldObj.rand.nextInt(4)) / 10D), zCoord + 0.5, 40, drained.getColor());
+        NetworkRegistry.TargetPoint point = this.getTargetPoint(32);
+        PacketTCWispyLine line = new PacketTCWispyLine(this.worldObj.provider.dimensionId, this.xCoord + 0.5, this.yCoord + 0.8, this.zCoord + 0.5,
+                this.xCoord + 0.5, this.yCoord + 1.4 + (((double) this.worldObj.rand.nextInt(4)) / 10D), this.zCoord + 0.5, 40, drained.getColor());
         PacketHandler.INSTANCE.sendToAllAround(line, point);
     }
 
     private void dropWand() {
-        if(getStackInSlot(0) != null)
-            InventoryUtils.dropItems(worldObj, xCoord, yCoord, zCoord);
+        if(this.getStackInSlot(0) != null)
+            InventoryUtils.dropItems(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
     }
 
     public void breakMultiblock() {
         MultiblockHelper.MultiblockPattern compareableCompleteStructure, toRestore;
-        if(multiblockType == null) {
-            workAspectList = new AspectList();
-            dropWand();
-            workTick = 0;
-            isWorking = false;
+        if(this.multiblockType == null) {
+            this.workAspectList = new AspectList();
+            this.dropWand();
+            this.workTick = 0;
+            this.isWorking = false;
             return;
         }
-        switch (multiblockType) {
+        switch (this.multiblockType) {
             case NODE_MANIPULATOR:
                 compareableCompleteStructure = RegisteredMultiblocks.completeNodeManipulatorMultiblock;
                 toRestore = RegisteredMultiblocks.incompleteNodeManipulatorMultiblock;
@@ -395,27 +391,27 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
             MultiblockHelper.BlockInfo restoreInfo = toRestore.get(v);
             if(info.block == RegisteredBlocks.blockNode || (info.block == RegisteredBlocks.blockStoneMachine && (info.meta == 0 || info.meta == 3))
                     || info.block == Blocks.air || info.block == RegisteredBlocks.blockNodeManipulator) continue;
-            int absX = v.x + xCoord;
-            int absY = v.y + yCoord;
-            int absZ = v.z + zCoord;
-            if(worldObj.getBlock(absX, absY, absZ) == info.block && worldObj.getBlockMetadata(absX, absY, absZ) == info.meta) {
-                worldObj.setBlock(absX, absY, absZ, Blocks.air, 0, 0);
-                worldObj.setBlock(absX, absY, absZ, restoreInfo.block, restoreInfo.meta, 0);
-                worldObj.markBlockForUpdate(absX, absY, absZ);
+            int absX = v.x + this.xCoord;
+            int absY = v.y + this.yCoord;
+            int absZ = v.z + this.zCoord;
+            if(this.worldObj.getBlock(absX, absY, absZ) == info.block && this.worldObj.getBlockMetadata(absX, absY, absZ) == info.meta) {
+                this.worldObj.setBlock(absX, absY, absZ, Blocks.air, 0, 0);
+                this.worldObj.setBlock(absX, absY, absZ, restoreInfo.block, restoreInfo.meta, 0);
+                this.worldObj.markBlockForUpdate(absX, absY, absZ);
             }
         }
 
-        workAspectList = new AspectList();
+        this.workAspectList = new AspectList();
         this.multiblockType = null;
-        dropWand();
-        workTick = 0;
-        isWorking = false;
+        this.dropWand();
+        this.workTick = 0;
+        this.isWorking = false;
     }
 
     public void formMultiblock() {
         MultiblockHelper.MultiblockPattern toBuild;
-        if(multiblockType == null) return;
-        switch (multiblockType) {
+        if(this.multiblockType == null) return;
+        switch (this.multiblockType) {
             case NODE_MANIPULATOR:
                 toBuild = RegisteredMultiblocks.completeNodeManipulatorMultiblock;
                 break;
@@ -429,30 +425,30 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
             MultiblockHelper.BlockInfo info = toBuild.get(v);
             if(info.block == RegisteredBlocks.blockNode || (info.block == RegisteredBlocks.blockStoneMachine && (info.meta == 0 || info.meta == 1 || info.meta == 3))
                     || info.block == Blocks.air || info.block == RegisteredBlocks.blockNodeManipulator) continue;
-            int absX = v.x + xCoord;
-            int absY = v.y + yCoord;
-            int absZ = v.z + zCoord;
-            worldObj.setBlock(absX, absY, absZ, Blocks.air, 0, 0);
-            worldObj.setBlock(absX, absY, absZ, info.block, info.meta, 0);
-            worldObj.markBlockForUpdate(absX, absY, absZ);
+            int absX = v.x + this.xCoord;
+            int absY = v.y + this.yCoord;
+            int absZ = v.z + this.zCoord;
+            this.worldObj.setBlock(absX, absY, absZ, Blocks.air, 0, 0);
+            this.worldObj.setBlock(absX, absY, absZ, info.block, info.meta, 0);
+            this.worldObj.markBlockForUpdate(absX, absY, absZ);
         }
-        NetworkRegistry.TargetPoint target = getTargetPoint(32);
-        TileManipulatorPillar pillar = (TileManipulatorPillar) worldObj.getTileEntity(xCoord + 1, yCoord, zCoord + 1); //wrong
+        NetworkRegistry.TargetPoint target = this.getTargetPoint(32);
+        TileManipulatorPillar pillar = (TileManipulatorPillar) this.worldObj.getTileEntity(this.xCoord + 1, this.yCoord, this.zCoord + 1); //wrong
         pillar.setOrientation((byte) 5);
         PacketStartAnimation animation = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, pillar.xCoord, pillar.yCoord, pillar.zCoord);
         PacketHandler.INSTANCE.sendToAllAround(animation, target);
-        TileManipulatorPillar pillar2 = (TileManipulatorPillar) worldObj.getTileEntity(xCoord - 1, yCoord, zCoord + 1);
+        TileManipulatorPillar pillar2 = (TileManipulatorPillar) this.worldObj.getTileEntity(this.xCoord - 1, this.yCoord, this.zCoord + 1);
         pillar2.setOrientation((byte) 3);
         animation = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, pillar2.xCoord, pillar2.yCoord, pillar2.zCoord);
         PacketHandler.INSTANCE.sendToAllAround(animation, target);
-        TileManipulatorPillar pillar3 = (TileManipulatorPillar) worldObj.getTileEntity(xCoord + 1, yCoord, zCoord - 1); //wrong
+        TileManipulatorPillar pillar3 = (TileManipulatorPillar) this.worldObj.getTileEntity(this.xCoord + 1, this.yCoord, this.zCoord - 1); //wrong
         pillar3.setOrientation((byte) 4);
         animation = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, pillar3.xCoord, pillar3.yCoord, pillar3.zCoord);
         PacketHandler.INSTANCE.sendToAllAround(animation, target);
-        animation = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, xCoord - 1, yCoord, zCoord - 1);
+        animation = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, this.xCoord - 1, this.yCoord, this.zCoord - 1);
         PacketHandler.INSTANCE.sendToAllAround(animation, target);
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        markDirty();
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        this.markDirty();
         this.isMultiblock = true;
     }
 
@@ -468,7 +464,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         if(tag.hasKey("multiblockType")) {
             this.multiblockType = MultiblockType.values()[tag.getInteger("multiblockType")];
         }
-        workAspectList.readFromNBT(tag, "workAspectList");
+        this.workAspectList.readFromNBT(tag, "workAspectList");
     }
 
     @Override
@@ -480,55 +476,55 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         tag.setBoolean("mBlockState", this.isMultiblock);
         tag.setBoolean("manipulating", this.isWorking);
         tag.setInteger("workTick", this.workTick);
-        if(multiblockType != null) {
+        if(this.multiblockType != null) {
             tag.setInteger("multiblockType", this.multiblockType.ordinal());
         }
-        workAspectList.writeToNBT(tag, "workAspectList");
+        this.workAspectList.writeToNBT(tag, "workAspectList");
         compound.setTag("Gadomancy", tag);
     }
 
     public boolean isInMultiblock() {
-        return isMultiblock;
+        return this.isMultiblock;
     }
 
     public boolean isMultiblockStructurePresent() {
-        return multiblockStructurePresent;
+        return this.multiblockStructurePresent;
     }
 
     public MultiblockType getMultiblockType() {
-        return multiblockType;
+        return this.multiblockType;
     }
 
     public boolean checkMultiblock() {
-        boolean prevState = isMultiblockStructurePresent();
+        boolean prevState = this.isMultiblockStructurePresent();
         if(prevState) { //If there is already a multiblock formed...
-            if(isInMultiblock()) { //If we were actually in multiblock before
-                if(multiblockType == null) {
-                    if(MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, RegisteredMultiblocks.completeNodeManipulatorMultiblock)) {
-                        multiblockType = MultiblockType.NODE_MANIPULATOR;
-                    } else if(MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, RegisteredMultiblocks.completeEldritchPortalCreator) && checkEldritchEyes(false)) {
-                        multiblockType = MultiblockType.E_PORTAL_CREATOR;
+            if(this.isInMultiblock()) { //If we were actually in multiblock before
+                if(this.multiblockType == null) {
+                    if(MultiblockHelper.isMultiblockPresent(this.worldObj, this.xCoord, this.yCoord, this.zCoord, RegisteredMultiblocks.completeNodeManipulatorMultiblock)) {
+                        this.multiblockType = MultiblockType.NODE_MANIPULATOR;
+                    } else if(MultiblockHelper.isMultiblockPresent(this.worldObj, this.xCoord, this.yCoord, this.zCoord, RegisteredMultiblocks.completeEldritchPortalCreator) && this.checkEldritchEyes(false)) {
+                        this.multiblockType = MultiblockType.E_PORTAL_CREATOR;
                     }
                 }
-                if(multiblockType == null) {
-                    breakMultiblock();
+                if(this.multiblockType == null) {
+                    this.breakMultiblock();
                     return false;
                 }
-                switch (multiblockType) {
+                switch (this.multiblockType) {
                     case NODE_MANIPULATOR:
-                        setMultiblockStructurePresent(MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, RegisteredMultiblocks.completeNodeManipulatorMultiblock), MultiblockType.NODE_MANIPULATOR);
+                        this.setMultiblockStructurePresent(MultiblockHelper.isMultiblockPresent(this.worldObj, this.xCoord, this.yCoord, this.zCoord, RegisteredMultiblocks.completeNodeManipulatorMultiblock), MultiblockType.NODE_MANIPULATOR);
                         break;
                     case E_PORTAL_CREATOR:
-                        setMultiblockStructurePresent(MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, RegisteredMultiblocks.completeEldritchPortalCreator) && checkEldritchEyes(false), MultiblockType.E_PORTAL_CREATOR);
+                        this.setMultiblockStructurePresent(MultiblockHelper.isMultiblockPresent(this.worldObj, this.xCoord, this.yCoord, this.zCoord, RegisteredMultiblocks.completeEldritchPortalCreator) && this.checkEldritchEyes(false), MultiblockType.E_PORTAL_CREATOR);
                         break;
                 }
             } else { //If we weren't in multiblock eventhough it would be possible.
-                checkForNonExistingMultiblock();
+                this.checkForNonExistingMultiblock();
             }
         } else { //If there was no multiblock formed before..
-            checkForNonExistingMultiblock();
+            this.checkForNonExistingMultiblock();
         }
-        return isMultiblockStructurePresent();
+        return this.isMultiblockStructurePresent();
     }
 
     private void setMultiblockStructurePresent(boolean present, MultiblockType type) {
@@ -544,11 +540,11 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         patternMap.put(RegisteredMultiblocks.incompleteNodeManipulatorMultiblock, MultiblockType.NODE_MANIPULATOR);
 
         for(MultiblockHelper.MultiblockPattern pattern : patternMap.keySet()) {
-            if(MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, pattern)) {
+            if(MultiblockHelper.isMultiblockPresent(this.worldObj, this.xCoord, this.yCoord, this.zCoord, pattern)) {
                 if(pattern == RegisteredMultiblocks.incompleteEldritchPortalCreator) {
-                    if(!checkEldritchEyes(false)) return;
+                    if(!this.checkEldritchEyes(false)) return;
                 }
-                setMultiblockStructurePresent(true, patternMap.get(pattern));
+                this.setMultiblockStructurePresent(true, patternMap.get(pattern));
                 return;
             }
         }
@@ -556,16 +552,16 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
 
     @Override
     public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3) {
-        return isInMultiblock() && super.canInsertItem(par1, par2ItemStack, par3);
+        return this.isInMultiblock() && super.canInsertItem(par1, par2ItemStack, par3);
     }
 
     public NetworkRegistry.TargetPoint getTargetPoint(double radius) {
-        return new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, radius);
+        return new NetworkRegistry.TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, radius);
     }
 
     @Override
     public AspectList getAspects() {
-        return workAspectList;
+        return this.workAspectList;
     }
 
     @Override
@@ -622,7 +618,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     @Override
     public void onWandStoppedUsing(ItemStack stack, World world, EntityPlayer player, int i) {}
 
-    public static enum MultiblockType {
+    public enum MultiblockType {
 
         NODE_MANIPULATOR(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR", RegisteredRecipes.costsNodeManipulatorMultiblock),
         E_PORTAL_CREATOR(Gadomancy.MODID.toUpperCase() + ".E_PORTAL_CREATOR", RegisteredRecipes.costsEldritchPortalCreatorMultiblock);
@@ -630,17 +626,17 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         private String research;
         private AspectList costs;
 
-        private MultiblockType(String research, AspectList costs) {
+        MultiblockType(String research, AspectList costs) {
             this.research = research;
             this.costs = costs;
         }
 
         public String getResearchNeeded() {
-            return research;
+            return this.research;
         }
 
         public AspectList getMultiblockCosts() {
-            return costs;
+            return this.costs;
         }
     }
 }

@@ -31,7 +31,7 @@ public class EntityAITasksWrapper extends EntityAITasks {
         this.golem = golem;
         this.original = tasks;
 
-        this.taskEntries = new WrapperList(original.taskEntries);
+        this.taskEntries = new WrapperList(this.original.taskEntries);
         this.original.taskEntries = this.taskEntries;
 
         this.scheduleUpdate = scheduleUpdate;
@@ -44,40 +44,40 @@ public class EntityAITasksWrapper extends EntityAITasks {
 
         @Override
         public void clear() {
-            if(!isLocked()) {
+            if(!EntityAITasksWrapper.this.isLocked()) {
                 super.clear();
-            } else if(scheduleUpdate) {
-                ((ExtendedGolemProperties)golem.getExtendedProperties(Gadomancy.MODID)).updateGolem();
+            } else if(EntityAITasksWrapper.this.scheduleUpdate) {
+                ((ExtendedGolemProperties) EntityAITasksWrapper.this.golem.getExtendedProperties(Gadomancy.MODID)).updateGolem();
             }
         }
     }
 
     public void unlock() {
-        locked = false;
+        this.locked = false;
     }
 
     public void lock() {
-        locked = true;
+        this.locked = true;
     }
 
     public boolean isLocked() {
-        return locked && GadomancyApi.getAdditionalGolemCore(golem) != null;
+        return this.locked && GadomancyApi.getAdditionalGolemCore(this.golem) != null;
     }
 
     @Override
     public void addTask(int index, EntityAIBase ai) {
-        if(!isLocked()) {
-            original.addTask(index, ai);
+        if(!this.isLocked()) {
+            this.original.addTask(index, ai);
         }
     }
 
     @Override
     public void removeTask(EntityAIBase ai) {
-        original.removeTask(ai);
+        this.original.removeTask(ai);
     }
 
     @Override
     public void onUpdateTasks() {
-        original.onUpdateTasks();
+        this.original.onUpdateTasks();
     }
 }

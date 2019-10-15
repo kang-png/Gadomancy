@@ -7,9 +7,6 @@ import makeo.gadomancy.common.utils.world.fake.FakeWorld;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
@@ -19,7 +16,6 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.client.renderers.entity.RenderWisp;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.monster.EntityWisp;
 
@@ -36,7 +32,7 @@ import java.util.Random;
  */
 public class ItemRenderFamiliar implements IItemRenderer {
 
-    private static EntityWisp ENTITY_WISP = null;
+    private static EntityWisp ENTITY_WISP;
     private float[] renderInfo = new float[5];
 
     @Override
@@ -62,26 +58,26 @@ public class ItemRenderFamiliar implements IItemRenderer {
         }
 
         try {
-            cleanActiveRenderInfo(type);
+            this.cleanActiveRenderInfo(type);
             GL11.glScalef(1.3F, 1.3F, 1.3F);
             if(ItemEtherealFamiliar.hasFamiliarAspect(item)) {
-                if(ENTITY_WISP == null) ENTITY_WISP = new EntityWisp(new FakeWorld());
-                ENTITY_WISP.ticksExisted = FamiliarHandlerClient.PartialEntityFamiliar.DUMMY_FAMILIAR.ticksExisted;
-                ENTITY_WISP.setType(ItemEtherealFamiliar.getFamiliarAspect(item).getTag());
-                renderEntityWispFor(null, ENTITY_WISP, 0, 0, 0, 0, 0);
+                if(ItemRenderFamiliar.ENTITY_WISP == null) ItemRenderFamiliar.ENTITY_WISP = new EntityWisp(new FakeWorld());
+                ItemRenderFamiliar.ENTITY_WISP.ticksExisted = FamiliarHandlerClient.PartialEntityFamiliar.DUMMY_FAMILIAR.ticksExisted;
+                ItemRenderFamiliar.ENTITY_WISP.setType(ItemEtherealFamiliar.getFamiliarAspect(item).getTag());
+                ItemRenderFamiliar.renderEntityWispFor(null, ItemRenderFamiliar.ENTITY_WISP, 0, 0, 0, 0, 0);
             }
         } finally {
-            restoreActiveRenderInfo();
+            this.restoreActiveRenderInfo();
         }
         GL11.glPopMatrix();
     }
 
     private void cleanActiveRenderInfo(ItemRenderType renderType) {
-        renderInfo[0] = ActiveRenderInfo.rotationX;
-        renderInfo[1] = ActiveRenderInfo.rotationXZ;
-        renderInfo[2] = ActiveRenderInfo.rotationZ;
-        renderInfo[3] = ActiveRenderInfo.rotationYZ;
-        renderInfo[4] = ActiveRenderInfo.rotationXY;
+        this.renderInfo[0] = ActiveRenderInfo.rotationX;
+        this.renderInfo[1] = ActiveRenderInfo.rotationXZ;
+        this.renderInfo[2] = ActiveRenderInfo.rotationZ;
+        this.renderInfo[3] = ActiveRenderInfo.rotationYZ;
+        this.renderInfo[4] = ActiveRenderInfo.rotationXY;
         switch (renderType) {
             case ENTITY:
                 break;
@@ -112,20 +108,20 @@ public class ItemRenderFamiliar implements IItemRenderer {
     }
 
     private void restoreActiveRenderInfo() {
-        if(renderInfo[0] != -1) ActiveRenderInfo.rotationX = renderInfo[0];
-        if(renderInfo[1] != -1) ActiveRenderInfo.rotationXZ = renderInfo[1];
-        if(renderInfo[2] != -1) ActiveRenderInfo.rotationZ = renderInfo[2];
-        if(renderInfo[3] != -1) ActiveRenderInfo.rotationYZ = renderInfo[3];
-        if(renderInfo[4] != -1) ActiveRenderInfo.rotationXY = renderInfo[4];
-        for (int i = 0; i < renderInfo.length; i++) {
-            renderInfo[i] = -1;
+        if(this.renderInfo[0] != -1) ActiveRenderInfo.rotationX = this.renderInfo[0];
+        if(this.renderInfo[1] != -1) ActiveRenderInfo.rotationXZ = this.renderInfo[1];
+        if(this.renderInfo[2] != -1) ActiveRenderInfo.rotationZ = this.renderInfo[2];
+        if(this.renderInfo[3] != -1) ActiveRenderInfo.rotationYZ = this.renderInfo[3];
+        if(this.renderInfo[4] != -1) ActiveRenderInfo.rotationXY = this.renderInfo[4];
+        for (int i = 0; i < this.renderInfo.length; i++) {
+            this.renderInfo[i] = -1;
         }
     }
 
-    private static int size1 = 0;
+    private static int size1;
     public static void renderEntityWispFor(EntityPlayer owner, EntityWisp wisp, double x, double y, double z, float fq, float pticks) {
-        if (size1 == 0) {
-            size1 = UtilsFX.getTextureSize("textures/misc/wisp.png", 64);
+        if (ItemRenderFamiliar.size1 == 0) {
+            ItemRenderFamiliar.size1 = UtilsFX.getTextureSize("textures/misc/wisp.png", 64);
         }
 
         float f1 = ActiveRenderInfo.rotationX;
@@ -180,13 +176,13 @@ public class ItemRenderFamiliar implements IItemRenderer {
 
         int i = wisp.ticksExisted % 16;
 
-        float size4 = size1 * 4;
-        float float_sizeMinus0_01 = size1 - 0.01F;
+        float size4 = ItemRenderFamiliar.size1 * 4;
+        float float_sizeMinus0_01 = ItemRenderFamiliar.size1 - 0.01F;
 
-        float x0 = (i % 4 * size1 + 0.0F) / size4;
-        float x1 = (i % 4 * size1 + float_sizeMinus0_01) / size4;
-        float x2 = (i / 4 * size1 + 0.0F) / size4;
-        float x3 = (i / 4 * size1 + float_sizeMinus0_01) / size4;
+        float x0 = (i % 4 * ItemRenderFamiliar.size1 + 0.0F) / size4;
+        float x1 = (i % 4 * ItemRenderFamiliar.size1 + float_sizeMinus0_01) / size4;
+        float x2 = (i / 4 * ItemRenderFamiliar.size1 + 0.0F) / size4;
+        float x3 = (i / 4 * ItemRenderFamiliar.size1 + float_sizeMinus0_01) / size4;
 
         tessellator.startDrawingQuads();
         tessellator.setBrightness(240);

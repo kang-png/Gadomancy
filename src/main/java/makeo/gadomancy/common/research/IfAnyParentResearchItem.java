@@ -20,25 +20,25 @@ import thaumcraft.client.gui.GuiResearchBrowser;
  */
 public class IfAnyParentResearchItem extends SimpleResearchItem {
 
-    private String[] anyParents = null;
+    private String[] anyParents;
 
     public IfAnyParentResearchItem(String key, int col, int row, int complex, ItemStack icon, AspectList tags) {
         super(key, col, row, complex, icon, tags);
-        setHidden();
+        this.setHidden();
     }
 
     public IfAnyParentResearchItem(String key, int col, int row, int complex, ResourceLocation icon, AspectList tags) {
         super(key, col, row, complex, icon, tags);
-        setHidden();
+        this.setHidden();
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public boolean isHidden() {
-        if(anyParents != null) {
+        if(this.anyParents != null) {
             boolean hasFoundAny = false;
             boolean doesAnyExist = false;
-            for(String res : anyParents) {
+            for(String res : this.anyParents) {
                 ResearchItem ri = ResearchCategories.getResearch(res);
                 if(ri != null) {
                     doesAnyExist = true;

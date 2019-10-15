@@ -23,7 +23,7 @@ public class FamiliarUndoRecipe extends ShapelessRecipes {
     public FamiliarUndoRecipe() {
         super(new ItemStack(RegisteredItems.itemPackage, 1, 2).setStackDisplayName(EnumChatFormatting.GOLD + "Used Familiar Items"), new ArrayList() {
             {
-                add(new ItemStack(RegisteredItems.itemFamiliar_old));
+                this.add(new ItemStack(RegisteredItems.itemFamiliar_old));
             }
         });
     }

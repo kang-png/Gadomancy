@@ -15,7 +15,7 @@ import thaumcraft.common.lib.research.ResearchManager;
 public class PrimalAspectList extends AspectList {
 
     public AspectList addOne(Aspect a) {
-        return add(a, 1);
+        return this.add(a, 1);
     }
 
     @Override

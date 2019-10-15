@@ -33,8 +33,11 @@ import thaumcraft.api.research.ScanResult;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.lib.utils.BlockUtils;
 
-import java.awt.Color;
-import java.util.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -53,18 +56,18 @@ public class EntityAuraCore extends EntityItem implements IEntityAdditionalSpawn
     private static final int GATHER_RANGE = 4;
     private static final int CLUSTER_WEIGHT = 10; //Counts as 10 'blocks' 'scanned' with the given aspect.
     public static final int CLUSTER_RANGE = 10; //Defines how close the clicked cluster has to be.
-    private static final int REQUIRED_BLOCKS = (int) Math.round(Math.pow(GATHER_RANGE*2+1, 3) * 0.15);
+    private static final int REQUIRED_BLOCKS = (int) Math.round(Math.pow(EntityAuraCore.GATHER_RANGE *2+1, 3) * 0.15);
 
     public PrimalAspectList internalAuraList = new PrimalAspectList();
-    public Orbital auraOrbital = null;
+    public Orbital auraOrbital;
 
     //Effect stuff ResidentSleeper
     private Aspect[] effectAspects = new Aspect[6];
     private Orbital.OrbitalRenderProperties[] effectProperties = new Orbital.OrbitalRenderProperties[6];
     private FXFlow[] flows = new FXFlow[6];
 
-    private String oldAspectDataSent = null;
-    public ChunkCoordinates activationLocation = null;
+    private String oldAspectDataSent;
+    public ChunkCoordinates activationLocation;
 
     private int blockCount;
 
@@ -76,43 +79,43 @@ public class EntityAuraCore extends EntityItem implements IEntityAdditionalSpawn
         super(world, x, y, z, stack);
         this.activationLocation = startingCoords;
         if(aspects.length == 1) {
-            this.internalAuraList.add(aspects[0], CLUSTER_WEIGHT * 6);
+            this.internalAuraList.add(aspects[0], EntityAuraCore.CLUSTER_WEIGHT * 6);
         } else {
             for(Aspect a : aspects) {
                 if(a == null) continue;
-                this.internalAuraList.add(a, CLUSTER_WEIGHT);
+                this.internalAuraList.add(a, EntityAuraCore.CLUSTER_WEIGHT);
             }
         }
-        sendAspectData(electParliament());
+        this.sendAspectData(this.electParliament());
 
-        initGathering();
+        this.initGathering();
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
-        getDataWatcher().addObjectByDataType(ModConfig.entityAuraCoreDatawatcherAspectsId, 4);
+        this.getDataWatcher().addObjectByDataType(ModConfig.entityAuraCoreDatawatcherAspectsId, 4);
 
-        getDataWatcher().updateObject(ModConfig.entityAuraCoreDatawatcherAspectsId, "");
+        this.getDataWatcher().updateObject(ModConfig.entityAuraCoreDatawatcherAspectsId, "");
     }
 
     @Override
     public void onUpdate() {
         super.onUpdate();
 
-        if(auraOrbital == null && !MiscUtils.getPositionVector(this).equals(Vector3.ZERO)
-                && worldObj.isRemote) {
-            auraOrbital = new Orbital(MiscUtils.getPositionVector(this), worldObj);
+        if(this.auraOrbital == null && !MiscUtils.getPositionVector(this).equals(Vector3.ZERO)
+                && this.worldObj.isRemote) {
+            this.auraOrbital = new Orbital(MiscUtils.getPositionVector(this), this.worldObj);
         }
-        if(auraOrbital != null && worldObj.isRemote) {
-            if(!auraOrbital.registered) {
-                EffectHandler.getInstance().registerOrbital(auraOrbital);
+        if(this.auraOrbital != null && this.worldObj.isRemote) {
+            if(!this.auraOrbital.registered) {
+                EffectHandler.getInstance().registerOrbital(this.auraOrbital);
             }
-            auraOrbital.updateCenter(MiscUtils.getPositionVector(this));
-            if(ticksExisted > PRE_GATHER_EFFECT_LENGTH) {
-                int part = ticksExisted - PRE_GATHER_EFFECT_LENGTH;
-                float perc = ((float) GATHER_EFFECT_LENGTH - part) / ((float) GATHER_EFFECT_LENGTH);
-                auraOrbital.reduceAllOffsets(perc);
+            this.auraOrbital.updateCenter(MiscUtils.getPositionVector(this));
+            if(this.ticksExisted > EntityAuraCore.PRE_GATHER_EFFECT_LENGTH) {
+                int part = this.ticksExisted - EntityAuraCore.PRE_GATHER_EFFECT_LENGTH;
+                float perc = ((float) EntityAuraCore.GATHER_EFFECT_LENGTH - part) / ((float) EntityAuraCore.GATHER_EFFECT_LENGTH);
+                this.auraOrbital.reduceAllOffsets(perc);
             }
         }
 
@@ -120,25 +123,25 @@ public class EntityAuraCore extends EntityItem implements IEntityAdditionalSpawn
             this.age = 0;
         }
 
-        if(!worldObj.isRemote) {
-            if(ticksExisted > GATHER_EFFECT_LENGTH) {
-                finishCore();
-            } else if(ticksExisted > PRE_GATHER_EFFECT_LENGTH) {
-                auraGatherCycle();
+        if(!this.worldObj.isRemote) {
+            if(this.ticksExisted > EntityAuraCore.GATHER_EFFECT_LENGTH) {
+                this.finishCore();
+            } else if(this.ticksExisted > EntityAuraCore.PRE_GATHER_EFFECT_LENGTH) {
+                this.auraGatherCycle();
             }
         } else {
-            boolean changed = recieveAspectData();
-            for (int i = 0; i < effectProperties.length; i++) {
-                Orbital.OrbitalRenderProperties node = effectProperties[i];
+            boolean changed = this.recieveAspectData();
+            for (int i = 0; i < this.effectProperties.length; i++) {
+                Orbital.OrbitalRenderProperties node = this.effectProperties[i];
                 if(node == null) {
-                    if(effectAspects[i] == null) {
+                    if(this.effectAspects[i] == null) {
                         continue;
                     }
 
                     node = new Orbital.OrbitalRenderProperties(Orbital.Axis.persisentRandomAxis(), 1D);//rand.nextDouble()
-                    node.setColor(new Color(effectAspects[i].getColor())).setTicksForFullCircle(120 + rand.nextInt(40));
-                    node.setOffsetTicks(rand.nextInt(80));
-                    Color c = getSubParticleColor(effectAspects[i]);
+                    node.setColor(new Color(this.effectAspects[i].getColor())).setTicksForFullCircle(120 + this.rand.nextInt(40));
+                    node.setOffsetTicks(this.rand.nextInt(80));
+                    Color c = this.getSubParticleColor(this.effectAspects[i]);
                     node.setSubParticleColor(c);
                     node.setParticleSize(0.1f);
                     node.setSubSizeRunnable(new Orbital.OrbitalSubSizeRunnable() {
@@ -148,44 +151,44 @@ public class EntityAuraCore extends EntityItem implements IEntityAdditionalSpawn
                         }
                     });
                     //node.setMultiplier()
-                    effectProperties[i] = node;
+                    this.effectProperties[i] = node;
                 }
 
-                if(flows[i] == null && ticksExisted < PRE_GATHER_EFFECT_LENGTH) {
-                    Vector3 v = new Vector3(activationLocation.posX + 0.5D, activationLocation.posY + 0.5D, activationLocation.posZ + 0.5D);
-                    flows[i] = EffectHandler.getInstance().effectFlow(worldObj,
+                if(this.flows[i] == null && this.ticksExisted < EntityAuraCore.PRE_GATHER_EFFECT_LENGTH) {
+                    Vector3 v = new Vector3(this.activationLocation.posX + 0.5D, this.activationLocation.posY + 0.5D, this.activationLocation.posZ + 0.5D);
+                    this.flows[i] = EffectHandler.getInstance().effectFlow(this.worldObj,
                             v, new FXFlow.EntityFlowProperties().setPolicy(EntityFXFlowPolicy.Policies.DEFAULT)
-                                    .setTarget(auraOrbital.getOrbitalStartPoints(node)[0])
-                                    .setColor(new Color(effectAspects[i].getColor())).setFading(getSubParticleColor(effectAspects[i])));
-                    flows[i].setLivingTicks(PRE_GATHER_EFFECT_LENGTH - ticksExisted);
+                                    .setTarget(this.auraOrbital.getOrbitalStartPoints(node)[0])
+                                    .setColor(new Color(this.effectAspects[i].getColor())).setFading(this.getSubParticleColor(this.effectAspects[i])));
+                    this.flows[i].setLivingTicks(EntityAuraCore.PRE_GATHER_EFFECT_LENGTH - this.ticksExisted);
                 }
 
-                if(flows[i] != null) flows[i].applyTarget(auraOrbital.getOrbitalStartPoints(node)[0]);
+                if(this.flows[i] != null) this.flows[i].applyTarget(this.auraOrbital.getOrbitalStartPoints(node)[0]);
 
                 if(changed) {
-                    if(effectProperties[i] != null) {
-                        effectProperties[i].setColor(new Color(effectAspects[i].getColor()));
-                        Color c = getSubParticleColor(effectAspects[i]);
+                    if(this.effectProperties[i] != null) {
+                        this.effectProperties[i].setColor(new Color(this.effectAspects[i].getColor()));
+                        Color c = this.getSubParticleColor(this.effectAspects[i]);
                         node.setSubParticleColor(c);
                     }
 
-                    if(flows[i] != null) {
-                        flows[i].setColor(getSubParticleColor(effectAspects[i]));
-                        flows[i].setColor(new Color(effectAspects[i].getColor()));
+                    if(this.flows[i] != null) {
+                        this.flows[i].setColor(this.getSubParticleColor(this.effectAspects[i]));
+                        this.flows[i].setColor(new Color(this.effectAspects[i].getColor()));
                     }
                 }
             }
-            if(ticksExisted >= (PRE_GATHER_EFFECT_LENGTH - 1)) {
-                if(auraOrbital.orbitalsSize() == 0) {
+            if(this.ticksExisted >= (EntityAuraCore.PRE_GATHER_EFFECT_LENGTH - 1)) {
+                if(this.auraOrbital.orbitalsSize() == 0) {
                     for (int i = 0; i < 6; i++) {
-                        Orbital.OrbitalRenderProperties node = effectProperties[i];
-                        auraOrbital.addOrbitalPoint(node);
+                        Orbital.OrbitalRenderProperties node = this.effectProperties[i];
+                        this.auraOrbital.addOrbitalPoint(node);
                     }
                 }
             } else {
                 for (int i = 0; i < 6; i++) {
-                    if(flows[i] != null) {
-                        flows[i].lastUpdateCall = System.currentTimeMillis();
+                    if(this.flows[i] != null) {
+                        this.flows[i].lastUpdateCall = System.currentTimeMillis();
                     }
                 }
             }
@@ -195,7 +198,7 @@ public class EntityAuraCore extends EntityItem implements IEntityAdditionalSpawn
     private void finishCore() {
         ItemStack auraCore = new ItemStack(RegisteredItems.itemAuraCore, 1, 0);
         boolean success = false;
-        if(blockCount >= REQUIRED_BLOCKS) {
+        if(this.blockCount >= EntityAuraCore.REQUIRED_BLOCKS) {
             double avg = ((double) this.internalAuraList.visSize()) / ((double) this.internalAuraList.size());
             Aspect[] sortedHtL = this.internalAuraList.getAspectsSortedAmount();
             AspectList al = new AspectList();
@@ -213,7 +216,7 @@ public class EntityAuraCore extends EntityItem implements IEntityAdditionalSpawn
                 rand.add(new AspectWRItem(al.getAmount(a), a));
             }
 
-            Aspect aura = ((AspectWRItem) WeightedRandom.getRandomItem(worldObj.rand, rand)).getAspect();
+            Aspect aura = ((AspectWRItem) WeightedRandom.getRandomItem(this.worldObj.rand, rand)).getAspect();
             for(ItemAuraCore.AuraCoreType type : ItemAuraCore.AuraCoreType.values()) {
                 if(type.isAspect() && type.getAspect().equals(aura)) {
                     RegisteredItems.itemAuraCore.setCoreType(auraCore, type);
@@ -224,99 +227,100 @@ public class EntityAuraCore extends EntityItem implements IEntityAdditionalSpawn
 
         PacketStartAnimation animationPacket;
         if(!success) {
-            animationPacket = new PacketStartAnimation(PacketStartAnimation.ID_SMOKE_SPREAD, (int) posX, (int) posY, (int) posZ, Float.floatToIntBits(2F));
+            animationPacket = new PacketStartAnimation(PacketStartAnimation.ID_SMOKE_SPREAD, (int) this.posX, (int) this.posY, (int) this.posZ, Float.floatToIntBits(2F));
         } else {
-            animationPacket = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, (int) posX, (int) posY, (int) posZ, (byte) 0);
+            animationPacket = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, (int) this.posX, (int) this.posY, (int) this.posZ, (byte) 0);
         }
-        PacketHandler.INSTANCE.sendToAllAround(animationPacket, MiscUtils.getTargetPoint(worldObj, this, 32));
+        PacketHandler.INSTANCE.sendToAllAround(animationPacket, MiscUtils.getTargetPoint(this.worldObj, this, 32));
 
-        EntityItem ei = new EntityItem(worldObj, posX, posY, posZ, auraCore);
+        EntityItem ei = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, auraCore);
         ei.motionX = 0;
         ei.motionY = 0;
         ei.motionZ = 0;
-        worldObj.spawnEntityInWorld(ei);
-        setDead();
+        this.worldObj.spawnEntityInWorld(ei);
+        this.setDead();
     }
 
     private List<ChunkCoordinates> markedLocations;
 
     private void initGathering() {
-        markedLocations = new ArrayList<ChunkCoordinates>((int) Math.pow(GATHER_RANGE*2+1, 3));
-        for(int x = -GATHER_RANGE; x <= GATHER_RANGE; x++) {
-            for(int y = -GATHER_RANGE; y <= GATHER_RANGE; y++) {
-                for(int z = -GATHER_RANGE; z <= GATHER_RANGE; z++) {
-                    markedLocations.add(new ChunkCoordinates(x, y, z));
+        this.markedLocations = new ArrayList<ChunkCoordinates>((int) Math.pow(EntityAuraCore.GATHER_RANGE *2+1, 3));
+        for(int x = -EntityAuraCore.GATHER_RANGE; x <= EntityAuraCore.GATHER_RANGE; x++) {
+            for(int y = -EntityAuraCore.GATHER_RANGE; y <= EntityAuraCore.GATHER_RANGE; y++) {
+                for(int z = -EntityAuraCore.GATHER_RANGE; z <= EntityAuraCore.GATHER_RANGE; z++) {
+                    this.markedLocations.add(new ChunkCoordinates(x, y, z));
                 }
             }
         }
-        Collections.shuffle(markedLocations, new Random(activationLocation.hashCode()));
+        Collections.shuffle(this.markedLocations, new Random(this.activationLocation.hashCode()));
     }
 
     private void auraGatherCycle() {
-        if(ticksExisted >= PRE_GATHER_EFFECT_LENGTH) {
-            int elapsed = ticksExisted - PRE_GATHER_EFFECT_LENGTH - 1;
-            float dist = (GATHER_EFFECT_LENGTH - PRE_GATHER_EFFECT_LENGTH) / (float)markedLocations.size();
+        if(this.ticksExisted >= EntityAuraCore.PRE_GATHER_EFFECT_LENGTH) {
+            int elapsed = this.ticksExisted - EntityAuraCore.PRE_GATHER_EFFECT_LENGTH - 1;
+            float dist = (EntityAuraCore.GATHER_EFFECT_LENGTH - EntityAuraCore.PRE_GATHER_EFFECT_LENGTH) / (float) this.markedLocations.size();
 
             int index = (int) (elapsed / dist);
             int lastIndex = (int)((elapsed - 1) / dist);
-            if(index < markedLocations.size() && index > lastIndex) {
+            if(index < this.markedLocations.size() && index > lastIndex) {
                 int diff = index - lastIndex;
                 for(int i = 0; i < diff; i++) {
-                    ChunkCoordinates coord = markedLocations.get(index + i);
+                    ChunkCoordinates coord = this.markedLocations.get(index + i);
 
-                    int x = (int) (coord.posX + posX);
-                    int y = (int) (coord.posY + posY);
-                    int z = (int) (coord.posZ + posZ);
+                    int x = (int) (coord.posX + this.posX);
+                    int y = (int) (coord.posY + this.posY);
+                    int z = (int) (coord.posZ + this.posZ);
 
-                    Block block = worldObj.getBlock(x, y, z);
+                    Block block = this.worldObj.getBlock(x, y, z);
                     if(block != Blocks.air) {
-                        int meta = worldObj.getBlockMetadata(x, y, z);
+                        int meta = this.worldObj.getBlockMetadata(x, y, z);
                         ScanResult result = null;
                         MovingObjectPosition pos = new MovingObjectPosition(x, y, z, ForgeDirection.UP.ordinal(),
                                 Vec3.createVectorHelper(0, 0, 0), true);
                         ItemStack is = null;
                         try {
-                            is = block.getPickBlock(pos, worldObj, x, y, z);
-                        } catch (Throwable tr) {}
+                            is = block.getPickBlock(pos, this.worldObj, x, y, z);
+                        } catch (Throwable ignored) {
+                        }
                         try {
                             if(is == null) {
                                 is = BlockUtils.createStackedBlock(block, meta);
                             }
+                        } catch (Exception ignored) {
                         }
-                        catch (Exception e) {}
                         try {
                             if (is == null) {
                                 result = new ScanResult((byte)1, Block.getIdFromBlock(block), meta, null, "");
                             } else {
                                 result = new ScanResult((byte)1, Item.getIdFromItem(is.getItem()), is.getItemDamage(), null, "");
                             }
+                        } catch (Exception ignored) {
                         }
-                        catch (Exception e) {}
 
                         if(result == null) continue; //We can't scan it BibleThump
 
-                        AspectList aspects = ScanManager.getScanAspects(result, worldObj);
+                        AspectList aspects = ScanManager.getScanAspects(result, this.worldObj);
                         if(aspects.size() > 0) {
-                            internalAuraList.add(aspects);
-                            blockCount++;
+                            this.internalAuraList.add(aspects);
+                            this.blockCount++;
                         }
                     }
                 }
             }
-            sendAspectData(electParliament());
+            this.sendAspectData(this.electParliament());
         }
     }
 
     private Aspect[] electParliament() {
         Aspect[] colors = new Aspect[6];
 
-        Aspect[] aspects = internalAuraList.getAspectsSortedAmount();
+        Aspect[] aspects = this.internalAuraList.getAspectsSortedAmount();
 
-        int totalSize = internalAuraList.visSize();
+        int totalSize = this.internalAuraList.visSize();
 
         int availableSeats = 6;
         for(Aspect aspect : aspects) {
-            float percent = internalAuraList.getAmount(aspect) / (float)totalSize;
+            float percent = this.internalAuraList.getAmount(aspect) / (float)totalSize;
 
             int seats = (int) Math.ceil(availableSeats * percent);
             seats = Math.min(seats, availableSeats);
@@ -362,22 +366,22 @@ public class EntityAuraCore extends EntityItem implements IEntityAdditionalSpawn
 
     //Client side only.
     private boolean recieveAspectData() {
-        String rec = getDataWatcher().getWatchableObjectString(ModConfig.entityAuraCoreDatawatcherAspectsId);
-        if(oldAspectDataSent == null || !this.oldAspectDataSent.equals(rec)) {
-            oldAspectDataSent = rec;
+        String rec = this.getDataWatcher().getWatchableObjectString(ModConfig.entityAuraCoreDatawatcherAspectsId);
+        if(this.oldAspectDataSent == null || !this.oldAspectDataSent.equals(rec)) {
+            this.oldAspectDataSent = rec;
         } else {
             return false;
         }
 
         if(rec.equals("")) return false;
 
-        String[] arr = rec.split(SPLIT);
+        String[] arr = rec.split(EntityAuraCore.SPLIT);
         if(arr.length != 6) throw new IllegalStateException("Server sent wrong Aura Data! '"
                 + rec + "' Please report this error to the mod authors!");
         for (int i = 0; i < arr.length; i++) {
             String s = arr[i];
             Aspect a = Aspect.getAspect(s);
-            effectAspects[i] = a;
+            this.effectAspects[i] = a;
         }
         return true;
     }
@@ -386,16 +390,16 @@ public class EntityAuraCore extends EntityItem implements IEntityAdditionalSpawn
         StringBuilder sb = new StringBuilder();
         for (Aspect aspect : aspects) {
             if (sb.length() > 0) {
-                sb.append(SPLIT);
+                sb.append(EntityAuraCore.SPLIT);
             }
             sb.append(aspect.getTag());
 
         }
         String toSend = sb.toString();
 
-        if(this.oldAspectDataSent == null || !this.oldAspectDataSent.equals(toSend)) {
+        if(!toSend.equals(this.oldAspectDataSent)) {
             this.oldAspectDataSent = toSend;
-            getDataWatcher().updateObject(ModConfig.entityAuraCoreDatawatcherAspectsId, toSend);
+            this.getDataWatcher().updateObject(ModConfig.entityAuraCoreDatawatcherAspectsId, toSend);
         }
     }
 
@@ -405,67 +409,67 @@ public class EntityAuraCore extends EntityItem implements IEntityAdditionalSpawn
 
         this.internalAuraList = new PrimalAspectList();
 
-        ticksExisted = compound.getInteger("ticksExisted");
+        this.ticksExisted = compound.getInteger("ticksExisted");
         NBTTagList list = compound.getTagList("auraList", compound.getId());
         for (int i = 0; i < list.tagCount(); i++) {
             NBTTagCompound cmp = list.getCompoundTagAt(i);
             if(cmp.hasKey("tag") && cmp.hasKey("amt")) {
-                internalAuraList.add(Aspect.getAspect(cmp.getString("tag")), cmp.getInteger("amt"));
+                this.internalAuraList.add(Aspect.getAspect(cmp.getString("tag")), cmp.getInteger("amt"));
             }
         }
         if(compound.hasKey("activationVecX") && compound.hasKey("activationVecY") && compound.hasKey("activationVecZ")) {
             int x = compound.getInteger("activationVecX");
             int y = compound.getInteger("activationVecY");
             int z = compound.getInteger("activationVecZ");
-            activationLocation = new ChunkCoordinates(x, y, z);
+            this.activationLocation = new ChunkCoordinates(x, y, z);
         }
-        sendAspectData(electParliament());
+        this.sendAspectData(this.electParliament());
 
-        initGathering();
+        this.initGathering();
 
-        blockCount = compound.getInteger("blockCount");
+        this.blockCount = compound.getInteger("blockCount");
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
 
-        compound.setInteger("ticksExisted", ticksExisted);
+        compound.setInteger("ticksExisted", this.ticksExisted);
         NBTTagList list = new NBTTagList();
-        for(Aspect a : internalAuraList.getAspects()) {
+        for(Aspect a : this.internalAuraList.getAspects()) {
             if(a == null) continue;
             NBTTagCompound aspectCompound = new NBTTagCompound();
             aspectCompound.setString("tag", a.getTag());
-            aspectCompound.setInteger("amt", internalAuraList.getAmount(a));
+            aspectCompound.setInteger("amt", this.internalAuraList.getAmount(a));
             list.appendTag(aspectCompound);
         }
         compound.setTag("auraList", list);
-        if(activationLocation != null) {
-            compound.setInteger("activationVecX", activationLocation.posX);
-            compound.setInteger("activationVecY", activationLocation.posY);
-            compound.setInteger("activationVecZ", activationLocation.posZ);
+        if(this.activationLocation != null) {
+            compound.setInteger("activationVecX", this.activationLocation.posX);
+            compound.setInteger("activationVecY", this.activationLocation.posY);
+            compound.setInteger("activationVecZ", this.activationLocation.posZ);
         }
 
-        compound.setInteger("blockCount", blockCount);
+        compound.setInteger("blockCount", this.blockCount);
     }
 
     @Override
     public void writeSpawnData(ByteBuf buffer) {
-        buffer.writeInt(ticksExisted);
+        buffer.writeInt(this.ticksExisted);
 
-        buffer.writeInt(activationLocation.posX);
-        buffer.writeInt(activationLocation.posY);
-        buffer.writeInt(activationLocation.posZ);
+        buffer.writeInt(this.activationLocation.posX);
+        buffer.writeInt(this.activationLocation.posY);
+        buffer.writeInt(this.activationLocation.posZ);
     }
 
     @Override
     public void readSpawnData(ByteBuf buffer) {
-        ticksExisted = buffer.readInt();
+        this.ticksExisted = buffer.readInt();
 
-        activationLocation = new ChunkCoordinates();
-        activationLocation.posX = buffer.readInt();
-        activationLocation.posY = buffer.readInt();
-        activationLocation.posZ = buffer.readInt();
+        this.activationLocation = new ChunkCoordinates();
+        this.activationLocation.posX = buffer.readInt();
+        this.activationLocation.posY = buffer.readInt();
+        this.activationLocation.posZ = buffer.readInt();
     }
 
     public static final class AspectWRItem extends WeightedRandom.Item {
@@ -478,7 +482,7 @@ public class EntityAuraCore extends EntityItem implements IEntityAdditionalSpawn
         }
 
         public Aspect getAspect() {
-            return aspect;
+            return this.aspect;
         }
     }
 

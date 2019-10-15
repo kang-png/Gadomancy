@@ -27,7 +27,7 @@ public class ItemFakeGolemPlacer extends Item {
 
     @SideOnly(Side.CLIENT)
     public int getRenderPasses(int metadata) {
-        return PLACER.getRenderPasses(metadata);
+        return ItemFakeGolemPlacer.PLACER.getRenderPasses(metadata);
     }
 
     @SideOnly(Side.CLIENT)
@@ -51,7 +51,7 @@ public class ItemFakeGolemPlacer extends Item {
 
     @Override
     public void registerIcons(IIconRegister ir) {
-        PLACER.registerIcons(ir);
+        ItemFakeGolemPlacer.PLACER.registerIcons(ir);
         for(AdditionalGolemType type : GadomancyApi.getAdditionalGolemTypes()) {
             type.registerIcons(ir);
         }
@@ -59,11 +59,11 @@ public class ItemFakeGolemPlacer extends Item {
 
     @Override
     public IIcon getIcon(ItemStack stack, int pass) {
-        AdditionalGolemType type = getAdditonalType(stack);
+        AdditionalGolemType type = this.getAdditonalType(stack);
         if(type != null) {
             return type.getPlacerItem().getIcon(stack, pass);
         }
-        return PLACER.getIcon(stack, pass);
+        return ItemFakeGolemPlacer.PLACER.getIcon(stack, pass);
     }
 
     private AdditionalGolemType getAdditonalType(ItemStack stack) {

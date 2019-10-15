@@ -7,11 +7,11 @@ import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.api.internal.IApiHandler;
 import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.aura.AuraEffectHandler;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.entities.golems.ItemAdditionalGolemPlacer;
 import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.aura.AuraEffectHandler;
 import makeo.gadomancy.common.utils.GolemEnumHelper;
 import makeo.gadomancy.common.utils.NBTHelper;
 import makeo.gadomancy.common.utils.StringHelper;
@@ -44,7 +44,7 @@ public class DefaultApiHandler implements IApiHandler {
     @Override
     public boolean registerAdditionalGolemType(String name, String modId, AdditionalGolemType newType) {
         String uniqueName = name.toUpperCase();
-        if(!additionalGolemTypes.containsKey(uniqueName)) {
+        if(!DefaultApiHandler.additionalGolemTypes.containsKey(uniqueName)) {
             GolemEnumHelper.addGolemType(uniqueName, newType);
 
             ItemAdditionalGolemPlacer placerItem = new ItemAdditionalGolemPlacer(newType);
@@ -52,7 +52,7 @@ public class DefaultApiHandler implements IApiHandler {
             newType.setModId(modId);
             newType.setPlacerItem(placerItem);
 
-            additionalGolemTypes.put(uniqueName, newType);
+            DefaultApiHandler.additionalGolemTypes.put(uniqueName, newType);
             return true;
         }
         return false;
@@ -60,12 +60,12 @@ public class DefaultApiHandler implements IApiHandler {
 
     @Override
     public AdditionalGolemType getAdditionalGolemType(String name) {
-        return additionalGolemTypes.get(name.toUpperCase());
+        return DefaultApiHandler.additionalGolemTypes.get(name.toUpperCase());
     }
 
     @Override
     public List<AdditionalGolemType> getAdditionalGolemTypes() {
-        return new ArrayList<AdditionalGolemType>(additionalGolemTypes.values());
+        return new ArrayList<AdditionalGolemType>(DefaultApiHandler.additionalGolemTypes.values());
     }
 
     private static Map<String, AdditionalGolemCore> additionalGolemCores = new HashMap<String, AdditionalGolemCore>();
@@ -74,7 +74,7 @@ public class DefaultApiHandler implements IApiHandler {
     public AdditionalGolemCore getAdditionalGolemCore(EntityGolemBase golem) {
         String coreName = golem.getDataWatcher().getWatchableObjectString(ModConfig.golemDatawatcherId);
         if(!coreName.isEmpty()) {
-            return additionalGolemCores.get(coreName);
+            return DefaultApiHandler.additionalGolemCores.get(coreName);
         }
         return null;
     }
@@ -84,7 +84,7 @@ public class DefaultApiHandler implements IApiHandler {
         if(NBTHelper.hasPersistentData(placer)) {
             NBTTagCompound persistent = NBTHelper.getPersistentData(placer);
             if(persistent.hasKey("Core")) {
-                return additionalGolemCores.get(persistent.getString("Core"));
+                return DefaultApiHandler.additionalGolemCores.get(persistent.getString("Core"));
             }
         }
         return null;
@@ -92,9 +92,9 @@ public class DefaultApiHandler implements IApiHandler {
 
     @Override
     public boolean registerAdditionalGolemCore(String name, AdditionalGolemCore core) {
-        if(!additionalGolemCores.containsKey(name)) {
+        if(!DefaultApiHandler.additionalGolemCores.containsKey(name)) {
             core.setName(name);
-            additionalGolemCores.put(name, core);
+            DefaultApiHandler.additionalGolemCores.put(name, core);
             return true;
         }
         return false;
@@ -120,7 +120,7 @@ public class DefaultApiHandler implements IApiHandler {
 
     @Override
     public List<AdditionalGolemCore> getAdditionalGolemCores() {
-        return new ArrayList<AdditionalGolemCore>(additionalGolemCores.values());
+        return new ArrayList<AdditionalGolemCore>(DefaultApiHandler.additionalGolemCores.values());
     }
 
     @Override
@@ -132,7 +132,7 @@ public class DefaultApiHandler implements IApiHandler {
     public void registerAdditionalAuraEffect(Aspect aspect, AuraEffect effect) {
         if(aspect == null || effect == null) return;
         if(AuraEffectHandler.registeredEffects.containsKey(aspect)) {
-            log.warn("AuraEffect for '" + aspect.getTag() + "' is already registered!");
+            DefaultApiHandler.log.warn("AuraEffect for '" + aspect.getTag() + "' is already registered!");
         } else {
             AuraEffectHandler.registeredEffects.put(aspect, effect);
         }

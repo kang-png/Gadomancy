@@ -22,16 +22,16 @@ public class NBTHelper {
     private NBTHelper() {}
 
     public static NBTTagCompound getPersistentData(Entity entity) {
-        return getPersistentData(entity.getEntityData());
+        return NBTHelper.getPersistentData(entity.getEntityData());
     }
 
     public static NBTTagCompound getPersistentData(ItemStack item) {
-        return getPersistentData(getData(item));
+        return NBTHelper.getPersistentData(NBTHelper.getData(item));
     }
 
     public static NBTTagCompound getPersistentData(NBTTagCompound base) {
         NBTTagCompound compound;
-        if(hasPersistentData(base)) {
+        if(NBTHelper.hasPersistentData(base)) {
             compound = base.getCompoundTag(Gadomancy.MODID);
         } else {
             compound = new NBTTagCompound();
@@ -41,11 +41,11 @@ public class NBTHelper {
     }
 
     public static boolean hasPersistentData(Entity entity) {
-        return hasPersistentData(entity.getEntityData());
+        return NBTHelper.hasPersistentData(entity.getEntityData());
     }
 
     public static boolean hasPersistentData(ItemStack item) {
-        return item.getTagCompound() != null && hasPersistentData(item.getTagCompound());
+        return item.getTagCompound() != null && NBTHelper.hasPersistentData(item.getTagCompound());
     }
 
     public static boolean hasPersistentData(NBTTagCompound base) {
@@ -55,10 +55,10 @@ public class NBTHelper {
 
 
     public static void removePersistentData(Entity entity) {
-        removePersistentData(entity.getEntityData());
+        NBTHelper.removePersistentData(entity.getEntityData());
     }
     public static void removePersistentData(ItemStack item) {
-        if(item.hasTagCompound()) removePersistentData(item.getTagCompound());
+        if(item.hasTagCompound()) NBTHelper.removePersistentData(item.getTagCompound());
     }
 
     public static void removePersistentData(NBTTagCompound base) {
@@ -92,7 +92,7 @@ public class NBTHelper {
     }
 
     public static AspectList getAspectList(NBTTagCompound compound, String tag) {
-        return getAspectList(compound, tag, null);
+        return NBTHelper.getAspectList(compound, tag, null);
     }
 
     public static AspectList getAspectList(NBTTagCompound compound, String tag, AspectList defaultValue) {
@@ -117,11 +117,11 @@ public class NBTHelper {
     }
 
     public static ItemStack getStack(NBTTagCompound compound, String tag) {
-        return getStack(compound, tag, null);
+        return NBTHelper.getStack(compound, tag, null);
     }
 
     public static UUID getUUID(NBTTagCompound compound, String tag) {
-        return getUUID(compound, tag, null);
+        return NBTHelper.getUUID(compound, tag, null);
     }
 
     //Get tags with default value

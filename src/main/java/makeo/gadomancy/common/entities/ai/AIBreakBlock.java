@@ -18,7 +18,6 @@ import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.Marker;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -39,10 +38,10 @@ public class AIBreakBlock extends EntityAIBase {
     private AdvancedFakePlayer player;
 
     private Marker currentMarker;
-    private boolean hasValidTool = false;
+    private boolean hasValidTool;
 
-    private Map<Marker, Integer> blacklist = new HashMap<Marker, Integer>();
-    private int blacklistCount = 0;
+    private Map<Marker, Integer> blacklist = new HashMap<>();
+    private int blacklistCount;
 
     public AIBreakBlock(EntityGolemBase golem) {
         this.golem = golem;
@@ -51,76 +50,73 @@ public class AIBreakBlock extends EntityAIBase {
             this.player = new GolemFakePlayer((WorldServer) golem.worldObj, golem);
         }
 
-        setMutexBits(3);
+        this.setMutexBits(3);
     }
 
     @Override
     public boolean shouldExecute() {
-        if (golem.ticksExisted % Config.golemDelay > 0) {
+        if (this.golem.ticksExisted % Config.golemDelay > 0) {
             return false;
         }
 
-        currentMarker = getNextMarker();
+        this.currentMarker = this.getNextMarker();
 
-        if(!hasValidTool()) {
-            if(isInHomeRange()) {
-                return true;
-            }
-            return false;
+        if(!this.hasValidTool()) {
+            return this.isInHomeRange();
         }
 
-        return currentMarker != null;
+        return this.currentMarker != null;
     }
 
-    private int count = 0;
-    private int clickCount = 0;
+    private int count;
+    private int clickCount;
 
     @Override
     public boolean continueExecuting() {
-        if(hasValidTool) {
-            if(!hasBlock(currentMarker)) {
+        if(this.hasValidTool) {
+            if(!this.hasBlock(this.currentMarker)) {
                 return false;
             }
 
-            if(distanceSquaredToGolem(currentMarker) < 1) {
-                if(golem.getCarried() == null) {
-                    golem.startActionTimer();
+            if(this.distanceSquaredToGolem(this.currentMarker) < 1) {
+                if(this.golem.getCarried() == null) {
+                    this.golem.startActionTimer();
                 } else {
-                    golem.startRightArmTimer();
+                    this.golem.startRightArmTimer();
                 }
 
-                if(clickCount % (7 - Math.min(6, golem.getGolemStrength())) == 0) {
-                    doLeftClick();
+                if(this.clickCount % (7 - Math.min(6, this.golem.getGolemStrength())) == 0) {
+                    this.doLeftClick();
                 }
-                clickCount++;
+                this.clickCount++;
 
 
-                golem.getLookHelper().setLookPosition(currentMarker.x + 0.5D, currentMarker.y + 0.5D, currentMarker.z + 0.5D, 30.0F, 30.0F);
+                this.golem.getLookHelper().setLookPosition(this.currentMarker.x + 0.5D, this.currentMarker.y + 0.5D, this.currentMarker.z + 0.5D, 30.0F, 30.0F);
 
-                count = 0;
+                this.count = 0;
             } else {
-                if(count == 20) {
-                    count = 0;
+                if(this.count == 20) {
+                    this.count = 0;
 
-                    ForgeDirection dir = ForgeDirection.getOrientation(currentMarker.side);
-                    boolean path = golem.getNavigator().tryMoveToXYZ(currentMarker.x + 0.5D + dir.offsetX, currentMarker.y + 0.5D + dir.offsetY, currentMarker.z + 0.5D + dir.offsetZ, golem.getAIMoveSpeed());
+                    ForgeDirection dir = ForgeDirection.getOrientation(this.currentMarker.side);
+                    boolean path = this.golem.getNavigator().tryMoveToXYZ(this.currentMarker.x + 0.5D + dir.offsetX, this.currentMarker.y + 0.5D + dir.offsetY, this.currentMarker.z + 0.5D + dir.offsetZ, this.golem.getAIMoveSpeed());
                     if(!path) {
-                        if (blacklistCount > 10) {
-                            blacklist.put(currentMarker, golem.ticksExisted);
+                        if (this.blacklistCount > 10) {
+                            this.blacklist.put(this.currentMarker, this.golem.ticksExisted);
                             return false;
                         }
-                        blacklistCount++;
+                        this.blacklistCount++;
                     }
                 }
-                count++;
-                clickCount = 0;
+                this.count++;
+                this.clickCount = 0;
             }
         } else {
-            if(golem.ticksExisted % Config.golemDelay > 0) {
-                if(isInHomeRange()) {
-                    IInventory homeChest = getHomeChest();
+            if(this.golem.ticksExisted % Config.golemDelay > 0) {
+                if(this.isInHomeRange()) {
+                    IInventory homeChest = this.getHomeChest();
                     if(homeChest != null) {
-                        trySwitchTool(homeChest);
+                        this.trySwitchTool(homeChest);
                     }
                 } else {
                     return false;
@@ -133,53 +129,48 @@ public class AIBreakBlock extends EntityAIBase {
 
     @Override
     public void resetTask() {
-        currentMarker = null;
-        blacklistCount = 0;
-        cancelLeftClick();
+        this.currentMarker = null;
+        this.blacklistCount = 0;
+        this.cancelLeftClick();
     }
 
-    public void doLeftClick() {
-        ItemStack tool = golem.getCarried();
-        player.setHeldItem(tool);
+    private void doLeftClick() {
+        ItemStack tool = this.golem.getCarried();
+        this.player.setHeldItem(tool);
 
-        player.theItemInWorldManager.updateBlockRemoving();
+        this.player.theItemInWorldManager.updateBlockRemoving();
 
         if (this.player.theItemInWorldManager.durabilityRemainingOnBlock == -1 || !this.player.theItemInWorldManager.isDestroyingBlock)
         {
-            this.player.theItemInWorldManager.onBlockClicked(currentMarker.x, currentMarker.y, currentMarker.z, currentMarker.side);
+            this.player.theItemInWorldManager.onBlockClicked(this.currentMarker.x, this.currentMarker.y, this.currentMarker.z, this.currentMarker.side);
         }
         else if (this.player.theItemInWorldManager.durabilityRemainingOnBlock >= 9)
         {
-            this.player.theItemInWorldManager.uncheckedTryHarvestBlock(currentMarker.x, currentMarker.y, currentMarker.z);
+            this.player.theItemInWorldManager.uncheckedTryHarvestBlock(this.currentMarker.x, this.currentMarker.y, this.currentMarker.z);
             this.player.theItemInWorldManager.durabilityRemainingOnBlock = -1;
 
             if (tool != null) {
-                Block block = golem.worldObj.getBlock(currentMarker.x, currentMarker.y, currentMarker.z);
-                tool.getItem().onBlockDestroyed(tool, golem.worldObj, block, currentMarker.x, currentMarker.y, currentMarker.z, this.player);
+                Block block = this.golem.worldObj.getBlock(this.currentMarker.x, this.currentMarker.y, this.currentMarker.z);
+                tool.getItem().onBlockDestroyed(tool, this.golem.worldObj, block, this.currentMarker.x, this.currentMarker.y, this.currentMarker.z, this.player);
             }
         }
-        hasValidTool();
-        golem.updateCarried();
+        this.hasValidTool();
+        this.golem.updateCarried();
     }
 
-    public void cancelLeftClick() {
-        ItemInWorldManager manager = player.theItemInWorldManager;
+    private void cancelLeftClick() {
+        ItemInWorldManager manager = this.player.theItemInWorldManager;
         if(manager.isDestroyingBlock)
-            player.theItemInWorldManager.cancelDestroyingBlock(manager.partiallyDestroyedBlockX, manager.partiallyDestroyedBlockY, manager.partiallyDestroyedBlockZ);
+            this.player.theItemInWorldManager.cancelDestroyingBlock(manager.partiallyDestroyedBlockX, manager.partiallyDestroyedBlockY, manager.partiallyDestroyedBlockZ);
     }
 
     private Marker getNextMarker() {
-        List<Marker> markers = golem.getMarkers();
+        List<Marker> markers = this.golem.getMarkers();
 
-        Collections.sort(markers, new Comparator<Marker>() {
-            @Override
-            public int compare(Marker m1, Marker m2) {
-                return (int) (distanceSquaredToGolem(m1) - distanceSquaredToGolem(m2));
-            }
-        });
+        markers.sort(Comparator.comparingDouble(this::distanceSquaredToGolem));
 
         for(Marker marker : markers) {
-            if(isValid(marker)) {
+            if(this.isValid(marker)) {
                 return marker;
             }
         }
@@ -187,7 +178,7 @@ public class AIBreakBlock extends EntityAIBase {
     }
 
     private double distanceSquaredToGolem(Marker marker) {
-        return distanceSquaredToGolem(marker.x, marker.y, marker.z, marker.side);
+        return this.distanceSquaredToGolem(marker.x, marker.y, marker.z, marker.side);
     }
 
     private double distanceSquaredToGolem(double x, double y, double z, int facing) {
@@ -197,60 +188,57 @@ public class AIBreakBlock extends EntityAIBase {
     }
 
     private boolean isInHomeRange() {
-        ChunkCoordinates home = golem.getHomePosition();
-        return golem.getDistanceSq(home.posX + 0.5, home.posY + 0.5, home.posZ + 0.5) < 3;
+        ChunkCoordinates home = this.golem.getHomePosition();
+        return this.golem.getDistanceSq(home.posX + 0.5, home.posY + 0.5, home.posZ + 0.5) < 3;
     }
 
     private boolean hasBlock(Marker marker) {
-        return marker != null && !golem.worldObj.isAirBlock(marker.x, marker.y, marker.z);
+        return marker != null && !this.golem.worldObj.isAirBlock(marker.x, marker.y, marker.z);
     }
 
     private boolean isValid(Marker marker) {
         if(marker == null) return false;
 
-        if(blacklist.containsKey(marker)) {
-            if(blacklist.get(marker) + BLACKLIST_TICKS >= golem.ticksExisted) {
+        if(this.blacklist.containsKey(marker)) {
+            if(this.blacklist.get(marker) + AIBreakBlock.BLACKLIST_TICKS >= this.golem.ticksExisted) {
                 return false;
             } else {
-                blacklist.remove(marker);
+                this.blacklist.remove(marker);
             }
         }
 
-        float range = golem.getRange();
-        if(golem.getHomePosition().getDistanceSquared(marker.x, marker.y, marker.z) > range * range) {
+        float range = this.golem.getRange();
+        if(this.golem.getHomePosition().getDistanceSquared(marker.x, marker.y, marker.z) > range * range) {
             return false;
         }
 
-        Block block = golem.worldObj.getBlock(marker.x, marker.y, marker.z);
+        Block block = this.golem.worldObj.getBlock(marker.x, marker.y, marker.z);
 
-        if(!block.isAir(golem.worldObj, marker.x, marker.y, marker.z)) {
+        if(!block.isAir(this.golem.worldObj, marker.x, marker.y, marker.z)) {
             ItemStack blockStack = new ItemStack(Item.getItemFromBlock(block));
             boolean empty = true;
-            for(int slot = 0; slot < golem.inventory.slotCount; slot++) {
-                ItemStack stack = golem.inventory.inventory[slot];
+            for(int slot = 0; slot < this.golem.inventory.slotCount; slot++) {
+                ItemStack stack = this.golem.inventory.inventory[slot];
 
                 if(stack != null && Block.getBlockFromItem(stack.getItem()) != Blocks.air) {
                     empty = false;
-                    if((marker.color == -1 || marker.color == golem.colors[slot])
+                    if((marker.color == -1 || marker.color == this.golem.colors[slot])
                             && InventoryUtils.areItemStacksEqual(blockStack, stack,
-                            golem.checkOreDict(), golem.ignoreDamage(), golem.ignoreNBT())) {
+                            this.golem.checkOreDict(), this.golem.ignoreDamage(), this.golem.ignoreNBT())) {
                         return true;
                     }
                 }
             }
-
-            if(empty) {
-                return true;
-            }
+            return empty;
         }
         return false;
     }
 
     private IInventory getHomeChest() {
-        ChunkCoordinates coords = golem.getHomePosition();
-        ForgeDirection facing = ForgeDirection.getOrientation(golem.homeFacing);
-        TileEntity tile = golem.worldObj.getTileEntity(coords.posX - facing.offsetX, coords.posY - facing.offsetY, coords.posZ - facing.offsetZ);
-        if(tile != null && tile instanceof IInventory) {
+        ChunkCoordinates coords = this.golem.getHomePosition();
+        ForgeDirection facing = ForgeDirection.getOrientation(this.golem.homeFacing);
+        TileEntity tile = this.golem.worldObj.getTileEntity(coords.posX - facing.offsetX, coords.posY - facing.offsetY, coords.posZ - facing.offsetZ);
+        if (tile instanceof IInventory) {
             return (IInventory) tile;
         }
         return null;
@@ -260,32 +248,32 @@ public class AIBreakBlock extends EntityAIBase {
         for(int slot = 0; slot < inv.getSizeInventory(); slot++) {
             ItemStack stack = inv.getStackInSlot(slot);
 
-            ItemStack current = golem.getCarried();
+            ItemStack current = this.golem.getCarried();
             if(current != null) {
-                current = InventoryUtils.insertStack(inv, current, golem.homeFacing, true);
+                current = InventoryUtils.insertStack(inv, current, this.golem.homeFacing, true);
                 if(current != null) {
                     return;
                 }
-                golem.setCarried(null);
+                this.golem.setCarried(null);
 
-                if(hasValidTool()) {
-                    hasValidTool = true;
+                if(this.hasValidTool()) {
+                    this.hasValidTool = true;
                     return;
                 }
             }
 
-            if(stack != null && isValidTool(stack)) {
+            if(stack != null && this.isValidTool(stack)) {
                 stack = stack.copy();
 
                 stack.stackSize = 1;
-                stack = InventoryUtils.extractStack(inv, stack, golem.homeFacing, false, false, false, true);
+                stack = InventoryUtils.extractStack(inv, stack, this.golem.homeFacing, false, false, false, true);
 
                 if(stack != null) {
-                    golem.setCarried(stack);
-                    golem.updateCarried();
-                    player.setHeldItem(stack);
+                    this.golem.setCarried(stack);
+                    this.golem.updateCarried();
+                    this.player.setHeldItem(stack);
 
-                    hasValidTool = true;
+                    this.hasValidTool = true;
                     break;
                 }
             }
@@ -293,17 +281,17 @@ public class AIBreakBlock extends EntityAIBase {
     }
 
     private boolean hasValidTool() {
-        hasValidTool = isValidTool(golem.getCarried());
-        return hasValidTool;
+        this.hasValidTool = this.isValidTool(this.golem.getCarried());
+        return this.hasValidTool;
     }
 
     private boolean isValidTool(ItemStack tool) {
         if(tool == null || Block.getBlockFromItem(tool.getItem()) == Blocks.air) {
             boolean empty = true;
-            for(int slot = 0; slot < golem.inventory.slotCount; slot++) {
-                ItemStack stack = golem.inventory.inventory[slot];
+            for(int slot = 0; slot < this.golem.inventory.slotCount; slot++) {
+                ItemStack stack = this.golem.inventory.inventory[slot];
                 if(stack != null && Block.getBlockFromItem(stack.getItem()) == Blocks.air
-                        && (currentMarker == null || golem.colors[slot] == -1 || currentMarker.color == -1 || golem.colors[slot] == currentMarker.color)) {
+                        && (this.currentMarker == null || this.golem.colors[slot] == -1 || this.currentMarker.color == -1 || this.golem.colors[slot] == this.currentMarker.color)) {
                     empty = false;
 
                     if(tool == null) {
@@ -311,15 +299,12 @@ public class AIBreakBlock extends EntityAIBase {
                     }
 
                     if(InventoryUtils.areItemStacksEqual(tool, stack,
-                                golem.checkOreDict(), golem.ignoreDamage(), golem.ignoreNBT())) {
+                            this.golem.checkOreDict(), this.golem.ignoreDamage(), this.golem.ignoreNBT())) {
                         return true;
                     }
                 }
             }
-
-            if(empty && tool == null) {
-                return true;
-            }
+            return empty && tool == null;
         }
         return false;
     }

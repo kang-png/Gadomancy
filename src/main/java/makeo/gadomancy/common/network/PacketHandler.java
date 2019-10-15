@@ -21,21 +21,21 @@ public class PacketHandler {
         int id = 0;
 
         //Random stuff
-        INSTANCE.registerMessage(PacketUpdateGolemTypeOrder.class, PacketUpdateGolemTypeOrder.class, id++, Side.CLIENT);
-        INSTANCE.registerMessage(PacketStartAnimation.class, PacketStartAnimation.class, id++, Side.CLIENT);
-        INSTANCE.registerMessage(PacketAnimationAbsorb.class, PacketAnimationAbsorb.class, id++, Side.CLIENT);
+        PacketHandler.INSTANCE.registerMessage(PacketUpdateGolemTypeOrder.class, PacketUpdateGolemTypeOrder.class, id++, Side.CLIENT);
+        PacketHandler.INSTANCE.registerMessage(PacketStartAnimation.class, PacketStartAnimation.class, id++, Side.CLIENT);
+        PacketHandler.INSTANCE.registerMessage(PacketAnimationAbsorb.class, PacketAnimationAbsorb.class, id++, Side.CLIENT);
 
         //Using TC Clientside content
-        INSTANCE.registerMessage(PacketTCNodeBolt.class, PacketTCNodeBolt.class, id++, Side.CLIENT);
-        INSTANCE.registerMessage(PacketTCWispyLine.class, PacketTCWispyLine.class, id++, Side.CLIENT);
-        INSTANCE.registerMessage(PacketTCNotificationText.class, PacketTCNotificationText.class, id++, Side.CLIENT);
+        PacketHandler.INSTANCE.registerMessage(PacketTCNodeBolt.class, PacketTCNodeBolt.class, id++, Side.CLIENT);
+        PacketHandler.INSTANCE.registerMessage(PacketTCWispyLine.class, PacketTCWispyLine.class, id++, Side.CLIENT);
+        PacketHandler.INSTANCE.registerMessage(PacketTCNotificationText.class, PacketTCNotificationText.class, id++, Side.CLIENT);
 
         //Familiar
-        INSTANCE.registerMessage(PacketFamiliarBolt.class, PacketFamiliarBolt.class, id++, Side.CLIENT);
+        PacketHandler.INSTANCE.registerMessage(PacketFamiliarBolt.class, PacketFamiliarBolt.class, id++, Side.CLIENT);
 
         //Sync data
-        INSTANCE.registerMessage(PacketSyncConfigs.class, PacketSyncConfigs.class, id++, Side.CLIENT);
-        INSTANCE.registerMessage(PacketSyncData.class, PacketSyncData.class, id++, Side.CLIENT);
-        INSTANCE.registerMessage(PacketUpdateOnlineState.class, PacketUpdateOnlineState.class, id++, Side.CLIENT);
+        PacketHandler.INSTANCE.registerMessage(PacketSyncConfigs.class, PacketSyncConfigs.class, id++, Side.CLIENT);
+        PacketHandler.INSTANCE.registerMessage(PacketSyncData.class, PacketSyncData.class, id++, Side.CLIENT);
+        PacketHandler.INSTANCE.registerMessage(PacketUpdateOnlineState.class, PacketUpdateOnlineState.class, id++, Side.CLIENT);
     }
 }

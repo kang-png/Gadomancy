@@ -20,24 +20,24 @@ public class AISit extends EntityAIBase {
     public AISit(EntityGolemBase golem) {
         this.golem = golem;
         this.properties = (ExtendedGolemProperties) golem.getExtendedProperties(Gadomancy.MODID);
-        setMutexBits(7);
+        this.setMutexBits(7);
     }
 
     @Override
     public boolean shouldExecute() {
-        return properties.isSitting();
+        return this.properties.isSitting();
     }
 
     @Override
     public void startExecuting() {
-        golem.getNavigator().clearPathEntity();
+        this.golem.getNavigator().clearPathEntity();
     }
 
     @Override
     public boolean continueExecuting() {
-        golem.setTarget(null);
+        this.golem.setTarget(null);
 
-        golem.getLookHelper().setLookPosition(0, 0, 0, 0, -45);
-        return properties.isSitting();
+        this.golem.getLookHelper().setLookPosition(0, 0, 0, 0, -45);
+        return this.properties.isSitting();
     }
 }

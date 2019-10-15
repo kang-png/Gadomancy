@@ -32,52 +32,52 @@ public class GolemFakePlayer extends AdvancedFakePlayer {
 
     @Override
     public Collection getActivePotionEffects() {
-        return golem.getActivePotionEffects();
+        return this.golem.getActivePotionEffects();
     }
 
     @Override
     public boolean isPotionActive(int p_82165_1_) {
-        return golem.isPotionActive(p_82165_1_);
+        return this.golem.isPotionActive(p_82165_1_);
     }
 
     @Override
     public boolean isPotionActive(Potion p_70644_1_) {
-        return golem.isPotionActive(p_70644_1_);
+        return this.golem.isPotionActive(p_70644_1_);
     }
 
     @Override
     public void clearActivePotions() {
-        golem.clearActivePotions();
+        this.golem.clearActivePotions();
     }
 
     @Override
     public void addPotionEffect(PotionEffect p_70690_1_) {
-        golem.addPotionEffect(p_70690_1_);
+        this.golem.addPotionEffect(p_70690_1_);
     }
 
     @Override
     public boolean isPotionApplicable(PotionEffect p_70687_1_) {
-        return golem.isPotionApplicable(p_70687_1_);
+        return this.golem.isPotionApplicable(p_70687_1_);
     }
 
     @Override
     public void removePotionEffect(int p_82170_1_) {
-        golem.removePotionEffect(p_82170_1_);
+        this.golem.removePotionEffect(p_82170_1_);
     }
 
     @Override
     public void removePotionEffectClient(int p_70618_1_) {
-        golem.removePotionEffectClient(p_70618_1_);
+        this.golem.removePotionEffectClient(p_70618_1_);
     }
 
     @Override
     public PotionEffect getActivePotionEffect(Potion p_70660_1_) {
-        return golem.getActivePotionEffect(p_70660_1_);
+        return this.golem.getActivePotionEffect(p_70660_1_);
     }
 
     @Override
     public void curePotionEffects(ItemStack curativeItem) {
-        golem.curePotionEffects(curativeItem);
+        this.golem.curePotionEffects(curativeItem);
     }
 
     @Override

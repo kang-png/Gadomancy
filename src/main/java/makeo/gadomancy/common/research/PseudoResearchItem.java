@@ -28,30 +28,30 @@ public class PseudoResearchItem extends SimpleResearchItem {
     private final ResearchItem original;
 
     private PseudoResearchItem(ResearchItem original, String key, int col, int row, ResourceLocation icon, boolean doubleThisPage) {
-        super(PSEUDO_PREFIX + key + (doubleThisPage ? ".2" : ""), col, row, original.getComplexity(), icon, new AspectList());
+        super(PseudoResearchItem.PSEUDO_PREFIX + key + (doubleThisPage ? ".2" : ""), col, row, original.getComplexity(), icon, new AspectList());
         this.original = original;
-        setStub().setHidden();
+        this.setStub().setHidden();
     }
 
     private PseudoResearchItem(ResearchItem original, String key, int col, int row, ItemStack icon, boolean doubleThisPage) {
-        super(PSEUDO_PREFIX + key + (doubleThisPage ? ".2" : ""), col, row, original.getComplexity(), icon, new AspectList());
+        super(PseudoResearchItem.PSEUDO_PREFIX + key + (doubleThisPage ? ".2" : ""), col, row, original.getComplexity(), icon, new AspectList());
         this.original = original;
-        setStub().setHidden();
+        this.setStub().setHidden();
     }
 
     @Override
     public ResearchPage[] getPages() {
-        return original.getPages();
+        return this.original.getPages();
     }
 
     @Override
     public String getName() {
-        return original.getName();
+        return this.original.getName();
     }
 
     @Override
     public String getText() {
-        return original.getText();
+        return this.original.getText();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class PseudoResearchItem extends SimpleResearchItem {
     }
 
     public static ResearchItem create(String original, int col, int row) {
-        return create(original, col, row, false);
+        return PseudoResearchItem.create(original, col, row, false);
     }
 
     public static ResearchItem create(String original, int col, int row, boolean doubleInThisPage) {

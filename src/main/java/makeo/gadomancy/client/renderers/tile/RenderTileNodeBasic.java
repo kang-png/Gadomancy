@@ -49,7 +49,7 @@ public class RenderTileNodeBasic {
     public static void renderNode(EntityLivingBase viewer, double viewDistance, boolean visible, boolean depthIgnore, float size, double x, double y, double z, float partialTicks, AspectList aspects, NodeType type, NodeModifier mod) {
         long nt = System.nanoTime();
 
-        UtilsFX.bindTexture(nodetex);
+        UtilsFX.bindTexture(RenderTileNodeBasic.nodetex);
         int frames = 32;
         if ((aspects.size() > 0) && (visible)) {
             double distance = viewer.getDistance(x, y, z); //Gadomancy: Removed '+ 0.5D' to coords.
@@ -181,7 +181,7 @@ public class RenderTileNodeBasic {
 
     //Gadomancy START
     public static void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
-        renderTileEntityAt(tile, x, y, z, partialTicks, 1.0F);
+        RenderTileNodeBasic.renderTileEntityAt(tile, x, y, z, partialTicks, 1.0F);
     }
     //Gadomancy END
 
@@ -217,7 +217,7 @@ public class RenderTileNodeBasic {
             }
         }
         //Gadomancy: Changed from tile.xCoord, ... to x, y, z to make it dependent from params
-        renderNode(viewer, viewDistance, condition, depthIgnore, size, x, y, z, partialTicks, ((INode) tile).getAspects(), ((INode) tile).getNodeType(), ((INode) tile).getNodeModifier());
+        RenderTileNodeBasic.renderNode(viewer, viewDistance, condition, depthIgnore, size, x, y, z, partialTicks, ((INode) tile).getAspects(), ((INode) tile).getNodeType(), ((INode) tile).getNodeModifier());
         if (((tile instanceof TileNode)) && (((TileNode) tile).drainEntity != null) && (((TileNode) tile).drainCollision != null)) {
             Entity drainEntity = ((TileNode) tile).drainEntity;
             if (((drainEntity instanceof EntityPlayer)) && (!((EntityPlayer) drainEntity).isUsingItem())) {

@@ -33,10 +33,7 @@ public class ItemJarExtendedNodeRenderer implements IItemRenderer {
     }
 
     public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType type, ItemStack item, IItemRenderer.ItemRendererHelper helper) {
-        if (helper == IItemRenderer.ItemRendererHelper.EQUIPPED_BLOCK) {
-            return false;
-        }
-        return true;
+        return helper != ItemRendererHelper.EQUIPPED_BLOCK;
     }
 
     RenderBlocks rb = new RenderBlocks();

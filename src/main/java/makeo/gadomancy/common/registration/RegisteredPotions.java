@@ -4,7 +4,6 @@ import cpw.mods.fml.common.FMLLog;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.potions.*;
-import makeo.gadomancy.common.potions.PotionEldritch;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.potion.Potion;
 
@@ -26,11 +25,11 @@ public class RegisteredPotions {
     public static PotionVisAffinity VIS_DISCOUNT;
 
     public static void init() {
-        POTION_LUCK = registerPotion(PotionMiningLuck.class);
-        BUFF_GOLEM = registerPotion(PotionBuffGolem.class);
-        ACHROMATIC = registerPotion(PotionAchromatic.class);
-        ELDRITCH = registerPotion(PotionEldritch.class);
-        VIS_DISCOUNT = registerPotion(PotionVisAffinity.class);
+        RegisteredPotions.POTION_LUCK = RegisteredPotions.registerPotion(PotionMiningLuck.class);
+        RegisteredPotions.BUFF_GOLEM = RegisteredPotions.registerPotion(PotionBuffGolem.class);
+        RegisteredPotions.ACHROMATIC = RegisteredPotions.registerPotion(PotionAchromatic.class);
+        RegisteredPotions.ELDRITCH = RegisteredPotions.registerPotion(PotionEldritch.class);
+        RegisteredPotions.VIS_DISCOUNT = RegisteredPotions.registerPotion(PotionVisAffinity.class);
     }
 
     public static void createConfigEntries() {

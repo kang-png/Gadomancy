@@ -48,14 +48,14 @@ public class RegisteredFamiliarAI_Old {
         @Override
         public boolean canRun(World world, double x, double y, double z, EntityPlayer parent, ItemStack itemStack) {
             int rangeInc = ((ItemFamiliar_Old) itemStack.getItem()).getAttackRangeIncrease(itemStack);
-            return getPotentialTargets(world, parent, rangeInc).size() > 0;
+            return this.getPotentialTargets(world, parent, rangeInc).size() > 0;
         }
 
         @Override
         public void tick(int ticksSoFar, World world, EntityPlayer parent, ItemStack itemStack) {
             int rangeInc = ((ItemFamiliar_Old) itemStack.getItem()).getAttackRangeIncrease(itemStack);
 
-            List<EntityLivingBase> lastTargetters = getPotentialTargets(world, parent, rangeInc);
+            List<EntityLivingBase> lastTargetters = this.getPotentialTargets(world, parent, rangeInc);
             if(lastTargetters.size() == 0) {
                 FamiliarAIController_Old.cleanTargetterList(parent);
                 return;
@@ -76,7 +76,7 @@ public class RegisteredFamiliarAI_Old {
         }
 
         private List<EntityLivingBase> getPotentialTargets(World world, EntityPlayer player, int rangeInc) {
-            List<EntityLivingBase> validTargets = getCloseEnoughTargetters(world, player, rangeInc);
+            List<EntityLivingBase> validTargets = this.getCloseEnoughTargetters(world, player, rangeInc);
 
             EntityLivingBase attacker = player.getLastAttacker();
             int range = 8 + rangeInc;

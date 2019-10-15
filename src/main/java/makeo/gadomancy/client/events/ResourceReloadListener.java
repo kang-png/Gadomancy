@@ -26,7 +26,7 @@ public class ResourceReloadListener implements IResourceManagerReloadListener {
 
     public static final ResourceReloadListener instance = new ResourceReloadListener();
     public static ResourceReloadListener getInstance() {
-        return instance;
+        return ResourceReloadListener.instance;
     }
 
     public static Map languageList;
@@ -35,29 +35,29 @@ public class ResourceReloadListener implements IResourceManagerReloadListener {
     	Injector inner = new Injector(StringTranslate.class);
     	Object O = inner.getField(Injector.findField(StringTranslate.class, StringTranslate.class));
         Injector instance = new Injector(O);
-        languageList = instance.getField(instance.findField(Map.class));
+        ResourceReloadListener.languageList = instance.getField(instance.findField(Map.class));
     }
 
     @Override
     public void onResourceManagerReload(IResourceManager resourceManager) {
-        reloadGolemResources();
+        this.reloadGolemResources();
     }
 
     public void reloadGolemResources() {
-        manipulateLanguageFile();
+        this.manipulateLanguageFile();
 
         Gadomancy.proxy.runDelayedClientSide(new Runnable() {
             @Override
             public void run() {
-                registerTextureOverride();
+                ResourceReloadListener.this.registerTextureOverride();
             }
         });
     }
 
     private void manipulateLanguageFile() {
-        if(languageList != null) {
+        if(ResourceReloadListener.languageList != null) {
             for(AdditionalGolemType type : GadomancyApi.getAdditionalGolemTypes()) {
-                languageList.put("item.ItemGolemPlacer." + type.getEnumEntry().ordinal() + ".name",
+                ResourceReloadListener.languageList.put("item.ItemGolemPlacer." + type.getEnumEntry().ordinal() + ".name",
                         StatCollector.translateToLocal(type.getUnlocalizedName() + ".name"));
             }
         }
@@ -66,6 +66,6 @@ public class ResourceReloadListener implements IResourceManagerReloadListener {
     private static final ResourceLocation TC_GOLEM_GUI_TEXTURE = new ResourceLocation("thaumcraft", "textures/gui/guigolem.png");
 
     private void registerTextureOverride() {
-        Minecraft.getMinecraft().renderEngine.loadTexture(TC_GOLEM_GUI_TEXTURE, new GolemGuiTexture(TC_GOLEM_GUI_TEXTURE));
+        Minecraft.getMinecraft().renderEngine.loadTexture(ResourceReloadListener.TC_GOLEM_GUI_TEXTURE, new GolemGuiTexture(ResourceReloadListener.TC_GOLEM_GUI_TEXTURE));
     }
 }

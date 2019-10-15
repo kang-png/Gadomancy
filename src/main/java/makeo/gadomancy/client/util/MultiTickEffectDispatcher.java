@@ -30,18 +30,18 @@ public class MultiTickEffectDispatcher {
     private static List<BubbleFXInfo> bubbleInfos = new ArrayList<BubbleFXInfo>();
 
     public static void notifyRenderTick(World currentRenderWorld, float partialTicks) {
-        renderLock.lock();
+        MultiTickEffectDispatcher.renderLock.lock();
         try {
-            handleVortexDiggingEffects(currentRenderWorld);
-            handleWispyLineEffects(currentRenderWorld, partialTicks);
-            handleBubbleSpawnings(currentRenderWorld);
+            MultiTickEffectDispatcher.handleVortexDiggingEffects(currentRenderWorld);
+            MultiTickEffectDispatcher.handleWispyLineEffects(currentRenderWorld, partialTicks);
+            MultiTickEffectDispatcher.handleBubbleSpawnings(currentRenderWorld);
         } finally {
-            renderLock.unlock();
+            MultiTickEffectDispatcher.renderLock.unlock();
         }
     }
 
     private static void handleBubbleSpawnings(World world) {
-        Iterator<BubbleFXInfo> it = bubbleInfos.iterator();
+        Iterator<BubbleFXInfo> it = MultiTickEffectDispatcher.bubbleInfos.iterator();
         while(it.hasNext()) {
             BubbleFXInfo info = it.next();
             if(info.dimId != world.provider.dimensionId) {
@@ -68,7 +68,7 @@ public class MultiTickEffectDispatcher {
 
     private static void handleWispyLineEffects(World currentRenderWorld, float partialTicks) {
         Tessellator tessellator;
-        Iterator<FloatyLineInfo> it = floatyLineInfos.iterator();
+        Iterator<FloatyLineInfo> it = MultiTickEffectDispatcher.floatyLineInfos.iterator();
         while(it.hasNext()) {
             FloatyLineInfo info = it.next();
             if(info.dimId != currentRenderWorld.provider.dimensionId) {
@@ -91,7 +91,7 @@ public class MultiTickEffectDispatcher {
     }
 
     private static void handleVortexDiggingEffects(World currentRenderWorld) {
-        Iterator<VortexDigInfo> it = vortexDigInfos.iterator();
+        Iterator<VortexDigInfo> it = MultiTickEffectDispatcher.vortexDigInfos.iterator();
         while(it.hasNext()) {
             VortexDigInfo info = it.next();
             if(info.dimId != currentRenderWorld.provider.dimensionId) {
@@ -109,29 +109,29 @@ public class MultiTickEffectDispatcher {
     }
 
     public static void registerBubbles(BubbleFXInfo info) {
-        renderLock.lock();
+        MultiTickEffectDispatcher.renderLock.lock();
         try {
-            bubbleInfos.add(info);
+            MultiTickEffectDispatcher.bubbleInfos.add(info);
         } finally {
-            renderLock.unlock();
+            MultiTickEffectDispatcher.renderLock.unlock();
         }
     }
 
     public static void registerVortexDig(VortexDigInfo info) {
-        renderLock.lock();
+        MultiTickEffectDispatcher.renderLock.lock();
         try {
-            vortexDigInfos.add(info);
+            MultiTickEffectDispatcher.vortexDigInfos.add(info);
         } finally {
-            renderLock.unlock();
+            MultiTickEffectDispatcher.renderLock.unlock();
         }
     }
 
     public static void registerFloatyLine(FloatyLineInfo info) {
-        renderLock.lock();
+        MultiTickEffectDispatcher.renderLock.lock();
         try {
-            floatyLineInfos.add(info);
+            MultiTickEffectDispatcher.floatyLineInfos.add(info);
         } finally {
-            renderLock.unlock();
+            MultiTickEffectDispatcher.renderLock.unlock();
         }
     }
 
@@ -140,7 +140,7 @@ public class MultiTickEffectDispatcher {
         private int dimId;
         private double pedestalX, pedestalY, pedestalZ;
         private double originX, originY, originZ;
-        private int renderTicks = 0;
+        private int renderTicks;
         private int tickCap;
         private int colorAsInt;
         private int randomOffset = -1;
@@ -182,7 +182,7 @@ public class MultiTickEffectDispatcher {
         private int tX, tY, tZ;
         private Block blockInstance;
         private int meta;
-        private int renderTicks = 0;
+        private int renderTicks;
         private int tickCap;
 
         public VortexDigInfo(int dimId, int oX, int oY, int oZ, int tX, int tY, int tZ, Block blockInstance, int meta, int tickDuration) {

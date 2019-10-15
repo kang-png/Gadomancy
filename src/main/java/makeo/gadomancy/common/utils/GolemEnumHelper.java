@@ -28,65 +28,65 @@ public class GolemEnumHelper {
     private static final Injector ENUM_INJECTOR = new Injector(Enum.class);
     private static final Injector HELPER_INJECTOR = new Injector(EnumHelper.class);
 
-    private static Field valuesField = null;
+    private static Field valuesField;
     private static Field getValuesField() {
-        if(valuesField == null) {
+        if(GolemEnumHelper.valuesField == null) {
             for(Field field : EnumGolemType.class.getDeclaredFields()) {
                 String name = field.getName();
                 if (name.equals("$VALUES") || name.equals("ENUM$VALUES")) //Added 'ENUM$VALUES' because Eclipse's internal compiler doesn't follow standards
                 {
-                    valuesField = field;
-                    valuesField.setAccessible(true);
+                    GolemEnumHelper.valuesField = field;
+                    GolemEnumHelper.valuesField.setAccessible(true);
                     break;
                 }
             }
         }
-        return valuesField;
+        return GolemEnumHelper.valuesField;
     }
 
     private static final Class[] ENUM_PARAMS = {int.class, int.class, float.class, boolean.class, int.class,
             int.class, int.class, int.class};
 
-    private static Field ordinalField = null;
+    private static Field ordinalField;
     public static Field getOrdinalField() {
-        if(ordinalField == null) {
+        if(GolemEnumHelper.ordinalField == null) {
             try {
-                ordinalField = Enum.class.getDeclaredField("ordinal");
+                GolemEnumHelper.ordinalField = Enum.class.getDeclaredField("ordinal");
             } catch (NoSuchFieldException ignored) { }
         }
-        return ordinalField;
+        return GolemEnumHelper.ordinalField;
     }
 
-    private static final Class[] MAKE_ENUM_PARAMS = new Class[]{ Class.class, String.class, int.class, Class[].class, Object[].class };
+    private static final Class[] MAKE_ENUM_PARAMS = { Class.class, String.class, int.class, Class[].class, Object[].class };
 
     private static EnumGolemType createEnum(String name, int ordinal, AdditionalGolemType type) {
-        return HELPER_INJECTOR.invokeMethod("makeEnum", MAKE_ENUM_PARAMS,
-                EnumGolemType.class, name, ordinal, ENUM_PARAMS, new Object[]{ type.maxHealth, type.armor, type.movementSpeed,
+        return GolemEnumHelper.HELPER_INJECTOR.invokeMethod("makeEnum", GolemEnumHelper.MAKE_ENUM_PARAMS,
+                EnumGolemType.class, name, ordinal, GolemEnumHelper.ENUM_PARAMS, new Object[]{ type.maxHealth, type.armor, type.movementSpeed,
                         type.fireResist, type.upgradeAmount, type.carryLimit, type.regenDelay, type.strength });
     }
 
     private static void addEnum(int ordinal, EnumGolemType type) {
-        EnumGolemType[] values = resizeValues(ordinal + 1);;
+        EnumGolemType[] values = GolemEnumHelper.resizeValues(ordinal + 1);
         values[ordinal] = type;
     }
 
     private static EnumGolemType addEnum(String name, int ordinal, AdditionalGolemType type) {
-        EnumGolemType enumEntry = createEnum(name, ordinal, type);
-        addEnum(ordinal, enumEntry);
+        EnumGolemType enumEntry = GolemEnumHelper.createEnum(name, ordinal, type);
+        GolemEnumHelper.addEnum(ordinal, enumEntry);
         type.setEnumEntry(enumEntry);
         return enumEntry;
     }
 
     private static EnumGolemType[] resizeValues(int size) {
-        EnumGolemType[] values = INJECTOR.getField(getValuesField());
+        EnumGolemType[] values = GolemEnumHelper.INJECTOR.getField(GolemEnumHelper.getValuesField());
         if(size > values.length) {
             EnumGolemType[] newValues = new EnumGolemType[size];
             System.arraycopy(values, 0, newValues, 0, values.length);
 
             for(int i = values.length; i < newValues.length; i++) {
-                newValues[i] = createEnum("REMOVED", i, REMOVED_GOLEM_TYPE);
+                newValues[i] = GolemEnumHelper.createEnum("REMOVED", i, GolemEnumHelper.REMOVED_GOLEM_TYPE);
             }
-            setValues(newValues);
+            GolemEnumHelper.setValues(newValues);
             return newValues;
         }
         return values;
@@ -94,23 +94,23 @@ public class GolemEnumHelper {
 
     private static void setValues(EnumGolemType[] values) {
         try {
-            EnumHelper.setFailsafeFieldValue(getValuesField(), null, values);
+            EnumHelper.setFailsafeFieldValue(GolemEnumHelper.getValuesField(), null, values);
         } catch (Exception ignored) { }
     }
 
     public static EnumGolemType addGolemType(String name, AdditionalGolemType type) {
-        return addEnum(name, getOrdinal(name), type);
+        return GolemEnumHelper.addEnum(name, GolemEnumHelper.getOrdinal(name), type);
     }
 
     private static int getOrdinal(String name) {
-        Map<String, Integer> map = getCurrentMapping();
+        Map<String, Integer> map = GolemEnumHelper.getCurrentMapping();
 
         if(map.containsKey(name)) {
             return map.get(name);
         }
 
         int returnVal = -1;
-        int i = calcDefaultGolemCount();
+        int i = GolemEnumHelper.calcDefaultGolemCount();
         do {
             boolean contains = false;
             for(Map.Entry<String, Integer> entry : map.entrySet()) {
@@ -126,24 +126,24 @@ public class GolemEnumHelper {
         } while (returnVal < 0);
 
         map.put(name, returnVal);
-        saveCurrentMapping(map);
+        GolemEnumHelper.saveCurrentMapping(map);
 
         return returnVal;
     }
 
     public static void reorderEnum() {
-        reorderEnum(getCurrentMapping());
+        GolemEnumHelper.reorderEnum(GolemEnumHelper.getCurrentMapping());
     }
 
     public static void reorderEnum(Map<String, Integer> mapping) {
         EnumGolemType[] oldValues = EnumGolemType.values();
-        resetEnum();
+        GolemEnumHelper.resetEnum();
         for(Map.Entry<String, Integer> entry : mapping.entrySet()) {
             for(EnumGolemType type : oldValues) {
                 if(type.name().equals(entry.getKey())) {
-                    ENUM_INJECTOR.setObject(type);
-                    ENUM_INJECTOR.setField(getOrdinalField(), entry.getValue());
-                    addEnum(entry.getValue(), type);
+                    GolemEnumHelper.ENUM_INJECTOR.setObject(type);
+                    GolemEnumHelper.ENUM_INJECTOR.setField(GolemEnumHelper.getOrdinalField(), entry.getValue());
+                    GolemEnumHelper.addEnum(entry.getValue(), type);
                 }
             }
         }
@@ -155,8 +155,8 @@ public class GolemEnumHelper {
     }
 
     private static void resetEnum() {
-        EnumGolemType[] newValues = Arrays.copyOfRange(EnumGolemType.values(), 0, calcDefaultGolemCount());
-        setValues(newValues);
+        EnumGolemType[] newValues = Arrays.copyOfRange(EnumGolemType.values(), 0, GolemEnumHelper.calcDefaultGolemCount());
+        GolemEnumHelper.setValues(newValues);
     }
 
     private static int calcDefaultGolemCount() {
@@ -170,11 +170,11 @@ public class GolemEnumHelper {
     }
 
     public static void validateSavedMapping() {
-        if(hasCurrentMapping()) {
-            Map<String, Integer> mapping = getCurrentMapping();
-            for(Map.Entry<String, Integer> entry : defaultMapping.entrySet()) {
+        if(GolemEnumHelper.hasCurrentMapping()) {
+            Map<String, Integer> mapping = GolemEnumHelper.getCurrentMapping();
+            for(Map.Entry<String, Integer> entry : GolemEnumHelper.defaultMapping.entrySet()) {
                 if(!mapping.containsKey(entry.getKey())) {
-                    mapping.put(entry.getKey(), getOrdinal(entry.getKey()));
+                    mapping.put(entry.getKey(), GolemEnumHelper.getOrdinal(entry.getKey()));
                 }
             }
         }
@@ -183,12 +183,12 @@ public class GolemEnumHelper {
     private static Map<String, Integer> defaultMapping = new HashMap<String, Integer>();
 
     public static Map<String, Integer> getCurrentMapping() {
-        if(hasCurrentMapping()) {
+        if(GolemEnumHelper.hasCurrentMapping()) {
             return Gadomancy.getModData().get("GolemTypeMapping", new HashMap<String, Integer>());
         } else if(Gadomancy.getModData() != null) {
-            Gadomancy.getModData().set("GolemTypeMapping", defaultMapping);
+            Gadomancy.getModData().set("GolemTypeMapping", GolemEnumHelper.defaultMapping);
         }
-        return defaultMapping;
+        return GolemEnumHelper.defaultMapping;
     }
 
     public static boolean hasCurrentMapping() {

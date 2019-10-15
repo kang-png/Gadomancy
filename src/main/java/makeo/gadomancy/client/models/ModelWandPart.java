@@ -49,7 +49,7 @@ public class ModelWandPart extends ModelWand {
         this.Cap.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.Cap.setTextureSize(64, 32);
         this.Cap.mirror = true;
-        setRotation(this.Cap, 0.0F, 0.0F, 0.0F);
+        this.setRotation(this.Cap, 0.0F, 0.0F, 0.0F);
 
         //this.CapBottom = new ModelRenderer(this, 0, 0);
         //this.CapBottom.addBox(-1.0F, -1.0F, -1.0F, 2, 2, 2);
@@ -67,13 +67,13 @@ public class ModelWandPart extends ModelWand {
         this.Rod.setRotationPoint(0.0F, 2.0F, 0.0F);
         this.Rod.setTextureSize(64, 32);
         this.Rod.mirror = true;
-        setRotation(this.Rod, 0.0F, 0.0F, 0.0F);
+        this.setRotation(this.Rod, 0.0F, 0.0F, 0.0F);
         this.Focus = new ModelRenderer(this, 0, 0);
         this.Focus.addBox(-3.0F, -6.0F, -3.0F, 6, 6, 6);
         this.Focus.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.Focus.setTextureSize(64, 32);
         this.Focus.mirror = true;
-        setRotation(this.Focus, 0.0F, 0.0F, 0.0F);
+        this.setRotation(this.Focus, 0.0F, 0.0F, 0.0F);
     }
 
     public void render(ItemStack wandStack) {
@@ -217,7 +217,7 @@ public class ModelWandPart extends ModelWand {
             for (int rot = 0; rot < 10; rot++) {
                 GL11.glPushMatrix();
                 GL11.glRotated(36 * rot + player.ticksExisted, 0.0D, 1.0D, 0.0D);
-                drawRune(0.16D, -0.009999999776482582D, -0.125D, rot, player);
+                this.drawRune(0.16D, -0.009999999776482582D, -0.125D, rot, player);
                 GL11.glPopMatrix();
             }
             GL11.glBlendFunc(770, 771);
@@ -237,8 +237,8 @@ public class ModelWandPart extends ModelWand {
                     int rune = (a + rot * 3) % 16;
 
                     //edit start
-                    if(a < runeCount) {
-                        drawRune(0.36D + a * 0.14D, -0.009999999776482582D, -0.08D, rune, player);
+                    if(a < this.runeCount) {
+                        this.drawRune(0.36D + a * 0.14D, -0.009999999776482582D, -0.08D, rune, player);
                     }
                     //edit end
                 }

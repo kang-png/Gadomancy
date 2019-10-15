@@ -16,8 +16,8 @@ import net.minecraft.util.IIcon;
 public class ItemBlockStoneMachine extends ItemBlock {
     public ItemBlockStoneMachine(Block block) {
         super(block);
-        setMaxDamage(0);
-        setHasSubtypes(true);
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class ItemBlockStoneMachine extends ItemBlock {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return getUnlocalizedName() + "." + stack.getItemDamage();
+        return this.getUnlocalizedName() + "." + stack.getItemDamage();
     }
 
     @Override

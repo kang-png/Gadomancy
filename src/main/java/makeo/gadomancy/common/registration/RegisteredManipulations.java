@@ -91,7 +91,7 @@ public class RegisteredManipulations {
                     }
                     combineCount--;
                 } while (combineCount > 0);
-                if(actuallyCombined > 0) return true;
+                return actuallyCombined > 0;
             }
             return false;
         }

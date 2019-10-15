@@ -13,7 +13,7 @@ import java.util.Map;
  * <p/>
  * Created by makeo @ 07.12.2015 21:17
  */
-@IFMLLoadingPlugin.TransformerExclusions({"makeo.gadomancy.coremod"})
+@IFMLLoadingPlugin.TransformerExclusions("makeo.gadomancy.coremod")
 public class GadomancyCore implements IFMLLoadingPlugin, IFMLCallHook {
     @Override
     public Void call() throws Exception {

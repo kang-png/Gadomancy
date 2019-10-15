@@ -1,7 +1,6 @@
 package makeo.gadomancy.common.aura;
 
 import makeo.gadomancy.api.AuraEffect;
-import makeo.gadomancy.common.data.config.ModConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
@@ -9,11 +8,7 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -28,23 +23,23 @@ public class AuraEffectHandler {
     public static Map<Aspect, AuraEffect> registeredEffects = new HashMap<Aspect, AuraEffect>();
 
     public static void distributeEffects(Aspect aspect, World worldObj, double x, double y, double z, int tick) {
-        if(!registeredEffects.containsKey(aspect) || worldObj.isRemote || AuraResearchManager.isBlacklisted(aspect)) return;
-        AuraEffect effect = registeredEffects.get(aspect);
+        if(!AuraEffectHandler.registeredEffects.containsKey(aspect) || worldObj.isRemote || AuraResearchManager.isBlacklisted(aspect)) return;
+        AuraEffect effect = AuraEffectHandler.registeredEffects.get(aspect);
         if((tick % effect.getTickInterval()) != 0) return;
 
         AuraEffect.EffectType type = effect.getEffectType();
         if(type != null) {
             switch (type) {
                 case ENTITY_EFFECT:
-                    doEntityEffects(effect, worldObj, x, y, z);
+                    AuraEffectHandler.doEntityEffects(effect, worldObj, x, y, z);
                     break;
                 case BLOCK_EFFECT:
-                    doBlockEffects(effect, worldObj, x, y, z);
+                    AuraEffectHandler.doBlockEffects(effect, worldObj, x, y, z);
                     break;
             }
         } else {
-            doEntityEffects(effect, worldObj, x, y, z);
-            doBlockEffects(effect, worldObj, x, y, z);
+            AuraEffectHandler.doEntityEffects(effect, worldObj, x, y, z);
+            AuraEffectHandler.doBlockEffects(effect, worldObj, x, y, z);
         }
 
         //Distribute research

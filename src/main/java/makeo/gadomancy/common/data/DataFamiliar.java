@@ -2,10 +2,8 @@ package makeo.gadomancy.common.data;
 
 import baubles.api.BaublesApi;
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
-import makeo.gadomancy.common.familiar.FamiliarAIController_Old;
 import makeo.gadomancy.common.familiar.FamiliarController;
 import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
-import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -36,7 +34,7 @@ public class DataFamiliar extends AbstractData {
     private List<FamiliarData> removeClientQueue = new ArrayList<FamiliarData>();
 
     public boolean hasFamiliar(EntityPlayer player) {
-        for(FamiliarData fam : playersWithFamiliar) {
+        for(FamiliarData fam : this.playersWithFamiliar) {
             if(fam.owner.equals(player.getCommandSenderName())) return true;
         }
         return false;
@@ -48,13 +46,13 @@ public class DataFamiliar extends AbstractData {
         String playerName = player.getCommandSenderName();
         FamiliarData data = new FamiliarData(playerName, aspect.getTag());
 
-        if(!addClientQueue.contains(data)) addClientQueue.add(data);
-        if(!playersWithFamiliar.contains(data)) playersWithFamiliar.add(data);
-        markDirty();
+        if(!this.addClientQueue.contains(data)) this.addClientQueue.add(data);
+        if(!this.playersWithFamiliar.contains(data)) this.playersWithFamiliar.add(data);
+        this.markDirty();
 
-        if(!familiarControllers.containsKey(player)) {
+        if(!this.familiarControllers.containsKey(player)) {
             FamiliarController controller = new FamiliarController(player);
-            familiarControllers.put(player, controller);
+            this.familiarControllers.put(player, controller);
         }
     }
 
@@ -64,11 +62,11 @@ public class DataFamiliar extends AbstractData {
         String playerName = player.getCommandSenderName();
         FamiliarData data = new FamiliarData(playerName, aspect.getTag());
 
-        if(!removeClientQueue.contains(data)) removeClientQueue.add(data);
-        if(playersWithFamiliar.contains(data)) playersWithFamiliar.remove(data);
-        markDirty();
+        if(!this.removeClientQueue.contains(data)) this.removeClientQueue.add(data);
+        this.playersWithFamiliar.remove(data);
+        this.markDirty();
 
-        familiarControllers.remove(player);
+        this.familiarControllers.remove(player);
     }
 
     public void equipTick(World world, EntityPlayer player, Aspect aspect) {
@@ -78,15 +76,15 @@ public class DataFamiliar extends AbstractData {
 
         IInventory baublesInv = BaublesApi.getBaubles(player);
         if(baublesInv.getStackInSlot(0) == null) {
-            handleUnequip(world, player, aspect);
+            this.handleUnequip(world, player, aspect);
             return;
         }
 
-        if(familiarControllers.get(player) == null || !playersWithFamiliar.contains(data)) {
-            handleEquip(world, player, aspect);
+        if(this.familiarControllers.get(player) == null || !this.playersWithFamiliar.contains(data)) {
+            this.handleEquip(world, player, aspect);
         }
 
-        familiarControllers.get(player).tick();
+        this.familiarControllers.get(player).tick();
     }
 
     public void checkPlayerEquipment(EntityPlayer p) {
@@ -96,7 +94,7 @@ public class DataFamiliar extends AbstractData {
             if(amulet.getItem() != null && amulet.getItem() instanceof ItemEtherealFamiliar) {
                 Aspect a = ItemEtherealFamiliar.getFamiliarAspect(amulet);
                 if(a != null) {
-                    handleEquip(p.worldObj, p, a);
+                    this.handleEquip(p.worldObj, p, a);
                 }
             }
         }
@@ -110,7 +108,7 @@ public class DataFamiliar extends AbstractData {
     @Override
     public void writeAllDataToPacket(NBTTagCompound compound) {
         NBTTagList list = new NBTTagList();
-        for(FamiliarData data : playersWithFamiliar) {
+        for(FamiliarData data : this.playersWithFamiliar) {
             NBTTagCompound cmp = new NBTTagCompound();
             cmp.setString("owner", data.owner);
             cmp.setString("aspect", data.aspectTag);
@@ -123,7 +121,7 @@ public class DataFamiliar extends AbstractData {
     @Override
     public void writeToPacket(NBTTagCompound compound) {
         NBTTagList removal = new NBTTagList();
-        for(FamiliarData data : removeClientQueue) {
+        for(FamiliarData data : this.removeClientQueue) {
             NBTTagCompound cmp = new NBTTagCompound();
             cmp.setString("owner", data.owner);
             cmp.setString("aspect", data.aspectTag);
@@ -132,7 +130,7 @@ public class DataFamiliar extends AbstractData {
         compound.setTag("removals", removal);
 
         NBTTagList additions = new NBTTagList();
-        for(FamiliarData data : addClientQueue) {
+        for(FamiliarData data : this.addClientQueue) {
             NBTTagCompound cmp = new NBTTagCompound();
             cmp.setString("owner", data.owner);
             cmp.setString("aspect", data.aspectTag);
@@ -140,8 +138,8 @@ public class DataFamiliar extends AbstractData {
         }
         compound.setTag("additions", additions);
 
-        removeClientQueue.clear();
-        addClientQueue.clear();
+        this.removeClientQueue.clear();
+        this.addClientQueue.clear();
     }
 
     @Override
@@ -151,14 +149,14 @@ public class DataFamiliar extends AbstractData {
             NBTTagCompound cmp = remove.getCompoundTagAt(i);
             String owner = cmp.getString("owner");
             String aspect = cmp.getString("aspect");
-            removeClientQueue.add(new FamiliarData(owner, aspect));
+            this.removeClientQueue.add(new FamiliarData(owner, aspect));
         }
         NBTTagList additions = compound.getTagList("additions", new NBTTagCompound().getId());
         for (int i = 0; i < additions.tagCount(); i++) {
             NBTTagCompound cmp = additions.getCompoundTagAt(i);
             String owner = cmp.getString("owner");
             String aspect = cmp.getString("aspect");
-            addClientQueue.add(new FamiliarData(owner, aspect));
+            this.addClientQueue.add(new FamiliarData(owner, aspect));
         }
     }
 
@@ -166,22 +164,22 @@ public class DataFamiliar extends AbstractData {
     public void handleIncomingData(AbstractData serverData) {
         DataFamiliar familiarData = (DataFamiliar) serverData;
         List<FamiliarData> toAdd = familiarData.addClientQueue;
-        playersWithFamiliar.addAll(toAdd);
+        this.playersWithFamiliar.addAll(toAdd);
         FamiliarHandlerClient.handleAdditions(toAdd);
         List<FamiliarData> toRemove = familiarData.removeClientQueue;
-        playersWithFamiliar.removeAll(toRemove);
+        this.playersWithFamiliar.removeAll(toRemove);
         FamiliarHandlerClient.handleRemovals(toRemove);
     }
 
     public void handleUnsafeUnequip(EntityPlayer player) {
         FamiliarData data = null;
-        for(FamiliarData fam : playersWithFamiliar) {
+        for(FamiliarData fam : this.playersWithFamiliar) {
             if(fam.owner.equals(player.getCommandSenderName())) {
                 data = fam;
             }
         }
         if(data != null) {
-            handleUnequip(player.worldObj, player, Aspect.getAspect(data.aspectTag));
+            this.handleUnequip(player.worldObj, player, Aspect.getAspect(data.aspectTag));
         }
     }
 
@@ -198,23 +196,23 @@ public class DataFamiliar extends AbstractData {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (o == null || this.getClass() != o.getClass()) return false;
 
             FamiliarData that = (FamiliarData) o;
 
-            return !(aspectTag != null ? !aspectTag.equals(that.aspectTag) : that.aspectTag != null) && !(owner != null ? !owner.equals(that.owner) : that.owner != null);
+            return (this.aspectTag != null ? this.aspectTag.equals(that.aspectTag) : that.aspectTag == null) && (this.owner != null ? this.owner.equals(that.owner) : that.owner == null);
 
         }
 
         @Override
         public int hashCode() {
-            int result = owner != null ? owner.hashCode() : 0;
-            result = 31 * result + (aspectTag != null ? aspectTag.hashCode() : 0);
+            int result = this.owner != null ? this.owner.hashCode() : 0;
+            result = 31 * result + (this.aspectTag != null ? this.aspectTag.hashCode() : 0);
             return result;
         }
     }
 
-    public static class Provider extends ProviderAutoAllocate<DataFamiliar> {
+    public static class Provider extends AbstractData.ProviderAutoAllocate<DataFamiliar> {
 
         public Provider(String key) {
             super(key);

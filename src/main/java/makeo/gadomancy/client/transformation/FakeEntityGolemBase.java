@@ -34,68 +34,68 @@ public class FakeEntityGolemBase extends EntityGolemBase {
     //Golem stuff
     @Override
     public String getGolemDecoration() {
-        return golem.getGolemDecoration();
+        return this.golem.getGolemDecoration();
     }
 
     @Override
     public EnumGolemType getGolemType() {
-        return golem.getGolemType();
+        return this.golem.getGolemType();
     }
 
     @Override
     public byte getCore() {
-        return golem.getCore();
+        return this.golem.getCore();
     }
 
     @Override
     public int getCarryLimit() {
-        return golem.getCarryLimit();
+        return this.golem.getCarryLimit();
     }
 
     @Override
     public byte getUpgrade(int slot) {
-        return golem.getUpgrade(slot);
+        return this.golem.getUpgrade(slot);
     }
 
     @Override
     public int getUpgradeAmount(int type) {
-        return golem.getUpgradeAmount(type);
+        return this.golem.getUpgradeAmount(type);
     }
 
     //Player stuff
     @Override
     public float getEyeHeight() {
-        return player.getEyeHeight();
+        return this.player.getEyeHeight();
     }
 
     @Override
     public ItemStack getCarriedForDisplay() {
-        return player.getHeldItem();
+        return this.player.getHeldItem();
     }
 
     @Override
     public ItemStack getHeldItem() {
-        return player.getHeldItem();
+        return this.player.getHeldItem();
     }
 
     @Override
     public boolean isSneaking() {
-        return player.isSneaking();
+        return this.player.isSneaking();
     }
 
     @Override
     public boolean isEating() {
-        return player.isEating();
+        return this.player.isEating();
     }
 
     @Override
     public boolean isInvisible() {
-        return player.isInvisible();
+        return this.player.isInvisible();
     }
 
     @Override
     public boolean isSprinting() {
-        return player.isSprinting();
+        return this.player.isSprinting();
     }
 
     @Override
@@ -104,72 +104,72 @@ public class FakeEntityGolemBase extends EntityGolemBase {
     }
 
     public void syncWithPlayer() {
-        setWorld(player.worldObj);
-        setPosition(player.posX, player.posY, player.posZ);
+        this.setWorld(this.player.worldObj);
+        this.setPosition(this.player.posX, this.player.posY, this.player.posZ);
 
-        lastTickPosX = player.lastTickPosX;
-        lastTickPosY = player.lastTickPosY;
-        lastTickPosZ = player.lastTickPosZ;
+        this.lastTickPosX = this.player.lastTickPosX;
+        this.lastTickPosY = this.player.lastTickPosY;
+        this.lastTickPosZ = this.player.lastTickPosZ;
 
-        motionX = player.motionX;
-        motionY = player.motionY;
-        motionZ = player.motionZ;
+        this.motionX = this.player.motionX;
+        this.motionY = this.player.motionY;
+        this.motionZ = this.player.motionZ;
 
-        moveForward = player.moveForward;
-        moveStrafing = player.moveStrafing;
+        this.moveForward = this.player.moveForward;
+        this.moveStrafing = this.player.moveStrafing;
 
-        onGround = player.onGround;
+        this.onGround = this.player.onGround;
 
-        prevPosX = player.prevPosX;
-        prevPosY = player.prevPosY;
-        prevPosZ = player.prevPosZ;
+        this.prevPosX = this.player.prevPosX;
+        this.prevPosY = this.player.prevPosY;
+        this.prevPosZ = this.player.prevPosZ;
 
-        rotationPitch = player.rotationPitch;
-        rotationYaw = player.rotationYaw;
-        rotationYawHead = player.rotationYawHead;
+        this.rotationPitch = this.player.rotationPitch;
+        this.rotationYaw = this.player.rotationYaw;
+        this.rotationYawHead = this.player.rotationYawHead;
 
-        prevRotationPitch = player.prevRotationPitch;
-        prevRotationYaw = player.prevRotationYaw;
-        prevRotationYawHead = player.prevRotationYawHead;
+        this.prevRotationPitch = this.player.prevRotationPitch;
+        this.prevRotationYaw = this.player.prevRotationYaw;
+        this.prevRotationYawHead = this.player.prevRotationYawHead;
 
-        limbSwing = player.limbSwing;
+        this.limbSwing = this.player.limbSwing;
 
-        limbSwingAmount = player.limbSwingAmount;
-        prevLimbSwingAmount = player.prevLimbSwingAmount;
-        isSwingInProgress = player.isSwingInProgress;
+        this.limbSwingAmount = this.player.limbSwingAmount;
+        this.prevLimbSwingAmount = this.player.prevLimbSwingAmount;
+        this.isSwingInProgress = this.player.isSwingInProgress;
 
-        swingProgress = player.swingProgress;
-        prevSwingProgress = player.prevSwingProgress;
+        this.swingProgress = this.player.swingProgress;
+        this.prevSwingProgress = this.player.prevSwingProgress;
 
-        renderYawOffset = player.renderYawOffset;
-        prevRenderYawOffset = player.prevRenderYawOffset;
+        this.renderYawOffset = this.player.renderYawOffset;
+        this.prevRenderYawOffset = this.player.prevRenderYawOffset;
 
-        ticksExisted = player.ticksExisted;
-        isDead = false;
-        isAirBorne = player.isAirBorne;
+        this.ticksExisted = this.player.ticksExisted;
+        this.isDead = false;
+        this.isAirBorne = this.player.isAirBorne;
 
-        yOffset = 0;
+        this.yOffset = 0;
 
-        swingProgress = player.swingProgress;
-        prevSwingProgress = player.prevSwingProgress;
+        this.swingProgress = this.player.swingProgress;
+        this.prevSwingProgress = this.player.prevSwingProgress;
 
-        limbSwing = player.limbSwing;
-        limbSwingAmount = player.limbSwingAmount;
-        prevLimbSwingAmount = player.limbSwingAmount;
+        this.limbSwing = this.player.limbSwing;
+        this.limbSwingAmount = this.player.limbSwingAmount;
+        this.prevLimbSwingAmount = this.player.limbSwingAmount;
 
-        isSwingInProgress = player.isSwingInProgress;
+        this.isSwingInProgress = this.player.isSwingInProgress;
 
-        itemCarried = player.getHeldItem();
+        this.itemCarried = this.player.getHeldItem();
 
-        if(player.isSwingInProgress) {
-            if(player.getHeldItem() == null) {
-                action = 6 - player.swingProgressInt;
+        if(this.player.isSwingInProgress) {
+            if(this.player.getHeldItem() == null) {
+                this.action = 6 - this.player.swingProgressInt;
             } else {
-                rightArm = 5 - (int)(player.swingProgress * 5);
+                this.rightArm = 5 - (int)(this.player.swingProgress * 5);
             }
         } else {
-            action = 0;
-            rightArm = 0;
+            this.action = 0;
+            this.rightArm = 0;
         }
     }
 }

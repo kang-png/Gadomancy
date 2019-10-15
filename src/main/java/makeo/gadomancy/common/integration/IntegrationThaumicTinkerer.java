@@ -22,22 +22,22 @@ public class IntegrationThaumicTinkerer extends IntegrationMod {
     @Override
     public void doInit() {
         try {
-            infusedCropBlockClass = Class.forName("thaumic.tinkerer.common.block.BlockInfusedGrain");
-            infusedCropTile = Class.forName("thaumic.tinkerer.common.block.tile.TileInfusedGrain");
-            if(infusedCropBlockClass != null && infusedCropTile != null) {
+            IntegrationThaumicTinkerer.infusedCropBlockClass = Class.forName("thaumic.tinkerer.common.block.BlockInfusedGrain");
+            IntegrationThaumicTinkerer.infusedCropTile = Class.forName("thaumic.tinkerer.common.block.tile.TileInfusedGrain");
+            if(IntegrationThaumicTinkerer.infusedCropBlockClass != null && IntegrationThaumicTinkerer.infusedCropTile != null) {
                 Gadomancy.log.info("Hooked TTinkerer magic-crops");
             }
         } catch (Throwable tr) {}
     }
 
     public static boolean isCropBlock(Block block) {
-        if(infusedCropBlockClass == null) return false;
-        return block.getClass().equals(infusedCropBlockClass) || infusedCropBlockClass.isAssignableFrom(block.getClass());
+        if(IntegrationThaumicTinkerer.infusedCropBlockClass == null) return false;
+        return block.getClass().equals(IntegrationThaumicTinkerer.infusedCropBlockClass) || IntegrationThaumicTinkerer.infusedCropBlockClass.isAssignableFrom(block.getClass());
     }
 
     public static boolean isCropTile(TileEntity te) {
-        if(infusedCropTile == null) return false;
-        return te.getClass().equals(infusedCropTile) || infusedCropTile.isAssignableFrom(te.getClass());
+        if(IntegrationThaumicTinkerer.infusedCropTile == null) return false;
+        return te.getClass().equals(IntegrationThaumicTinkerer.infusedCropTile) || IntegrationThaumicTinkerer.infusedCropTile.isAssignableFrom(te.getClass());
     }
 
 }

@@ -4,7 +4,6 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylonTop;
-import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketStartAnimation;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
@@ -44,11 +43,11 @@ public class BlockAuraPylon extends BlockContainer implements IBlockTransparent 
 
     public BlockAuraPylon() {
         super(Material.iron);
-        setHardness(10F);
-        setResistance(50F);
-        setStepSound(Block.soundTypeStone);
-        setBlockBounds(0.0625F, 0, 0.0625F, 0.9375F, 1, 0.9375F);
-        setCreativeTab(RegisteredItems.creativeTab);
+        this.setHardness(10F);
+        this.setResistance(50F);
+        this.setStepSound(Block.soundTypeStone);
+        this.setBlockBounds(0.0625F, 0, 0.0625F, 0.9375F, 1, 0.9375F);
+        this.setCreativeTab(RegisteredItems.creativeTab);
     }
 
     @Override
@@ -58,7 +57,7 @@ public class BlockAuraPylon extends BlockContainer implements IBlockTransparent 
 
     @Override
     public void registerBlockIcons(IIconRegister ir) {
-        icon = ir.registerIcon(Gadomancy.MODID + ":transparent");
+        this.icon = ir.registerIcon(Gadomancy.MODID + ":transparent");
         super.registerBlockIcons(ir);
     }
 
@@ -104,7 +103,7 @@ public class BlockAuraPylon extends BlockContainer implements IBlockTransparent 
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9) {
         if(world.getBlockMetadata(x, y, z) != 1) {
             Block up = world.getBlock(x, y + 1, z);
-            return up != null && up instanceof BlockAuraPylon && up.onBlockActivated(world, x, y + 1, z, player, side, par7, par8, par9);
+            return up instanceof BlockAuraPylon && up.onBlockActivated(world, x, y + 1, z, player, side, par7, par8, par9);
         }
         ItemStack heldItem = player.getHeldItem();
         if(!world.isRemote && heldItem != null && heldItem.getItem() instanceof ItemWandCasting &&
@@ -122,7 +121,7 @@ public class BlockAuraPylon extends BlockContainer implements IBlockTransparent 
                 ta.setTileInformation(false, true);
                 int count = 1;
                 TileEntity iter = world.getTileEntity(x, y - count, z);
-                while(iter != null && iter instanceof TileAuraPylon) {
+                while (iter instanceof TileAuraPylon) {
                     ((TileAuraPylon) iter).setPartOfMultiblock(true);
                     world.markBlockForUpdate(x, y - count, z);
                     iter.markDirty();
@@ -153,6 +152,6 @@ public class BlockAuraPylon extends BlockContainer implements IBlockTransparent 
 
     @Override
     public IIcon getTransparentIcon() {
-        return icon;
+        return this.icon;
     }
 }

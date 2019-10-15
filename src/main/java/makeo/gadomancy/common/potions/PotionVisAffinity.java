@@ -14,7 +14,7 @@ public class PotionVisAffinity extends PotionCustomTexture {
 
     public PotionVisAffinity(int id) {
         super(id, false, Aspect.MAGIC.getColor(), Aspect.MAGIC.getImage());
-        setPotionName("potion.visdiscount");
+        this.setPotionName("potion.visdiscount");
     }
 
 }

@@ -28,7 +28,7 @@ public class ItemRenderTileEntity<T extends TileEntity> implements IItemRenderer
         this.tile = tile;
 
         if(tile.getWorldObj() == null) {
-            tile.setWorldObj(FAKE_WORLD);
+            tile.setWorldObj(ItemRenderTileEntity.FAKE_WORLD);
         }
     }
 
@@ -52,9 +52,9 @@ public class ItemRenderTileEntity<T extends TileEntity> implements IItemRenderer
         if(type == ItemRenderType.INVENTORY)
             GL11.glTranslatef(0, -0.1F, 0);
 
-        if(type == ItemRenderType.EQUIPPED_FIRST_PERSON && tile instanceof TileManipulationFocus)
+        if(type == ItemRenderType.EQUIPPED_FIRST_PERSON && this.tile instanceof TileManipulationFocus)
             GL11.glTranslatef(0, 0.6F, 0);
 
-        this.renderer.renderTileEntityAt(tile, 0.0D, 0.0D, 0.0D, 0.0F);
+        this.renderer.renderTileEntityAt(this.tile, 0.0D, 0.0D, 0.0D, 0.0F);
     }
 }

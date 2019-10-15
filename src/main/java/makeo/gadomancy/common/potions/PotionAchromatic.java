@@ -4,12 +4,10 @@ import makeo.gadomancy.common.data.DataAchromatic;
 import makeo.gadomancy.common.data.SyncDataHolder;
 import makeo.gadomancy.common.utils.Vector3;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.ai.attributes.BaseAttributeMap;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3;
 import thaumcraft.api.aspects.Aspect;
 
 import java.util.List;
@@ -25,7 +23,7 @@ import java.util.List;
 public class PotionAchromatic extends PotionCustomTexture {
     public PotionAchromatic(int id) {
         super(id, false, Aspect.CRYSTAL.getColor(), Aspect.CRYSTAL.getImage());
-        setPotionName("potion.achromatic");
+        this.setPotionName("potion.achromatic");
     }
 
     @Override

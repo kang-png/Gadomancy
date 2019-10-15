@@ -66,47 +66,47 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
 
     @Override
     public void toBytes(ByteBuf buf) {
-        buf.writeByte(annimationId);
-        buf.writeInt(x);
-        buf.writeInt(y);
-        buf.writeInt(z);
-        buf.writeInt(additionalData);
+        buf.writeByte(this.annimationId);
+        buf.writeInt(this.x);
+        buf.writeInt(this.y);
+        buf.writeInt(this.z);
+        buf.writeInt(this.additionalData);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IMessage onMessage(PacketStartAnimation message, MessageContext ctx) {
         switch (message.annimationId) {
-            case ID_INFUSIONCLAW:
+            case PacketStartAnimation.ID_INFUSIONCLAW:
                 TileInfusionClaw tile = (TileInfusionClaw) Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z);
                 if(tile != null) {
                     tile.animationStates[8] = 1;
                 }
                 break;
-            case ID_EX_VORTEX:
+            case PacketStartAnimation.ID_EX_VORTEX:
                 TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z);
                 if(te == null || !(te instanceof TileExtendedNode)) return null;
                 ExplosionHelper.VortexExplosion.vortexLightning((TileExtendedNode) te);
                 break;
-            case ID_BURST:
+            case PacketStartAnimation.ID_BURST:
                 Thaumcraft.proxy.burst(Minecraft.getMinecraft().theWorld, message.x + 0.5F, message.y + 0.5F, message.z + 0.5F, Minecraft.getMinecraft().theWorld.rand.nextInt(3) + 1);
                 break;
-            case ID_RUNES:
+            case PacketStartAnimation.ID_RUNES:
                 UtilsFX.doRuneEffects(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z, message.additionalData);
                 break;
-            case ID_SPARKLE_SPREAD:
+            case PacketStartAnimation.ID_SPARKLE_SPREAD:
                 UtilsFX.doSparkleEffectsAround(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z);
                 break;
-            case ID_SPARKLE:
+            case PacketStartAnimation.ID_SPARKLE:
                 UtilsFX.doSparkleEffects(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z);
                 break;
-            case ID_SMOKE:
+            case PacketStartAnimation.ID_SMOKE:
                 UtilsFX.doSmokeEffects(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z, Float.intBitsToFloat(message.additionalData));
                 break;
-            case ID_SMOKE_SPREAD:
+            case PacketStartAnimation.ID_SMOKE_SPREAD:
                 UtilsFX.doSmokeEffectsAround(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z, Float.intBitsToFloat(message.additionalData));
                 break;
-            case ID_BUBBLES:
+            case PacketStartAnimation.ID_BUBBLES:
                 MultiTickEffectDispatcher.BubbleFXInfo bubbles =
                         new MultiTickEffectDispatcher.BubbleFXInfo(Minecraft.getMinecraft().theWorld.provider.dimensionId,
                                 Float.intBitsToFloat(message.x), Float.intBitsToFloat(message.y), Float.intBitsToFloat(message.z),

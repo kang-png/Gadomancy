@@ -30,10 +30,10 @@ public class GadomancyTransformer extends AccessTransformer {
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes) {
-        boolean needsTransform = transformedName.equalsIgnoreCase(NAME_ENCHANTMENT_HELPER) ||
-                transformedName.equalsIgnoreCase(NAME_WANDMANAGER) || transformedName.equalsIgnoreCase(NAME_NODE_RENDERER)
-                || transformedName.equalsIgnoreCase(NAME_RENDER_EVENT_HANDLER) || transformedName.equals(NAME_NEI_ITEMPANEL) ||
-                transformedName.equalsIgnoreCase(NAME_ENTITY_LIVING_BASE);
+        boolean needsTransform = transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_ENCHANTMENT_HELPER) ||
+                transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_WANDMANAGER) || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_NODE_RENDERER)
+                || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_RENDER_EVENT_HANDLER) || transformedName.equals(GadomancyTransformer.NAME_NEI_ITEMPANEL) ||
+                transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_ENTITY_LIVING_BASE);
         if(!needsTransform) return super.transform(name, transformedName, bytes);
 
         FMLLog.info("[GadomancyTransformer] Transforming " + name + ": " + transformedName);
@@ -42,7 +42,7 @@ public class GadomancyTransformer extends AccessTransformer {
         ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
 
-        if(transformedName.equalsIgnoreCase(NAME_ENCHANTMENT_HELPER)) {
+        if(transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_ENCHANTMENT_HELPER)) {
             for (MethodNode mn : node.methods) {
                 if(mn.name.equals("getFortuneModifier") || mn.name.equals("func_77517_e")) {
                     mn.instructions = new InsnList();
@@ -62,7 +62,7 @@ public class GadomancyTransformer extends AccessTransformer {
                     mn.instructions.add(new InsnNode(Opcodes.IRETURN));
                 }
             }
-        } else if(transformedName.equalsIgnoreCase(NAME_WANDMANAGER)) {
+        } else if(transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_WANDMANAGER)) {
             for(MethodNode mn : node.methods) {
                 if(mn.name.equals("getTotalVisDiscount")) {
                     InsnList updateTotal = new InsnList();
@@ -76,7 +76,7 @@ public class GadomancyTransformer extends AccessTransformer {
                     mn.instructions.insertBefore(mn.instructions.get(mn.instructions.size() - 5), updateTotal);
                 }
             }
-        } else if(transformedName.equalsIgnoreCase(NAME_NODE_RENDERER)) {
+        } else if(transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_NODE_RENDERER)) {
             for (MethodNode mn : node.methods) {
                 if (mn.name.equals("renderTileEntityAt")) {
                     InsnList setBefore = new InsnList();
@@ -101,7 +101,7 @@ public class GadomancyTransformer extends AccessTransformer {
                     }
                 }
             }
-        } else if(transformedName.equalsIgnoreCase(NAME_RENDER_EVENT_HANDLER)) {
+        } else if(transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_RENDER_EVENT_HANDLER)) {
             for(MethodNode mn : node.methods) {
                 if (mn.name.equals("blockHighlight")) {
                     InsnList setBefore = new InsnList();
@@ -126,7 +126,7 @@ public class GadomancyTransformer extends AccessTransformer {
                     }
                 }
             }
-        } else if(transformedName.equalsIgnoreCase(NAME_NEI_ITEMPANEL)) {
+        } else if(transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_NEI_ITEMPANEL)) {
             for (MethodNode mn : node.methods) {
                 if(mn.name.equals("updateItemList")) {
                     InsnList newInstructions = new InsnList();

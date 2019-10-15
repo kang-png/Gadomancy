@@ -95,9 +95,7 @@ public class ItemBlockRemoteJar extends ItemBlock {
                 }
                 return true;
             } else {
-                if(player.isSneaking()) {
-                    return true;
-                }
+                return player.isSneaking();
             }
         }
         return false;
@@ -135,7 +133,7 @@ public class ItemBlockRemoteJar extends ItemBlock {
         if (stack.hasTagCompound()) {
             UUID networkId = NBTHelper.getUUID(stack.getTagCompound(), "networkId");
             if(networkId != null) {
-                list.add(String.format(StatCollector.translateToLocal("gadomancy.lore.remotejar"), generateName(networkId)));
+                list.add(String.format(StatCollector.translateToLocal("gadomancy.lore.remotejar"), ItemBlockRemoteJar.generateName(networkId)));
             }
         }
         ConfigItems.itemJarFilled.addInformation(stack, player, list, advancedItemTooltips);
@@ -153,7 +151,7 @@ public class ItemBlockRemoteJar extends ItemBlock {
             String[] split = values.get(entryIndex).split(" ");
             String part = split[random.nextInt(split.length)];
 
-            if(!isValidName(part)) {
+            if(!ItemBlockRemoteJar.isValidName(part)) {
                 i--;
                 continue;
             }

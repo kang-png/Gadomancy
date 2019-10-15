@@ -57,7 +57,7 @@ public class IntegrationAutomagy extends IntegrationMod {
     }
 
     public boolean handleNodeJarVisCost(ItemStack wandStack, EntityPlayer player) {
-        return ThaumcraftApiHelper.consumeVisFromWandCrafting(wandStack, player, visCostAdvNodeJar, true);
+        return ThaumcraftApiHelper.consumeVisFromWandCrafting(wandStack, player, IntegrationAutomagy.visCostAdvNodeJar, true);
     }
 
     public void tryFillGolemCrafttable(ChunkCoordinates cc, World world) {

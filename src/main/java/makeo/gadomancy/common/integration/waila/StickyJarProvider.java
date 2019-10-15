@@ -34,7 +34,7 @@ public class StickyJarProvider implements IWailaDataProvider {
 
             if(stickyJar.isValid()) {
                 ItemStack stack = new ItemStack(stickyJar.getParentBlock(), 1, stickyJar.getBlockMetadata());
-                for(IWailaDataProvider provider : getParentProviders(ModuleRegistrar.instance().stackBlockProviders, stickyJar.getParentBlock().getClass(), stickyJar.getParent().getClass())) {
+                for(IWailaDataProvider provider : this.getParentProviders(ModuleRegistrar.instance().stackBlockProviders, stickyJar.getParentBlock().getClass(), stickyJar.getParent().getClass())) {
                     stack = provider.getWailaStack(data, config);
                 }
                 return stack;
@@ -57,7 +57,7 @@ public class StickyJarProvider implements IWailaDataProvider {
     public List<String> getWailaHead(final ItemStack stack, final List<String> strings, final IWailaDataAccessor data, final IWailaConfigHandler config) {
         TileStickyJar tile = (TileStickyJar) data.getTileEntity();
         if(tile != null && tile.isValid()) {
-            callParentProviders(ModuleRegistrar.instance().getBodyProviders(tile.getParentBlock()), new Callable<IWailaDataProvider>() {
+            this.callParentProviders(ModuleRegistrar.instance().getBodyProviders(tile.getParentBlock()), new Callable<IWailaDataProvider>() {
                 @Override
                 public void call(IWailaDataProvider provider) {
                     provider.getWailaHead(stack, strings, data, config);
@@ -71,7 +71,7 @@ public class StickyJarProvider implements IWailaDataProvider {
     public List<String> getWailaBody(final ItemStack stack, final List<String> strings, final IWailaDataAccessor data, final IWailaConfigHandler config) {
         TileStickyJar tile = (TileStickyJar) data.getTileEntity();
         if(tile != null && tile.isValid()) {
-            callParentProviders(ModuleRegistrar.instance().getBodyProviders(tile.getParentBlock()), new Callable<IWailaDataProvider>() {
+            this.callParentProviders(ModuleRegistrar.instance().getBodyProviders(tile.getParentBlock()), new Callable<IWailaDataProvider>() {
                 @Override
                 public void call(IWailaDataProvider provider) {
                    provider.getWailaBody(stack, strings, data, config);
@@ -85,7 +85,7 @@ public class StickyJarProvider implements IWailaDataProvider {
     public List<String> getWailaTail(final ItemStack stack, final List<String> strings, final IWailaDataAccessor data, final IWailaConfigHandler config) {
         TileStickyJar tile = (TileStickyJar) data.getTileEntity();
         if(tile != null && tile.isValid()) {
-            callParentProviders(ModuleRegistrar.instance().getBodyProviders(tile.getParentBlock()), new Callable<IWailaDataProvider>() {
+            this.callParentProviders(ModuleRegistrar.instance().getBodyProviders(tile.getParentBlock()), new Callable<IWailaDataProvider>() {
                 @Override
                 public void call(IWailaDataProvider provider) {
                     provider.getWailaTail(stack, strings, data, config);

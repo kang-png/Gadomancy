@@ -27,9 +27,9 @@ import java.util.List;
 public class BlockArcaneDropper extends BlockTransparent {
     public BlockArcaneDropper() {
         super(Material.rock);
-        setHardness(3.5f);
+        this.setHardness(3.5f);
 
-        setCreativeTab(RegisteredItems.creativeTab);
+        this.setCreativeTab(RegisteredItems.creativeTab);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class BlockArcaneDropper extends BlockTransparent {
         super.maxZ = box.maxZ;
     }
 
-    private static final AxisAlignedBB[] COLLISION_BOXES = new AxisAlignedBB[]{
+    private static final AxisAlignedBB[] COLLISION_BOXES = {
             AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 0.3125f, 1),//down
             AxisAlignedBB.getBoundingBox(0, 0.6875f, 0, 1, 1, 1),//up
 
@@ -97,9 +97,9 @@ public class BlockArcaneDropper extends BlockTransparent {
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB boundingBox, List list, Entity entity) {
         ForgeDirection side = ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z) & 7);
 
-        for(int i = 0; i < COLLISION_BOXES.length; i++) {
+        for(int i = 0; i < BlockArcaneDropper.COLLISION_BOXES.length; i++) {
             if(i != side.ordinal()) {
-                this.setBlockBounds(COLLISION_BOXES[i]);
+                this.setBlockBounds(BlockArcaneDropper.COLLISION_BOXES[i]);
                 super.addCollisionBoxesToList(world, x, y, z, boundingBox, list, entity);
             }
         }

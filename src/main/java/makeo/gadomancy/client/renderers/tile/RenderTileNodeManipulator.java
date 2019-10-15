@@ -29,7 +29,7 @@ public class RenderTileNodeManipulator extends TileWandPedestalRenderer {
         GL11.glPushMatrix();
         GL11.glColor4f(r, g, b, a);
 
-        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
+        Minecraft.getMinecraft().renderEngine.bindTexture(RenderTileNodeManipulator.TEXTURE);
 
         for(int i = 0; i < 4; i++) {
             GL11.glPushMatrix();
@@ -37,7 +37,7 @@ public class RenderTileNodeManipulator extends TileWandPedestalRenderer {
             ForgeDirection dir = ForgeDirection.getOrientation(i + 2);
             GL11.glTranslatef(dir.offsetX * (-6/16f), 0, dir.offsetZ * (-6/16f));
 
-            MODEL.render(null, 0, 0, 0, 0, 0, 0.0625f);
+            RenderTileNodeManipulator.MODEL.render(null, 0, 0, 0, 0, 0, 0.0625f);
             GL11.glPopMatrix();
         }
 

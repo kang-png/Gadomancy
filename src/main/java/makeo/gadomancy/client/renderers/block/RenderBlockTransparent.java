@@ -23,7 +23,7 @@ public class RenderBlockTransparent extends BlockRenderingHandler {
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         if(block instanceof IBlockTransparent) {
-            renderAllFaces(renderer, block, x, y, z, ((IBlockTransparent) block).getTransparentIcon());
+            this.renderAllFaces(renderer, block, x, y, z, ((IBlockTransparent) block).getTransparentIcon());
         }
         return false;
     }

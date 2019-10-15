@@ -23,14 +23,14 @@ public class FamiliarAugment {
 
     //Main effects
     public static final FamiliarAugment SHOCK = new FamiliarAugment("shock", new AspectList().add(Aspect.AIR, 3).add(Aspect.ENTROPY, 2));
-    public static final FamiliarAugment POISON = new FamiliarAugment("poison", new AspectList().add(Aspect.WATER, 3).add(Aspect.ENTROPY, 4)).addConflict(SHOCK);
-    public static final FamiliarAugment FIRE = new FamiliarAugment("fire", new AspectList().add(Aspect.FIRE, 4).add(Aspect.ORDER, 2)).addConflict(SHOCK, POISON);
-    public static final FamiliarAugment WEAKNESS = new FamiliarAugment("weakness", new AspectList().add(Aspect.ENTROPY, 3).add(Aspect.EARTH, 3)).addConflict(SHOCK, POISON, FIRE);
+    public static final FamiliarAugment POISON = new FamiliarAugment("poison", new AspectList().add(Aspect.WATER, 3).add(Aspect.ENTROPY, 4)).addConflict(FamiliarAugment.SHOCK);
+    public static final FamiliarAugment FIRE = new FamiliarAugment("fire", new AspectList().add(Aspect.FIRE, 4).add(Aspect.ORDER, 2)).addConflict(FamiliarAugment.SHOCK, FamiliarAugment.POISON);
+    public static final FamiliarAugment WEAKNESS = new FamiliarAugment("weakness", new AspectList().add(Aspect.ENTROPY, 3).add(Aspect.EARTH, 3)).addConflict(FamiliarAugment.SHOCK, FamiliarAugment.POISON, FamiliarAugment.FIRE);
 
     //Side effects
-    public static final FamiliarAugment DAMAGE_INCREASE = new FamiliarAugment("damage", new AspectList().add(Aspect.FIRE, 3)).addCondition(new PreconditionAny(SHOCK, POISON, FIRE, WEAKNESS));
-    public static final FamiliarAugment RANGE_INCREASE = new FamiliarAugment("range", new AspectList().add(Aspect.AIR, 2).add(Aspect.ORDER, 1)).addConflict(DAMAGE_INCREASE).addCondition(new PreconditionAny(SHOCK, POISON, FIRE, WEAKNESS));
-    public static final FamiliarAugment ATTACK_SPEED = new FamiliarAugment("speed", new AspectList().add(Aspect.ORDER, 2).add(Aspect.FIRE, 1)).addConflict(DAMAGE_INCREASE, RANGE_INCREASE).addCondition(new PreconditionAny(SHOCK, POISON, FIRE, WEAKNESS));
+    public static final FamiliarAugment DAMAGE_INCREASE = new FamiliarAugment("damage", new AspectList().add(Aspect.FIRE, 3)).addCondition(new PreconditionAny(FamiliarAugment.SHOCK, FamiliarAugment.POISON, FamiliarAugment.FIRE, FamiliarAugment.WEAKNESS));
+    public static final FamiliarAugment RANGE_INCREASE = new FamiliarAugment("range", new AspectList().add(Aspect.AIR, 2).add(Aspect.ORDER, 1)).addConflict(FamiliarAugment.DAMAGE_INCREASE).addCondition(new PreconditionAny(FamiliarAugment.SHOCK, FamiliarAugment.POISON, FamiliarAugment.FIRE, FamiliarAugment.WEAKNESS));
+    public static final FamiliarAugment ATTACK_SPEED = new FamiliarAugment("speed", new AspectList().add(Aspect.ORDER, 2).add(Aspect.FIRE, 1)).addConflict(FamiliarAugment.DAMAGE_INCREASE, FamiliarAugment.RANGE_INCREASE).addCondition(new PreconditionAny(FamiliarAugment.SHOCK, FamiliarAugment.POISON, FamiliarAugment.FIRE, FamiliarAugment.WEAKNESS));
 
 
     private final String unlocalizedName;
@@ -52,47 +52,47 @@ public class FamiliarAugment {
     }
 
     private FamiliarAugment addCondition(FamiliarAugmentPrecondition condition) {
-        preconditions.add(condition);
+        this.preconditions.add(condition);
         return this;
     }
 
     private FamiliarAugment addConflict(FamiliarAugment... others) {
         for(FamiliarAugment augment : others) {
             if(augment == null) continue;
-            addConflict(augment);
+            this.addConflict(augment);
         }
         return this;
     }
 
     private FamiliarAugment addConflict(FamiliarAugment other) {
-        if(!conflicts.contains(other)) conflicts.add(other);
+        if(!this.conflicts.contains(other)) this.conflicts.add(other);
         if(!other.conflicts.contains(this)) other.conflicts.add(this);
         return this;
     }
 
     public AspectList getCostsPerLevel() {
-        return costsPerLevel;
+        return this.costsPerLevel;
     }
 
     public String getUnlocalizedName() {
-        return unlocalizedName;
+        return this.unlocalizedName;
     }
 
     public String getLocalizedName() {
-        return StatCollector.translateToLocal(String.format(FORMAT_NAME, unlocalizedName));
+        return StatCollector.translateToLocal(String.format(FamiliarAugment.FORMAT_NAME, this.unlocalizedName));
     }
 
     public static FamiliarAugment getByUnlocalizedName(String name) {
-        return BY_NAME.get(name.toLowerCase());
+        return FamiliarAugment.BY_NAME.get(name.toLowerCase());
     }
 
     //Returns true, if the current conditions for application are fulfilled for a familiar with given augments.
     public boolean checkConditions(FamiliarAugmentList currentAugments, int levelToSet) {
         if(levelToSet <= 0) return false;
         for(FamiliarAugmentPair current : currentAugments) {
-            if(conflicts.contains(current.augment)) return false;
+            if(this.conflicts.contains(current.augment)) return false;
         }
-        if(requiresPrevLevel) {
+        if(this.requiresPrevLevel) {
             boolean containsAtAll = false;
             int foundLevel = -1;
             for(FamiliarAugmentPair pair : currentAugments) {
@@ -107,7 +107,7 @@ public class FamiliarAugment {
                 if(foundLevel != (levelToSet - 1)) return false;
             }
         }
-        for(FamiliarAugmentPrecondition precondition : preconditions) {
+        for(FamiliarAugmentPrecondition precondition : this.preconditions) {
             if(precondition == null) continue;
             if(!precondition.isFulfilled(currentAugments, levelToSet)) return false;
         }
@@ -115,18 +115,18 @@ public class FamiliarAugment {
     }
 
     static {
-        addNameEntry(SHOCK, SHOCK.unlocalizedName);
-        addNameEntry(FIRE, FIRE.unlocalizedName);
-        addNameEntry(POISON, POISON.unlocalizedName);
-        addNameEntry(WEAKNESS, WEAKNESS.unlocalizedName);
+        FamiliarAugment.addNameEntry(FamiliarAugment.SHOCK, FamiliarAugment.SHOCK.unlocalizedName);
+        FamiliarAugment.addNameEntry(FamiliarAugment.FIRE, FamiliarAugment.FIRE.unlocalizedName);
+        FamiliarAugment.addNameEntry(FamiliarAugment.POISON, FamiliarAugment.POISON.unlocalizedName);
+        FamiliarAugment.addNameEntry(FamiliarAugment.WEAKNESS, FamiliarAugment.WEAKNESS.unlocalizedName);
 
-        addNameEntry(DAMAGE_INCREASE, DAMAGE_INCREASE.unlocalizedName);
-        addNameEntry(RANGE_INCREASE, RANGE_INCREASE.unlocalizedName);
-        addNameEntry(ATTACK_SPEED, ATTACK_SPEED.unlocalizedName);
+        FamiliarAugment.addNameEntry(FamiliarAugment.DAMAGE_INCREASE, FamiliarAugment.DAMAGE_INCREASE.unlocalizedName);
+        FamiliarAugment.addNameEntry(FamiliarAugment.RANGE_INCREASE, FamiliarAugment.RANGE_INCREASE.unlocalizedName);
+        FamiliarAugment.addNameEntry(FamiliarAugment.ATTACK_SPEED, FamiliarAugment.ATTACK_SPEED.unlocalizedName);
     }
 
     private static void addNameEntry(FamiliarAugment augment, String name) {
-        BY_NAME.put(name.toLowerCase(), augment);
+        FamiliarAugment.BY_NAME.put(name.toLowerCase(), augment);
     }
 
     private abstract static class FamiliarAugmentPrecondition {
@@ -145,8 +145,8 @@ public class FamiliarAugment {
 
         @Override
         public boolean isFulfilled(FamiliarAugmentList currentAugments, int levelToSet) {
-            if(anyPrevAugment == null) return true;
-            for(FamiliarAugment augment : anyPrevAugment) {
+            if(this.anyPrevAugment == null) return true;
+            for(FamiliarAugment augment : this.anyPrevAugment) {
                 if(augment == null) continue;
                 if(currentAugments.contains(augment)) return true;
             }
@@ -164,8 +164,8 @@ public class FamiliarAugment {
 
         @Override
         public boolean isFulfilled(FamiliarAugmentList currentAugments, int levelToSet) {
-            if(prevAugments == null) return true;
-            for(FamiliarAugment augment : prevAugments) {
+            if(this.prevAugments == null) return true;
+            for(FamiliarAugment augment : this.prevAugments) {
                 if(augment == null) continue;
                 if(!currentAugments.contains(augment)) return false;
             }
@@ -176,7 +176,7 @@ public class FamiliarAugment {
     public static class FamiliarAugmentList extends ArrayList<FamiliarAugmentPair> {
 
         public boolean contains(FamiliarAugment augment) {
-            return getAugmentPair(augment) != null;
+            return this.getAugmentPair(augment) != null;
         }
 
         public FamiliarAugmentPair getAugmentPair(FamiliarAugment augment) {
@@ -187,8 +187,8 @@ public class FamiliarAugment {
         }
 
         public int getLevel(FamiliarAugment augment) {
-            if(!contains(augment)) return -1;
-            return getAugmentPair(augment).level;
+            if(!this.contains(augment)) return -1;
+            return this.getAugmentPair(augment).level;
         }
 
     }
@@ -206,17 +206,17 @@ public class FamiliarAugment {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (o == null || this.getClass() != o.getClass()) return false;
 
             FamiliarAugmentPair that = (FamiliarAugmentPair) o;
 
-            return level == that.level && !(augment != null ? !augment.equals(that.augment) : that.augment != null);
+            return this.level == that.level && (this.augment != null ? this.augment.equals(that.augment) : that.augment == null);
         }
 
         @Override
         public int hashCode() {
-            int result = augment != null ? augment.hashCode() : 0;
-            result = 31 * result + level;
+            int result = this.augment != null ? this.augment.hashCode() : 0;
+            result = 31 * result + this.level;
             return result;
         }
     }

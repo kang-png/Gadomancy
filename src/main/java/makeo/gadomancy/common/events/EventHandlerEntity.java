@@ -4,11 +4,9 @@ import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import makeo.gadomancy.common.aura.AuraEffects;
 import makeo.gadomancy.common.blocks.tiles.TileAIShutdown;
-import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.entities.EntityPermNoClipItem;
-import makeo.gadomancy.common.familiar.FamiliarAIController_Old;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.Vector3;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
@@ -24,7 +22,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import thaumcraft.common.items.armor.Hover;
@@ -56,7 +53,7 @@ public class EventHandlerEntity {
         if(event.entityLiving.isCreatureType(EnumCreatureType.monster, false)) {
             double rangeSq = AuraEffects.LUX.getRange() * AuraEffects.LUX.getRange();
             Vector3 entityPos = MiscUtils.getPositionVector(event.entity);
-            for(ChunkCoordinates luxPylons : registeredLuxPylons) {
+            for(ChunkCoordinates luxPylons : EventHandlerEntity.registeredLuxPylons) {
                 Vector3 pylon = Vector3.fromCC(luxPylons);
                 if(entityPos.distanceSquared(pylon) <= rangeSq) {
                     event.setResult(Event.Result.DENY);
@@ -97,11 +94,11 @@ public class EventHandlerEntity {
     @SubscribeEvent
     public void on(EntityItemPickupEvent event) {
         if (!event.entityPlayer.worldObj.isRemote) {
-            if (event.item != null && event.item instanceof EntityPermNoClipItem) {
+            if (event.item instanceof EntityPermNoClipItem) {
                 EntityPermNoClipItem item = (EntityPermNoClipItem) event.item;
                 ChunkCoordinates master = (ChunkCoordinates) item.getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId).getObject();
                 TileEntity te = event.entityPlayer.worldObj.getTileEntity(master.posX, master.posY, master.posZ);
-                if (te == null || !(te instanceof EntityPermNoClipItem.IItemMasterTile)) return;
+                if (!(te instanceof EntityPermNoClipItem.IItemMasterTile)) return;
                 ((EntityPermNoClipItem.IItemMasterTile) te).informItemRemoval();
             }
         }
@@ -109,7 +106,7 @@ public class EventHandlerEntity {
 
     @SubscribeEvent
     public void on(LivingEvent.LivingUpdateEvent event) {
-        if (event.entityLiving == null || !(event.entityLiving instanceof EntityPlayer)) return;
+        if (!(event.entityLiving instanceof EntityPlayer)) return;
         EntityPlayer player = (EntityPlayer) event.entity;
         if ((event.entity.worldObj.provider.dimensionId == ModConfig.dimOuterId) && ((player.ticksExisted & 7) == 0) && ((player.capabilities.isFlying) || (Hover.getHover(player.getEntityId())))) {
             if(player.capabilities.isCreativeMode && MiscUtils.isANotApprovedOrMisunderstoodPersonFromMoreDoor(player)) return;
