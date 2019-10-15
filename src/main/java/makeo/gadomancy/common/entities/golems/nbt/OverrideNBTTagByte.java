@@ -22,9 +22,9 @@ public class OverrideNBTTagByte extends NBTTagByte {
 
     @Override
     public byte func_150290_f() {
-        if(override) {
-            override = false;
-            return overrideData;
+        if(this.override) {
+            this.override = false;
+            return this.overrideData;
         }
         return super.func_150290_f();
     }

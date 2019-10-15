@@ -15,7 +15,9 @@ import thaumcraft.api.internal.DummyInternalMethodHandler;
 import thaumcraft.api.internal.IInternalMethodHandler;
 import thaumcraft.common.lib.research.ResearchManager;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -27,7 +29,7 @@ import java.util.*;
  */
 public class InfusionVisualDisguiseArmor extends InfusionRecipe {
     private static final IInternalMethodHandler FAKE_HANDLER = new FakeMethodHandler();
-    private static final int[] POTION_METAS = new int[]{8206, 16398, 8270, 16462};
+    private static final int[] POTION_METAS = {8206, 16398, 8270, 16462};
 
     private static ItemStack[] armorItems;
 
@@ -38,11 +40,11 @@ public class InfusionVisualDisguiseArmor extends InfusionRecipe {
         super("", new ItemStack(Blocks.cobblestone), 0, InfusionDisguiseArmor.ASPECTS, new ItemStack(Blocks.dirt), new ItemStack[0]);
         this.transparent = transparent;
 
-        components = new ItemStack[InfusionDisguiseArmor.COMPONENTS.length + 1];
-        System.arraycopy(InfusionDisguiseArmor.COMPONENTS, 0, components, 1, InfusionDisguiseArmor.COMPONENTS.length);
+        this.components = new ItemStack[InfusionDisguiseArmor.COMPONENTS.length + 1];
+        System.arraycopy(InfusionDisguiseArmor.COMPONENTS, 0, this.components, 1, InfusionDisguiseArmor.COMPONENTS.length);
 
-        if(armorItems == null && Gadomancy.proxy.getSide() == Side.CLIENT) {
-            findArmorItems();
+        if(InfusionVisualDisguiseArmor.armorItems == null && Gadomancy.proxy.getSide() == Side.CLIENT) {
+            this.findArmorItems();
         }
     }
 
@@ -65,29 +67,29 @@ public class InfusionVisualDisguiseArmor extends InfusionRecipe {
                 }
             }
         }
-        armorItems = items.toArray(new ItemStack[items.size()]);
+        InfusionVisualDisguiseArmor.armorItems = items.toArray(new ItemStack[items.size()]);
     }
 
     private boolean canSee(ItemStack stack) {
-        String research = getResearchKey(stack);
+        String research = InfusionVisualDisguiseArmor.getResearchKey(stack);
         return research == null || ResearchManager.isResearchComplete(Minecraft.getMinecraft().thePlayer.getCommandSenderName(), research);
     }
 
     public ItemStack getCurrentDisguise() {
-        if(transparent) {
-            return new ItemStack(Items.potionitem, 1, POTION_METAS[(int)((System.currentTimeMillis() / 1000) % POTION_METAS.length)]);
+        if(this.transparent) {
+            return new ItemStack(Items.potionitem, 1, InfusionVisualDisguiseArmor.POTION_METAS[(int)((System.currentTimeMillis() / 1000) % InfusionVisualDisguiseArmor.POTION_METAS.length)]);
         }
 
         Random random = new Random(System.currentTimeMillis() / 1000);
-        int first = getRecipeInput(random);
-        int firstPos = EntityLiving.getArmorPosition(armorItems[first]);
+        int first = this.getRecipeInput(random);
+        int firstPos = EntityLiving.getArmorPosition(InfusionVisualDisguiseArmor.armorItems[first]);
 
         int next;
         do {
-            next = random.nextInt(armorItems.length);
+            next = random.nextInt(InfusionVisualDisguiseArmor.armorItems.length);
         }
-        while (next == first || EntityLiving.getArmorPosition(armorItems[next]) != firstPos || !canSee(armorItems[next]));
-        return armorItems[next];
+        while (next == first || EntityLiving.getArmorPosition(InfusionVisualDisguiseArmor.armorItems[next]) != firstPos || !this.canSee(InfusionVisualDisguiseArmor.armorItems[next]));
+        return InfusionVisualDisguiseArmor.armorItems[next];
     }
 
     @Override
@@ -96,14 +98,14 @@ public class InfusionVisualDisguiseArmor extends InfusionRecipe {
         if(Minecraft.getMinecraft().thePlayer == null) {
             return new ItemStack(Items.cookie);
         }
-        return armorItems[getRecipeInput(new Random(System.currentTimeMillis() / 1000))];
+        return InfusionVisualDisguiseArmor.armorItems[this.getRecipeInput(new Random(System.currentTimeMillis() / 1000))];
     }
 
     private int getRecipeInput(Random random) {
         int index;
         do {
-            index = random.nextInt(armorItems.length);
-        } while (!canSee(armorItems[index]));
+            index = random.nextInt(InfusionVisualDisguiseArmor.armorItems.length);
+        } while (!this.canSee(InfusionVisualDisguiseArmor.armorItems[index]));
         return index;
     }
 
@@ -113,20 +115,20 @@ public class InfusionVisualDisguiseArmor extends InfusionRecipe {
         if(Minecraft.getMinecraft().thePlayer == null) {
             return new ItemStack(Items.cookie);
         }
-        return InfusionDisguiseArmor.disguiseStack(input, getCurrentDisguise());
+        return InfusionDisguiseArmor.disguiseStack(input, this.getCurrentDisguise());
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public ItemStack[] getComponents() {
-        components[0] = getCurrentDisguise();
-        return components;
+        this.components[0] = this.getCurrentDisguise();
+        return this.components;
     }
 
     @SideOnly(Side.CLIENT)
     private static String getResearchKey(ItemStack stack) {
         IInternalMethodHandler old = ThaumcraftApi.internalMethods;
-        ThaumcraftApi.internalMethods = FAKE_HANDLER;
+        ThaumcraftApi.internalMethods = InfusionVisualDisguiseArmor.FAKE_HANDLER;
         Object[] result = ThaumcraftApi.getCraftingRecipeKey(Minecraft.getMinecraft().thePlayer, stack);
         ThaumcraftApi.internalMethods = old;
         return result == null ? null : (String)result[0];

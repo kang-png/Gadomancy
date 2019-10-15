@@ -3,8 +3,6 @@ package makeo.gadomancy.common.items.baubles;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.data.DataFamiliar;
-import makeo.gadomancy.common.data.SyncDataHolder;
 import makeo.gadomancy.common.crafting.DeprecationItemPaybacks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.NBTHelper;
@@ -18,7 +16,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.input.Keyboard;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.common.Thaumcraft;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +31,13 @@ import java.util.List;
 public class ItemFamiliar_Old extends Item implements IBauble {
 
     public ItemFamiliar_Old() {
-        setUnlocalizedName("ItemFamiliar");
-        setMaxStackSize(1);
-        setFull3D();
-        setCreativeTab(RegisteredItems.creativeTab);
+        this.setUnlocalizedName("ItemFamiliar");
+        this.setMaxStackSize(1);
+        this.setFull3D();
+        this.setCreativeTab(RegisteredItems.creativeTab);
 
         //Shut up FML.
-        setTextureName(Gadomancy.MODID + ":category_icon");
+        this.setTextureName(Gadomancy.MODID + ":category_icon");
     }
 
     @Override
@@ -51,28 +48,28 @@ public class ItemFamiliar_Old extends Item implements IBauble {
         lore.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("gadomancy.lore.deprecation.back"));
 
         if(stack.hasTagCompound()) {
-            if(hasAspect(stack)) {
-                lore.add(getAspect(stack).getName());
+            if(this.hasAspect(stack)) {
+                lore.add(this.getAspect(stack).getName());
             }
 
             if(Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54)) {
-                if(hasUpgrade(stack, FamiliarUpgrade.ATTACK_1) || hasUpgrade(stack, FamiliarUpgrade.ATTACK_2) || hasUpgrade(stack, FamiliarUpgrade.ATTACK_3)) {
+                if(this.hasUpgrade(stack, FamiliarUpgrade.ATTACK_1) || this.hasUpgrade(stack, FamiliarUpgrade.ATTACK_2) || this.hasUpgrade(stack, FamiliarUpgrade.ATTACK_3)) {
                     String strength = EnumChatFormatting.DARK_RED + "Strength ";
-                    if(hasUpgrade(stack, FamiliarUpgrade.ATTACK_1)) strength += "I";
-                    if(hasUpgrade(stack, FamiliarUpgrade.ATTACK_2)) strength += "I";
-                    if(hasUpgrade(stack, FamiliarUpgrade.ATTACK_3)) strength += "I";
+                    if(this.hasUpgrade(stack, FamiliarUpgrade.ATTACK_1)) strength += "I";
+                    if(this.hasUpgrade(stack, FamiliarUpgrade.ATTACK_2)) strength += "I";
+                    if(this.hasUpgrade(stack, FamiliarUpgrade.ATTACK_3)) strength += "I";
                     lore.add(strength);
                 }
 
-                if(hasUpgrade(stack, FamiliarUpgrade.RANGE_1)) {
+                if(this.hasUpgrade(stack, FamiliarUpgrade.RANGE_1)) {
                     lore.add(EnumChatFormatting.GOLD + "Reach I");
                 }
 
-                if(hasUpgrade(stack, FamiliarUpgrade.COOLDOWN_1)) {
+                if(this.hasUpgrade(stack, FamiliarUpgrade.COOLDOWN_1)) {
                     lore.add(EnumChatFormatting.AQUA + "Swiftness I");
                 }
             } else {
-                if(hasAnyUpgrade(stack)) {
+                if(this.hasAnyUpgrade(stack)) {
                     lore.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + StatCollector.translateToLocal("gadomancy.lore.hasAdditionalLore"));
                 }
             }
@@ -82,7 +79,7 @@ public class ItemFamiliar_Old extends Item implements IBauble {
 
     public boolean hasAnyUpgrade(ItemStack stack) {
         for(FamiliarUpgrade upgrade : FamiliarUpgrade.values()) {
-            if(hasUpgrade(stack, upgrade)) return true;
+            if(this.hasUpgrade(stack, upgrade)) return true;
         }
         return false;
     }
@@ -98,7 +95,7 @@ public class ItemFamiliar_Old extends Item implements IBauble {
     }
 
     public Aspect getAspect(ItemStack stack) {
-        if(!hasAspect(stack)) return null;
+        if(!this.hasAspect(stack)) return null;
         if(stack == null || !(stack.getItem() instanceof ItemFamiliar_Old)) return null;
         if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("aspect")) return null;
         return Aspect.getAspect(stack.getTagCompound().getString("aspect"));
@@ -180,7 +177,7 @@ public class ItemFamiliar_Old extends Item implements IBauble {
 
         int range = 0;
 
-        if(hasUpgrade(itemStack, FamiliarUpgrade.RANGE_1)) {
+        if(this.hasUpgrade(itemStack, FamiliarUpgrade.RANGE_1)) {
             range += 3;
         }
         return range;
@@ -188,7 +185,7 @@ public class ItemFamiliar_Old extends Item implements IBauble {
 
     public int getAttackCooldownReduction(ItemStack itemStack) {
         if(!(itemStack.getItem() instanceof ItemFamiliar_Old)) return 0;
-        return hasUpgrade(itemStack, FamiliarUpgrade.COOLDOWN_1) ? 10 : 0;
+        return this.hasUpgrade(itemStack, FamiliarUpgrade.COOLDOWN_1) ? 10 : 0;
     }
 
     public float getAttackStrength(ItemStack itemStack) {
@@ -196,13 +193,13 @@ public class ItemFamiliar_Old extends Item implements IBauble {
 
         float attack = 1F;
 
-        if(hasUpgrade(itemStack, FamiliarUpgrade.ATTACK_1)) {
+        if(this.hasUpgrade(itemStack, FamiliarUpgrade.ATTACK_1)) {
             attack += 1F;
         }
-        if(hasUpgrade(itemStack, FamiliarUpgrade.ATTACK_2)) {
+        if(this.hasUpgrade(itemStack, FamiliarUpgrade.ATTACK_2)) {
             attack += 2F;
         }
-        if(hasUpgrade(itemStack, FamiliarUpgrade.ATTACK_3)) {
+        if(this.hasUpgrade(itemStack, FamiliarUpgrade.ATTACK_3)) {
             attack += 4F;
         }
         return attack;
@@ -249,32 +246,32 @@ public class ItemFamiliar_Old extends Item implements IBauble {
         return arcPackage;
     }
 
-    public static enum FamiliarUpgrade {
+    public enum FamiliarUpgrade {
 
         ATTACK_1("AttackUpgrade1"),
-        ATTACK_2("AttackUpgrade2", ATTACK_1),
-        ATTACK_3("AttackUpgrade3", ATTACK_2),
+        ATTACK_2("AttackUpgrade2", FamiliarUpgrade.ATTACK_1),
+        ATTACK_3("AttackUpgrade3", FamiliarUpgrade.ATTACK_2),
         COOLDOWN_1("CdUpgrade1"),
         RANGE_1("RangeUpgrade1");
 
         private String tag;
         private FamiliarUpgrade neededUpgrade;
 
-        private FamiliarUpgrade(String tagStr) {
+        FamiliarUpgrade(String tagStr) {
             this(tagStr, null);
         }
 
-        private FamiliarUpgrade(String tagStr, FamiliarUpgrade neededUpgrade) {
+        FamiliarUpgrade(String tagStr, FamiliarUpgrade neededUpgrade) {
             this.tag = tagStr;
             this.neededUpgrade = neededUpgrade;
         }
 
         public String getTag() {
-            return tag;
+            return this.tag;
         }
 
         public FamiliarUpgrade getNeededPreviousUpgrade() {
-            return neededUpgrade;
+            return this.neededUpgrade;
         }
     }
 

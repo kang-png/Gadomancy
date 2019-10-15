@@ -16,7 +16,7 @@ import java.util.List;
 public class MultiResearchPage extends ResearchPage {
     public MultiResearchPage(List... recipes) {
         super(recipes[0]);
-        recipe = new OverrideList(recipes);
+        this.recipe = new OverrideList(recipes);
     }
 
     private class OverrideList extends ArrayList<Object> {
@@ -31,18 +31,18 @@ public class MultiResearchPage extends ResearchPage {
         @Override
         public Object get(int index) {
             int calcIndex;
-            if(index == 0 && (calcIndex = calcIndex()) != recipeIndex) {
+            if(index == 0 && (calcIndex = this.calcIndex()) != this.recipeIndex) {
                 this.clear();
-                for(Object o : recipes[calcIndex]) {
+                for(Object o : this.recipes[calcIndex]) {
                     this.add(o);
                 }
-                recipeIndex = calcIndex;
+                this.recipeIndex = calcIndex;
             }
             return super.get(index);
         }
 
         private int calcIndex() {
-            return (int)(System.currentTimeMillis() / 1000L % recipes.length);
+            return (int)(System.currentTimeMillis() / 1000L % this.recipes.length);
         }
     }
 }

@@ -31,15 +31,15 @@ public class OverrideRidingEntity extends Entity {
 
     @Override
     public boolean writeMountToNBT(NBTTagCompound compound) {
-        this.compound.setFloat("HealF", golem.getHealth() * -1);
-        this.compound.setByte("GolemType", (byte) DEFAULT_TYPE.ordinal());
+        this.compound.setFloat("HealF", this.golem.getHealth() * -1);
+        this.compound.setByte("GolemType", (byte) OverrideRidingEntity.DEFAULT_TYPE.ordinal());
 
         boolean result = false;
-        if(ridingEntity != null) {
-            result = ridingEntity.writeMountToNBT(compound);
+        if(this.ridingEntity != null) {
+            result = this.ridingEntity.writeMountToNBT(compound);
         }
 
-        golem.ridingEntity = ridingEntity;
+        this.golem.ridingEntity = this.ridingEntity;
         return result;
     }
 

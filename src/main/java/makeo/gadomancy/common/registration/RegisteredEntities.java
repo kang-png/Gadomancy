@@ -19,10 +19,10 @@ import net.minecraft.entity.Entity;
 public class RegisteredEntities {
 
     public static void init() {
-        registerEntity(EntityPermNoClipItem.class, "EntityPermItem", 32, 40, false);
-        registerEntity(EntityAuraCore.class, "EntityAuraCore", 32, 10, true);
-        registerEntity(FakePlayerEntity.class, "FakePlayerEntity", 32, 20, true);
-        registerEntity(EntityItemElement.class, "EntityItemElement", 32, 40, true);
+        RegisteredEntities.registerEntity(EntityPermNoClipItem.class, "EntityPermItem", 32, 40, false);
+        RegisteredEntities.registerEntity(EntityAuraCore.class, "EntityAuraCore", 32, 10, true);
+        RegisteredEntities.registerEntity(FakePlayerEntity.class, "FakePlayerEntity", 32, 20, true);
+        RegisteredEntities.registerEntity(EntityItemElement.class, "EntityItemElement", 32, 40, true);
     }
 
     private static void registerEntity(Class<? extends Entity> entityClass, String name, int trackingRange, int updateFreq, boolean sendVelUpdates) {

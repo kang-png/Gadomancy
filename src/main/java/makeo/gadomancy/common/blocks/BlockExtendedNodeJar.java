@@ -39,10 +39,10 @@ public class BlockExtendedNodeJar extends BlockContainer {
 
     public BlockExtendedNodeJar() {
         super(Material.glass);
-        setHardness(0.3F);
-        setStepSound(new CustomStepSound("jar", 1.0F, 1.0F));
-        setLightLevel(0.66F);
-        setBlockName("blockExNodeJar");
+        this.setHardness(0.3F);
+        this.setStepSound(new CustomStepSound("jar", 1.0F, 1.0F));
+        this.setLightLevel(0.66F);
+        this.setBlockName("blockExNodeJar");
     }
 
     @Override
@@ -78,7 +78,7 @@ public class BlockExtendedNodeJar extends BlockContainer {
 
 
     public void onBlockHarvested(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer) {
-        dropBlockAsItem(par1World, par2, par3, par4, par5, 0);
+        this.dropBlockAsItem(par1World, par2, par3, par4, par5, 0);
         super.onBlockHarvested(par1World, par2, par3, par4, par5, par6EntityPlayer);
     }
 
@@ -102,12 +102,12 @@ public class BlockExtendedNodeJar extends BlockContainer {
     }
 
     public void setBlockBoundsBasedOnState(IBlockAccess world, int i, int j, int k) {
-        setBlockBounds(0.1875F, 0.0F, 0.1875F, 0.8125F, 0.75F, 0.8125F);
+        this.setBlockBounds(0.1875F, 0.0F, 0.1875F, 0.8125F, 0.75F, 0.8125F);
         super.setBlockBoundsBasedOnState(world, i, j, k);
     }
 
     public void addCollisionBoxesToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity) {
-        setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
     }
 

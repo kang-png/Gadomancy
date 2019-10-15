@@ -19,9 +19,9 @@ public class PlayerCameraRenderer extends EntityRenderer {
     private boolean isRemoved;
     private EntityRenderer prevRenderer;
 
-    public float xOffset = 0;
-    public float yOffset = 0;
-    public float zOffset = 0;
+    public float xOffset;
+    public float yOffset;
+    public float zOffset;
 
     public PlayerCameraRenderer(Minecraft minecraft, EntityRenderer prevRenderer) {
         super(minecraft, minecraft.getResourceManager());
@@ -33,15 +33,15 @@ public class PlayerCameraRenderer extends EntityRenderer {
     }
 
     public EntityRenderer getPrevRenderer() {
-        return prevRenderer;
+        return this.prevRenderer;
     }
 
     public boolean isMarkedForRemoval() {
-        return isMarkedForRemoval;
+        return this.isMarkedForRemoval;
     }
 
     public boolean isRemoved() {
-        return isRemoved;
+        return this.isRemoved;
     }
 
     public void markForRemoval() {
@@ -49,27 +49,27 @@ public class PlayerCameraRenderer extends EntityRenderer {
     }
 
     private boolean canChangeView() {
-        return !isMarkedForRemoval && minecraft.thePlayer != null && !minecraft.thePlayer.isRiding() && !minecraft.thePlayer.isPlayerSleeping();
+        return !this.isMarkedForRemoval && this.minecraft.thePlayer != null && !this.minecraft.thePlayer.isRiding() && !this.minecraft.thePlayer.isPlayerSleeping();
     }
 
     private void removeIfMarked() {
-        if(isMarkedForRemoval && this.equals(Minecraft.getMinecraft().entityRenderer)) {
-            Minecraft.getMinecraft().entityRenderer = prevRenderer;
-            isRemoved = true;
+        if(this.isMarkedForRemoval && this.equals(Minecraft.getMinecraft().entityRenderer)) {
+            Minecraft.getMinecraft().entityRenderer = this.prevRenderer;
+            this.isRemoved = true;
         }
     }
 
     @Override
     public void updateCameraAndRender(float partialTicks) {
-        removeIfMarked();
+        this.removeIfMarked();
 
-        if(canChangeView()) {
-            moveCam(-1);
+        if(this.canChangeView()) {
+            this.moveCam(-1);
             //float tempEyeHeight = minecraft.thePlayer.eyeHeight;
             //minecraft.thePlayer.eyeHeight = minecraft.thePlayer.getDefaultEyeHeight();
             super.updateCameraAndRender(partialTicks);
             //minecraft.thePlayer.eyeHeight = tempEyeHeight;
-            moveCam(1);
+            this.moveCam(1);
 
             return;
         }
@@ -78,7 +78,7 @@ public class PlayerCameraRenderer extends EntityRenderer {
     }
 
     private void moveCam(int mod) {
-        EntityPlayer player = minecraft.thePlayer;
+        EntityPlayer player = this.minecraft.thePlayer;
 
         player.posX += this.xOffset * mod;
         player.lastTickPosX += this.xOffset * mod;
@@ -95,12 +95,12 @@ public class PlayerCameraRenderer extends EntityRenderer {
 
     @Override
     public void getMouseOver(float partialTicks) {
-        removeIfMarked();
+        this.removeIfMarked();
 
-        if(canChangeView()) {
-            moveCam(-1);
+        if(this.canChangeView()) {
+            this.moveCam(-1);
             super.getMouseOver(partialTicks);
-            moveCam(1);
+            this.moveCam(1);
 
             return;
         }

@@ -28,21 +28,21 @@ import java.util.List;
 public class BlockNodeManipulator extends BlockStoneDevice {
 
     public BlockNodeManipulator() {
-        setBlockName("blockNodeManipulator");
-        setCreativeTab(RegisteredItems.creativeTab);
+        this.setBlockName("blockNodeManipulator");
+        this.setCreativeTab(RegisteredItems.creativeTab);
     }
 
     @Override
     public void registerBlockIcons(IIconRegister ir) {
         super.registerBlockIcons(ir);
 
-        iconPedestal[1] = ir.registerIcon(Gadomancy.MODID + ":manipulator_bot");
-        iconWandPedestal[0] = ir.registerIcon(Gadomancy.MODID + ":manipulator_side");
-        iconWandPedestal[1] = ir.registerIcon(Gadomancy.MODID + ":manipulator_top");
+        this.iconPedestal[1] = ir.registerIcon(Gadomancy.MODID + ":manipulator_bot");
+        this.iconWandPedestal[0] = ir.registerIcon(Gadomancy.MODID + ":manipulator_side");
+        this.iconWandPedestal[1] = ir.registerIcon(Gadomancy.MODID + ":manipulator_top");
 
-        iconWandPedestalFocus[0] = ir.registerIcon(Gadomancy.MODID + ":manipulator_focus_side");
-        iconWandPedestalFocus[1] = ir.registerIcon(Gadomancy.MODID + ":manipulator_focus_top");
-        iconWandPedestalFocus[2] = ir.registerIcon(Gadomancy.MODID + ":manipulator_focus_bot");
+        this.iconWandPedestalFocus[0] = ir.registerIcon(Gadomancy.MODID + ":manipulator_focus_side");
+        this.iconWandPedestalFocus[1] = ir.registerIcon(Gadomancy.MODID + ":manipulator_focus_top");
+        this.iconWandPedestalFocus[2] = ir.registerIcon(Gadomancy.MODID + ":manipulator_focus_bot");
     }
 
     @Override
@@ -63,7 +63,7 @@ public class BlockNodeManipulator extends BlockStoneDevice {
         int ret = super.getComparatorInputOverride(world, x, y, z, rs);
 
         TileEntity te = world.getTileEntity(x, y, z);
-        if (te != null && te instanceof TileNodeManipulator) return 0;
+        if (te instanceof TileNodeManipulator) return 0;
         return ret;
     }
 

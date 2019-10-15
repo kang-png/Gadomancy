@@ -23,7 +23,7 @@ public class IntegrationWaila extends IntegrationMod {
 
     @Override
     protected void doInit() {
-        registerProviders(ModuleRegistrar.instance());
+        IntegrationWaila.registerProviders(ModuleRegistrar.instance());
     }
 
     public static void registerProviders(ModuleRegistrar registrar) {

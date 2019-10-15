@@ -20,7 +20,7 @@ public class RegisteredEnchantments {
     public static EnchantmentRevealer revealer;
 
     public static void init() {
-        revealer = registerEnchantment(EnchantmentRevealer.class);
+        RegisteredEnchantments.revealer = RegisteredEnchantments.registerEnchantment(EnchantmentRevealer.class);
     }
 
     public static void createConfigEntries() {
@@ -34,7 +34,7 @@ public class RegisteredEnchantments {
     public static <T extends Enchantment> T registerEnchantment(Class<T> enchClass) {
         int id = ModConfig.loadEnchantmentId(enchClass.getSimpleName());
         if(id == -1) {
-            id = getUnassignedId(enchClass);
+            id = RegisteredEnchantments.getUnassignedId(enchClass);
         }
         return new Injector(enchClass).invokeConstructor(int.class, id);
     }

@@ -34,12 +34,12 @@ public class TileOverrideEldritchLock extends TileEldritchLock {
                     int count = Entity.nextEntityID - nextEntityId;
                     Entity[] bosses = new Entity[count];
                     for(int i = 0; i < count; i++) {
-                        bosses[i] = worldObj.getEntityByID(nextEntityId + i);
+                        bosses[i] = this.worldObj.getEntityByID(nextEntityId + i);
                     }
 
                     MazeHandler.labyrinth = old;
                     for(TCMazeSession session : TCMazeHandler.getSessions().values()) {
-                        if(session.chunksAffected != null && session.chunksAffected.containsKey(new CellLoc(xCoord >> 4, zCoord >> 4))) {
+                        if(session.chunksAffected != null && session.chunksAffected.containsKey(new CellLoc(this.xCoord >> 4, this.zCoord >> 4))) {
                             TCMazeHandler.putBosses(session, bosses);
                             break;
                         }

@@ -41,7 +41,7 @@ import java.util.Map;
 public class BlockStickyJar extends BlockJar implements IBlockTransparent {
 
     public BlockStickyJar() {
-        setCreativeTab(null);
+        this.setCreativeTab(null);
     }
 
     private IIcon iconTransparent;
@@ -55,18 +55,18 @@ public class BlockStickyJar extends BlockJar implements IBlockTransparent {
                 return stickyJar.getParentBlock().getIcon(world, x, y, z, side);
             }
         }
-        return iconTransparent;
+        return this.iconTransparent;
     }
 
     @Override
     public void registerBlockIcons(IIconRegister ir) {
         super.registerBlockIcons(ir);
-        iconTransparent = ir.registerIcon(Gadomancy.MODID + ":transparent");
+        this.iconTransparent = ir.registerIcon(Gadomancy.MODID + ":transparent");
     }
 
     @Override
     public IIcon getTransparentIcon() {
-        return iconTransparent;
+        return this.iconTransparent;
     }
 
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
@@ -74,7 +74,7 @@ public class BlockStickyJar extends BlockJar implements IBlockTransparent {
 
         TileEntity tile = world.getTileEntity(x, y, z);
         if (tile instanceof TileStickyJar) {
-            flipBlockBounds((TileStickyJar) tile);
+            this.flipBlockBounds((TileStickyJar) tile);
         }
     }
 
@@ -82,12 +82,12 @@ public class BlockStickyJar extends BlockJar implements IBlockTransparent {
         ForgeDirection placedOn = stickyJar.placedOn;
 
         if (placedOn != ForgeDirection.DOWN) {
-            float minX = (float) getBlockBoundsMinX();
-            float minY = (float) getBlockBoundsMinY();
-            float minZ = (float) getBlockBoundsMinZ();
-            float maxX = (float) getBlockBoundsMaxX();
-            float maxY = (float) getBlockBoundsMaxY();
-            float maxZ = (float) getBlockBoundsMaxZ();
+            float minX = (float) this.getBlockBoundsMinX();
+            float minY = (float) this.getBlockBoundsMinY();
+            float minZ = (float) this.getBlockBoundsMinZ();
+            float maxX = (float) this.getBlockBoundsMaxX();
+            float maxY = (float) this.getBlockBoundsMaxY();
+            float maxZ = (float) this.getBlockBoundsMaxZ();
 
             float temp;
             if (placedOn == ForgeDirection.NORTH || placedOn == ForgeDirection.SOUTH) {
@@ -199,7 +199,7 @@ public class BlockStickyJar extends BlockJar implements IBlockTransparent {
                 stickyJar.getParentBlock().onBlockPlacedBy(world, x, y, z, ent, stack);
             }
 
-            onBlockPlacedOn(stickyJar, ent);
+            this.onBlockPlacedOn(stickyJar, ent);
         }
     }
 
@@ -251,7 +251,7 @@ public class BlockStickyJar extends BlockJar implements IBlockTransparent {
 
             if (info.needsPhialHandling() && heldItem != null && heldItem.getItem() == ConfigItems.itemEssence) {
                 if(!world.isRemote) {
-                    handlePhial(world, x, y, z, player, heldItem, tileStickyJar);
+                    BlockStickyJar.handlePhial(world, x, y, z, player, heldItem, tileStickyJar);
                 }
                 return true;
             }

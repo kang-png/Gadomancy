@@ -21,7 +21,7 @@ public class AlternatingResearchItem extends SimpleResearchItem {
     private static final Field ICON_FIELD = Injector.getField("icon_item", ResearchItem.class);
 
     private final Injector injector = new Injector(this, ResearchItem.class);
-    protected List<ItemStack> itemIcons = null;
+    protected List<ItemStack> itemIcons;
 
     public AlternatingResearchItem(String key, int col, int row, int complex, AspectList tags, List<ItemStack> icons) {
         super(key, col, row, complex, icons.get(0), tags);
@@ -33,11 +33,11 @@ public class AlternatingResearchItem extends SimpleResearchItem {
     }
 
     private void updateIcon() {
-        injector.setField(ICON_FIELD, getIcon());
+        this.injector.setField(AlternatingResearchItem.ICON_FIELD, this.getIcon());
     }
 
     protected ItemStack getIcon() {
-        return itemIcons.get(calcIndex(itemIcons.size()));
+        return this.itemIcons.get(this.calcIndex(this.itemIcons.size()));
     }
 
     private int calcIndex(int max) {
@@ -46,7 +46,7 @@ public class AlternatingResearchItem extends SimpleResearchItem {
 
     @Override
     public boolean isSpecial() {
-        updateIcon();
+        this.updateIcon();
         return super.isSpecial();
     }
 }

@@ -27,9 +27,9 @@ import net.minecraft.world.World;
 public class BlockInfusionClaw extends BlockTransparent {
     public BlockInfusionClaw() {
         super(Material.rock);
-        setHardness(3.5f);
+        this.setHardness(3.5f);
 
-        setCreativeTab(RegisteredItems.creativeTab);
+        this.setCreativeTab(RegisteredItems.creativeTab);
     }
 
     @Override

@@ -26,54 +26,54 @@ public abstract class GadomancyApi {
 
     @Deprecated
     public static boolean registerAdditionalGolemType(String name, String modId, AdditionalGolemType newType){
-        return handler.registerAdditionalGolemType(name, modId, newType);
+        return GadomancyApi.handler.registerAdditionalGolemType(name, modId, newType);
     }
 
     public static AdditionalGolemType getAdditionalGolemType(String name) {
-        return handler.getAdditionalGolemType(name);
+        return GadomancyApi.handler.getAdditionalGolemType(name);
     }
 
     public static AdditionalGolemType getAdditionalGolemType(EnumGolemType type) {
-        return getAdditionalGolemType(type.name());
+        return GadomancyApi.getAdditionalGolemType(type.name());
     }
 
     public static List<AdditionalGolemType> getAdditionalGolemTypes() {
-        return handler.getAdditionalGolemTypes();
+        return GadomancyApi.handler.getAdditionalGolemTypes();
     }
 
     public static boolean isAdditionalGolemType(String name) {
-        return getAdditionalGolemType(name) != null;
+        return GadomancyApi.getAdditionalGolemType(name) != null;
     }
 
     public static boolean isAdditionalGolemType(EnumGolemType type) {
-        return isAdditionalGolemType(type.name());
+        return GadomancyApi.isAdditionalGolemType(type.name());
     }
 
     public static AdditionalGolemCore getAdditionalGolemCore(EntityGolemBase golem) {
-        return handler.getAdditionalGolemCore(golem);
+        return GadomancyApi.handler.getAdditionalGolemCore(golem);
     }
 
     public static AdditionalGolemCore getAdditionalGolemCore(ItemStack placer) {
-        return handler.getAdditionalGolemCore(placer);
+        return GadomancyApi.handler.getAdditionalGolemCore(placer);
     }
 
     public static void setAdditionalGolemCore(EntityGolemBase golem, AdditionalGolemCore core) {
-        handler.setAdditionalGolemCore(golem, core);
+        GadomancyApi.handler.setAdditionalGolemCore(golem, core);
     }
 
     public static boolean registerAdditionalGolemCore(String name, AdditionalGolemCore core) {
-        return handler.registerAdditionalGolemCore(name, core);
+        return GadomancyApi.handler.registerAdditionalGolemCore(name, core);
     }
 
     public static void registerAdditionalAuraEffect(Aspect aspect, AuraEffect effect) {
-        handler.registerAdditionalAuraEffect(aspect, effect);
+        GadomancyApi.handler.registerAdditionalAuraEffect(aspect, effect);
     }
 
     public static List<AdditionalGolemCore> getAdditionalGolemCores() {
-        return handler.getAdditionalGolemCores();
+        return GadomancyApi.handler.getAdditionalGolemCores();
     }
 
     public static void registerClawClickBehavior(ClickBehavior clickBehavior) {
-        handler.registerClawClickBehavior(clickBehavior);
+        GadomancyApi.handler.registerClawClickBehavior(clickBehavior);
     }
 }

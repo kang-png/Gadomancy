@@ -98,26 +98,26 @@ public class Vector3 {
     }
 
     public double length() {
-        return Math.sqrt(lengthSquared());
+        return Math.sqrt(this.lengthSquared());
     }
 
     public double lengthSquared() {
-        return x * x + y * y + z * z;
+        return this.x * this.x + this.y * this.y + this.z * this.z;
     }
 
     public double distance(Vector3 o) {
-        return Math.sqrt(distanceSquared(o));
+        return Math.sqrt(this.distanceSquared(o));
     }
 
     public double distanceSquared(Vector3 o) {
-        double difX = x - o.x;
-        double difY = y - o.y;
-        double difZ = z - o.z;
+        double difX = this.x - o.x;
+        double difY = this.y - o.y;
+        double difZ = this.z - o.z;
         return difX * difX + difY * difY + difZ * difZ;
     }
 
     public float angle(Vector3 other) {
-        double dot = dot(other) / (length() * other.length());
+        double dot = this.dot(other) / (this.length() * other.length());
 
         return (float) Math.acos(dot);
     }
@@ -174,9 +174,9 @@ public class Vector3 {
 
     public Vector3 perpendicular() {
         if (this.z == 0.0D) {
-            return zCrossProduct();
+            return this.zCrossProduct();
         }
-        return xCrossProduct();
+        return this.xCrossProduct();
     }
 
     public Vector3 xCrossProduct() {
@@ -213,7 +213,7 @@ public class Vector3 {
     }
 
     public Vector3 normalize() {
-        double length = length();
+        double length = this.length();
         this.x /= length;
         this.y /= length;
         this.z /= length;
@@ -228,11 +228,11 @@ public class Vector3 {
     }
 
     public static Vector3 random() {
-        return new Vector3(RAND.nextDouble() * (RAND.nextBoolean() ? 1 : -1), RAND.nextDouble() * (RAND.nextBoolean() ? 1 : -1), RAND.nextDouble() * (RAND.nextBoolean() ? 1 : -1));
+        return new Vector3(Vector3.RAND.nextDouble() * (Vector3.RAND.nextBoolean() ? 1 : -1), Vector3.RAND.nextDouble() * (Vector3.RAND.nextBoolean() ? 1 : -1), Vector3.RAND.nextDouble() * (Vector3.RAND.nextBoolean() ? 1 : -1));
     }
 
     public static Vector3 positiveYRandom() {
-        return random().setY(Math.abs(random().getY()));
+        return Vector3.random().setY(Math.abs(Vector3.random().getY()));
     }
 
     public static Vector3 fromCC(ChunkCoordinates cc) {
@@ -259,7 +259,7 @@ public class Vector3 {
     }
 
     public Vector3 vectorFromHereTo(Vector3 target) {
-        return new Vector3(target.x - x, target.y - y, target.z - z);
+        return new Vector3(target.x - this.x, target.y - this.y, target.z - this.z);
     }
 
     public double getX() {
@@ -337,7 +337,7 @@ public class Vector3 {
         }
         Vector3 other = (Vector3) obj;
 
-        return (Math.abs(this.x - other.x) < 1.0E-006D) && (Math.abs(this.y - other.y) < 1.0E-006D) && (Math.abs(this.z - other.z) < 1.0E-006D) && (getClass().equals(obj.getClass()));
+        return (Math.abs(this.x - other.x) < 1.0E-006D) && (Math.abs(this.y - other.y) < 1.0E-006D) && (Math.abs(this.z - other.z) < 1.0E-006D) && (this.getClass().equals(obj.getClass()));
     }
 
     public int hashCode() {
@@ -350,7 +350,7 @@ public class Vector3 {
     }
 
     public Vector3 clone() {
-        return new Vector3(x, y, z);
+        return new Vector3(this.x, this.y, this.z);
     }
 
     public String toString() {
@@ -425,7 +425,7 @@ public class Vector3 {
         }
 
         public void normalize() {
-            double d = mag();
+            double d = this.mag();
             if (d == 0.0D) {
                 return;
             }
@@ -456,7 +456,7 @@ public class Vector3 {
         }
 
         public static Quat aroundAxis(Vector3 axis, double angle) {
-            return aroundAxis(axis.x, axis.y, axis.z, angle);
+            return Quat.aroundAxis(axis.x, axis.y, axis.z, angle);
         }
 
     }

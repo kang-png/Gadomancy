@@ -20,7 +20,7 @@ public class ColorHelper {
     }
 
     public static int toHex(Color color) {
-        return toHex(color.getRed(), color.getGreen(), color.getBlue());
+        return ColorHelper.toHex(color.getRed(), color.getGreen(), color.getBlue());
     }
 
     public static String extractColors(String input) {
@@ -28,11 +28,11 @@ public class ColorHelper {
 
         boolean isColor = false;
         for(char c : input.toCharArray()) {
-            if(c == COLOR_CHAR) {
+            if(c == ColorHelper.COLOR_CHAR) {
                 isColor = true;
             } else if(isColor) {
                 isColor = false;
-                output.append(COLOR_CHAR).append(c);
+                output.append(ColorHelper.COLOR_CHAR).append(c);
             }
         }
         return output.toString();

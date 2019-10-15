@@ -55,19 +55,19 @@ public abstract class AdditionalGolemType {
     public abstract ResourceLocation getInvSlotTexture();
 
     public EnumGolemType getEnumEntry() {
-        return enumEntry;
+        return this.enumEntry;
     }
 
     public String getName() {
-        return enumEntry.name();
+        return this.enumEntry.name();
     }
 
     public Item getPlacerItem() {
-        return placerItem;
+        return this.placerItem;
     }
 
     public String getModId() {
-        return modId;
+        return this.modId;
     }
 
     @Deprecated

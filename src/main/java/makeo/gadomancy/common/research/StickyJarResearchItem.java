@@ -30,7 +30,7 @@ public class StickyJarResearchItem extends AlternatingResearchItem {
         if(Gadomancy.proxy.getSide() == Side.CLIENT) {
             List<ItemStack> items = RegisteredItems.getStickyJarStacks(Minecraft.getMinecraft().thePlayer);
             if(items.size() > 0) {
-                itemIcons = items;
+                this.itemIcons = items;
             }
         }
         return super.isSpecial();

@@ -27,32 +27,32 @@ public class ExtendedGolemProperties implements IExtendedEntityProperties {
 
     private EntityGolemBase golem;
 
-    private boolean updateHealth = false;
+    private boolean updateHealth;
     private float health;
 
-    private boolean isSitting = false;
+    private boolean isSitting;
 
-    private EntityAITasksWrapper taskWrapper = null;
-    private EntityAITasksWrapper targetWrapper = null;
+    private EntityAITasksWrapper taskWrapper;
+    private EntityAITasksWrapper targetWrapper;
 
     public ExtendedGolemProperties(EntityGolemBase golem) {
         this.golem = golem;
     }
 
     public boolean shouldUpdateHealth() {
-        return updateHealth;
+        return this.updateHealth;
     }
 
     public void resetUpdateHealth() {
-        updateHealth = false;
+        this.updateHealth = false;
     }
 
     public float getHealth() {
-        return health;
+        return this.health;
     }
 
     public boolean isSitting() {
-        return isSitting;
+        return this.isSitting;
     }
 
     public void setSitting(boolean isSitting) {
@@ -61,21 +61,21 @@ public class ExtendedGolemProperties implements IExtendedEntityProperties {
 
     @Override
     public void saveNBTData(NBTTagCompound compound) {
-        AdditionalGolemType type = GadomancyApi.getAdditionalGolemType(golem.getGolemType());
+        AdditionalGolemType type = GadomancyApi.getAdditionalGolemType(this.golem.getGolemType());
         if(type != null) {
             NBTTagCompound entityData;
-            if(compound.hasKey(FORGE_TAG)) {
-                entityData = compound.getCompoundTag(FORGE_TAG);
+            if(compound.hasKey(ExtendedGolemProperties.FORGE_TAG)) {
+                entityData = compound.getCompoundTag(ExtendedGolemProperties.FORGE_TAG);
             } else {
                 entityData = new NBTTagCompound();
-                compound.setTag(FORGE_TAG, entityData);
+                compound.setTag(ExtendedGolemProperties.FORGE_TAG, entityData);
             }
 
-            writeAdvancedGolemType(entityData, type);
-            golem.ridingEntity = new OverrideRidingEntity(golem, compound, golem.ridingEntity);
+            ExtendedGolemProperties.writeAdvancedGolemType(entityData, type);
+            this.golem.ridingEntity = new OverrideRidingEntity(this.golem, compound, this.golem.ridingEntity);
         }
 
-        compound.setBoolean(Gadomancy.MODID + ":sitting", isSitting);
+        compound.setBoolean(Gadomancy.MODID + ":sitting", this.isSitting);
     }
 
     private static void writeAdvancedGolemType(NBTTagCompound base, AdditionalGolemType type) {
@@ -86,35 +86,35 @@ public class ExtendedGolemProperties implements IExtendedEntityProperties {
             compound = new NBTTagCompound();
             base.setTag(Gadomancy.MODID, compound);
         }
-        compound.setString(TYPE_TAG, type.getEnumEntry().name());
+        compound.setString(ExtendedGolemProperties.TYPE_TAG, type.getEnumEntry().name());
     }
 
     @Override
     public void loadNBTData(NBTTagCompound compound) {
         if(compound.hasKey("GolemType")) {
-            AdditionalGolemType type = readAdvancedGolemType(golem.getEntityData());
+            AdditionalGolemType type = ExtendedGolemProperties.readAdvancedGolemType(this.golem.getEntityData());
             if(type != null) {
                 byte lastType = compound.getByte("GolemType");
                 compound.setTag("GolemType", new OverrideNBTTagByte(lastType, (byte)type.getEnumEntry().ordinal()));
 
-                health = compound.getFloat("HealF") * -1;
-                updateHealth = true;
+                this.health = compound.getFloat("HealF") * -1;
+                this.updateHealth = true;
             }
         }
 
-        isSitting = compound.getBoolean(Gadomancy.MODID + ":sitting");
+        this.isSitting = compound.getBoolean(Gadomancy.MODID + ":sitting");
 
-        updateGolemCore();
+        this.updateGolemCore();
     }
 
     public void updateGolemCore() {
-        if(!golem.worldObj.isRemote) {
-            if(NBTHelper.hasPersistentData(golem)) {
-                NBTTagCompound persistent = NBTHelper.getPersistentData(golem);
+        if(!this.golem.worldObj.isRemote) {
+            if(NBTHelper.hasPersistentData(this.golem)) {
+                NBTTagCompound persistent = NBTHelper.getPersistentData(this.golem);
                 if(persistent.hasKey("Core")) {
                     for(AdditionalGolemCore core : GadomancyApi.getAdditionalGolemCores()) {
                         if(core.getName().equals(persistent.getString("Core"))) {
-                            golem.getDataWatcher().updateObject(ModConfig.golemDatawatcherId, core.getName());
+                            this.golem.getDataWatcher().updateObject(ModConfig.golemDatawatcherId, core.getName());
                             break;
                         }
                     }
@@ -125,49 +125,49 @@ public class ExtendedGolemProperties implements IExtendedEntityProperties {
 
     public void setWrapperIfNeeded() {
         boolean needsUpdate = false;
-        if(taskWrapper == null) {
-            taskWrapper = new EntityAITasksWrapper(golem, golem.tasks, true);
-            golem.tasks = taskWrapper;
+        if(this.taskWrapper == null) {
+            this.taskWrapper = new EntityAITasksWrapper(this.golem, this.golem.tasks, true);
+            this.golem.tasks = this.taskWrapper;
 
             needsUpdate = true;
         }
 
-        if(targetWrapper == null) {
-            targetWrapper = new EntityAITasksWrapper(golem, golem.targetTasks, false);
-            golem.targetTasks = targetWrapper;
+        if(this.targetWrapper == null) {
+            this.targetWrapper = new EntityAITasksWrapper(this.golem, this.golem.targetTasks, false);
+            this.golem.targetTasks = this.targetWrapper;
 
             needsUpdate = true;
         }
 
         if(needsUpdate) {
-            updateGolem();
+            this.updateGolem();
         }
     }
 
     public void updateGolem() {
-        taskWrapper.unlock();
-        targetWrapper.unlock();
+        this.taskWrapper.unlock();
+        this.targetWrapper.unlock();
 
-        golem.setupGolem();
-        golem.setupGolemInventory();
+        this.golem.setupGolem();
+        this.golem.setupGolemInventory();
 
-        AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(golem);
+        AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(this.golem);
         if(core != null) {
-            taskWrapper.taskEntries.clear();
-            targetWrapper.taskEntries.clear();
+            this.taskWrapper.taskEntries.clear();
+            this.targetWrapper.taskEntries.clear();
 
-            core.setupGolem(golem);
+            core.setupGolem(this.golem);
 
-            taskWrapper.lock();
-            targetWrapper.lock();
+            this.taskWrapper.lock();
+            this.targetWrapper.lock();
         }
     }
 
     private static AdditionalGolemType readAdvancedGolemType(NBTTagCompound base) {
         if(base.hasKey(Gadomancy.MODID)) {
             NBTTagCompound compound = base.getCompoundTag(Gadomancy.MODID);
-            if(compound.hasKey(TYPE_TAG)) {
-                return GadomancyApi.getAdditionalGolemType(compound.getString(TYPE_TAG));
+            if(compound.hasKey(ExtendedGolemProperties.TYPE_TAG)) {
+                return GadomancyApi.getAdditionalGolemType(compound.getString(ExtendedGolemProperties.TYPE_TAG));
             }
         }
         return null;

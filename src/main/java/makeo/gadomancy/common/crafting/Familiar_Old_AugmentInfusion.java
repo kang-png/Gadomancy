@@ -30,27 +30,27 @@ public class Familiar_Old_AugmentInfusion extends InfusionRecipe {
     @Override
     public boolean matches(ArrayList<ItemStack> input, ItemStack central, World world, EntityPlayer player) {
         if(central == null || !(central.getItem() instanceof ItemFamiliar_Old)) return false; //We call it "FamiliarAugment" Recipe for a reason..
-        if(getRecipeInput() == null || !(getRecipeInput().getItem() instanceof ItemFamiliar_Old)) return false; //A bit late but still working..
+        if(this.getRecipeInput() == null || !(this.getRecipeInput().getItem() instanceof ItemFamiliar_Old)) return false; //A bit late but still working..
 
         if ((this.research.length() > 0) && (!ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), this.research))) {
             return false;
         }
 
         ItemStack centralCopy = central.copy();
-        if(!((ItemFamiliar_Old) centralCopy.getItem()).hasUpgrade(centralCopy, getUpgradeToAdd().getNeededPreviousUpgrade())) return false;
+        if(!((ItemFamiliar_Old) centralCopy.getItem()).hasUpgrade(centralCopy, this.getUpgradeToAdd().getNeededPreviousUpgrade())) return false;
 
         ArrayList<ItemStack> ii = new ArrayList<ItemStack>();
         for (ItemStack is : input) {
             ii.add(is.copy());
         }
-        for (ItemStack comp : getComponents()) {
+        for (ItemStack comp : this.getComponents()) {
             boolean b = false;
             for (int a = 0; a < ii.size(); a++) {
                 centralCopy = ii.get(a).copy();
                 if (comp.getItemDamage() == 32767) {
                     centralCopy.setItemDamage(32767);
                 }
-                if (areItemStacksEqual(centralCopy, comp, true)) {
+                if (InfusionRecipe.areItemStacksEqual(centralCopy, comp, true)) {
                     ii.remove(a);
                     b = true;
                     break;
@@ -66,11 +66,11 @@ public class Familiar_Old_AugmentInfusion extends InfusionRecipe {
     @Override
     public Object getRecipeOutput(ItemStack input) {
         ItemStack inputCopy = input.copy();
-        ((ItemFamiliar_Old) input.getItem()).addUpgrade(inputCopy, getUpgradeToAdd());
+        ((ItemFamiliar_Old) input.getItem()).addUpgrade(inputCopy, this.getUpgradeToAdd());
         return inputCopy;
     }
 
     public ItemFamiliar_Old.FamiliarUpgrade getUpgradeToAdd() {
-        return upgradeToAdd;
+        return this.upgradeToAdd;
     }
 }

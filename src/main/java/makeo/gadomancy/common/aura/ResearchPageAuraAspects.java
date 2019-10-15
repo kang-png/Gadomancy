@@ -1,7 +1,6 @@
 package makeo.gadomancy.common.aura;
 
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -59,7 +58,7 @@ public class ResearchPageAuraAspects extends ResearchPage {
     public static AspectList createPageAspectList(List<String> tagList) {
         AspectList list = new AspectList();
         for(String tag : tagList) {
-            Aspect a = createAuraFakeAspect(tag);
+            Aspect a = ResearchPageAuraAspects.createAuraFakeAspect(tag);
             if(a != null) list.add(a, 0);
         }
         return list;
@@ -87,7 +86,7 @@ public class ResearchPageAuraAspects extends ResearchPage {
 
         @Override
         public String getName() {
-            if(headAspect) return super.getName();
+            if(this.headAspect) return super.getName();
             String tag = super.getTag();
             if(tag == null || tag.isEmpty() || tag.equals("")) return "";
             return StatCollector.translateToLocal(tag);

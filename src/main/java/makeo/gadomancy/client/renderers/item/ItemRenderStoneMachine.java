@@ -30,19 +30,19 @@ public class ItemRenderStoneMachine extends ItemRenderTileEntity<TileEntity> {
         RenderInfo info = new RenderInfo();
         info.renderer = renderer;
         info.tile = tile;
-        renderers.put(metadata, info);
+        this.renderers.put(metadata, info);
 
         if(tile.getWorldObj() == null) {
-            tile.setWorldObj(FAKE_WORLD);
+            tile.setWorldObj(ItemRenderTileEntity.FAKE_WORLD);
         }
     }
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack stack, Object... data) {
-        RenderInfo info = renderers.get(stack.getItemDamage());
+        RenderInfo info = this.renderers.get(stack.getItemDamage());
 
-        tile = info.tile;
-        renderer = info.renderer;
+        this.tile = info.tile;
+        this.renderer = info.renderer;
 
         if(stack.getItemDamage() == 0) {
             GL11.glTranslatef(0, 2/16f, 0);
@@ -53,6 +53,6 @@ public class ItemRenderStoneMachine extends ItemRenderTileEntity<TileEntity> {
 
     @Override
     public boolean handleRenderType(ItemStack stack, ItemRenderType type) {
-        return renderers.containsKey(stack.getItemDamage());
+        return this.renderers.containsKey(stack.getItemDamage());
     }
 }

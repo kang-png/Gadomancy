@@ -30,7 +30,7 @@ public class ItemBlockAdditionalEldritchPortal extends ItemBlock {
     @Override
     public void registerIcons(IIconRegister ir) {
         super.registerIcons(ir);
-        portalIcon = ir.registerIcon(Gadomancy.MODID + ":eldritch_portal");
+        this.portalIcon = ir.registerIcon(Gadomancy.MODID + ":eldritch_portal");
     }
 
     @Override
@@ -41,6 +41,6 @@ public class ItemBlockAdditionalEldritchPortal extends ItemBlock {
 
     @Override
     public IIcon getIconFromDamage(int damage) {
-        return portalIcon;
+        return this.portalIcon;
     }
 }

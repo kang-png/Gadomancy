@@ -38,28 +38,28 @@ public class PacketTCWispyLine  implements IMessage, IMessageHandler<PacketTCWis
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        dimId = buf.readInt();
-        pedestalX = buf.readDouble();
-        pedestalY = buf.readDouble();
-        pedestalZ = buf.readDouble();
-        originX = buf.readDouble();
-        originY = buf.readDouble();
-        originZ = buf.readDouble();
-        tickCap = buf.readInt();
-        colorAsInt = buf.readInt();
+        this.dimId = buf.readInt();
+        this.pedestalX = buf.readDouble();
+        this.pedestalY = buf.readDouble();
+        this.pedestalZ = buf.readDouble();
+        this.originX = buf.readDouble();
+        this.originY = buf.readDouble();
+        this.originZ = buf.readDouble();
+        this.tickCap = buf.readInt();
+        this.colorAsInt = buf.readInt();
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        buf.writeInt(dimId);
-        buf.writeDouble(pedestalX);
-        buf.writeDouble(pedestalY);
-        buf.writeDouble(pedestalZ);
-        buf.writeDouble(originX);
-        buf.writeDouble(originY);
-        buf.writeDouble(originZ);
-        buf.writeInt(tickCap);
-        buf.writeInt(colorAsInt);
+        buf.writeInt(this.dimId);
+        buf.writeDouble(this.pedestalX);
+        buf.writeDouble(this.pedestalY);
+        buf.writeDouble(this.pedestalZ);
+        buf.writeDouble(this.originX);
+        buf.writeDouble(this.originY);
+        buf.writeDouble(this.originZ);
+        buf.writeInt(this.tickCap);
+        buf.writeInt(this.colorAsInt);
     }
 
     @Override

@@ -13,16 +13,16 @@ import cpw.mods.fml.common.Loader;
 public abstract class IntegrationMod {
     public abstract String getModId();
 
-    private boolean isPresent = false;
+    private boolean isPresent;
 
     public final boolean isPresent() {
-        return isPresent;
+        return this.isPresent;
     }
 
     public final void init() {
-        if(Loader.isModLoaded(getModId())) {
-            isPresent = true;
-            doInit();
+        if(Loader.isModLoaded(this.getModId())) {
+            this.isPresent = true;
+            this.doInit();
         }
     }
 

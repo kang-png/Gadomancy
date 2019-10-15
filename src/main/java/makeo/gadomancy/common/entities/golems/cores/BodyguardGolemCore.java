@@ -11,13 +11,7 @@ import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
-import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.ai.EntityLookHelper;
-import net.minecraft.entity.ai.EntitySenses;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.passive.EntityTameable;
@@ -85,40 +79,40 @@ public class BodyguardGolemCore extends AdditionalGolemCore {
 
         @Override
         public float getAIMoveSpeed() {
-            return golem.getAIMoveSpeed();
+            return this.golem.getAIMoveSpeed();
         }
 
         @Override
         public Random getRNG() {
-            return golem.getRNG();
+            return this.golem.getRNG();
         }
 
         @Override
         public EntityLivingBase getAttackTarget() {
-            return golem.getAttackTarget();
+            return this.golem.getAttackTarget();
         }
 
         @Override
         public boolean canAttackClass(Class p_70686_1_) {
-            return golem.canAttackClass(p_70686_1_);
+            return this.golem.canAttackClass(p_70686_1_);
         }
 
         @Override
         public EntitySenses getEntitySenses() {
-            return golem.getEntitySenses();
+            return this.golem.getEntitySenses();
         }
 
         @Override
         public IAttributeInstance getEntityAttribute(IAttribute p_110148_1_) {
-            if(golem != null) {
-                return golem.getEntityAttribute(p_110148_1_);
+            if(this.golem != null) {
+                return this.golem.getEntityAttribute(p_110148_1_);
             }
             return super.getEntityAttribute(p_110148_1_);
         }
 
         @Override
         public void setAttackTarget(EntityLivingBase p_70624_1_) {
-            golem.setAttackTarget(p_70624_1_);
+            this.golem.setAttackTarget(p_70624_1_);
         }
 
         @Override
@@ -128,7 +122,7 @@ public class BodyguardGolemCore extends AdditionalGolemCore {
 
         @Override
         public PathNavigate getNavigator() {
-            return golem.getNavigator();
+            return this.golem.getNavigator();
         }
 
         @Override
@@ -138,34 +132,34 @@ public class BodyguardGolemCore extends AdditionalGolemCore {
 
         @Override
         public EntityLivingBase getOwner() {
-            return golem.getOwner();
+            return this.golem.getOwner();
         }
 
         @Override
         public EntityLookHelper getLookHelper() {
-            return golem.getLookHelper();
+            return this.golem.getLookHelper();
         }
 
         @Override
         public double getDistanceSqToEntity(Entity entity) {
-            return golem.getDistanceSqToEntity(entity);
+            return this.golem.getDistanceSqToEntity(entity);
         }
 
         @Override
         public boolean getLeashed() {
-            return golem.getLeashed();
+            return this.golem.getLeashed();
         }
 
         @Override
         public int getVerticalFaceSpeed() {
-            return golem.getVerticalFaceSpeed();
+            return this.golem.getVerticalFaceSpeed();
         }
 
         @Override
         public void setLocationAndAngles(double x, double y, double z, float rotationYaw, float rotationPitch) {
-            rotationYaw = golem.rotationYaw;
-            rotationPitch = golem.rotationPitch;
-            golem.setLocationAndAngles(x, y, z, rotationYaw, rotationPitch);
+            rotationYaw = this.golem.rotationYaw;
+            rotationPitch = this.golem.rotationPitch;
+            this.golem.setLocationAndAngles(x, y, z, rotationYaw, rotationPitch);
             this.worldObj.playSoundEffect(x, y, z, "mob.endermen.portal", 0.5F, 1.0F);
         }
     }

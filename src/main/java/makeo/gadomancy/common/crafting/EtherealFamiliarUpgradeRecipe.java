@@ -31,7 +31,7 @@ public class EtherealFamiliarUpgradeRecipe extends InfusionRecipe {
     @Override
     public boolean matches(ArrayList<ItemStack> input, ItemStack in, World world, EntityPlayer player) {
         if(in == null || !(in.getItem() instanceof ItemEtherealFamiliar)) return false; //We call it "FamiliarAugment" Recipe for a reason..
-        if(getRecipeInput() == null || !(getRecipeInput().getItem() instanceof ItemEtherealFamiliar)) return false; //A bit late but still working..
+        if(this.getRecipeInput() == null || !(this.getRecipeInput().getItem() instanceof ItemEtherealFamiliar)) return false; //A bit late but still working..
 
         if((this.research.length() > 0) && (!ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), this.research))) {
             return false;
@@ -40,14 +40,14 @@ public class EtherealFamiliarUpgradeRecipe extends InfusionRecipe {
         FamiliarAugment.FamiliarAugmentList list = ItemEtherealFamiliar.getAugments(in);
 
         int level;
-        if(list.contains(toAdd)) {
-            level = list.getLevel(toAdd);
+        if(list.contains(this.toAdd)) {
+            level = list.getLevel(this.toAdd);
         } else {
             level = 0;
         }
-        if(requiredPreviousLevel > level) return false; //Requires higher level to do this infusion.
+        if(this.requiredPreviousLevel > level) return false; //Requires higher level to do this infusion.
 
-        if(!toAdd.checkConditions(list, level + 1)) {
+        if(!this.toAdd.checkConditions(list, level + 1)) {
             return false; //Preconditions not met.
         }
 
@@ -58,14 +58,14 @@ public class EtherealFamiliarUpgradeRecipe extends InfusionRecipe {
         for (ItemStack is : input) {
             ii.add(is.copy());
         }
-        for (ItemStack comp : getComponents()) {
+        for (ItemStack comp : this.getComponents()) {
             boolean b = false;
             for (int a = 0; a < ii.size(); a++) {
                 inCopy = ii.get(a).copy();
                 if (comp.getItemDamage() == 32767) {
                     inCopy.setItemDamage(32767);
                 }
-                if (areItemStacksEqual(inCopy, comp, true)) {
+                if (InfusionRecipe.areItemStacksEqual(inCopy, comp, true)) {
                     ii.remove(a);
                     b = true;
                     break;
@@ -81,7 +81,7 @@ public class EtherealFamiliarUpgradeRecipe extends InfusionRecipe {
     @Override
     public Object getRecipeOutput(ItemStack in) {
         ItemStack inputCopy = in.copy();
-        ItemEtherealFamiliar.incrementAugmentLevel(inputCopy, toAdd);
+        ItemEtherealFamiliar.incrementAugmentLevel(inputCopy, this.toAdd);
         return inputCopy;
     }
 }

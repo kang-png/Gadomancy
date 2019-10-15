@@ -24,12 +24,12 @@ public abstract class BlockTransparent extends Block implements IBlockTransparen
     private IIcon iconTransparent;
 
     public IIcon getTransparentIcon() {
-        return iconTransparent;
+        return this.iconTransparent;
     }
 
     @Override
     public void registerBlockIcons(IIconRegister ir) {
-        iconTransparent = ir.registerIcon(Gadomancy.MODID + ":transparent");
+        this.iconTransparent = ir.registerIcon(Gadomancy.MODID + ":transparent");
         super.registerBlockIcons(ir);
     }
 

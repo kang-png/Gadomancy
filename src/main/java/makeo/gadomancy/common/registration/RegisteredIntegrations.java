@@ -1,6 +1,5 @@
 package makeo.gadomancy.common.registration;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.integration.*;
@@ -26,15 +25,15 @@ public class RegisteredIntegrations {
     private RegisteredIntegrations() {}
 
     public static void init() {
-        morph = registerIndependent(IntegrationMorph.class);
-        thaumicExploration = registerIndependent(IntegrationThaumicExploration.class);
-        automagy = registerIndependent(IntegrationAutomagy.class);
-        nei = registerIndependent(IntegrationNEI.class);
-        mystcraft = registerIndependent(IntegrationMystcraft.class);
-        thaumicTinkerer = registerIndependent(IntegrationThaumicTinkerer.class);
+        RegisteredIntegrations.morph = RegisteredIntegrations.registerIndependent(IntegrationMorph.class);
+        RegisteredIntegrations.thaumicExploration = RegisteredIntegrations.registerIndependent(IntegrationThaumicExploration.class);
+        RegisteredIntegrations.automagy = RegisteredIntegrations.registerIndependent(IntegrationAutomagy.class);
+        RegisteredIntegrations.nei = RegisteredIntegrations.registerIndependent(IntegrationNEI.class);
+        RegisteredIntegrations.mystcraft = RegisteredIntegrations.registerIndependent(IntegrationMystcraft.class);
+        RegisteredIntegrations.thaumicTinkerer = RegisteredIntegrations.registerIndependent(IntegrationThaumicTinkerer.class);
 
-        registerDependent("ThaumicHorizons", "makeo.gadomancy.common.integration.thaumichorizions.IntegrationThaumicHorizions");
-        registerDependent("Waila", "makeo.gadomancy.common.integration.waila.IntegrationWaila");
+        RegisteredIntegrations.registerDependent("ThaumicHorizons", "makeo.gadomancy.common.integration.thaumichorizions.IntegrationThaumicHorizions");
+        RegisteredIntegrations.registerDependent("Waila", "makeo.gadomancy.common.integration.waila.IntegrationWaila");
     }
 
     private static void registerDependent(String modId, String clazz) {

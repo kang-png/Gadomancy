@@ -1,7 +1,10 @@
 package makeo.gadomancy.common.blocks;
 
 import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.blocks.tiles.*;
+import makeo.gadomancy.common.blocks.tiles.TileArcanePackager;
+import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
+import makeo.gadomancy.common.blocks.tiles.TileManipulationFocus;
+import makeo.gadomancy.common.blocks.tiles.TileManipulatorPillar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.ItemUtils;
@@ -41,46 +44,46 @@ import java.util.Random;
 public class BlockStoneMachine extends Block {
     public BlockStoneMachine() {
         super(Material.rock);
-        setHardness(3.0F);
-        setResistance(25.0F);
-        setStepSound(Block.soundTypeStone);
-        setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        setCreativeTab(RegisteredItems.creativeTab);
+        this.setHardness(3.0F);
+        this.setResistance(25.0F);
+        this.setStepSound(Block.soundTypeStone);
+        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        this.setCreativeTab(RegisteredItems.creativeTab);
     }
 
     private IIcon pillarIcon;
     private IIcon focusIcon;
     public IIcon pedestalSideIcon;
     public IIcon pedestalTopIcon;
-    public IIcon protectorIcon;
-    public IIcon packagerIcon;
+    private IIcon protectorIcon;
+    private IIcon packagerIcon;
 
     @Override
     public void registerBlockIcons(IIconRegister ir) {
-        pillarIcon = ir.registerIcon("thaumcraft:es_1");
-        focusIcon = ir.registerIcon("thaumcraft:thaumiumblock");
-        pedestalTopIcon = ir.registerIcon(Gadomancy.MODID + ":manipulator_bot");
-        pedestalSideIcon = ir.registerIcon(Gadomancy.MODID + ":ancient_pedestal_side");
-        protectorIcon = ir.registerIcon("thaumcraft:pipe_1");
-        packagerIcon = ir.registerIcon("thaumcraft:planks_greatwood");
+        this.pillarIcon = ir.registerIcon("thaumcraft:es_1");
+        this.focusIcon = ir.registerIcon("thaumcraft:thaumiumblock");
+        this.pedestalTopIcon = ir.registerIcon(Gadomancy.MODID + ":manipulator_bot");
+        this.pedestalSideIcon = ir.registerIcon(Gadomancy.MODID + ":ancient_pedestal_side");
+        this.protectorIcon = ir.registerIcon("thaumcraft:pipe_1");
+        this.packagerIcon = ir.registerIcon("thaumcraft:planks_greatwood");
     }
 
     @Override
     public IIcon getIcon(int side, int metadata) {
         if (metadata == 11 || metadata == 15) {
-            return pillarIcon;
+            return this.pillarIcon;
         } else if (metadata == 0 || metadata == 3) {
-            return focusIcon;
+            return this.focusIcon;
         } else if (metadata == 1) {
             if (side > 1) {
-                return pedestalSideIcon;
+                return this.pedestalSideIcon;
             } else {
-                return pedestalTopIcon;
+                return this.pedestalTopIcon;
             }
         } else if (metadata == 2) {
-            return protectorIcon;
+            return this.protectorIcon;
         } else if(metadata == 4) {
-            return packagerIcon;
+            return this.packagerIcon;
         }
 
         return super.getIcon(side, metadata);
@@ -102,7 +105,7 @@ public class BlockStoneMachine extends Block {
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
         int metadata = world.getBlockMetadata(x, y, z);
         if (metadata == 11 || metadata == 15) {
-            return new ItemStack(getItemDropped(metadata, null, 0), 1, damageDropped(metadata));
+            return new ItemStack(this.getItemDropped(metadata, null, 0), 1, this.damageDropped(metadata));
         }
 
         return super.getPickBlock(target, world, x, y, z, player);
@@ -192,17 +195,17 @@ public class BlockStoneMachine extends Block {
         int metadata = world.getBlockMetadata(x, y, z);
         if (metadata == 15) {
             if (world.getBlock(x, y + 1, z) != this || world.getBlockMetadata(x, y + 1, z) != 11) {
-                dropBlockAsItem(world, x, y, z, metadata, 0);
+                this.dropBlockAsItem(world, x, y, z, metadata, 0);
                 world.setBlockToAir(x, y, z);
             }
         } else if (metadata == 11) {
             if (world.getBlock(x, y - 1, z) != this || world.getBlockMetadata(x, y - 1, z) != 15) {
-                dropBlockAsItem(world, x, y, z, metadata, 0);
+                this.dropBlockAsItem(world, x, y, z, metadata, 0);
                 world.setBlockToAir(x, y, z);
             }
         } else if (metadata == 0 || metadata == 3) {
             if (world.getBlock(x, y - 1, z) != RegisteredBlocks.blockNodeManipulator || world.getBlockMetadata(x, y - 1, z) != 5) {
-                dropBlockAsItem(world, x, y, z, metadata, 0);
+                this.dropBlockAsItem(world, x, y, z, metadata, 0);
                 world.setBlockToAir(x, y, z);
             }
         } else if(metadata == 1) {
@@ -267,17 +270,17 @@ public class BlockStoneMachine extends Block {
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         int metadata = world.getBlockMetadata(x, y, z);
         if (metadata == 15) {
-            setBlockBounds(0, 0, 0, 1, 0.5f, 1);
+            this.setBlockBounds(0, 0, 0, 1, 0.5f, 1);
         } else if (metadata == 11) {
-            setBlockBounds(0.0F, -1.0F, 0.0F, 1.0F, -0.5F, 1.0F);
+            this.setBlockBounds(0.0F, -1.0F, 0.0F, 1.0F, -0.5F, 1.0F);
         } else if (metadata == 0 || metadata == 3) {
-            setBlockBounds(3 / 16f, 0, 3 / 16f, 1 - (3 / 16f), 6 / 16f, 1 - (3 / 16f));
+            this.setBlockBounds(3 / 16f, 0, 3 / 16f, 1 - (3 / 16f), 6 / 16f, 1 - (3 / 16f));
         } else if (metadata == 1) {
-            setBlockBounds(0.25f, 0, 0.25f, 0.75f, 0.99f, 0.75f);
+            this.setBlockBounds(0.25f, 0, 0.25f, 0.75f, 0.99f, 0.75f);
         } else if(metadata == 2) {
-            setBlockBounds(0, 0, 0, 1, 3/16f, 1);
+            this.setBlockBounds(0, 0, 0, 1, 3/16f, 1);
         } else if(metadata == 4) {
-             setBlockBounds(0, 0, 0, 1, 12/16f, 1);
+            this.setBlockBounds(0, 0, 0, 1, 12/16f, 1);
         }/* else if(metadata == 5) {
             setBlockBounds(0, 0, 0, 1, 1, 1);
         }*/
@@ -288,13 +291,13 @@ public class BlockStoneMachine extends Block {
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List list, Entity entity) {
         int metadata = world.getBlockMetadata(x, y, z);
         if (metadata == 11 || metadata == 15 || metadata == 1) {
-            setBlockBounds(0, 0, 0, 1, 1, 1);
+            this.setBlockBounds(0, 0, 0, 1, 1, 1);
         } else if(metadata == 2) {
-            setBlockBounds(3 / 16f, 0, 3 / 16f, 1 - (3 / 16f), 9.5f/16f, 1 - (3 / 16f));
+            this.setBlockBounds(3 / 16f, 0, 3 / 16f, 1 - (3 / 16f), 9.5f/16f, 1 - (3 / 16f));
             super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
-            setBlockBoundsBasedOnState(world, x, y, z);
+            this.setBlockBoundsBasedOnState(world, x, y, z);
         } else {
-            setBlockBoundsBasedOnState(world, x, y, z);
+            this.setBlockBoundsBasedOnState(world, x, y, z);
         }
         super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
     }

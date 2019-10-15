@@ -15,7 +15,6 @@ import makeo.gadomancy.common.entities.golems.ItemAdditionalGolemPlacer;
 import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
 import makeo.gadomancy.common.registration.RegisteredGolemStuff;
 import makeo.gadomancy.common.registration.RegisteredPotions;
-import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,8 +22,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -152,9 +149,9 @@ public class EventHandlerGolem {
         if(!event.entity.worldObj.isRemote && event.entity instanceof EntityGolemBase
                 && event.name.equals("thaumcraft:zap") && event.volume == 0.5F && event.pitch == 1.0F) {
             EntityGolemBase golem = (EntityGolemBase) event.entity;
-            if(markedGolems.containsKey(golem)) {
-                EntityPlayer player = markedGolems.get(golem);
-                markedGolems.remove(golem);
+            if(this.markedGolems.containsKey(golem)) {
+                EntityPlayer player = this.markedGolems.get(golem);
+                this.markedGolems.remove(golem);
 
                 AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(golem);
 
@@ -197,7 +194,7 @@ public class EventHandlerGolem {
         if(heldItem != null && heldItem.getItem() == ConfigItems.itemGolemBell && event.target instanceof EntityGolemBase
                 && !event.target.worldObj.isRemote && !event.target.isDead) {
             event.target.captureDrops = true;
-            markedGolems.put((EntityGolemBase) event.target, event.entityPlayer);
+            this.markedGolems.put((EntityGolemBase) event.target, event.entityPlayer);
         }
     }
 

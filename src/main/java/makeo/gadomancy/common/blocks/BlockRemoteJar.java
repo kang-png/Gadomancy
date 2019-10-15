@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class BlockRemoteJar extends BlockJar {
     public BlockRemoteJar() {
-        setCreativeTab(RegisteredItems.creativeTab);
+        this.setCreativeTab(RegisteredItems.creativeTab);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class BlockRemoteJar extends BlockJar {
             if(drop.getItem() == ConfigItems.itemJarFilled || drop.getItem() == Item.getItemFromBlock(this)) {
                 drop.func_150996_a(Item.getItemFromBlock(this));
 
-                TileRemoteJar tile = getJarTile(world, x, y, z);
+                TileRemoteJar tile = BlockRemoteJar.getJarTile(world, x, y, z);
                 if(tile.networkId != null) {
                     NBTHelper.setUUID(NBTHelper.getData(drop), "networkId", tile.networkId);
                 }
@@ -93,6 +93,6 @@ public class BlockRemoteJar extends BlockJar {
     }
 
     public static TileRemoteJar getJarTile(World world, int x, int y, int z) {
-        return getJarTile(world.getTileEntity(x, y, z));
+        return BlockRemoteJar.getJarTile(world.getTileEntity(x, y, z));
     }
 }

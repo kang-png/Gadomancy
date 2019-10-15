@@ -56,20 +56,20 @@ public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
             for (String s : list) {
                 try {
                     String s2 = s.substring(1);
-                    ItemStack is = getFromCache(Integer.parseInt(s2));
+                    ItemStack is = GuiResearchRecipe.getFromCache(Integer.parseInt(s2));
                     if (is != null) {
                         AspectList tags = ThaumcraftCraftingManager.getObjectTags(is);
                         tags = ThaumcraftCraftingManager.getBonusTags(is, tags);
                         if ((tags != null) && (tags.size() > 0)) {
                             for (Aspect a : tags.getAspects()) {
-                                ArrayList<ItemStack> items = itemMap.get(a.getTag());
+                                ArrayList<ItemStack> items = this.itemMap.get(a.getTag());
                                 if (items == null) {
                                     items = new ArrayList<ItemStack>();
                                 }
                                 ItemStack is2 = is.copy();
                                 is2.stackSize = tags.getAmount(a);
                                 items.add(is2);
-                                itemMap.put(a.getTag(), items);
+                                this.itemMap.put(a.getTag(), items);
                             }
                         }
                     }
@@ -104,7 +104,7 @@ public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
         GL11.glTranslatef(var10, var11, 0.0F);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glScalef(1.3F, 1.3F, 1.0F);
-        drawTexturedModalRect(0, 0, 0, 0, this.paneWidth, this.paneHeight);
+        this.drawTexturedModalRect(0, 0, 0, 0, this.paneWidth, this.paneHeight);
         GL11.glPopMatrix();
 
         Injector inj = new Injector(this, GuiResearchRecipe.class);
@@ -121,7 +121,7 @@ public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
             if (((current == page) || (current == page + 1)) && (current < maxPages)) {
                 ResearchPage rPage = pages[a];
                 if (rPage instanceof ResearchPageAuraAspects) {
-                    drawAuraAspectPagePre(rPage, current % 2, sw, sh, par1, par2, page);
+                    this.drawAuraAspectPagePre(rPage, current % 2, sw, sh, par1, par2, page);
                 } else if(rPage != null) {
                     try {
                         Method m = Injector.getMethod("drawPage", GuiResearchRecipe.class, ResearchPage.class, int.class, int.class, int.class, int.class, int.class);
@@ -139,17 +139,17 @@ public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
         }
         UtilsFX.bindTexture(this.tex1);
         float bob = MathHelper.sin(this.mc.thePlayer.ticksExisted / 3.0F) * 0.2F + 0.1F;
-        if (!history.isEmpty()) {
+        if (!GuiResearchRecipe.history.isEmpty()) {
             GL11.glEnable(GL11.GL_BLEND);
-            drawTexturedModalRectScaled(sw + 118, sh + 189, 38, 202, 20, 12, bob);
+            this.drawTexturedModalRectScaled(sw + 118, sh + 189, 38, 202, 20, 12, bob);
         }
         if (page > 0) {
             GL11.glEnable(GL11.GL_BLEND);
-            drawTexturedModalRectScaled(sw - 16, sh + 190, 0, 184, 12, 8, bob);
+            this.drawTexturedModalRectScaled(sw - 16, sh + 190, 0, 184, 12, 8, bob);
         }
         if (page < maxPages - 2) {
             GL11.glEnable(GL11.GL_BLEND);
-            drawTexturedModalRectScaled(sw + 262, sh + 190, 12, 184, 12, 8, bob);
+            this.drawTexturedModalRectScaled(sw + 262, sh + 190, 12, 184, 12, 8, bob);
         }
 
         inj.setField("reference", reference);
@@ -160,8 +160,8 @@ public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
         String researchName = Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS"; //We know the name of that research.
         researchName = StatCollector.translateToLocal(researchName);
         if ((thisPage == 0) && (side == 0)) {
-            drawTexturedModalRect(x + 4, y - 13, 24, 184, 96, 4);
-            drawTexturedModalRect(x + 4, y + 4, 24, 184, 96, 4);
+            this.drawTexturedModalRect(x + 4, y - 13, 24, 184, 96, 4);
+            this.drawTexturedModalRect(x + 4, y + 4, 24, 184, 96, 4);
             int offset = this.fontRendererObj.getStringWidth(researchName);
             if (offset <= 130) {
                 this.fontRendererObj.drawString(researchName, x + 52 - offset / 2, y - 6, 3158064);
@@ -176,7 +176,7 @@ public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
             y += 25;
         }
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
-        drawAuraPage(side, x - 8, y - 8, mx, my, page.aspects);
+        this.drawAuraPage(side, x - 8, y - 8, mx, my, page.aspects);
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
         GL11.glPopAttrib();
     }
@@ -231,7 +231,7 @@ public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
                 int tx = x + start;
                 int ty = y + count * 50;
                 if ((mx >= tx) && (my >= ty) && (mx < tx + 40) && (my < ty + 40)) {
-                    ArrayList<ItemStack> items = itemMap.get(aspect.getTag());
+                    ArrayList<ItemStack> items = this.itemMap.get(aspect.getTag());
                     if ((items != null) && (items.size() > 0)) {
                         int xcount = 0;
                         int ycount = 0;
@@ -240,8 +240,8 @@ public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
                             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                             RenderHelper.enableGUIStandardItemLighting();
                             GL11.glEnable(GL11.GL_LIGHTING);
-                            itemRenderer.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, InventoryUtils.cycleItemStack(item), mx + 8 + xcount * 17, 17 * ycount + (my - (4 + items.size() / 8 * 8)));
-                            itemRenderer.renderItemOverlayIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, InventoryUtils.cycleItemStack(item), mx + 8 + xcount * 17, 17 * ycount + (my - (4 + items.size() / 8 * 8)));
+                            GuiResearchRecipe.itemRenderer.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, InventoryUtils.cycleItemStack(item), mx + 8 + xcount * 17, 17 * ycount + (my - (4 + items.size() / 8 * 8)));
+                            GuiResearchRecipe.itemRenderer.renderItemOverlayIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, InventoryUtils.cycleItemStack(item), mx + 8 + xcount * 17, 17 * ycount + (my - (4 + items.size() / 8 * 8)));
                             RenderHelper.disableStandardItemLighting();
                             GL11.glPopMatrix();
                             xcount++;

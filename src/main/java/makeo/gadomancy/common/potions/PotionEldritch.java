@@ -13,6 +13,6 @@ import thaumcraft.api.aspects.Aspect;
 public class PotionEldritch extends PotionCustomTexture {
     public PotionEldritch(int id) {
         super(id, false, Aspect.ELDRITCH.getColor(), Aspect.ELDRITCH.getImage());
-        setPotionName("potion.eldritch");
+        this.setPotionName("potion.eldritch");
     }
 }

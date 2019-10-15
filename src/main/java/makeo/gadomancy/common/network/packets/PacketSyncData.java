@@ -27,7 +27,7 @@ import java.util.Map;
 public class PacketSyncData implements IMessage, IMessageHandler<PacketSyncData, IMessage> {
 
     private Map<String, AbstractData> data = new HashMap<String, AbstractData>();
-    private boolean shouldSyncAll = false;
+    private boolean shouldSyncAll;
 
     public PacketSyncData() {}
 
@@ -65,18 +65,18 @@ public class PacketSyncData implements IMessage, IMessageHandler<PacketSyncData,
             AbstractData dat = provider.provideNewInstance();
             dat.readRawFromPacket(cmp);
 
-            data.put(key, dat);
+            this.data.put(key, dat);
         }
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        buf.writeInt(data.size());
+        buf.writeInt(this.data.size());
 
-        for(String key : data.keySet()) {
-            AbstractData dat = data.get(key);
+        for(String key : this.data.keySet()) {
+            AbstractData dat = this.data.get(key);
             NBTTagCompound cmp = new NBTTagCompound();
-            if(shouldSyncAll) {
+            if(this.shouldSyncAll) {
                 dat.writeAllDataToPacket(cmp);
             } else {
                 dat.writeToPacket(cmp);

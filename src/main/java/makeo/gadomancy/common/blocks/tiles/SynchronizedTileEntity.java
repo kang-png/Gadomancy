@@ -18,31 +18,31 @@ import net.minecraft.util.ChunkCoordinates;
 public class SynchronizedTileEntity extends TileEntity {
 
     public ChunkCoordinates getCoords() {
-        return new ChunkCoordinates(xCoord, yCoord, zCoord);
+        return new ChunkCoordinates(this.xCoord, this.yCoord, this.zCoord);
     }
 
     public final void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        readCustomNBT(compound);
+        this.readCustomNBT(compound);
     }
 
     public void readCustomNBT(NBTTagCompound compound) {}
 
     public final void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        writeCustomNBT(compound);
+        this.writeCustomNBT(compound);
     }
 
     public void writeCustomNBT(NBTTagCompound compound) {}
 
     public final Packet getDescriptionPacket() {
         NBTTagCompound compound = new NBTTagCompound();
-        writeCustomNBT(compound);
+        this.writeCustomNBT(compound);
         return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 255, compound);
     }
 
     public final void onDataPacket(NetworkManager manager, S35PacketUpdateTileEntity paket) {
         super.onDataPacket(manager, paket);
-        readCustomNBT(paket.func_148857_g());
+        this.readCustomNBT(paket.func_148857_g());
     }
 }

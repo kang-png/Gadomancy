@@ -23,7 +23,7 @@ public class RenderTileBlockProtector extends TileJarRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
-        renderTileEntityAt((TileBlockProtector)tile, x, y, z, partialTicks);
+        this.renderTileEntityAt((TileBlockProtector)tile, x, y, z, partialTicks);
     }
 
     public void renderTileEntityAt(TileBlockProtector tile, double x, double y, double z, float partialTicks) {
@@ -51,7 +51,7 @@ public class RenderTileBlockProtector extends TileJarRenderer {
         GL11.glTranslatef(0.5f, 1.5f, 0.5f);
         GL11.glRotatef(180, 1, 0, 0);
 
-        bindTexture(tile.getPowerLevel() > 0 ? TEXTURE_ON : TEXTURE_OFF);
+        this.bindTexture(tile.getPowerLevel() > 0 ? RenderTileBlockProtector.TEXTURE_ON : RenderTileBlockProtector.TEXTURE_OFF);
         new ModelBlockProtector().render(null, 0, 0, 0, 0, 0, 0.0625f);
         GL11.glPopMatrix();
 
@@ -63,7 +63,7 @@ public class RenderTileBlockProtector extends TileJarRenderer {
         GL11.glRotatef(180, 0, 0, 1);
         GL11.glTranslatef(-0.5f, 0, 0.5f);
 
-        bindTexture(new ResourceLocation("thaumcraft", "textures/models/jar.png"));
+        this.bindTexture(new ResourceLocation("thaumcraft", "textures/models/jar.png"));
         new ModelJar().renderAll();
 
         GL11.glPopMatrix();

@@ -29,9 +29,9 @@ import java.util.List;
  */
 public class ItemCreativeNode extends Item {
     public ItemCreativeNode() {
-        setCreativeTab(RegisteredItems.creativeTab);
-        setUnlocalizedName("nodePlacer");
-        setTextureName(Gadomancy.MODID + ":transparent");
+        this.setCreativeTab(RegisteredItems.creativeTab);
+        this.setUnlocalizedName("nodePlacer");
+        this.setTextureName(Gadomancy.MODID + ":transparent");
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ItemCreativeNode extends Item {
         y += dir.offsetY;
         z += dir.offsetZ;
 
-        if(placeRandomNode(world, x, y, z)) {
+        if(this.placeRandomNode(world, x, y, z)) {
             int metadata = stack.getItemDamage();
             TileNode node = (TileNode) world.getTileEntity(x, y, z);
 

@@ -16,25 +16,25 @@ import net.minecraft.util.IIcon;
 public class ItemFakeModIcon extends Item {
 
     public ItemFakeModIcon() {
-        setTextureName(Gadomancy.MODID + ":category_icon");
+        this.setTextureName(Gadomancy.MODID + ":category_icon");
     }
 
     public IIcon[] icons = new IIcon[6];
 
     @Override
     public void registerIcons(IIconRegister ir) {
-        icons[0] = ir.registerIcon(Gadomancy.MODID + ":category_icon");
-        icons[1] = ir.registerIcon(Gadomancy.MODID + ":Attack1");
-        icons[2] = ir.registerIcon(Gadomancy.MODID + ":Attack2");
-        icons[3] = ir.registerIcon(Gadomancy.MODID + ":Attack3");
-        icons[4] = ir.registerIcon(Gadomancy.MODID + ":Range1");
-        icons[5] = ir.registerIcon(Gadomancy.MODID + ":Cooldown1");
+        this.icons[0] = ir.registerIcon(Gadomancy.MODID + ":category_icon");
+        this.icons[1] = ir.registerIcon(Gadomancy.MODID + ":Attack1");
+        this.icons[2] = ir.registerIcon(Gadomancy.MODID + ":Attack2");
+        this.icons[3] = ir.registerIcon(Gadomancy.MODID + ":Attack3");
+        this.icons[4] = ir.registerIcon(Gadomancy.MODID + ":Range1");
+        this.icons[5] = ir.registerIcon(Gadomancy.MODID + ":Cooldown1");
     }
 
     @Override
     public IIcon getIconFromDamage(int damage) {
-        if(damage < 0 || damage >= icons.length) return null;
-        return icons[damage];
+        if(damage < 0 || damage >= this.icons.length) return null;
+        return this.icons[damage];
     }
 
 }

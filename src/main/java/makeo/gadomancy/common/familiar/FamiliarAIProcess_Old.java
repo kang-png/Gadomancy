@@ -14,13 +14,13 @@ import net.minecraft.world.World;
  */
 public abstract class FamiliarAIProcess_Old {
 
-    private static int sessionProcessIdCounter = 0;
+    private static int sessionProcessIdCounter;
     private int id;
     private int duration;
 
     public FamiliarAIProcess_Old(int durationTicks) {
         this.duration = durationTicks;
-        this.id = sessionProcessIdCounter++;
+        this.id = FamiliarAIProcess_Old.sessionProcessIdCounter++;
     }
 
     public abstract boolean canRun(World world, double x, double y, double z, EntityPlayer parent, ItemStack itemStack);
@@ -34,20 +34,20 @@ public abstract class FamiliarAIProcess_Old {
     }
 
     public final int getDuration() {
-        return duration;
+        return this.duration;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || this.getClass() != o.getClass()) return false;
         FamiliarAIProcess_Old that = (FamiliarAIProcess_Old) o;
-        return id == that.id;
+        return this.id == that.id;
 
     }
 
     @Override
     public int hashCode() {
-        return id;
+        return this.id;
     }
 }

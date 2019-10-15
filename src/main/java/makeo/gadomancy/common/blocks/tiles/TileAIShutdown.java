@@ -4,10 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import makeo.gadomancy.client.effect.fx.Orbital;
 import makeo.gadomancy.common.registration.AIShutdownWhitelist;
-import makeo.gadomancy.common.registration.RegisteredMultiblocks;
 import makeo.gadomancy.common.utils.Injector;
-import makeo.gadomancy.common.utils.MultiblockHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -24,12 +21,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.aspects.IEssentiaTransport;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -51,8 +43,8 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
 
     public Orbital orbital;
 
-    private int ticksExisted = 0;
-    private int storedAmount = 0;
+    private int ticksExisted;
+    private int storedAmount;
 
     @Override
     public boolean canUpdate() {
@@ -61,34 +53,34 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
 
     @Override
     public void updateEntity() {
-        if(worldObj == null) return;
-        ticksExisted++;
+        if(this.worldObj == null) return;
+        this.ticksExisted++;
 
-        if(!worldObj.isRemote) {
-            ChunkCoordinates cc = getCoords();
-            if (!trackedEntities.containsKey(cc)) trackedEntities.put(cc, Lists.<AffectedEntity>newLinkedList());
+        if(!this.worldObj.isRemote) {
+            ChunkCoordinates cc = this.getCoords();
+            if (!TileAIShutdown.trackedEntities.containsKey(cc)) TileAIShutdown.trackedEntities.put(cc, Lists.newLinkedList());
 
-            if ((ticksExisted & 15) == 0) {
-                killAI();
+            if ((this.ticksExisted & 15) == 0) {
+                this.killAI();
             }
-            if (((ticksExisted & 7) == 0)) {
-                handleIO();
+            if (((this.ticksExisted & 7) == 0)) {
+                this.handleIO();
             }
-            if (((ticksExisted & 31) == 0)) {
-                drainDefaultEssentia();
+            if (((this.ticksExisted & 31) == 0)) {
+                this.drainDefaultEssentia();
             }
         }
 
     }
 
     private void drainDefaultEssentia() {
-        storedAmount = Math.max(0, storedAmount - 1);
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        markDirty();
+        this.storedAmount = Math.max(0, this.storedAmount - 1);
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        this.markDirty();
     }
 
     private void handleIO() {
-        if (storedAmount < MAX_AMT) {
+        if (this.storedAmount < TileAIShutdown.MAX_AMT) {
             TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.UP);
             if (te != null) {
                 IEssentiaTransport ic = (IEssentiaTransport) te;
@@ -96,32 +88,32 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
                     return;
                 }
 
-                if (ic.getSuctionAmount(ForgeDirection.DOWN) < getSuctionAmount(ForgeDirection.UP)) {
-                    addToContainer(Aspect.ENTROPY, ic.takeEssentia(Aspect.ENTROPY, 1, ForgeDirection.DOWN));
+                if (ic.getSuctionAmount(ForgeDirection.DOWN) < this.getSuctionAmount(ForgeDirection.UP)) {
+                    this.addToContainer(Aspect.ENTROPY, ic.takeEssentia(Aspect.ENTROPY, 1, ForgeDirection.DOWN));
                 }
             }
         }
     }
 
     private void killAI() {
-        ChunkCoordinates cc = getCoords();
-        List objEntityList = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, BOX.copy().offset(xCoord, yCoord, zCoord));
+        ChunkCoordinates cc = this.getCoords();
+        List objEntityList = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, TileAIShutdown.BOX.copy().offset(this.xCoord, this.yCoord, this.zCoord));
         for (Object o : objEntityList) {
             if(o != null && o instanceof EntityLiving &&
-                    !((EntityLiving) o).isDead && canAffect((EntityLiving) o)) {
+                    !((EntityLiving) o).isDead && this.canAffect((EntityLiving) o)) {
                 EntityLiving el = (EntityLiving) o;
-                if(storedAmount <= 0) return;
-                AffectedEntity affected = removeAI(el);
-                trackedEntities.get(cc).add(affected);
+                if(this.storedAmount <= 0) return;
+                AffectedEntity affected = this.removeAI(el);
+                TileAIShutdown.trackedEntities.get(cc).add(affected);
             }
         }
     }
 
     private AffectedEntity removeAI(EntityLiving el) {
-        if(RAND.nextInt(4) == 0) {
-            storedAmount = Math.max(0, storedAmount - 1);
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-            markDirty();
+        if(TileAIShutdown.RAND.nextInt(4) == 0) {
+            this.storedAmount = Math.max(0, this.storedAmount - 1);
+            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            this.markDirty();
         }
 
         UUID uu = el.getUniqueID();
@@ -157,21 +149,21 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
                 iterator.remove();
             }
         }
-        injEntityLivingBase.setObject(el);
-        injEntityLivingBase.setField("ignoreCollisions", true);
-        injEntityLivingBase.setObject(null);
+        TileAIShutdown.injEntityLivingBase.setObject(el);
+        TileAIShutdown.injEntityLivingBase.setField("ignoreCollisions", true);
+        TileAIShutdown.injEntityLivingBase.setObject(null);
         return new AffectedEntity(uu, tasks, targetTasks);
     }
 
     public int getStoredEssentia() {
-        return storedAmount;
+        return this.storedAmount;
     }
 
     public boolean canAffect(EntityLiving el) {
-        ChunkCoordinates cc = getCoords();
-        if(!trackedEntities.containsKey(cc)) return false;
+        ChunkCoordinates cc = this.getCoords();
+        if(!TileAIShutdown.trackedEntities.containsKey(cc)) return false;
         UUID uu = el.getUniqueID();
-        for (AffectedEntity ae : trackedEntities.get(cc)) {
+        for (AffectedEntity ae : TileAIShutdown.trackedEntities.get(cc)) {
             if(ae.eUUID.equals(uu)) return false;
         }
         return true;
@@ -184,7 +176,7 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
 
     @Override
     public void writeCustomNBT(NBTTagCompound compound) {
-        compound.setInteger("amount", storedAmount);
+        compound.setInteger("amount", this.storedAmount);
     }
 
 
@@ -194,8 +186,8 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
 
     @Override
     public AspectList getAspects() {
-        if(storedAmount <= 0) return new AspectList();
-        return new AspectList().add(Aspect.ENTROPY, storedAmount);
+        if(this.storedAmount <= 0) return new AspectList();
+        return new AspectList().add(Aspect.ENTROPY, this.storedAmount);
     }
 
     @Override
@@ -214,12 +206,12 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
 
         if (aspect == null) return 0;
 
-        if (storedAmount < MAX_AMT) {
-            int added = Math.min(amount, MAX_AMT - storedAmount);
-            storedAmount += added;
+        if (this.storedAmount < TileAIShutdown.MAX_AMT) {
+            int added = Math.min(amount, TileAIShutdown.MAX_AMT - this.storedAmount);
+            this.storedAmount += added;
             amount -= added;
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-            markDirty();
+            this.markDirty();
         }
         return amount;
     }
@@ -253,17 +245,17 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
 
     @Override
     public boolean isConnectable(ForgeDirection direction) {
-        return direction != null && direction.equals(ForgeDirection.UP);
+        return ForgeDirection.UP.equals(direction);
     }
 
     @Override
     public boolean canInputFrom(ForgeDirection direction) {
-        return isConnectable(direction);
+        return this.isConnectable(direction);
     }
 
     @Override
     public boolean canOutputTo(ForgeDirection direction) {
-        return isConnectable(direction);
+        return this.isConnectable(direction);
     }
 
     @Override
@@ -271,14 +263,14 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
 
     @Override
     public Aspect getSuctionType(ForgeDirection direction) {
-        if(!isConnectable(direction)) return null;
+        if(!this.isConnectable(direction)) return null;
         return Aspect.ENTROPY;
     }
 
     @Override
     public int getSuctionAmount(ForgeDirection direction) {
-        if(!isConnectable(direction)) return 0;
-        return getMinimumSuction();
+        if(!this.isConnectable(direction)) return 0;
+        return this.getMinimumSuction();
     }
 
     @Override
@@ -288,7 +280,7 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
 
     @Override
     public int addEssentia(Aspect aspect, int i, ForgeDirection direction) {
-        return canInputFrom(direction) ? addToContainer(aspect, i) : 0;
+        return this.canInputFrom(direction) ? this.addToContainer(aspect, i) : 0;
     }
 
     @Override
@@ -298,8 +290,8 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
 
     @Override
     public int getEssentiaAmount(ForgeDirection direction) {
-        if(!isConnectable(direction)) return 0;
-        return storedAmount;
+        if(!this.isConnectable(direction)) return 0;
+        return this.storedAmount;
     }
 
     @Override
@@ -315,15 +307,15 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
     //Tracker methods
 
     public static void removeTrackedEntity(EntityLiving entityLiving) {
-        for (ChunkCoordinates cc : trackedEntities.keySet()) {
-            for (AffectedEntity ae : trackedEntities.get(cc)) {
+        for (ChunkCoordinates cc : TileAIShutdown.trackedEntities.keySet()) {
+            for (AffectedEntity ae : TileAIShutdown.trackedEntities.get(cc)) {
                 if(ae.eUUID.equals(entityLiving.getUniqueID())) {
-                    trackedEntities.get(cc).remove(ae);
+                    TileAIShutdown.trackedEntities.get(cc).remove(ae);
                     entityLiving.tasks.taskEntries = ae.tasks;
                     entityLiving.targetTasks.taskEntries = ae.targetTasks;
-                    injEntityLivingBase.setObject(entityLiving);
-                    injEntityLivingBase.setField("ignoreCollisions", false);
-                    injEntityLivingBase.setObject(null);
+                    TileAIShutdown.injEntityLivingBase.setObject(entityLiving);
+                    TileAIShutdown.injEntityLivingBase.setField("ignoreCollisions", false);
+                    TileAIShutdown.injEntityLivingBase.setObject(null);
                     return;
                 }
             }
@@ -332,21 +324,21 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
 
     public static void removeTrackedEntities(World world, int x, int y, int z) {
         ChunkCoordinates cc = new ChunkCoordinates(x, y, z);
-        if(trackedEntities.containsKey(cc)) {
-            for (AffectedEntity ae : trackedEntities.get(cc)) {
+        if(TileAIShutdown.trackedEntities.containsKey(cc)) {
+            for (AffectedEntity ae : TileAIShutdown.trackedEntities.get(cc)) {
                 for (Object objE : world.getLoadedEntityList()) {
                     if(objE != null && objE instanceof EntityLiving &&
                             !((EntityLiving) objE).isDead &&
                             ((EntityLiving) objE).getUniqueID().equals(ae.eUUID)) {
                         ((EntityLiving) objE).tasks.taskEntries = ae.tasks;
                         ((EntityLiving) objE).targetTasks.taskEntries = ae.targetTasks;
-                        injEntityLivingBase.setObject(objE);
-                        injEntityLivingBase.setField("ignoreCollisions", false);
-                        injEntityLivingBase.setObject(null);
+                        TileAIShutdown.injEntityLivingBase.setObject(objE);
+                        TileAIShutdown.injEntityLivingBase.setField("ignoreCollisions", false);
+                        TileAIShutdown.injEntityLivingBase.setObject(null);
                     }
                 }
             }
-            trackedEntities.remove(new ChunkCoordinates(x, y, z));
+            TileAIShutdown.trackedEntities.remove(new ChunkCoordinates(x, y, z));
         }
     }
 
@@ -367,14 +359,14 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (o == null || this.getClass() != o.getClass()) return false;
             AffectedEntity that = (AffectedEntity) o;
-            return !(eUUID != null ? !eUUID.equals(that.eUUID) : that.eUUID != null);
+            return this.eUUID != null ? this.eUUID.equals(that.eUUID) : that.eUUID == null;
         }
 
         @Override
         public int hashCode() {
-            return eUUID != null ? eUUID.hashCode() : 0;
+            return this.eUUID != null ? this.eUUID.hashCode() : 0;
         }
 
     }

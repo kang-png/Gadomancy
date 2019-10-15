@@ -37,7 +37,7 @@ import java.util.List;
 public class ExplosionHelper {
 
     public static void taintplosion(World world, int x, int y, int z, boolean taintBiome, int chanceToTaint) {
-        taintplosion(world, x, y, z, taintBiome, chanceToTaint, 3.0F, 10, 80);
+        ExplosionHelper.taintplosion(world, x, y, z, taintBiome, chanceToTaint, 3.0F, 10, 80);
     }
 
     public static void taintplosion(World world, int x, int y, int z, boolean taintBiome, int chanceToTaint, float str, int size, int blocksAffected) {
@@ -69,7 +69,7 @@ public class ExplosionHelper {
         private int phase;
         private World world;
         private int x, y, z;
-        private List<Vec3> pastTickBlocks = null;
+        private List<Vec3> pastTickBlocks;
 
         public VortexExplosion(TileExtendedNode exNode) {
             this.causingNode = exNode;
@@ -82,78 +82,78 @@ public class ExplosionHelper {
         }
 
         public void update() {
-            List livingEntities = world.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(6.0D, 6.0D, 6.0D));
+            List livingEntities = this.world.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.x, this.y, this.z, this.x + 1, this.y + 1, this.z + 1).expand(6.0D, 6.0D, 6.0D));
             if ((livingEntities != null) && (livingEntities.size() > 0)) {
                 for (Object e : livingEntities) {
                     EntityLivingBase livingEntity = (EntityLivingBase) e;
                     if ((livingEntity.isEntityAlive()) && (!livingEntity.isEntityInvulnerable())) {
                         if(livingEntity instanceof EntityPlayer && ((EntityPlayer) livingEntity).capabilities.isCreativeMode) continue;
-                        if(world.rand.nextInt(16) != 0) continue;
+                        if(this.world.rand.nextInt(16) != 0) continue;
                         livingEntity.attackEntityFrom(DamageSource.magic, 4F);
-                        PacketTCNodeBolt packet = new PacketTCNodeBolt(x + 0.5F, y + 0.5F, z + 0.5F, (float) livingEntity.posX, (float) (livingEntity.posY + livingEntity.height), (float) livingEntity.posZ, 0, false);
-                        PacketHandler.INSTANCE.sendToAllAround(packet, new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32.0D));
+                        PacketTCNodeBolt packet = new PacketTCNodeBolt(this.x + 0.5F, this.y + 0.5F, this.z + 0.5F, (float) livingEntity.posX, (float) (livingEntity.posY + livingEntity.height), (float) livingEntity.posZ, 0, false);
+                        PacketHandler.INSTANCE.sendToAllAround(packet, new NetworkRegistry.TargetPoint(this.world.provider.dimensionId, this.x, this.y, this.z, 32.0D));
                     }
                 }
             }
-            if(phase < 2 && world.rand.nextInt(phase == 0 ? 8 : 4) == 0) {
-                PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_BURST, x, y, z);
-                PacketHandler.INSTANCE.sendToAllAround(packet, new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32.0D));
-                world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "thaumcraft:ice", 0.8F, 1.0F);
+            if(this.phase < 2 && this.world.rand.nextInt(this.phase == 0 ? 8 : 4) == 0) {
+                PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_BURST, this.x, this.y, this.z);
+                PacketHandler.INSTANCE.sendToAllAround(packet, new NetworkRegistry.TargetPoint(this.world.provider.dimensionId, this.x, this.y, this.z, 32.0D));
+                this.world.playSoundEffect(this.x + 0.5, this.y + 0.5, this.z + 0.5, "thaumcraft:ice", 0.8F, 1.0F);
             }
-            switch (phase) {
+            switch (this.phase) {
                 case 0: {
-                    tick++;
-                    if(tick > 200) {
-                        tick = 0;
-                        phase = 1;
-                        taintplosion(world, x, y, z, false, 1);
+                    this.tick++;
+                    if(this.tick > 200) {
+                        this.tick = 0;
+                        this.phase = 1;
+                        ExplosionHelper.taintplosion(this.world, this.x, this.y, this.z, false, 1);
                     }
 
-                    sendRandomVortexLightningPacket(world, x, y, z);
+                    this.sendRandomVortexLightningPacket(this.world, this.x, this.y, this.z);
                     break;
                 }
                 case 1: {
-                    tick++;
-                    int range = tick > 50 ? tick > 75 ? tick > 100 ? tick > 200 ? tick > 300 ? 9 : 7 : 6 : 5 : 4 : 3;
-                    if(pastTickBlocks != null) {
-                        for(Vec3 v : pastTickBlocks) {
-                            sendRandomVortexLightningPacket(world, x, y, z);
-                            world.setBlockToAir((int) v.xCoord, (int) v.yCoord, (int) v.zCoord);
+                    this.tick++;
+                    int range = this.tick > 50 ? this.tick > 75 ? this.tick > 100 ? this.tick > 200 ? this.tick > 300 ? 9 : 7 : 6 : 5 : 4 : 3;
+                    if(this.pastTickBlocks != null) {
+                        for(Vec3 v : this.pastTickBlocks) {
+                            this.sendRandomVortexLightningPacket(this.world, this.x, this.y, this.z);
+                            this.world.setBlockToAir((int) v.xCoord, (int) v.yCoord, (int) v.zCoord);
                         }
                     }
-                    int ct = world.rand.nextInt(4);
+                    int ct = this.world.rand.nextInt(4);
                     while(ct > 0) {
                         ct--;
-                        sendRandomVortexLightningPacket(world, x, y, z);
+                        this.sendRandomVortexLightningPacket(this.world, this.x, this.y, this.z);
                     }
-                    pastTickBlocks = new ArrayList<Vec3>();
+                    this.pastTickBlocks = new ArrayList<Vec3>();
                     int cnt = 10;
                     do {
-                        int xx = x + world.rand.nextInt(range) - world.rand.nextInt(range);
-                        int yy = y + world.rand.nextInt(range) - world.rand.nextInt(range);
-                        int zz = z + world.rand.nextInt(range) - world.rand.nextInt(range);
-                        Block b = world.getBlock(xx, yy, zz);
-                        float hardness = b.getBlockHardness(world, xx, yy, zz);
+                        int xx = this.x + this.world.rand.nextInt(range) - this.world.rand.nextInt(range);
+                        int yy = this.y + this.world.rand.nextInt(range) - this.world.rand.nextInt(range);
+                        int zz = this.z + this.world.rand.nextInt(range) - this.world.rand.nextInt(range);
+                        Block b = this.world.getBlock(xx, yy, zz);
+                        float hardness = b.getBlockHardness(this.world, xx, yy, zz);
                         if(b != Blocks.air && hardness > 0 && hardness <= 50 && b != RegisteredBlocks.blockNode) {
-                            PacketAnimationAbsorb absorb = new PacketAnimationAbsorb(x, y, z, xx, yy, zz, 7);
-                            PacketHandler.INSTANCE.sendToAllAround(absorb, new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32D));
-                            pastTickBlocks.add(Vec3.createVectorHelper(xx, yy, zz));
+                            PacketAnimationAbsorb absorb = new PacketAnimationAbsorb(this.x, this.y, this.z, xx, yy, zz, 7);
+                            PacketHandler.INSTANCE.sendToAllAround(absorb, new NetworkRegistry.TargetPoint(this.world.provider.dimensionId, this.x, this.y, this.z, 32D));
+                            this.pastTickBlocks.add(Vec3.createVectorHelper(xx, yy, zz));
                         }
                         cnt--;
                     } while (cnt > 0);
 
-                    if(tick == 200) {
-                        taintplosion(world, x, y, z, false, 1);
+                    if(this.tick == 200) {
+                        ExplosionHelper.taintplosion(this.world, this.x, this.y, this.z, false, 1);
                     }
 
-                    if(tick == 300) {
-                        taintplosion(world, x, y, z, false, 1);
+                    if(this.tick == 300) {
+                        ExplosionHelper.taintplosion(this.world, this.x, this.y, this.z, false, 1);
                     }
 
-                    if(tick > 400) {
-                        phase = 2;
-                        reduceAspects(causingNode);
-                        taintplosion(world, x, y, z, true, 3);
+                    if(this.tick > 400) {
+                        this.phase = 2;
+                        this.reduceAspects(this.causingNode);
+                        ExplosionHelper.taintplosion(this.world, this.x, this.y, this.z, true, 3);
                     }
                     break;
                 }
@@ -164,7 +164,7 @@ public class ExplosionHelper {
             List<Aspect> lostAspects = new ArrayList<Aspect>();
             AspectList list = node.getAspectsBase();
             for(Aspect a : list.getAspects()) {
-                if(world.rand.nextInt(4) == 0) {
+                if(this.world.rand.nextInt(4) == 0) {
                     lostAspects.add(a);
                 } else {
                     list.reduce(a, list.getAmount(a) / 2);
@@ -203,7 +203,7 @@ public class ExplosionHelper {
         }
 
         public boolean isFinished() {
-            return phase > 1;
+            return this.phase > 1;
         }
 
     }

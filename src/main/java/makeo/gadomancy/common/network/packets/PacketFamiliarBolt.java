@@ -42,19 +42,19 @@ public class PacketFamiliarBolt implements IMessage, IMessageHandler<PacketFamil
         this.type = buf.readInt();
         this.mightGetLong = buf.readBoolean();
 
-        owner = StringHelper.readFromBuffer(buf);
+        this.owner = StringHelper.readFromBuffer(buf);
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        buf.writeFloat(targetX);
-        buf.writeFloat(targetY);
-        buf.writeFloat(targetZ);
+        buf.writeFloat(this.targetX);
+        buf.writeFloat(this.targetY);
+        buf.writeFloat(this.targetZ);
 
-        buf.writeInt(type);
-        buf.writeBoolean(mightGetLong);
+        buf.writeInt(this.type);
+        buf.writeBoolean(this.mightGetLong);
 
-        StringHelper.writeToBuffer(buf, owner);
+        StringHelper.writeToBuffer(buf, this.owner);
     }
 
     @Override

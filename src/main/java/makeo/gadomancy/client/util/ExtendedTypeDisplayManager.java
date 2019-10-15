@@ -16,48 +16,48 @@ import thaumcraft.api.nodes.NodeType;
 public class ExtendedTypeDisplayManager {
 
     private static int timeout = 7;
-    private static int currTime = 0;
+    private static int currTime;
 
-    private static boolean changedLanguageFile = false;
-    private static String currentNodeId = null;
-    private static String changedEntry = null;
-    private static String oldName = null;
+    private static boolean changedLanguageFile;
+    private static String currentNodeId;
+    private static String changedEntry;
+    private static String oldName;
 
     public static void notifyRenderTick() {
-        if(currTime > timeout) {
-            if(changedLanguageFile) {
-                resetLanguageFile();
+        if(ExtendedTypeDisplayManager.currTime > ExtendedTypeDisplayManager.timeout) {
+            if(ExtendedTypeDisplayManager.changedLanguageFile) {
+                ExtendedTypeDisplayManager.resetLanguageFile();
             }
         } else {
-            currTime++;
+            ExtendedTypeDisplayManager.currTime++;
         }
     }
 
     private static void resetLanguageFile() {
-        currentNodeId = null;
-        ResourceReloadListener.languageList.put(changedEntry, oldName);
-        changedLanguageFile = false;
+        ExtendedTypeDisplayManager.currentNodeId = null;
+        ResourceReloadListener.languageList.put(ExtendedTypeDisplayManager.changedEntry, ExtendedTypeDisplayManager.oldName);
+        ExtendedTypeDisplayManager.changedLanguageFile = false;
     }
 
     public static void notifyDisplayTick(String id, NodeType nodeType, ExtendedNodeType extendedNodeType) {
-        currTime = 0;
+        ExtendedTypeDisplayManager.currTime = 0;
 
-        if(currentNodeId != null && !currentNodeId.equals(id)) {
+        if(ExtendedTypeDisplayManager.currentNodeId != null && !ExtendedTypeDisplayManager.currentNodeId.equals(id)) {
             //New node.
-            resetLanguageFile();
+            ExtendedTypeDisplayManager.resetLanguageFile();
         }
 
-        if(!changedLanguageFile) {
+        if(!ExtendedTypeDisplayManager.changedLanguageFile) {
             String toChance = "nodetype." + nodeType + ".name";
             String name = StatCollector.translateToLocal(toChance);
             String growingStr = StatCollector.translateToLocal("gadomancy.nodes." + extendedNodeType.name());
             String newName = name + ", " + growingStr;
             ResourceReloadListener.languageList.put(toChance, newName);
 
-            oldName = name;
-            changedEntry = toChance;
-            changedLanguageFile = true;
-            currentNodeId = id;
+            ExtendedTypeDisplayManager.oldName = name;
+            ExtendedTypeDisplayManager.changedEntry = toChance;
+            ExtendedTypeDisplayManager.changedLanguageFile = true;
+            ExtendedTypeDisplayManager.currentNodeId = id;
         }
     }
 }

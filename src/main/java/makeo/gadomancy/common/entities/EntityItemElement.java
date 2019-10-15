@@ -4,14 +4,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import makeo.gadomancy.common.items.ItemElement;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFlameFX;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
-import thaumcraft.common.Thaumcraft;
 
 import java.util.List;
 
@@ -38,21 +36,21 @@ public class EntityItemElement extends EntityItem {
     @Override
     public void onUpdate() {
         super.onUpdate();
-        ItemStack stack = getEntityItem();
+        ItemStack stack = this.getEntityItem();
         if(stack == null || !(stack.getItem() instanceof ItemElement)) return;
         int meta = stack.getItemDamage();
         ItemElement.EnumElementType element = ItemElement.EnumElementType.values()[meta % ItemElement.EnumElementType.values().length];
 
-        if(!worldObj.isRemote && (ticksExisted & 15) == 0) {
-            doElementServerEffects(element, worldObj, posX, posY, posZ);
+        if(!this.worldObj.isRemote && (this.ticksExisted & 15) == 0) {
+            EntityItemElement.doElementServerEffects(element, this.worldObj, this.posX, this.posY, this.posZ);
         }
 
         if (this.age + 5 >= this.lifespan) {
             this.age = 0;
         }
 
-        if(worldObj.isRemote && worldObj.rand.nextInt(4) == 0) {
-            playClientElementEffect(element, worldObj, posX, posY, posZ);
+        if(this.worldObj.isRemote && this.worldObj.rand.nextInt(4) == 0) {
+            EntityItemElement.playClientElementEffect(element, this.worldObj, this.posX, this.posY, this.posZ);
         }
     }
 

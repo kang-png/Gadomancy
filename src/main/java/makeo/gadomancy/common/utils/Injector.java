@@ -33,7 +33,7 @@ public class Injector {
     }
 
     public Injector(Class clazz) {
-        object = null;
+        this.object = null;
         this.clazz = clazz;
     }
 
@@ -51,7 +51,7 @@ public class Injector {
     }
 
     public Class getObjectClass() {
-        return clazz;
+        return this.clazz;
     }
 
     public void setObject(Object object) {
@@ -59,22 +59,22 @@ public class Injector {
     }
 
     public Object getObject() {
-        return object;
+        return this.object;
     }
 
     public <T> T invokeConstructor(Object... params) {
-        return invokeConstructor(extractClasses(params), params);
+        return this.invokeConstructor(this.extractClasses(params), params);
     }
 
     public <T> T invokeConstructor(Class clazz, Object param) {
-        return invokeConstructor(new Class[]{clazz}, param);
+        return this.invokeConstructor(new Class[]{clazz}, param);
     }
 
     public <T> T invokeConstructor(Class[] classes, Object... params) {
         try {
-            Constructor constructor = clazz.getDeclaredConstructor(classes);
-            object = constructor.newInstance(params);
-            return (T) object;
+            Constructor constructor = this.clazz.getDeclaredConstructor(classes);
+            this.object = constructor.newInstance(params);
+            return (T) this.object;
         } catch (Exception e) {//NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException
             e.printStackTrace();
         }
@@ -82,17 +82,17 @@ public class Injector {
     }
 
     public <T> T invokeMethod(String name, Object... params) {
-        return invokeMethod(name, extractClasses(params), params);
+        return this.invokeMethod(name, this.extractClasses(params), params);
     }
 
     public <T> T invokeMethod(String name, Class clazz, Object param) {
-        return invokeMethod(name, new Class[]{clazz}, param);
+        return this.invokeMethod(name, new Class[]{clazz}, param);
     }
 
     public <T> T invokeMethod(String name, Class[] classes, Object... params) {
         try {
-            Method method = clazz.getDeclaredMethod(name, classes);
-            return invokeMethod(method, params);
+            Method method = this.clazz.getDeclaredMethod(name, classes);
+            return this.invokeMethod(method, params);
         } catch (Exception e) {//NoSuchMethodException | ClassCastException
             e.printStackTrace();
         }
@@ -102,7 +102,7 @@ public class Injector {
     public <T> T invokeMethod(Method method, Object... params) {
         try {
             method.setAccessible(true);
-            Object result = method.invoke(object, params);
+            Object result = method.invoke(this.object, params);
             if(result != null)
                 return (T) result;
         } catch (Exception e) {//InvocationTargetException | IllegalAccessException | ClassCastException
@@ -120,7 +120,7 @@ public class Injector {
 
     public boolean setField(String name, Object value) {
         try {
-            return setField(clazz.getDeclaredField(name), value);
+            return this.setField(this.clazz.getDeclaredField(name), value);
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
@@ -136,7 +136,7 @@ public class Injector {
             }
 
             field.setAccessible(true);
-            field.set(object, value);
+            field.set(this.object, value);
             return true;
         } catch (Exception e) {//IllegalAccessException | NoSuchFieldException
             e.printStackTrace();
@@ -146,7 +146,7 @@ public class Injector {
 
     public <T> T getField(String name) {
         try {
-            return getField(clazz.getDeclaredField(name));
+            return this.getField(this.clazz.getDeclaredField(name));
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
@@ -156,7 +156,7 @@ public class Injector {
     public  <T> T getField(Field field) {
         try {
             field.setAccessible(true);
-            Object result = field.get(object);
+            Object result = field.get(this.object);
             if(result != null)
                 return (T) result;
         } catch (Exception e) {//IllegalAccessException | ClassCastException
@@ -166,11 +166,11 @@ public class Injector {
     }
 
     public Method findMethod(Class returnType, Class... paramTypes) {
-        return findMethod(clazz, returnType, paramTypes);
+        return Injector.findMethod(this.clazz, returnType, paramTypes);
     }
 
     public Field findField(Class type) {
-        return findField(clazz, type);
+        return Injector.findField(this.clazz, type);
     }
 
     public static Method findMethod(Class clazz, Class returnType, Class[] paramTypes) {
@@ -221,7 +221,7 @@ public class Injector {
     }
 
     public static Method getMethod(String name, String clazz, Class... classes) {
-        return getMethod(name, Injector.getClass(clazz), classes);
+        return Injector.getMethod(name, Injector.getClass(clazz), classes);
     }
 
     public static Field getField(String name, Class clazz) {

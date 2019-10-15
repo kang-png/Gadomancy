@@ -19,6 +19,6 @@ public class FilteredSlot extends Slot {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        return inventory.isItemValidForSlot(slotNumber, stack);
+        return this.inventory.isItemValidForSlot(this.slotNumber, stack);
     }
 }

@@ -1,6 +1,5 @@
 package makeo.gadomancy.common.node;
 
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.World;
 import thaumcraft.api.nodes.INode;
@@ -23,7 +22,7 @@ public abstract class NodeManipulatorResult extends WeightedRandom.Item {
     }
 
     public NodeManipulatorResultHandler.ResultType getResultType() {
-        return resultType;
+        return this.resultType;
     }
 
     public boolean canAffect(World world, INode node) {

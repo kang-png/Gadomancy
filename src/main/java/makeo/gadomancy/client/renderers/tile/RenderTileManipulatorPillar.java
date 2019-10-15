@@ -24,14 +24,14 @@ public class RenderTileManipulatorPillar extends TileInfusionPillarRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8) {
-        ResourceLocation originalTexture = BOUND_TEXTURES.get(TC_TEXTURE);
-        BOUND_TEXTURES.put(TC_TEXTURE, TEXTURE);
+        ResourceLocation originalTexture = RenderTileManipulatorPillar.BOUND_TEXTURES.get(RenderTileManipulatorPillar.TC_TEXTURE);
+        RenderTileManipulatorPillar.BOUND_TEXTURES.put(RenderTileManipulatorPillar.TC_TEXTURE, RenderTileManipulatorPillar.TEXTURE);
         super.renderTileEntityAt(par1TileEntity, par2, par4, par6, par8);
 
         if(originalTexture != null) {
-            BOUND_TEXTURES.put(TC_TEXTURE, originalTexture);
+            RenderTileManipulatorPillar.BOUND_TEXTURES.put(RenderTileManipulatorPillar.TC_TEXTURE, originalTexture);
         } else {
-            BOUND_TEXTURES.remove(TC_TEXTURE);
+            RenderTileManipulatorPillar.BOUND_TEXTURES.remove(RenderTileManipulatorPillar.TC_TEXTURE);
         }
     }
 }

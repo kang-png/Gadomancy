@@ -30,7 +30,7 @@ public class RenderTileAIShutdown extends TileEntitySpecialRenderer {
         TileAIShutdown ta = (TileAIShutdown) tileEntity;
 
         if(ta.getStoredEssentia() > 0) {
-            handleOrbital(ta);
+            this.handleOrbital(ta);
         }
     }
 
@@ -47,7 +47,7 @@ public class RenderTileAIShutdown extends TileEntitySpecialRenderer {
 
         if(ta.getStoredEssentia() > 0) {
             if(ta.orbital != null && ta.orbital.orbitalsSize() == 0) {
-                fillOrbital(ta.orbital);
+                this.fillOrbital(ta.orbital);
             }
         } else {
             if(ta.orbital != null && ta.orbital.orbitalsSize() > 0) {
@@ -63,9 +63,9 @@ public class RenderTileAIShutdown extends TileEntitySpecialRenderer {
         prop.setRenderRunnable(new Orbital.OrbitalRenderRunnable() {
             @Override
             public void onRender(World world, Vector3 pos, Orbital.OrbitalRenderProperties properties, int orbitalExisted, float partialTicks) {
-                if(rand.nextInt(3) == 0) {
+                if(RenderTileAIShutdown.rand.nextInt(3) == 0) {
                     FXWisp ef = new FXWisp(world,
-                            pos.getX() + randomOffset(), pos.getY() + randomOffset(), pos.getZ() + randomOffset(),
+                            pos.getX() + RenderTileAIShutdown.randomOffset(), pos.getY() + RenderTileAIShutdown.randomOffset(), pos.getZ() + RenderTileAIShutdown.randomOffset(),
                             0.2F, 3);
                     ef.setGravity(-0.08F);
                     ParticleEngine.instance.addEffect(world, ef);
@@ -80,9 +80,9 @@ public class RenderTileAIShutdown extends TileEntitySpecialRenderer {
         prop.setRenderRunnable(new Orbital.OrbitalRenderRunnable() {
             @Override
             public void onRender(World world, Vector3 pos, Orbital.OrbitalRenderProperties properties, int orbitalExisted, float partialTicks) {
-                if(rand.nextInt(3) == 0) {
+                if(RenderTileAIShutdown.rand.nextInt(3) == 0) {
                     FXWisp ef = new FXWisp(world,
-                            pos.getX() + randomOffset(), pos.getY() + randomOffset(), pos.getZ() + randomOffset(),
+                            pos.getX() + RenderTileAIShutdown.randomOffset(), pos.getY() + RenderTileAIShutdown.randomOffset(), pos.getZ() + RenderTileAIShutdown.randomOffset(),
                             0.2F, 3);
                     ef.setGravity(-0.08F);
                     ParticleEngine.instance.addEffect(world, ef);
@@ -97,9 +97,9 @@ public class RenderTileAIShutdown extends TileEntitySpecialRenderer {
         prop.setRenderRunnable(new Orbital.OrbitalRenderRunnable() {
             @Override
             public void onRender(World world, Vector3 pos, Orbital.OrbitalRenderProperties properties, int orbitalExisted, float partialTicks) {
-                if(rand.nextBoolean()) {
+                if(RenderTileAIShutdown.rand.nextBoolean()) {
                     FXWisp ef = new FXWisp(world,
-                            pos.getX() + randomOffset(), pos.getY() + randomOffset(), pos.getZ() + randomOffset(),
+                            pos.getX() + RenderTileAIShutdown.randomOffset(), pos.getY() + RenderTileAIShutdown.randomOffset(), pos.getZ() + RenderTileAIShutdown.randomOffset(),
                             0.15F, 5);
                     ef.setGravity(-0.08F);
                     ParticleEngine.instance.addEffect(world, ef);
@@ -114,9 +114,9 @@ public class RenderTileAIShutdown extends TileEntitySpecialRenderer {
         prop.setRenderRunnable(new Orbital.OrbitalRenderRunnable() {
             @Override
             public void onRender(World world, Vector3 pos, Orbital.OrbitalRenderProperties properties, int orbitalExisted, float partialTicks) {
-                if(rand.nextBoolean()) {
+                if(RenderTileAIShutdown.rand.nextBoolean()) {
                     FXWisp ef = new FXWisp(world,
-                            pos.getX() + randomOffset(), pos.getY() + randomOffset(), pos.getZ() + randomOffset(),
+                            pos.getX() + RenderTileAIShutdown.randomOffset(), pos.getY() + RenderTileAIShutdown.randomOffset(), pos.getZ() + RenderTileAIShutdown.randomOffset(),
                             0.15F, 5);
                     ef.setGravity(-0.08F);
                     ParticleEngine.instance.addEffect(world, ef);
@@ -131,9 +131,9 @@ public class RenderTileAIShutdown extends TileEntitySpecialRenderer {
         prop.setRenderRunnable(new Orbital.OrbitalRenderRunnable() {
             @Override
             public void onRender(World world, Vector3 pos, Orbital.OrbitalRenderProperties properties, int orbitalExisted, float partialTicks) {
-                if(rand.nextBoolean()) {
+                if(RenderTileAIShutdown.rand.nextBoolean()) {
                     FXWisp ef = new FXWisp(world,
-                            pos.getX() + randomOffset(), pos.getY() + randomOffset(), pos.getZ() + randomOffset(),
+                            pos.getX() + RenderTileAIShutdown.randomOffset(), pos.getY() + RenderTileAIShutdown.randomOffset(), pos.getZ() + RenderTileAIShutdown.randomOffset(),
                             0.15F, 5);
                     ef.setGravity(-0.08F);
                     ParticleEngine.instance.addEffect(world, ef);
@@ -145,7 +145,7 @@ public class RenderTileAIShutdown extends TileEntitySpecialRenderer {
     }
 
     private static float randomOffset() {
-        return rand.nextFloat() * 0.2F;
+        return RenderTileAIShutdown.rand.nextFloat() * 0.2F;
     }
 
 }

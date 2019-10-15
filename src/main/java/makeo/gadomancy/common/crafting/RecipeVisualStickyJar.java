@@ -30,7 +30,7 @@ public class RecipeVisualStickyJar extends ShapedArcaneRecipe {
     @Override
     @SideOnly(Side.CLIENT)
     public AspectList getAspects() {
-        updateVisualStickyJarRecipes();
+        this.updateVisualStickyJarRecipes();
         return super.getAspects();
     }
 
@@ -39,12 +39,12 @@ public class RecipeVisualStickyJar extends ShapedArcaneRecipe {
         List<ItemStack> stacks = RegisteredItems.getStickyJarStacks(Minecraft.getMinecraft().thePlayer);
         if(stacks.size() > 0) {
             ItemStack stack = stacks.get((int)(System.currentTimeMillis() / 1000L % stacks.size()));
-            output = stack.copy();
-            NBTHelper.getData(output).setBoolean("isStickyJar", true);
+            this.output = stack.copy();
+            NBTHelper.getData(this.output).setBoolean("isStickyJar", true);
 
-            input = new Object[9];
-            input[4] = stack;
-            input[7] = new ItemStack(Items.slime_ball, 1, 0);
+            this.input = new Object[9];
+            this.input[4] = stack;
+            this.input[7] = new ItemStack(Items.slime_ball, 1, 0);
         }
     }
 }

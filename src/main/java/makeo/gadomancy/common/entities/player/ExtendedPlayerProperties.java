@@ -22,7 +22,7 @@ public class ExtendedPlayerProperties implements IExtendedEntityProperties {
 
     private final EntityPlayer player;
 
-    private boolean isTransformed = false;
+    private boolean isTransformed;
 
     public ExtendedPlayerProperties(EntityPlayer player) {
         this.player = player;
@@ -32,20 +32,20 @@ public class ExtendedPlayerProperties implements IExtendedEntityProperties {
     public void saveNBTData(NBTTagCompound compound) {
         NBTTagCompound modData = NBTHelper.getPersistentData(compound);
 
-        modData.setBoolean("isTransformed", isTransformed);
+        modData.setBoolean("isTransformed", this.isTransformed);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound compound) {
         NBTTagCompound modData = NBTHelper.getPersistentData(compound);
 
-        isTransformed = NBTHelper.getBoolean(modData, "isTransformed", DEFAULTS.isTransformed);
-        player.getDataWatcher().updateObject(TRANSFORM_INDEX, isTransformed);
+        this.isTransformed = NBTHelper.getBoolean(modData, "isTransformed", ExtendedPlayerProperties.DEFAULTS.isTransformed);
+        this.player.getDataWatcher().updateObject(ExtendedPlayerProperties.TRANSFORM_INDEX, this.isTransformed);
     }
 
     @Override
     public void init(Entity entity, World world) {
-        player.getDataWatcher().addObject(TRANSFORM_INDEX, isTransformed);
+        this.player.getDataWatcher().addObject(ExtendedPlayerProperties.TRANSFORM_INDEX, this.isTransformed);
     }
 
     public static boolean isTransformed(EntityPlayer player) {

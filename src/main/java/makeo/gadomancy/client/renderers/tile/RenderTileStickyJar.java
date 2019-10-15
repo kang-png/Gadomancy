@@ -36,7 +36,7 @@ public class RenderTileStickyJar extends TileEntitySpecialRenderer {
             GL11.glPushMatrix();
 
             GL11.glTranslated(x, y, z);
-            rotateJar(stickyJar.placedOn, ForgeDirection.getOrientation(stickyJar.facing));
+            this.rotateJar(stickyJar.placedOn, ForgeDirection.getOrientation(stickyJar.facing));
 
             //TESR
             TileEntitySpecialRenderer renderer = TileEntityRendererDispatcher.instance.getSpecialRenderer(parent);
@@ -55,9 +55,9 @@ public class RenderTileStickyJar extends TileEntitySpecialRenderer {
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-            bindTexture(TextureMap.locationBlocksTexture);
+            this.bindTexture(TextureMap.locationBlocksTexture);
 
-            RENDER_BLOCKS.blockAccess = world;
+            RenderTileStickyJar.RENDER_BLOCKS.blockAccess = world;
 
             Tessellator tess = Tessellator.instance;
             tess.startDrawingQuads();
@@ -66,7 +66,7 @@ public class RenderTileStickyJar extends TileEntitySpecialRenderer {
 
             tess.setTranslation(-tile.xCoord, -tile.yCoord, -tile.zCoord);
 
-            RENDER_BLOCKS.renderBlockByRenderType(block, tile.xCoord, tile.yCoord, tile.zCoord);
+            RenderTileStickyJar.RENDER_BLOCKS.renderBlockByRenderType(block, tile.xCoord, tile.yCoord, tile.zCoord);
 
             tess.setTranslation(0, 0, 0);
             tess.draw();

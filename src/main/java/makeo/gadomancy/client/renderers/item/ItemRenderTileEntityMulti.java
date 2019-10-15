@@ -24,7 +24,7 @@ public class ItemRenderTileEntityMulti implements IItemRenderer {
     public ItemRenderTileEntityMulti(RenderSet... renderSets) {
         for(RenderSet set : renderSets) {
             if(set != null) {
-                renderMap.put(set.meta, set);
+                this.renderMap.put(set.meta, set);
             }
         }
     }
@@ -48,8 +48,8 @@ public class ItemRenderTileEntityMulti implements IItemRenderer {
         if(type == ItemRenderType.INVENTORY)
             GL11.glTranslatef(0, -0.1F, 0);
 
-        if(renderMap.containsKey(item.getItemDamage())) {
-            RenderSet set = renderMap.get(item.getItemDamage());
+        if(this.renderMap.containsKey(item.getItemDamage())) {
+            RenderSet set = this.renderMap.get(item.getItemDamage());
             set.renderer.renderTileEntityAt(set.te, 0, 0, 0, 0);
         }
 

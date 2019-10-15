@@ -29,17 +29,17 @@ public class IntegrationNEI extends IntegrationMod {
 
     @Override
     protected void doInit() {
-        nei = new Injector("codechicken.nei.api.API");
+        this.nei = new Injector("codechicken.nei.api.API");
 
-        hideItem(new ItemStack(RegisteredItems.itemFakeModIcon));
-        hideItem(new ItemStack(RegisteredBlocks.blockStickyJar, 1, Short.MAX_VALUE));
-        hideItem(new ItemStack(RegisteredItems.itemPackage, 1, Short.MAX_VALUE));
-        hideItem(new ItemStack(RegisteredItems.itemFakeLootbag, 1, Short.MAX_VALUE));
-        hideItem(new ItemStack(RegisteredBlocks.blockExtendedNodeJar, 1, Short.MAX_VALUE));
-        hideItem(new ItemStack(RegisteredItems.itemExtendedNodeJar, 1, Short.MAX_VALUE));
-        hideItem(new ItemStack(RegisteredItems.itemFakeGolemPlacer, 1, Short.MAX_VALUE)); //This does... nothing? ffs.
-        hideItem(new ItemStack(RegisteredItems.itemTransformationFocus, 1, Short.MAX_VALUE));
-        hideItem(new ItemStack(RegisteredItems.itemFamiliar_old, 1, Short.MAX_VALUE));
+        this.hideItem(new ItemStack(RegisteredItems.itemFakeModIcon));
+        this.hideItem(new ItemStack(RegisteredBlocks.blockStickyJar, 1, Short.MAX_VALUE));
+        this.hideItem(new ItemStack(RegisteredItems.itemPackage, 1, Short.MAX_VALUE));
+        this.hideItem(new ItemStack(RegisteredItems.itemFakeLootbag, 1, Short.MAX_VALUE));
+        this.hideItem(new ItemStack(RegisteredBlocks.blockExtendedNodeJar, 1, Short.MAX_VALUE));
+        this.hideItem(new ItemStack(RegisteredItems.itemExtendedNodeJar, 1, Short.MAX_VALUE));
+        this.hideItem(new ItemStack(RegisteredItems.itemFakeGolemPlacer, 1, Short.MAX_VALUE)); //This does... nothing? ffs.
+        this.hideItem(new ItemStack(RegisteredItems.itemTransformationFocus, 1, Short.MAX_VALUE));
+        this.hideItem(new ItemStack(RegisteredItems.itemFamiliar_old, 1, Short.MAX_VALUE));
     }
 
     public static void checkItems(ArrayList items) {
@@ -54,14 +54,14 @@ public class IntegrationNEI extends IntegrationMod {
     }
 
     private void hideItem(ItemStack item) {
-        nei.invokeMethod("hideItem", ItemStack.class, item);
+        this.nei.invokeMethod("hideItem", ItemStack.class, item);
     }
 
     public void setItemListEntries(Block block, Iterable<ItemStack> items) {
-        setItemListEntries(Item.getItemFromBlock(block), items);
+        this.setItemListEntries(Item.getItemFromBlock(block), items);
     }
 
     public void setItemListEntries(Item item, Iterable<ItemStack> items) {
-        nei.invokeMethod("setItemListEntries", new Class[]{Item.class, Iterable.class}, item, items);
+        this.nei.invokeMethod("setItemListEntries", new Class[]{Item.class, Iterable.class}, item, items);
     }
 }

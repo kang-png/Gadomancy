@@ -39,20 +39,20 @@ public class TCMazeSession {
         this.chunksAffected = locations;
         this.originDimId = dim;
         this.originLocation = origin;
-        this.portalCell = findPortal();
+        this.portalCell = this.findPortal();
     }
 
     TCMazeSession() {
-        player = null;
-        chunksAffected = null;
-        portalCell = null;
-        originDimId = 0;
-        originLocation = null;
+        this.player = null;
+        this.chunksAffected = null;
+        this.portalCell = null;
+        this.originDimId = 0;
+        this.originLocation = null;
     }
 
     private CellLoc findPortal() {
-        for(CellLoc loc : chunksAffected.keySet()) {
-            Short s = chunksAffected.get(loc);
+        for(CellLoc loc : this.chunksAffected.keySet()) {
+            Short s = this.chunksAffected.get(loc);
             Cell c = new Cell(s);
             if(c.feature == 1) {
                 return loc;
@@ -62,17 +62,17 @@ public class TCMazeSession {
     }
 
     final void closeSession(boolean teleport) {
-        TCMazeHandler.free(chunksAffected);
+        TCMazeHandler.free(this.chunksAffected);
         if(teleport) {
-            WorldUtil.tryTeleportBack(player, originDimId);
-            player.setPositionAndUpdate(originLocation.xCoord, originLocation.yCoord, originLocation.zCoord);
+            WorldUtil.tryTeleportBack(this.player, this.originDimId);
+            this.player.setPositionAndUpdate(this.originLocation.xCoord, this.originLocation.yCoord, this.originLocation.zCoord);
         }
     }
 
     final void startSession() {
         WorldServer ws = MinecraftServer.getServer().worldServerForDimension(ModConfig.dimOuterId);
 
-        for(CellLoc loc : chunksAffected.keySet()) {
+        for(CellLoc loc : this.chunksAffected.keySet()) {
             long k = ChunkCoordIntPair.chunkXZ2Int(loc.x, loc.z);
             if(ws.theChunkProviderServer.loadedChunkHashMap.containsItem(k)) {
                 Chunk c = (Chunk) ws.theChunkProviderServer.loadedChunkHashMap.getValueByKey(k);
@@ -81,16 +81,16 @@ public class TCMazeSession {
             }
         }
 
-        if(portalCell == null) {
+        if(this.portalCell == null) {
             LogManager.getLogger().error("Thaumcraft didn't generate a portal! Stopping instance! PLEASE REPORT THIS ERROR!", new IllegalStateException());
-            closeSession(false);
-            player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Thaumcraft didn't generate a portal in the Eldritch dimension. Sorry, we can't teleport you.."));
+            this.closeSession(false);
+            this.player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Thaumcraft didn't generate a portal in the Eldritch dimension. Sorry, we can't teleport you.."));
         } else {
-            WorldUtil.teleportToFakeOuter(player);
-            int x = portalCell.x * 16 + 8;
-            int z = portalCell.z * 16 + 8;
-            player.setPositionAndUpdate(x + 0.5, TCMazeHandler.TELEPORT_LAYER_Y, z + 0.5);
-            Thaumcraft.proxy.getResearchManager().completeResearch(player, "ENTEROUTER"); //badumm tss
+            WorldUtil.teleportToFakeOuter(this.player);
+            int x = this.portalCell.x * 16 + 8;
+            int z = this.portalCell.z * 16 + 8;
+            this.player.setPositionAndUpdate(x + 0.5, TCMazeHandler.TELEPORT_LAYER_Y, z + 0.5);
+            Thaumcraft.proxy.getResearchManager().completeResearch(this.player, "ENTEROUTER"); //badumm tss
         }
     }
 

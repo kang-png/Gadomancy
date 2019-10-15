@@ -24,24 +24,24 @@ public class ContainerInfusionClaw extends Container {
         this.playerInv = playerInv;
         this.clawInv = clawInv;
 
-        addSlotToContainer(new FilteredSlot(clawInv, 0, 80, 32));
-        bindPlayerInventory();
+        this.addSlotToContainer(new FilteredSlot(clawInv, 0, 80, 32));
+        this.bindPlayerInventory();
     }
 
     protected void bindPlayerInventory() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
-                addSlotToContainer(new Slot(this.playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+                this.addSlotToContainer(new Slot(this.playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
             }
         }
         for (int i = 0; i < 9; i++) {
-            addSlotToContainer(new Slot(this.playerInv, i, 8 + i * 18, 142));
+            this.addSlotToContainer(new Slot(this.playerInv, i, 8 + i * 18, 142));
         }
     }
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
-        if(((TileInfusionClaw)clawInv).isRunning()) {
+        if(((TileInfusionClaw) this.clawInv).isRunning()) {
             return null;
         }
 
@@ -57,7 +57,7 @@ public class ContainerInfusionClaw extends Container {
                     return null;
                 }
             } else {
-                if(!((Slot)inventorySlots.get(0)).isItemValid(itemstack1)) {
+                if(!((Slot) this.inventorySlots.get(0)).isItemValid(itemstack1)) {
                     return null;
                 }
 
@@ -77,7 +77,7 @@ public class ContainerInfusionClaw extends Container {
 
     @Override
     public boolean enchantItem(EntityPlayer player, int value) {
-        ((TileInfusionClaw)clawInv).setIsLocked(value == 1);
+        ((TileInfusionClaw) this.clawInv).setIsLocked(value == 1);
         return false;
     }
 
@@ -103,6 +103,6 @@ public class ContainerInfusionClaw extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
-        return clawInv.isUseableByPlayer(player);
+        return this.clawInv.isUseableByPlayer(player);
     }
 }

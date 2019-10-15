@@ -20,7 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ItemInWorldManager;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.IPlayerFileData;
@@ -47,7 +46,7 @@ import java.util.UUID;
  *
  * Created by makeo @ 05.10.2015 22:32
  */
-public class TileInfusionClaw extends SynchronizedTileEntity implements IInventory, ISidedInventory {
+public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedInventory {
     private static final UUID FAKE_UUID = UUID.fromString("b23c8c3f-d7bd-49b3-970a-8e86728bab82");
     private static final Random RANDOM = new Random();
 
@@ -55,14 +54,14 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements IInvento
     private static final ItemFocusPrimal WAND_FOCUS = (ItemFocusPrimal) ConfigItems.itemFocusPrimal;
     private static final AspectList MAX_WAND_COST = new AspectList().add(Aspect.WATER, 250).add(Aspect.AIR, 250).add(Aspect.EARTH, 250).add(Aspect.FIRE, 250).add(Aspect.ORDER, 250).add(Aspect.ENTROPY, 250);
 
-    private ItemInWorldManager im = null;
-    private Boolean redstoneState = null;
+    private ItemInWorldManager im;
+    private Boolean redstoneState;
 
-    private int count = 0;
+    private int count;
 
-    private String player = null;
-    private ItemStack wandStack = null;
-    private boolean isLocked = false;
+    private String player;
+    private ItemStack wandStack;
+    private boolean isLocked;
 
     private int cooldown;
 
@@ -82,88 +81,88 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements IInvento
 
     public TileInfusionClaw() {
         if(Gadomancy.proxy.getSide() == Side.CLIENT) {
-            animationStates = new float[12];
+            this.animationStates = new float[12];
             EntityLivingBase entity = Minecraft.getMinecraft().renderViewEntity;
-            lastRenderTick = entity == null ? 0 : entity.ticksExisted;
+            this.lastRenderTick = entity == null ? 0 : entity.ticksExisted;
         }
     }
 
     @Override
     public void updateEntity() {
-        World world = getWorldObj();
+        World world = this.getWorldObj();
 
         if(!world.isRemote) {
-            if(redstoneState == null) {
-                redstoneState = world.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+            if(this.redstoneState == null) {
+                this.redstoneState = world.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
             }
 
-            if(cooldown > 0) {
-                cooldown--;
-                if(cooldown == (int)(7.5f*20)) {
-                    performClickBlock();
+            if(this.cooldown > 0) {
+                this.cooldown--;
+                if(this.cooldown == (int)(7.5f*20)) {
+                    this.performClickBlock();
                 }
             }
 
-            if(count > 20) {
-                count = 0;
-                if(yCoord > 0) {
+            if(this.count > 20) {
+                this.count = 0;
+                if(this.yCoord > 0) {
                     //Comparator...
-                    world.notifyBlockChange(xCoord, yCoord, zCoord, getBlockType());
+                    world.notifyBlockChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
                 }
             }
-            count++;
+            this.count++;
         }
     }
 
     @Override
     public void readCustomNBT(NBTTagCompound compound) {
         if(compound.hasKey("player")) {
-            player = compound.getString("player");
+            this.player = compound.getString("player");
         }
-        wandStack = NBTHelper.getStack(compound, "wandStack");
-        isLocked = compound.getBoolean("isLocked");
+        this.wandStack = NBTHelper.getStack(compound, "wandStack");
+        this.isLocked = compound.getBoolean("isLocked");
     }
 
     @Override
     public void writeCustomNBT(NBTTagCompound compound) {
-        if(hasOwner()) {
-            compound.setString("player", player);
+        if(this.hasOwner()) {
+            compound.setString("player", this.player);
         }
-        if(wandStack != null) {
-            NBTHelper.setStack(compound, "wandStack", wandStack);
+        if(this.wandStack != null) {
+            NBTHelper.setStack(compound, "wandStack", this.wandStack);
         }
-        compound.setBoolean("isLocked", isLocked);
+        compound.setBoolean("isLocked", this.isLocked);
     }
 
     private void markForUpdate() {
-        markDirty();
-        getWorldObj().markBlockForUpdate(xCoord, yCoord, zCoord);
+        this.markDirty();
+        this.getWorldObj().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
     }
 
     public void updateRedstone(boolean state) {
-        if(redstoneState != null && state && !redstoneState) {
-            startClickBlock();
+        if(this.redstoneState != null && state && !this.redstoneState) {
+            this.startClickBlock();
         }
-        redstoneState = state;
+        this.redstoneState = state;
     }
 
     public boolean isLocked() {
-        return isLocked;
+        return this.isLocked;
     }
 
     public void setIsLocked(boolean isLocked) {
         this.isLocked = isLocked;
-        if(!getWorldObj().isRemote) {
-            markForUpdate();
+        if(!this.getWorldObj().isRemote) {
+            this.markForUpdate();
         }
     }
 
     public boolean setOwner(EntityPlayer player) {
-        World world = getWorldObj();
-        if(!world.isRemote && isValidOwner(player)) {
+        World world = this.getWorldObj();
+        if(!world.isRemote && this.isValidOwner(player)) {
             this.player = player.getCommandSenderName();
 
-            markForUpdate();
+            this.markForUpdate();
 
             return true;
         }
@@ -174,67 +173,67 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements IInvento
         return !AdvancedFakePlayer.isFakePlayer(player);
     }
 
-    private ArrayList<String> research = null;
+    private ArrayList<String> research;
 
     private void loadResearch(EntityPlayer fakePlayer) {
         boolean online = false;
         for(String username : MinecraftServer.getServer().getAllUsernames()) {
-            if(username.equals(player)) {
+            if(username.equals(this.player)) {
                 online = true;
                 break;
             }
         }
 
         if(online) {
-            this.research = ResearchManager.getResearchForPlayer(player);
+            this.research = ResearchManager.getResearchForPlayer(this.player);
         } else {
-            if(research == null) {
+            if(this.research == null) {
                 Thaumcraft.proxy.getCompletedResearch().put(fakePlayer.getCommandSenderName(), new ArrayList<String>());
 
                 IPlayerFileData playerNBTManagerObj = MinecraftServer.getServer().worldServerForDimension(0).getSaveHandler().getSaveHandler();
                 SaveHandler sh = (SaveHandler)playerNBTManagerObj;
                 File dir = ObfuscationReflectionHelper.getPrivateValue(SaveHandler.class, sh, "playersDirectory", "field_75771_c");
-                File file1 = new File(dir, player + ".thaum");
-                File file2 = new File(dir, player + ".thaumbak");
+                File file1 = new File(dir, this.player + ".thaum");
+                File file2 = new File(dir, this.player + ".thaumbak");
                 ResearchManager.loadPlayerData(fakePlayer, file1, file2, false);
 
                 this.research = ResearchManager.getResearchForPlayerSafe(fakePlayer.getCommandSenderName());
             }
         }
 
-        Thaumcraft.proxy.getCompletedResearch().put(fakePlayer.getCommandSenderName(), research == null ? new ArrayList<String>() : research);
+        Thaumcraft.proxy.getCompletedResearch().put(fakePlayer.getCommandSenderName(), this.research == null ? new ArrayList<String>() : this.research);
     }
 
     public String getOwner() {
-        return player;
+        return this.player;
     }
 
     public boolean hasOwner() {
-        return player != null;
+        return this.player != null;
     }
 
     private void startClickBlock() {
-        if(!isRunning()) {
-            ClickBehavior behavior = getClickBehavior(getWorldObj(), xCoord, yCoord-1, zCoord);
-            if(behavior != null && (!behavior.hasVisCost() || hasSufficientVis())) {
-                startRunning();
+        if(!this.isRunning()) {
+            ClickBehavior behavior = this.getClickBehavior(this.getWorldObj(), this.xCoord, this.yCoord -1, this.zCoord);
+            if(behavior != null && (!behavior.hasVisCost() || this.hasSufficientVis())) {
+                this.startRunning();
             }
         }
     }
 
     @SuppressWarnings("unused")
 	private void performClickBlock() {
-        World world = getWorldObj();
-        int x = xCoord;
-        int y = yCoord - 1;
-        int z = zCoord;
+        World world = this.getWorldObj();
+        int x = this.xCoord;
+        int y = this.yCoord - 1;
+        int z = this.zCoord;
 
-        ClickBehavior behavior = getClickBehavior(world, x, y, z);
+        ClickBehavior behavior = this.getClickBehavior(world, x, y, z);
         if(behavior != null) {
             
             if (world == null){
                 try { 
-                    world = getWorldObj();
+                    world = this.getWorldObj();
                 }
                 catch(NullPointerException e){
                     makeo.gadomancy.common.Gadomancy.log.error("fatal error, world == null! at InfusionClaw");
@@ -242,21 +241,21 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements IInvento
                 }
             }
             
-            AdvancedFakePlayer fakePlayer = new AdvancedFakePlayer((WorldServer) world, FAKE_UUID);
-            loadResearch(fakePlayer);
+            AdvancedFakePlayer fakePlayer = new AdvancedFakePlayer((WorldServer) world, TileInfusionClaw.FAKE_UUID);
+            this.loadResearch(fakePlayer);
 
             if(behavior.hasVisCost()) {
-                if(hasSufficientVis()) {
-                    consumeVis(fakePlayer);
+                if(this.hasSufficientVis()) {
+                    this.consumeVis(fakePlayer);
                 } else {
                     return;
                 }
             }
 
-            if(im == null) {
-                im = new ItemInWorldManager(world);
+            if(this.im == null) {
+                this.im = new ItemInWorldManager(world);
             } else {
-                im.setWorld((WorldServer) world);
+                this.im.setWorld((WorldServer) world);
             }
 
             if(fakePlayer == null){
@@ -264,57 +263,57 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements IInvento
                 return;
             }
             
-            fakePlayer.setHeldItem(wandStack);
-            this.im.activateBlockOrUseItem(fakePlayer, world, wandStack, x, y, z, ForgeDirection.UP.ordinal(), 0.5F, 0.5F, 0.5F);
-            addInstability(behavior);
+            fakePlayer.setHeldItem(this.wandStack);
+            this.im.activateBlockOrUseItem(fakePlayer, world, this.wandStack, x, y, z, ForgeDirection.UP.ordinal(), 0.5F, 0.5F, 0.5F);
+            this.addInstability(behavior);
         }
     }
 
     private ClickBehavior getClickBehavior(World world, int x, int y, int z) {
-        if(y >= 0 && !world.isRemote && world instanceof WorldServer && hasOwner()
-                && !world.isAirBlock(x, y, z) && wandStack != null && wandStack.stackSize > 0) {
+        if(y >= 0 && !world.isRemote && world instanceof WorldServer && this.hasOwner()
+                && !world.isAirBlock(x, y, z) && this.wandStack != null && this.wandStack.stackSize > 0) {
             return RegisteredBlocks.getClawClickBehavior(world, x, y, z);
         }
         return null;
     }
 
     public boolean isRunning() {
-        if(getWorldObj().isRemote) {
-            return animationStates[8] + animationStates[9] + animationStates[11] != 0;
+        if(this.getWorldObj().isRemote) {
+            return this.animationStates[8] + this.animationStates[9] + this.animationStates[11] != 0;
         }
-        return cooldown > 0;
+        return this.cooldown > 0;
     }
 
     private void startRunning() {
-        PacketHandler.INSTANCE.sendToAllAround(new PacketStartAnimation(PacketStartAnimation.ID_INFUSIONCLAW, xCoord, yCoord, zCoord),
-                new NetworkRegistry.TargetPoint(getWorldObj().provider.dimensionId, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 48));
-        cooldown = 22*20;
+        PacketHandler.INSTANCE.sendToAllAround(new PacketStartAnimation(PacketStartAnimation.ID_INFUSIONCLAW, this.xCoord, this.yCoord, this.zCoord),
+                new NetworkRegistry.TargetPoint(this.getWorldObj().provider.dimensionId, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, 48));
+        this.cooldown = 22*20;
     }
 
     private void addInstability(ClickBehavior behavior) {
         int instability = 23;
-        int maxVis = WAND_ITEM.getMaxVis(wandStack);
+        int maxVis = TileInfusionClaw.WAND_ITEM.getMaxVis(this.wandStack);
 
         instability += maxVis < 100 ? 3 : -2;
 
         instability -= Math.floor((maxVis > 300 ? 300 : maxVis) / 300f * 10f);
-        instability -= WAND_ITEM.isStaff(wandStack) ? 6 : -1;
+        instability -= TileInfusionClaw.WAND_ITEM.isStaff(this.wandStack) ? 6 : -1;
 
-        instability += Math.floor((WAND_ITEM.getCap(wandStack).getBaseCostModifier() - 0.4) * 3);
+        instability += Math.floor((TileInfusionClaw.WAND_ITEM.getCap(this.wandStack).getBaseCostModifier() - 0.4) * 3);
 
-        instability -= WAND_ITEM.getCap(wandStack) == ConfigItems.WAND_CAP_VOID ? 3 : 0;
-        instability -= WAND_ITEM.getRod(wandStack) == ConfigItems.STAFF_ROD_PRIMAL ? 6 : 0;
+        instability -= TileInfusionClaw.WAND_ITEM.getCap(this.wandStack) == ConfigItems.WAND_CAP_VOID ? 3 : 0;
+        instability -= TileInfusionClaw.WAND_ITEM.getRod(this.wandStack) == ConfigItems.STAFF_ROD_PRIMAL ? 6 : 0;
 
         behavior.addInstability(instability);
     }
 
     private boolean hasSufficientVis() {
-        return wandStack != null && wandStack.stackSize > 0 && WAND_ITEM.consumeAllVis(wandStack, null, MAX_WAND_COST, false, false);
+        return this.wandStack != null && this.wandStack.stackSize > 0 && TileInfusionClaw.WAND_ITEM.consumeAllVis(this.wandStack, null, TileInfusionClaw.MAX_WAND_COST, false, false);
     }
 
     private void consumeVis(EntityPlayer player) {
-        WAND_ITEM.consumeAllVis(wandStack, player, WAND_FOCUS.getVisCost(wandStack), true, false);
-        markForUpdate();
+        TileInfusionClaw.WAND_ITEM.consumeAllVis(this.wandStack, player, TileInfusionClaw.WAND_FOCUS.getVisCost(this.wandStack), true, false);
+        this.markForUpdate();
     }
 
     @Override
@@ -324,19 +323,19 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements IInvento
 
     @Override
     public ItemStack getStackInSlot(int slot) {
-        return wandStack;
+        return this.wandStack;
     }
 
     @Override
     public ItemStack decrStackSize(int slot, int amount) {
-        if(isRunning()) {
+        if(this.isRunning()) {
             return null;
         }
 
         if(amount > 0) {
-            ItemStack result = wandStack.copy();
-            wandStack = null;
-            markForUpdate();
+            ItemStack result = this.wandStack.copy();
+            this.wandStack = null;
+            this.markForUpdate();
             return result;
         }
         return null;
@@ -349,8 +348,8 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements IInvento
 
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack) {
-        wandStack = stack;
-        markForUpdate();
+        this.wandStack = stack;
+        this.markForUpdate();
     }
 
     @Override
@@ -385,12 +384,12 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements IInvento
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        if(isRunning()) {
+        if(this.isRunning()) {
             return false;
         }
 
-        if(stack.getItem() == WAND_ITEM) {
-            return !WAND_ITEM.isSceptre(stack) && WAND_ITEM.getFocus(stack) == null;
+        if(stack.getItem() == TileInfusionClaw.WAND_ITEM) {
+            return !TileInfusionClaw.WAND_ITEM.isSceptre(stack) && TileInfusionClaw.WAND_ITEM.getFocus(stack) == null;
         }
         return false;
     }
@@ -402,11 +401,11 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements IInvento
 
     @Override
     public boolean canInsertItem(int slot, ItemStack stack, int side) {
-        return !isRunning() && side > 0 && side < 6;
+        return !this.isRunning() && side > 0 && side < 6;
     }
 
     @Override
     public boolean canExtractItem(int slot, ItemStack stack, int side) {
-        return (!isLocked() || !hasSufficientVis()) && canInsertItem(slot, stack, side);
+        return (!this.isLocked() || !this.hasSufficientVis()) && this.canInsertItem(slot, stack, side);
     }
 }

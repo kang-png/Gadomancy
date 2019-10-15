@@ -5,11 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.profiler.Profiler;
-import net.minecraft.world.EnumDifficulty;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.MinecraftException;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
+import net.minecraft.world.*;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.storage.IPlayerFileData;
@@ -30,13 +26,13 @@ public class FakeWorld extends World {
 
     public FakeWorld(WorldProvider provider) {
         super(FakeSaveHandler.instance, "", null, provider, new Profiler());
-        theProfiler.profilingEnabled = false;
-        difficultySetting = EnumDifficulty.NORMAL;
+        this.theProfiler.profilingEnabled = false;
+        this.difficultySetting = EnumDifficulty.NORMAL;
     }
 
     public FakeWorld() {
         super(FakeSaveHandler.instance, "", null, FakeWorldProvider.instance, null);
-        difficultySetting = EnumDifficulty.NORMAL;
+        this.difficultySetting = EnumDifficulty.NORMAL;
     }
 
     @Override

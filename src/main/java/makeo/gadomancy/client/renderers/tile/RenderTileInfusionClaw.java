@@ -43,19 +43,19 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
 
     static {
         MODELS = new ModelInfusionClawPart[8];
-        for (int i = 0; i < MODELS.length; i++) {
-            MODELS[i] = new ModelInfusionClawPart(i);
+        for (int i = 0; i < RenderTileInfusionClaw.MODELS.length; i++) {
+            RenderTileInfusionClaw.MODELS[i] = new ModelInfusionClawPart(i);
         }
 
-        new Injector(WAND_RENDERER).setField("model", new ModelWandPart(7, 4));
-        new Injector(STAFF_RENDERER).setField("model", new ModelWandPart(7, 4));
+        new Injector(RenderTileInfusionClaw.WAND_RENDERER).setField("model", new ModelWandPart(7, 4));
+        new Injector(RenderTileInfusionClaw.STAFF_RENDERER).setField("model", new ModelWandPart(7, 4));
 
-        RENDER_PRIMAL_ORB.setRenderManager(RenderManager.instance);
+        RenderTileInfusionClaw.RENDER_PRIMAL_ORB.setRenderManager(RenderManager.instance);
     }
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
-        render((TileInfusionClaw) tile, x, y, z, partialTicks);
+        this.render((TileInfusionClaw) tile, x, y, z, partialTicks);
     }
 
     private void render(TileInfusionClaw tile, double x, double y, double z, float partialTicks) {
@@ -66,9 +66,9 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
         GL11.glPushMatrix();
 
         GL11.glTranslated(x, y, z);
-        renderPart(tile, elapsed, ticks);
+        this.renderPart(tile, elapsed, ticks);
 
-        renderPrimalOrb(tile, elapsed);
+        this.renderPrimalOrb(tile, elapsed);
 
         GL11.glPopMatrix();
     }
@@ -78,13 +78,13 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
         GL11.glTranslatef(0.5f, 0.5f, 0.5f);
 
         World world = tile.getWorldObj();
-        bindTexture(RESOURCE);
+        this.bindTexture(RenderTileInfusionClaw.RESOURCE);
 
-        renderSides(tile, world, tile.xCoord, tile.yCoord, tile.zCoord, elapsed);
+        this.renderSides(tile, world, tile.xCoord, tile.yCoord, tile.zCoord, elapsed);
 
-        renderCircle(tile, elapsed);
+        this.renderCircle(tile, elapsed);
 
-        renderWand(tile.getStackInSlot(0), ticks);
+        this.renderWand(tile.getStackInSlot(0), ticks);
 
         GL11.glPopMatrix();
     }
@@ -132,7 +132,7 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
             GL11.glRotated(45, Math.cos(angle), 0, -Math.sin(angle));
             GL11.glScalef(0.75f, 0.75f, 0.75f);
 
-            renderPart(i);
+            this.renderPart(i);
 
             GL11.glPopMatrix();
         }
@@ -142,7 +142,7 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
     private void renderWand(ItemStack wandStack, float ticks) {
         GL11.glRotatef(((ticks/3) / 20.0F) * (180F / (float)Math.PI), 0, 1f, 0);
 
-        renderTopPart();
+        this.renderTopPart();
 
         if (wandStack != null && wandStack.stackSize > 0) {
             GL11.glPushMatrix();
@@ -159,9 +159,9 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
             if(item.isStaff(wandFocusStack)) {
                 GL11.glTranslatef(0, -0.5f, 0);
 
-                STAFF_RENDERER.renderItem(IItemRenderer.ItemRenderType.ENTITY, wandFocusStack);
+                RenderTileInfusionClaw.STAFF_RENDERER.renderItem(IItemRenderer.ItemRenderType.ENTITY, wandFocusStack);
             } else {
-                WAND_RENDERER.renderItem(IItemRenderer.ItemRenderType.ENTITY, wandFocusStack);
+                RenderTileInfusionClaw.WAND_RENDERER.renderItem(IItemRenderer.ItemRenderType.ENTITY, wandFocusStack);
             }
             GL11.glPopMatrix();
         }
@@ -172,7 +172,7 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
         GL11.glTranslatef(0, (0.5f - (1f / 16f * 0.75f)), 0);
         GL11.glScalef(0.75f, 0.75f, 0.75f);
 
-        renderPart(4);
+        this.renderPart(4);
 
         GL11.glPopMatrix();
     }
@@ -189,7 +189,7 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
             EntityPrimalOrb orb = new EntityPrimalOrb(tile.getWorldObj(), Minecraft.getMinecraft().thePlayer, true);
             orb.ticksExisted = Minecraft.getMinecraft().renderViewEntity.ticksExisted;
 
-            RENDER_PRIMAL_ORB.renderEntityAt(orb, 0, 0, 0, 0, 0);
+            RenderTileInfusionClaw.RENDER_PRIMAL_ORB.renderEntityAt(orb, 0, 0, 0, 0, 0);
 
             GL11.glPopMatrix();
 
@@ -202,8 +202,8 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
     private void createSideZap(TileInfusionClaw tile) {
         for(int i = 2; i < 6; i++) {
             ForgeDirection dir = ForgeDirection.getOrientation(i);
-            createZap(tile, 0.5f + 0.5f*(float)dir.offsetX, 0.6f, 0.5f + 0.5f*(float)dir.offsetZ, 0.5f + dir.offsetX*0.2f, 0.2f, 0.5f + dir.offsetZ*0.2f);
-            playZapSound(tile.xCoord, tile.yCoord, tile.zCoord);
+            this.createZap(tile, 0.5f + 0.5f*(float)dir.offsetX, 0.6f, 0.5f + 0.5f*(float)dir.offsetZ, 0.5f + dir.offsetX*0.2f, 0.2f, 0.5f + dir.offsetZ*0.2f);
+            this.playZapSound(tile.xCoord, tile.yCoord, tile.zCoord);
         }
     }
 
@@ -227,7 +227,7 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
                 tile.animationStates[8] = -tile.animationStates[8];
                 tile.animationStates[9] = 1;
 
-                createSideZap(tile);
+                this.createSideZap(tile);
             }
         } else if (tile.animationStates[8] < 0) {
             tile.animationStates[8] += elapsed * 0.5;
@@ -238,8 +238,8 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
         }
 
         for (int i = 0; i < 4; i++) {
-            float heightMove = getNextMoveOffset(tile, i, speed, elapsed);
-            float widthMove = getNextMoveOffset(tile, i + 4, speed, elapsed);
+            float heightMove = this.getNextMoveOffset(tile, i, speed, elapsed);
+            float widthMove = this.getNextMoveOffset(tile, i + 4, speed, elapsed);
 
             ForgeDirection dir = ForgeDirection.getOrientation(i + 2);
             boolean powered = world != null && world.getIndirectPowerLevelTo(x + dir.offsetX, y, z + dir.offsetZ, dir.ordinal()) > 0;
@@ -252,7 +252,7 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
 
             GL11.glScalef(0.75f, 0.75f, 0.75f);
 
-            renderRedstonePart(powered);
+            this.renderRedstonePart(powered);
 
             GL11.glPopMatrix();
         }
@@ -260,15 +260,15 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
     }
 
     private float getNextMoveOffset(TileInfusionClaw tile, int id, float speed, float elapsed) {
-        tile.animationStates[id] += RANDOM.nextDouble() * 2 * elapsed * speed;
+        tile.animationStates[id] += RenderTileInfusionClaw.RANDOM.nextDouble() * 2 * elapsed * speed;
         return (float) ((1d / 16d) * Math.sin(tile.animationStates[id] / 30));
     }
 
     private void renderRedstonePart(boolean powered) {
-        renderPart(powered ? 6 : 5);
+        this.renderPart(powered ? 6 : 5);
     }
 
     private void renderPart(int num) {
-        MODELS[num].render(null, 0f, 0f, 0f, 0f, 0f, 0.0625f);
+        RenderTileInfusionClaw.MODELS[num].render(null, 0f, 0f, 0f, 0f, 0f, 0.0625f);
     }
 }

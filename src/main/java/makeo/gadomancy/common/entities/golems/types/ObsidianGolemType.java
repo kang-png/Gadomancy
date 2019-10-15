@@ -29,12 +29,12 @@ public class ObsidianGolemType extends AdditionalGolemType {
     private IIcon icon;
     @Override
     public void registerIcons(IIconRegister ir) {
-        icon = ir.registerIcon(Gadomancy.MODID + ":golem_obsidian");
+        this.icon = ir.registerIcon(Gadomancy.MODID + ":golem_obsidian");
     }
 
     @Override
     public IIcon getIcon(ItemStack stack, int pass) {
-        return icon;
+        return this.icon;
     }
 
     @Override

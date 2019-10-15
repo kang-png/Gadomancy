@@ -20,7 +20,7 @@ import thaumcraft.common.entities.golems.EntityGolemBase;
  * Created by makeo @ 12.03.2015 15:57
  */
 public class RenderAdditionalGolemBase extends RenderGolemBase {
-    private ItemStack toolItem = null;
+    private ItemStack toolItem;
 
     public RenderAdditionalGolemBase() {
         super(new ModelGolem(false));
@@ -44,8 +44,8 @@ public class RenderAdditionalGolemBase extends RenderGolemBase {
         if (RenderGolemHelper.requiresRenderFix((EntityGolemBase) entity)) {
             RenderGolemHelper.renderCarriedItemsFix(golem);
 
-            if(toolItem != null) {
-                RenderGolemHelper.renderToolItem(golem, toolItem, mainModel, renderManager);
+            if(this.toolItem != null) {
+                RenderGolemHelper.renderToolItem(golem, this.toolItem, this.mainModel, this.renderManager);
             }
         }
 
@@ -60,8 +60,8 @@ public class RenderAdditionalGolemBase extends RenderGolemBase {
     @Override
     protected void renderCarriedItems(EntityGolemBase golem, float par2) {
         if (!RenderGolemHelper.requiresRenderFix(golem)) {
-            if(toolItem != null) {
-                RenderGolemHelper.renderToolItem(golem, toolItem, mainModel, renderManager);
+            if(this.toolItem != null) {
+                RenderGolemHelper.renderToolItem(golem, this.toolItem, this.mainModel, this.renderManager);
             }
             super.renderCarriedItems(golem, par2);
         }
@@ -72,7 +72,7 @@ public class RenderAdditionalGolemBase extends RenderGolemBase {
         AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(golem);
         ItemStack carriedItem = null;
         if(core != null) {
-            toolItem = core.getToolItem(golem);
+            this.toolItem = core.getToolItem(golem);
 
             carriedItem = golem.getCarriedForDisplay();
             golem.getDataWatcher().getWatchedObject(16).setObject(null);
@@ -82,7 +82,7 @@ public class RenderAdditionalGolemBase extends RenderGolemBase {
 
         if(carriedItem != null) {
             golem.getDataWatcher().getWatchedObject(16).setObject(carriedItem);
-            toolItem = null;
+            this.toolItem = null;
         }
     }
 

@@ -19,7 +19,7 @@ import thaumcraft.common.config.ConfigBlocks;
 public class BlockAdditionalEldritchPortal extends BlockEldritchPortal {
 
     public BlockAdditionalEldritchPortal() {
-        setCreativeTab(RegisteredItems.creativeTab);
+        this.setCreativeTab(RegisteredItems.creativeTab);
     }
 
     @Override

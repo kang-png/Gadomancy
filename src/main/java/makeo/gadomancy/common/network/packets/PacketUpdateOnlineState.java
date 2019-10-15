@@ -26,12 +26,12 @@ public class PacketUpdateOnlineState implements IMessage, IMessageHandler<Packet
     
     @Override
     public void fromBytes(ByteBuf buf) {
-        state = buf.readBoolean();
+        this.state = buf.readBoolean();
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        buf.writeBoolean(state);
+        buf.writeBoolean(this.state);
     }
 
     @Override

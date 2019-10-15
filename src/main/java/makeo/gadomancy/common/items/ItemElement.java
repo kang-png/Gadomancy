@@ -6,7 +6,6 @@ import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,16 +24,16 @@ import java.util.List;
 public class ItemElement extends Item {
 
     public ItemElement() {
-        setMaxStackSize(1);
-        setHasSubtypes(true);
-        setUnlocalizedName("ItemElement");
-        setTextureName(Gadomancy.MODID + ":element");
-        setCreativeTab(RegisteredItems.creativeTab);
+        this.setMaxStackSize(1);
+        this.setHasSubtypes(true);
+        this.setUnlocalizedName("ItemElement");
+        this.setTextureName(Gadomancy.MODID + ":element");
+        this.setCreativeTab(RegisteredItems.creativeTab);
     }
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return getUnlocalizedName() + "." + stack.getItemDamage();
+        return this.getUnlocalizedName() + "." + stack.getItemDamage();
     }
 
     @Override
@@ -76,13 +75,13 @@ public class ItemElement extends Item {
         return 0xFFFFFF;
     }
 
-    public static abstract class ElementRunnable {
+    public abstract static class ElementRunnable {
 
         public abstract void affectEntity(EntityLivingBase livingBase);
 
     }
 
-    public static enum EnumElementType {
+    public enum EnumElementType {
 
         DARKNESS(0x000000, new ElementRunnable() {
             @Override
@@ -106,17 +105,17 @@ public class ItemElement extends Item {
         private final int renderColor;
         private final ElementRunnable runnable;
 
-        private EnumElementType(int color, ElementRunnable runnable) {
+        EnumElementType(int color, ElementRunnable runnable) {
             this.renderColor = color;
             this.runnable = runnable;
         }
 
         public ElementRunnable getRunnable() {
-            return runnable;
+            return this.runnable;
         }
 
         public int getRenderColor() {
-            return renderColor;
+            return this.renderColor;
         }
     }
 

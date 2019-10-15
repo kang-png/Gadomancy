@@ -6,7 +6,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 
-import java.awt.Color;
+import java.awt.*;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -33,9 +33,9 @@ public abstract class PotionCustomTexture extends Potion {
     @Override
     public void renderInventoryEffect(int x, int y, PotionEffect effect, Minecraft mc) {
         Tessellator tes = Tessellator.instance;
-        mc.renderEngine.bindTexture(texture);
+        mc.renderEngine.bindTexture(this.texture);
         tes.startDrawingQuads();
-        Color c = new Color(getLiquidColor());
+        Color c = new Color(this.getLiquidColor());
         tes.setColorRGBA(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
         tes.addVertexWithUV(x + 6, y + 7, 0, 0, 0);
         tes.addVertexWithUV(x + 6,      y + 7 + 18, 0, 0, 1);

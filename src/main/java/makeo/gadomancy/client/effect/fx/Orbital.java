@@ -24,8 +24,8 @@ public final class Orbital {
 
     private Vector3 center;
     private final World world;
-    private int orbitalCounter = 0;
-    public boolean registered = false;
+    private int orbitalCounter;
+    public boolean registered;
     //INFO: Needs to be updated when its "owner" gets rendered.
     public long lastRenderCall = System.currentTimeMillis();
 
@@ -41,48 +41,48 @@ public final class Orbital {
     }
 
     public void addOrbitalPoint(OrbitalRenderProperties properties) {
-        if(!orbitals.contains(properties)) {
-            orbitals.add(properties);
+        if(!this.orbitals.contains(properties)) {
+            this.orbitals.add(properties);
         }
     }
 
     public int orbitalsSize() {
-        return orbitals.size();
+        return this.orbitals.size();
     }
 
     public void clearOrbitals() {
-        orbitals.clear();
+        this.orbitals.clear();
     }
 
     public void doRender(float partialTicks) {
-        if(MiscUtils.getPositionVector(Minecraft.getMinecraft().renderViewEntity).distance(center) > ModConfig.renderParticleDistance) return;
+        if(MiscUtils.getPositionVector(Minecraft.getMinecraft().renderViewEntity).distance(this.center) > ModConfig.renderParticleDistance) return;
         if(Minecraft.getMinecraft().isGamePaused()) return;
 
-        for(OrbitalRenderProperties orbitalNode : orbitals) {
+        for(OrbitalRenderProperties orbitalNode : this.orbitals) {
             Axis axis = orbitalNode.getAxis();
             int counterOffset = orbitalNode.getOffsetTicks() % orbitalNode.getTicksForFullCircle();
 
-            int currentDividedPolicyTick = (orbitalCounter + counterOffset) % orbitalNode.getTicksForFullCircle();
+            int currentDividedPolicyTick = (this.orbitalCounter + counterOffset) % orbitalNode.getTicksForFullCircle();
             float currentDegree = 360F * (((float) currentDividedPolicyTick) / ((float) orbitalNode.getTicksForFullCircle()));
             double currentRad = Math.toRadians(currentDegree);
 
-            Vector3 point = axis.getAxis().clone().perpendicular().normalize().multiply(orbitalNode.getOffset()).rotate(currentRad, axis.getAxis()).add(center);
+            Vector3 point = axis.getAxis().clone().perpendicular().normalize().multiply(orbitalNode.getOffset()).rotate(currentRad, axis.getAxis()).add(this.center);
 
             if(orbitalNode.getRunnable() != null) {
-                orbitalNode.getRunnable().onRender(world, point, orbitalNode, orbitalCounter, partialTicks);
+                orbitalNode.getRunnable().onRender(this.world, point, orbitalNode, this.orbitalCounter, partialTicks);
             }
 
             if(orbitalNode.getParticleSize() <= 0) continue;
 
-            FXFlow.FXFlowBase flow = new FXFlow.FXFlowBase(world, point.getX(), point.getY(), point.getZ(),
+            FXFlow.FXFlowBase flow = new FXFlow.FXFlowBase(this.world, point.getX(), point.getY(), point.getZ(),
                     orbitalNode.getColor(), orbitalNode.getParticleSize(), orbitalNode.getMultiplier(), orbitalNode.getBrightness());
 
-            if(orbitalNode.getSubParticleColor() != null && world.rand.nextInt(3) == 0) {
-                Vector3 subOffset = genSubOffset(world.rand, 0.8F);
-                Color c = (world.rand.nextBoolean()) ? orbitalNode.getSubParticleColor() : orbitalNode.getColor();
-                FXFlow.FXFlowBase flow2 = new FXFlow.FXFlowBase(world,
+            if(orbitalNode.getSubParticleColor() != null && this.world.rand.nextInt(3) == 0) {
+                Vector3 subOffset = this.genSubOffset(this.world.rand, 0.8F);
+                Color c = (this.world.rand.nextBoolean()) ? orbitalNode.getSubParticleColor() : orbitalNode.getColor();
+                FXFlow.FXFlowBase flow2 = new FXFlow.FXFlowBase(this.world,
                         point.getX() + subOffset.getX(), point.getY() + subOffset.getY(), point.getZ() + subOffset.getZ(),
-                        c, orbitalNode.getSubSizeRunnable().getSubParticleSize(world.rand, orbitalCounter), 6, 240);
+                        c, orbitalNode.getSubSizeRunnable().getSubParticleSize(this.world.rand, this.orbitalCounter), 6, 240);
 
                 Minecraft.getMinecraft().effectRenderer.addEffect(flow2);
             }
@@ -99,7 +99,7 @@ public final class Orbital {
     }
 
     public void reduceAllOffsets(float percent) {
-        for(OrbitalRenderProperties node : orbitals) {
+        for(OrbitalRenderProperties node : this.orbitals) {
             node.reduceOffset(percent);
         }
     }
@@ -116,11 +116,11 @@ public final class Orbital {
             Axis axis = property.getAxis();
             int counterOffset = property.getOffsetTicks() % property.getTicksForFullCircle();
 
-            int currentDividedPolicyTick = (orbitalCounter + counterOffset) % property.getTicksForFullCircle();
+            int currentDividedPolicyTick = (this.orbitalCounter + counterOffset) % property.getTicksForFullCircle();
             float currentDegree = 360F * (((float) currentDividedPolicyTick) / ((float) property.getTicksForFullCircle()));
             double currentRad = Math.toRadians(currentDegree);
 
-            arr[i] = axis.getAxis().clone().perpendicular().normalize().multiply(property.getOffset()).rotate(currentRad, axis.getAxis()).add(center);
+            arr[i] = axis.getAxis().clone().perpendicular().normalize().multiply(property.getOffset()).rotate(currentRad, axis.getAxis()).add(this.center);
         }
         return arr;
     }
@@ -155,19 +155,19 @@ public final class Orbital {
         private double originalOffset, offset;
         private Color color = Color.WHITE;
         private int ticksForFullCircle = 40;
-        private OrbitalRenderRunnable runnable = null;
+        private OrbitalRenderRunnable runnable;
         private int multiplier = 8;
         private int brightness = 240;
         private float particleSize = 0.2F;
-        private int offsetTicks = 0;
+        private int offsetTicks;
 
-        private Color subParticleColor = null;
+        private Color subParticleColor;
         private OrbitalSubSizeRunnable subSizeRunnable;
 
         public OrbitalRenderProperties(Axis axis, double offsetLength) {
             this.offset = this.originalOffset = offsetLength;
             this.axis = axis;
-            this.subSizeRunnable = subSizeRunnableStatic;
+            this.subSizeRunnable = OrbitalRenderProperties.subSizeRunnableStatic;
         }
 
         public OrbitalRenderProperties setColor(Color color) {
@@ -222,55 +222,55 @@ public final class Orbital {
         }
 
         public float getParticleSize() {
-            return particleSize;
+            return this.particleSize;
         }
 
         public Color getColor() {
-            return color;
+            return this.color;
         }
 
         public Axis getAxis() {
-            return axis;
+            return this.axis;
         }
 
         public double getOffset() {
-            return offset;
+            return this.offset;
         }
 
         public Color getSubParticleColor() {
-            return subParticleColor;
+            return this.subParticleColor;
         }
 
         public int getTicksForFullCircle() {
-            return ticksForFullCircle;
+            return this.ticksForFullCircle;
         }
 
         public OrbitalRenderRunnable getRunnable() {
-            return runnable;
+            return this.runnable;
         }
 
         public OrbitalSubSizeRunnable getSubSizeRunnable() {
-            return subSizeRunnable;
+            return this.subSizeRunnable;
         }
 
         public int getMultiplier() {
-            return multiplier;
+            return this.multiplier;
         }
 
         public int getBrightness() {
-            return brightness;
+            return this.brightness;
         }
 
         public int getOffsetTicks() {
-            return offsetTicks;
+            return this.offsetTicks;
         }
     }
 
-    public static abstract class OrbitalSubSizeRunnable {
+    public abstract static class OrbitalSubSizeRunnable {
         public abstract float getSubParticleSize(Random rand, int orbitalExisted);
     }
 
-    public static abstract class OrbitalRenderRunnable {
+    public abstract static class OrbitalRenderRunnable {
         public abstract void onRender(World world, Vector3 selectedPosition, OrbitalRenderProperties properties, int orbitalExisted, float partialTicks);
     }
 
@@ -295,7 +295,7 @@ public final class Orbital {
         }
 
         public Vector3 getAxis() {
-            return axis.clone();
+            return this.axis.clone();
         }
     }
 

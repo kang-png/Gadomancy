@@ -40,9 +40,9 @@ import java.util.List;
 public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem {
 
     public ItemExtendedNodeJar() {
-        setMaxDamage(0);
-        setMaxStackSize(1);
-        setUnlocalizedName("BlockJarNodeItem");
+        this.setMaxDamage(0);
+        this.setMaxStackSize(1);
+        this.setUnlocalizedName("BlockJarNodeItem");
     }
 
     @Override
@@ -65,15 +65,15 @@ public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem 
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
-        String desc = "§9" + StatCollector.translateToLocal("nodetype." + getNodeType(stack) + ".name");
-        if(getExtendedNodeType(stack) != null) {
-            desc = desc + ", " + StatCollector.translateToLocal("gadomancy.nodes." + getExtendedNodeType(stack));
+        String desc = "§9" + StatCollector.translateToLocal("nodetype." + this.getNodeType(stack) + ".name");
+        if(this.getExtendedNodeType(stack) != null) {
+            desc = desc + ", " + StatCollector.translateToLocal("gadomancy.nodes." + this.getExtendedNodeType(stack));
         }
-        if (getNodeModifier(stack) != null) {
-            desc = desc + ", " + StatCollector.translateToLocal("nodemod." + getNodeModifier(stack) + ".name");
+        if (this.getNodeModifier(stack) != null) {
+            desc = desc + ", " + StatCollector.translateToLocal("nodemod." + this.getNodeModifier(stack) + ".name");
         }
         list.add(desc);
-        AspectList aspects = getAspects(stack);
+        AspectList aspects = this.getAspects(stack);
         if ((aspects != null) && (aspects.size() > 0)) {
             for (Aspect tag : aspects.getAspectsSorted()) {
                 if (Thaumcraft.proxy.playerKnowledge.hasDiscoveredAspect(player.getCommandSenderName(), tag)) {
@@ -123,19 +123,19 @@ public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem 
             Block var12 = RegisteredBlocks.blockExtendedNodeJar;
             int var13 = 2;
             int var14 = RegisteredBlocks.blockExtendedNodeJar.onBlockPlaced(world, x, y, z, side, par8, par9, par10, var13);
-            if (placeBlockAt(stack, player, world, x, y, z, side, par8, par9, par10, var14)) {
+            if (this.placeBlockAt(stack, player, world, x, y, z, side, par8, par9, par10, var14)) {
                 TileEntity te = world.getTileEntity(x, y, z);
 
                 if ((te != null) && ((te instanceof TileExtendedNodeJar))) {
                     if (stack.hasTagCompound()) {
-                        AspectList aspects = getAspects(stack);
+                        AspectList aspects = this.getAspects(stack);
                         if (aspects != null) {
                             ((TileExtendedNodeJar) te).setAspects(aspects);
-                            ((TileExtendedNodeJar) te).setNodeType(getNodeType(stack));
-                            ((TileExtendedNodeJar) te).setNodeModifier(getNodeModifier(stack));
-                            ((TileExtendedNodeJar) te).setExtendedNodeType(getExtendedNodeType(stack));
-                            ((TileExtendedNodeJar) te).setId(getNodeId(stack));
-                            ((TileExtendedNodeJar) te).setBehaviorSnapshot(getBehaviorSnapshot(stack));
+                            ((TileExtendedNodeJar) te).setNodeType(this.getNodeType(stack));
+                            ((TileExtendedNodeJar) te).setNodeModifier(this.getNodeModifier(stack));
+                            ((TileExtendedNodeJar) te).setExtendedNodeType(this.getExtendedNodeType(stack));
+                            ((TileExtendedNodeJar) te).setId(this.getNodeId(stack));
+                            ((TileExtendedNodeJar) te).setBehaviorSnapshot(this.getBehaviorSnapshot(stack));
                         }
                     }
                 }

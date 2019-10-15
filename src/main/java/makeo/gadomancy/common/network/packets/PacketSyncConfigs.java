@@ -27,7 +27,7 @@ public class PacketSyncConfigs implements IMessage, IMessageHandler<PacketSyncCo
     @Override
     public void fromBytes(ByteBuf buf) {
         int count = buf.readByte();
-        fieldData = new Tuple[count];
+        this.fieldData = new Tuple[count];
 
         for(int i = 0; i < count; i++) {
             byte[] data = new byte[buf.readShort()];
@@ -43,10 +43,10 @@ public class PacketSyncConfigs implements IMessage, IMessageHandler<PacketSyncCo
             }
 
             if(tuple == null) {
-                fieldData = null;
+                this.fieldData = null;
                 break;
             }
-            fieldData[i] = tuple;
+            this.fieldData[i] = tuple;
         }
     }
 

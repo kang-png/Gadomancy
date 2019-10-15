@@ -27,7 +27,7 @@ public class TileAdditionalEldritchPortal extends TileEldritchPortal {
 
     private static Map<EntityPlayer, ExtendedChunkCoordinates> trackedPortalActivity = new HashMap<EntityPlayer, ExtendedChunkCoordinates>();
     private EntityPlayer toTeleport;
-    private int count = 0;
+    private int count;
 
     @Override
     public void updateEntity() {
@@ -39,7 +39,7 @@ public class TileAdditionalEldritchPortal extends TileEldritchPortal {
             this.opencount += 1;
         }
 
-        if ((!this.worldObj.isRemote) && (this.count % 5 == 0) && toTeleport == null) {
+        if ((!this.worldObj.isRemote) && (this.count % 5 == 0) && this.toTeleport == null) {
             List<EntityPlayerMP> players = this.worldObj.getEntitiesWithinAABB(EntityPlayerMP.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(0.5D, 1.0D, 0.5D));
             if(players != null && !players.isEmpty()) {
                 EntityPlayerMP toTeleport = players.get(0);
@@ -57,7 +57,7 @@ public class TileAdditionalEldritchPortal extends TileEldritchPortal {
                     //Teleporting there.
 
                     if(TCMazeHandler.createSessionWaitForTeleport(toTeleport)) {
-                        startTracking(toTeleport, new ExtendedChunkCoordinates(new ChunkCoordinates(xCoord, yCoord, zCoord), toTeleport.dimension));
+                        TileAdditionalEldritchPortal.startTracking(toTeleport, new ExtendedChunkCoordinates(new ChunkCoordinates(this.xCoord, this.yCoord, this.zCoord), toTeleport.dimension));
                     }
                 } else {
                     //Teleporting back.
@@ -69,15 +69,15 @@ public class TileAdditionalEldritchPortal extends TileEldritchPortal {
     }
 
     public static void startTracking(EntityPlayer player, ExtendedChunkCoordinates tileCoords) {
-        if(!trackedPortalActivity.containsKey(player)) {
-            trackedPortalActivity.put(player, tileCoords);
+        if(!TileAdditionalEldritchPortal.trackedPortalActivity.containsKey(player)) {
+            TileAdditionalEldritchPortal.trackedPortalActivity.put(player, tileCoords);
         }
     }
 
     public static void informSessionStart(EntityPlayer player) {
-        if(trackedPortalActivity.containsKey(player)) {
-            ExtendedChunkCoordinates tileCoords = trackedPortalActivity.get(player);
-            trackedPortalActivity.remove(player);
+        if(TileAdditionalEldritchPortal.trackedPortalActivity.containsKey(player)) {
+            ExtendedChunkCoordinates tileCoords = TileAdditionalEldritchPortal.trackedPortalActivity.get(player);
+            TileAdditionalEldritchPortal.trackedPortalActivity.remove(player);
             if(tileCoords != null) {
                 ChunkCoordinates cc = tileCoords.coordinates;
                 WorldServer ws = MinecraftServer.getServer().worldServerForDimension(tileCoords.dimId);

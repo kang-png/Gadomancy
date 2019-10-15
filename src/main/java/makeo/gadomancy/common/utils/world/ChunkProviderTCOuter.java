@@ -50,7 +50,7 @@ public class ChunkProviderTCOuter implements IChunkProvider {
     }
 
     public Chunk loadChunk(int x, int z) {
-        return provideChunk(x, z);
+        return this.provideChunk(x, z);
     }
 
     public Chunk provideChunk(int x, int z) {
@@ -67,19 +67,19 @@ public class ChunkProviderTCOuter implements IChunkProvider {
 
             TCMazeHandler.GEN.chunks.remove(key);
 
-            chunk = new Chunk(worldObj, buf.blockData, buf.metaBuffer, x, z);
+            chunk = new Chunk(this.worldObj, buf.blockData, buf.metaBuffer, x, z);
 
             byte[] abyte = chunk.getBiomeArray();
-            System.arraycopy(biomeArr, 0, abyte, 0, biomeArr.length);
+            System.arraycopy(ChunkProviderTCOuter.biomeArr, 0, abyte, 0, ChunkProviderTCOuter.biomeArr.length);
 
             for(Integer[] pos : buf.tiles) {
-                TileEntity te = buf.blockData[pos[3]].createTileEntity(worldObj, buf.metaBuffer[pos[3]]);
+                TileEntity te = buf.blockData[pos[3]].createTileEntity(this.worldObj, buf.metaBuffer[pos[3]]);
                 if(te != null) {
                     if(te instanceof TileEldritchLock) {
                         te = new TileOverrideEldritchLock();
                     }
 
-                    worldObj.addTileEntity(te);
+                    this.worldObj.addTileEntity(te);
                     chunk.func_150812_a(pos[0] & 15, pos[1], pos[2] & 15, te);
                     te.blockMetadata = buf.metaBuffer[pos[3]];
                 }
@@ -147,7 +147,7 @@ public class ChunkProviderTCOuter implements IChunkProvider {
                 if(bufE instanceof FakeWorldTCGeneration.EntityPermItem) {
                     FakeWorldTCGeneration.EntityPermItem i = (FakeWorldTCGeneration.EntityPermItem) bufE;
                     if(((int) i.x >> 4) != x || ((int) i.z >> 4) != z) continue;
-                    EntityPermanentItem item = new EntityPermanentItem(worldObj, i.x, i.y, i.z, i.buffItemStack);
+                    EntityPermanentItem item = new EntityPermanentItem(this.worldObj, i.x, i.y, i.z, i.buffItemStack);
                     item.motionX = 0;
                     item.motionY = 0;
                     item.motionZ = 0;
@@ -156,7 +156,7 @@ public class ChunkProviderTCOuter implements IChunkProvider {
                 } else if(bufE instanceof FakeWorldTCGeneration.EntityGuardianBuf) {
                     FakeWorldTCGeneration.EntityGuardianBuf b = (FakeWorldTCGeneration.EntityGuardianBuf) bufE;
                     if(((int) b.x >> 4) != x || ((int) b.z >> 4) != z) continue;
-                    EntityEldritchGuardian guardian = new EntityEldritchGuardian(worldObj);
+                    EntityEldritchGuardian guardian = new EntityEldritchGuardian(this.worldObj);
                     guardian.setPosition(b.x, b.y, b.z);
                     guardian.setHomeArea(b.coordinates.posX, b.coordinates.posY, b.coordinates.posZ, (int) b.dst);
                     chunk.addEntity(guardian);
@@ -179,14 +179,14 @@ public class ChunkProviderTCOuter implements IChunkProvider {
             }
 
         } else {
-            Block[] ablock = new Block[blockArr.length];
-            System.arraycopy(blockArr, 0, ablock, 0, blockArr.length);
-            byte[] meta = new byte[metaArr.length];
-            System.arraycopy(metaArr, 0, meta, 0, metaArr.length);
+            Block[] ablock = new Block[ChunkProviderTCOuter.blockArr.length];
+            System.arraycopy(ChunkProviderTCOuter.blockArr, 0, ablock, 0, ChunkProviderTCOuter.blockArr.length);
+            byte[] meta = new byte[ChunkProviderTCOuter.metaArr.length];
+            System.arraycopy(ChunkProviderTCOuter.metaArr, 0, meta, 0, ChunkProviderTCOuter.metaArr.length);
 
             chunk = new Chunk(this.worldObj, ablock, meta, x, z);
             byte[] abyte = chunk.getBiomeArray();
-            System.arraycopy(biomeArr, 0, abyte, 0, biomeArr.length);
+            System.arraycopy(ChunkProviderTCOuter.biomeArr, 0, abyte, 0, ChunkProviderTCOuter.biomeArr.length);
         }
 
         chunk.generateSkylightMap();
@@ -250,19 +250,19 @@ public class ChunkProviderTCOuter implements IChunkProvider {
 
     static {
         blockArr = new Block[32768];
-        metaArr = new byte[blockArr.length];
+        metaArr = new byte[ChunkProviderTCOuter.blockArr.length];
         biomeArr = new byte[16 * 16];
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 for (int y = 127; y >= 0; y--) {
                     int index = (x << 4 | z) << 7 | y;
-                    blockArr[index] = null;
-                    metaArr[index] = 0;
+                    ChunkProviderTCOuter.blockArr[index] = null;
+                    ChunkProviderTCOuter.metaArr[index] = 0;
                 }
             }
         }
-        for(int i = 0; i < biomeArr.length; i++) {
-            biomeArr[i] = (byte) ThaumcraftWorldGenerator.biomeEldritchLands.biomeID;
+        for(int i = 0; i < ChunkProviderTCOuter.biomeArr.length; i++) {
+            ChunkProviderTCOuter.biomeArr[i] = (byte) ThaumcraftWorldGenerator.biomeEldritchLands.biomeID;
         }
     }
 }

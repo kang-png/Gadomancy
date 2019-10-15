@@ -41,7 +41,7 @@ public class GrowingNodeBehavior {
     private final TileExtendedNode owningNode;
 
     //The lower the 'happier'
-    private double overallHappiness = 0.0D;
+    private double overallHappiness;
 
     //Maps saturation to aspects. higher saturation may stop the node from accepting an aspect.
     //Primal aspects increase saturation even more for those aspects than compound ones.
@@ -50,51 +50,51 @@ public class GrowingNodeBehavior {
     private Map<Aspect, Double> aspectSaturation = new LinkedHashMap<Aspect, Double>();
 
     //Ensures that the node gets fed up faster if you feed it the same aspect over and over again.
-    private Aspect lastFedAspect = null;
-    private int lastFedRow = 0;
+    private Aspect lastFedAspect;
+    private int lastFedRow;
 
     //If this is true, the node stops growing.
-    private boolean isSaturated = false;
+    private boolean isSaturated;
 
     public GrowingNodeBehavior(TileExtendedNode owningNode) {
         this.owningNode = owningNode;
     }
 
     public void addAspect(AspectType type, Aspect aspect, int value) {
-        if(isSaturated) return;
+        if(this.isSaturated) return;
 
-        double increasedSaturation = getSaturation(type, aspect);
-        addSaturation(aspect, increasedSaturation);
-        owningNode.getAspectsBase().add(aspect, value);
+        double increasedSaturation = this.getSaturation(type, aspect);
+        this.addSaturation(aspect, increasedSaturation);
+        this.owningNode.getAspectsBase().add(aspect, value);
 
-        ResearchHelper.distributeResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTH", owningNode.getWorldObj(), owningNode.xCoord, owningNode.yCoord, owningNode.zCoord, 6);
+        ResearchHelper.distributeResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTH", this.owningNode.getWorldObj(), this.owningNode.xCoord, this.owningNode.yCoord, this.owningNode.zCoord, 6);
 
-        computeOverallSaturation();
+        this.computeOverallSaturation();
     }
 
     //Computes the saturation of all current aspects and calculates the overall happiness as well as if the
     //Node will stop growing.
     private void computeOverallSaturation() {
-        if(isSaturated) return;
+        if(this.isSaturated) return;
 
         double completeSaturation = 0D;
-        int aspects = aspectSaturation.keySet().size();
-        for(Aspect a : aspectSaturation.keySet()) {
-            completeSaturation += aspectSaturation.get(a);
+        int aspects = this.aspectSaturation.keySet().size();
+        for(Aspect a : this.aspectSaturation.keySet()) {
+            completeSaturation += this.aspectSaturation.get(a);
         }
 
         //Not just 0.0-1.0!
         //Values vary from 0.0 to SATURATION_CAP (or a bit higher)
         double percentSaturation = completeSaturation / ((double) aspects);
 
-        double satCmp = SATURATION_CAP;
+        double satCmp = GrowingNodeBehavior.SATURATION_CAP;
 
         satCmp *= 8.5;
         satCmp /=  10;
 
-        if(overallHappiness > HAPPINESS_CAP) {
-            overallHappiness /= 10;
-            owningNode.triggerVortexExplosion();
+        if(this.overallHappiness > GrowingNodeBehavior.HAPPINESS_CAP) {
+            this.overallHappiness /= 10;
+            this.owningNode.triggerVortexExplosion();
         }
 
         //If the saturation is in the upper 85%
@@ -104,26 +104,26 @@ public class GrowingNodeBehavior {
     }
 
     public boolean mayZapNow() {
-        return overallHappiness > owningNode.getWorldObj().rand.nextInt(HAPPINESS_CAP * HAPPINESS_CAP);
+        return this.overallHappiness > this.owningNode.getWorldObj().rand.nextInt(GrowingNodeBehavior.HAPPINESS_CAP * GrowingNodeBehavior.HAPPINESS_CAP);
     }
 
     public float getZapDamage() {
-        float happinessPerc = ((float) overallHappiness) / ((float) HAPPINESS_CAP);
+        float happinessPerc = ((float) this.overallHappiness) / ((float) GrowingNodeBehavior.HAPPINESS_CAP);
         return happinessPerc > 0.3 ? happinessPerc > 0.6 ? happinessPerc > 0.9 ? 12 : 8 : 5 : 2;
     }
 
     private void addSaturation(Aspect aspect, double increasedSaturation) {
-        double overallReduction = 1D / SATURATION_DIFFICULTY;
-        if(aspectSaturation.containsKey(aspect)) {
-            aspectSaturation.put(aspect, aspectSaturation.get(aspect) + increasedSaturation);
+        double overallReduction = 1D / GrowingNodeBehavior.SATURATION_DIFFICULTY;
+        if(this.aspectSaturation.containsKey(aspect)) {
+            this.aspectSaturation.put(aspect, this.aspectSaturation.get(aspect) + increasedSaturation);
         } else {
-            aspectSaturation.put(aspect, increasedSaturation);
+            this.aspectSaturation.put(aspect, increasedSaturation);
         }
-        for(Aspect a : aspectSaturation.keySet()) {
+        for(Aspect a : this.aspectSaturation.keySet()) {
             if(a.equals(aspect)) continue;
-            double newSaturation = aspectSaturation.get(a) - overallReduction;
+            double newSaturation = this.aspectSaturation.get(a) - overallReduction;
             newSaturation = newSaturation < 0 ? 0 : newSaturation;
-            aspectSaturation.put(a, newSaturation);
+            this.aspectSaturation.put(a, newSaturation);
         }
     }
 
@@ -143,55 +143,55 @@ public class GrowingNodeBehavior {
             case CRYSTAL_ESSENCE:
                 mult += 0.4D; //Mana beans are hard to breed but easy to multiply.. thus growing node doesn't like. Same goes for crystallized essentia
         }
-        if(lastFedAspect != null) {
-            if(lastFedAspect.equals(aspect)) {
+        if(this.lastFedAspect != null) {
+            if(this.lastFedAspect.equals(aspect)) {
                 mult += 0.4D;
-                lastFedRow++;
+                this.lastFedRow++;
             }
         }
-        lastFedAspect = aspect;
+        this.lastFedAspect = aspect;
         double sat = aspect.isPrimal() ? 1.4D : 1D;
         return sat * mult;
     }
 
     public boolean updateBehavior(boolean needUpdate) {
-        if(fixedNode != null && owningNode.ticksExisted % 3 == 0) {
-            if(owningNode.getWorldObj().getBlock(fixedNode.xCoord, fixedNode.yCoord, fixedNode.zCoord) != RegisteredBlocks.blockNode ||
-                    owningNode.getWorldObj().getTileEntity(fixedNode.xCoord, fixedNode.yCoord, fixedNode.zCoord) == null ||
-                    fixedNode.isInvalid()) {
-                fixedNode = null;
+        if(this.fixedNode != null && this.owningNode.ticksExisted % 3 == 0) {
+            if(this.owningNode.getWorldObj().getBlock(this.fixedNode.xCoord, this.fixedNode.yCoord, this.fixedNode.zCoord) != RegisteredBlocks.blockNode ||
+                    this.owningNode.getWorldObj().getTileEntity(this.fixedNode.xCoord, this.fixedNode.yCoord, this.fixedNode.zCoord) == null ||
+                    this.fixedNode.isInvalid()) {
+                this.fixedNode = null;
                 return needUpdate;
             }
-            AspectList currentAspects = fixedNode.getAspects();
-            AspectList baseAspects = fixedNode.getAspectsBase();
+            AspectList currentAspects = this.fixedNode.getAspects();
+            AspectList baseAspects = this.fixedNode.getAspectsBase();
             if(baseAspects.getAspects().length == 0) {
-                int x = fixedNode.xCoord;
-                int y = fixedNode.yCoord;
-                int z = fixedNode.zCoord;
-                removeFixedNode(x, y, z);
+                int x = this.fixedNode.xCoord;
+                int y = this.fixedNode.yCoord;
+                int z = this.fixedNode.zCoord;
+                this.removeFixedNode(x, y, z);
                 return needUpdate;
             }
-            Aspect a = baseAspects.getAspects()[owningNode.getWorldObj().rand.nextInt(baseAspects.getAspects().length)];
+            Aspect a = baseAspects.getAspects()[this.owningNode.getWorldObj().rand.nextInt(baseAspects.getAspects().length)];
             if(baseAspects.getAmount(a) > 0) {
                 if(baseAspects.reduce(a, 1)) {
-                    World world = owningNode.getWorldObj();
-                    int fx = fixedNode.xCoord;
-                    int fy = fixedNode.yCoord;
-                    int fz = fixedNode.zCoord;
-                    int ox = owningNode.xCoord;
-                    int oy = owningNode.yCoord;
-                    int oz = owningNode.zCoord;
+                    World world = this.owningNode.getWorldObj();
+                    int fx = this.fixedNode.xCoord;
+                    int fy = this.fixedNode.yCoord;
+                    int fz = this.fixedNode.zCoord;
+                    int ox = this.owningNode.xCoord;
+                    int oy = this.owningNode.yCoord;
+                    int oz = this.owningNode.zCoord;
                     currentAspects.reduce(a, 1);
 
-                    ResearchHelper.distributeResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_ATTACK", owningNode.getWorldObj(), owningNode.xCoord, owningNode.yCoord, owningNode.zCoord, 16);
+                    ResearchHelper.distributeResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_ATTACK", this.owningNode.getWorldObj(), this.owningNode.xCoord, this.owningNode.yCoord, this.owningNode.zCoord, 16);
 
                     EntityAspectOrb aspectOrb = new EntityAspectOrb(world, fx + 0.5D, fy + 0.5D, fz + 0.5D, a, 1);
                     Vec3 dir = Vec3.createVectorHelper(fx + 0.5D, fy + 0.5D, fz + 0.5D).subtract(Vec3.createVectorHelper(ox + 0.5D, oy + 0.5D, oz + 0.5D)).normalize();
-                    dir.addVector(randOffset(), randOffset(), randOffset()).normalize();
+                    dir.addVector(this.randOffset(), this.randOffset(), this.randOffset()).normalize();
                     aspectOrb.motionX = dir.xCoord;
                     aspectOrb.motionY = dir.yCoord;
                     aspectOrb.motionZ = dir.zCoord;
-                    fixedNode.getWorldObj().spawnEntityInWorld(aspectOrb);
+                    this.fixedNode.getWorldObj().spawnEntityInWorld(aspectOrb);
 
                     NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(world.provider.dimensionId, ox + 0.5F, oy + 0.5F, oz + 0.5F, 32);
                     PacketTCNodeBolt bolt = new PacketTCNodeBolt(ox + 0.5F, oy + 0.5F, oz + 0.5F, fx + 0.5F, fy + 0.5F, fz + 0.5F, 0, false);
@@ -201,14 +201,14 @@ public class GrowingNodeBehavior {
                     PacketHandler.INSTANCE.sendToAllAround(packet, point);
 
                     world.markBlockForUpdate(fx, fy, fz);
-                    fixedNode.markDirty();
+                    this.fixedNode.markDirty();
                     needUpdate = true;
                 } else {
                     if(baseAspects.size() <= 1) {
-                        int x = fixedNode.xCoord;
-                        int y = fixedNode.yCoord;
-                        int z = fixedNode.zCoord;
-                        removeFixedNode(x, y, z);
+                        int x = this.fixedNode.xCoord;
+                        int y = this.fixedNode.yCoord;
+                        int z = this.fixedNode.zCoord;
+                        this.removeFixedNode(x, y, z);
                         needUpdate = true;
                     }
                     baseAspects.remove(a);
@@ -217,10 +217,10 @@ public class GrowingNodeBehavior {
                 }
             } else {
                 if(baseAspects.size() <= 1) {
-                    int x = fixedNode.xCoord;
-                    int y = fixedNode.yCoord;
-                    int z = fixedNode.zCoord;
-                    removeFixedNode(x, y, z);
+                    int x = this.fixedNode.xCoord;
+                    int y = this.fixedNode.yCoord;
+                    int z = this.fixedNode.zCoord;
+                    this.removeFixedNode(x, y, z);
                     needUpdate = true;
                 }
                 baseAspects.remove(a);
@@ -232,33 +232,33 @@ public class GrowingNodeBehavior {
     }
 
     private void removeFixedNode(int x, int y, int z) {
-        owningNode.getWorldObj().setBlockToAir(x, y, z);
-        owningNode.getWorldObj().removeTileEntity(x, y, z);
-        owningNode.getWorldObj().markBlockForUpdate(x, y, z);
+        this.owningNode.getWorldObj().setBlockToAir(x, y, z);
+        this.owningNode.getWorldObj().removeTileEntity(x, y, z);
+        this.owningNode.getWorldObj().markBlockForUpdate(x, y, z);
         this.fixedNode = null;
     }
 
     private float randOffset() {
-        return owningNode.getWorldObj().rand.nextFloat() / 3;
+        return this.owningNode.getWorldObj().rand.nextFloat() / 3;
     }
 
     public boolean doesAccept(Aspect aspect) {
-        if(isSaturated) {
-            handleOverfeed();
+        if(this.isSaturated) {
+            this.handleOverfeed();
             return false;
         }
 
-        if(aspectSaturation.containsKey(aspect)) {
-            double percentageToSaturation = aspectSaturation.get(aspect) / SATURATION_CAP; // 0.0 - 1.0
-            boolean mayAdd = owningNode.getWorldObj().rand.nextFloat() > percentageToSaturation;
+        if(this.aspectSaturation.containsKey(aspect)) {
+            double percentageToSaturation = this.aspectSaturation.get(aspect) / GrowingNodeBehavior.SATURATION_CAP; // 0.0 - 1.0
+            boolean mayAdd = this.owningNode.getWorldObj().rand.nextFloat() > percentageToSaturation;
             if(mayAdd) {
                 double inc = 1D / (1D - percentageToSaturation);
-                if(lastFedAspect != null) {
-                    if(aspect.equals(lastFedAspect)) {
-                        inc *= evaluateFeedingDenialFunc((lastFedRow > 0 ? lastFedRow : 1));
+                if(this.lastFedAspect != null) {
+                    if(aspect.equals(this.lastFedAspect)) {
+                        inc *= this.evaluateFeedingDenialFunc((this.lastFedRow > 0 ? this.lastFedRow : 1));
                     } else {
                         inc *= -10;
-                        lastFedRow = 0;
+                        this.lastFedRow = 0;
                     }
                 }
                 this.overallHappiness += inc; //The node doesn't like to be forced to eat the same every time.
@@ -268,7 +268,7 @@ public class GrowingNodeBehavior {
         } else {
             //The node does not know that aspect yet/hasn't created an immunity to it yet.
             //The node gets to know a new aspect, thus the happiness increases.
-            this.overallHappiness = overallHappiness / SATURATION_DIFFICULTY;
+            this.overallHappiness = this.overallHappiness / GrowingNodeBehavior.SATURATION_DIFFICULTY;
             return true;
         }
     }
@@ -297,22 +297,22 @@ public class GrowingNodeBehavior {
             double saturation = aspectCompound.getDouble("aspectSaturation");
             Aspect a = Aspect.getAspect(name);
             if(a != null) {
-                aspectSaturation.put(a, saturation);
+                this.aspectSaturation.put(a, saturation);
             }
         }
     }
 
     public void writeToNBT(NBTTagCompound nbtTagCompound) {
-        nbtTagCompound.setBoolean("overallSaturated", isSaturated);
-        nbtTagCompound.setDouble("overallHappiness", overallHappiness);
-        if(lastFedAspect != null) {
-            nbtTagCompound.setString("lastFedAspect", lastFedAspect.getTag());
-            nbtTagCompound.setInteger("lastFedRow", lastFedRow);
+        nbtTagCompound.setBoolean("overallSaturated", this.isSaturated);
+        nbtTagCompound.setDouble("overallHappiness", this.overallHappiness);
+        if(this.lastFedAspect != null) {
+            nbtTagCompound.setString("lastFedAspect", this.lastFedAspect.getTag());
+            nbtTagCompound.setInteger("lastFedRow", this.lastFedRow);
         }
 
         NBTTagList list = new NBTTagList();
-        for(Aspect a : aspectSaturation.keySet()) {
-            double saturation = aspectSaturation.get(a);
+        for(Aspect a : this.aspectSaturation.keySet()) {
+            double saturation = this.aspectSaturation.get(a);
             NBTTagCompound compound = new NBTTagCompound();
             compound.setString("aspectName", a.getTag());
             compound.setDouble("aspectSaturation", saturation);
@@ -322,7 +322,7 @@ public class GrowingNodeBehavior {
     }
 
     public boolean lookingForNode() {
-        return fixedNode == null;
+        return this.fixedNode == null;
     }
 
     public void lockOnTo(TileNode node) {
@@ -330,7 +330,7 @@ public class GrowingNodeBehavior {
             this.fixedNode = node;
     }
 
-    public static enum AspectType {
+    public enum AspectType {
 
         WISP, WISP_ESSENCE, ASPECT_ORB, MANA_BEAN, CRYSTAL_ESSENCE
 

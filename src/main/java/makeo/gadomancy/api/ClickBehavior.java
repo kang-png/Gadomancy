@@ -46,7 +46,7 @@ public abstract class ClickBehavior {
 
     //TODO not handled as expected.
     public boolean hasVisCost() {
-        return hasVisCost;
+        return this.hasVisCost;
     }
 
     public int getComparatorOutput() {

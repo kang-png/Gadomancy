@@ -38,64 +38,64 @@ public class EntityPermNoClipItem extends EntityPermanentItem {
         this.masterZ = masterZ;
 
         ChunkCoordinates masterCoords = new ChunkCoordinates(this.masterX, this.masterY, this.masterZ);
-        getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherMasterId, masterCoords);
+        this.getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherMasterId, masterCoords);
         int fixX = Float.floatToIntBits(x);
         int fixY = Float.floatToIntBits(y);
         int fixZ = Float.floatToIntBits(z);
         ChunkCoordinates fixCoords = new ChunkCoordinates(fixX, fixY, fixZ);
-        getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherFixedId, fixCoords);
+        this.getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherFixedId, fixCoords);
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
 
-        getDataWatcher().addObjectByDataType(ModConfig.entityNoClipItemDatawatcherMasterId, 6);
-        getDataWatcher().addObjectByDataType(ModConfig.entityNoClipItemDatawatcherFixedId, 6);
+        this.getDataWatcher().addObjectByDataType(ModConfig.entityNoClipItemDatawatcherMasterId, 6);
+        this.getDataWatcher().addObjectByDataType(ModConfig.entityNoClipItemDatawatcherFixedId, 6);
 
-        getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherMasterId, new ChunkCoordinates(0, 0, 0));
-        getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherFixedId, new ChunkCoordinates(0, 0, 0));
+        this.getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherMasterId, new ChunkCoordinates(0, 0, 0));
+        this.getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherFixedId, new ChunkCoordinates(0, 0, 0));
     }
 
     @Override
     public void onUpdate() {
-        noClip = true;
+        this.noClip = true;
         super.onUpdate();
-        motionX = 0;
-        motionY = 0;
-        motionZ = 0;
-        if (getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherFixedId).getObject() == null)
+        this.motionX = 0;
+        this.motionY = 0;
+        this.motionZ = 0;
+        if (this.getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherFixedId).getObject() == null)
             return;
 
-        if((ticksExisted & 1) == 0) {
-            ChunkCoordinates cc = (ChunkCoordinates) getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId).getObject();
+        if((this.ticksExisted & 1) == 0) {
+            ChunkCoordinates cc = (ChunkCoordinates) this.getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId).getObject();
             if(cc == null) return;
-            TileEntity te = worldObj.getTileEntity(cc.posX, cc.posY, cc.posZ);
-            if(te != null && te instanceof IItemMasterTile) {
+            TileEntity te = this.worldObj.getTileEntity(cc.posX, cc.posY, cc.posZ);
+            if (te instanceof IItemMasterTile) {
                 ((IItemMasterTile) te).informMaster();
                 ItemChangeTask task = ((IItemMasterTile) te).getAndRemoveScheduledChangeTask();
                 if(task != null) {
                     task.changeItem(this);
                 }
-                ((IItemMasterTile) te).broadcastItemStack(getEntityItem());
+                ((IItemMasterTile) te).broadcastItemStack(this.getEntityItem());
             }
         }
 
-        ChunkCoordinates fixC = (ChunkCoordinates) getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherFixedId).getObject();
+        ChunkCoordinates fixC = (ChunkCoordinates) this.getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherFixedId).getObject();
         float fX = Float.intBitsToFloat(fixC.posX);
         float fY = Float.intBitsToFloat(fixC.posY);
         float fZ = Float.intBitsToFloat(fixC.posZ);
-        setPositionAndRotation(fX, fY, fZ, 0, 0);
+        this.setPositionAndRotation(fX, fY, fZ, 0, 0);
 
 
 
-        if ((ticksExisted & 7) == 0 && !worldObj.isRemote) {
-            ChunkCoordinates masterCoords = (ChunkCoordinates) getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId).getObject();
-            TileEntity te = worldObj.getTileEntity(masterCoords.posX, masterCoords.posY, masterCoords.posZ);
-            if (te == null || !(te instanceof IItemMasterTile) || !((IItemMasterTile) te).canStillHoldItem()) {
-                EntityItem item = new EntityItem(worldObj, posX, posY, posZ, getEntityItem());
-                worldObj.spawnEntityInWorld(item);
-                setDead();
+        if ((this.ticksExisted & 7) == 0 && !this.worldObj.isRemote) {
+            ChunkCoordinates masterCoords = (ChunkCoordinates) this.getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId).getObject();
+            TileEntity te = this.worldObj.getTileEntity(masterCoords.posX, masterCoords.posY, masterCoords.posZ);
+            if (!(te instanceof IItemMasterTile) || !((IItemMasterTile) te).canStillHoldItem()) {
+                EntityItem item = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, this.getEntityItem());
+                this.worldObj.spawnEntityInWorld(item);
+                this.setDead();
             }
         }
     }
@@ -124,39 +124,39 @@ public class EntityPermNoClipItem extends EntityPermanentItem {
         this.masterY = com.getInteger("mY");
         this.masterZ = com.getInteger("mZ");
 
-        getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherMasterId, new ChunkCoordinates(masterX, masterY, masterZ));
-        ChunkCoordinates cc = new ChunkCoordinates(Float.floatToIntBits(fixPosX), Float.floatToIntBits(fixPosY), Float.floatToIntBits(fixPosZ));
-        getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherFixedId, cc);
+        this.getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherMasterId, new ChunkCoordinates(this.masterX, this.masterY, this.masterZ));
+        ChunkCoordinates cc = new ChunkCoordinates(Float.floatToIntBits(this.fixPosX), Float.floatToIntBits(this.fixPosY), Float.floatToIntBits(this.fixPosZ));
+        this.getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherFixedId, cc);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound com) {
         super.writeEntityToNBT(com);
 
-        com.setFloat("fX", fixPosX);
-        com.setFloat("fY", fixPosY);
-        com.setFloat("fZ", fixPosZ);
+        com.setFloat("fX", this.fixPosX);
+        com.setFloat("fY", this.fixPosY);
+        com.setFloat("fZ", this.fixPosZ);
 
-        com.setInteger("mX", masterX);
-        com.setInteger("mY", masterY);
-        com.setInteger("mZ", masterZ);
+        com.setInteger("mX", this.masterX);
+        com.setInteger("mY", this.masterY);
+        com.setInteger("mZ", this.masterZ);
     }
 
-    public static interface IItemMasterTile {
+    public interface IItemMasterTile {
 
-        public boolean canStillHoldItem();
+        boolean canStillHoldItem();
 
-        public void informMaster();
+        void informMaster();
 
-        public void informItemRemoval();
+        void informItemRemoval();
 
-        public ItemChangeTask getAndRemoveScheduledChangeTask();
+        ItemChangeTask getAndRemoveScheduledChangeTask();
 
-        public void broadcastItemStack(ItemStack itemStack);
+        void broadcastItemStack(ItemStack itemStack);
 
     }
 
-    public static abstract class ItemChangeTask {
+    public abstract static class ItemChangeTask {
 
         public abstract void changeItem(EntityPermNoClipItem item);
 

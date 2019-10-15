@@ -27,25 +27,25 @@ public class ContainerArcanePackager extends Container {
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                addSlotToContainer(new Slot(packagerInv, j + i * 3, 16 + 18 * j, 42 + i * 23));
+                this.addSlotToContainer(new Slot(packagerInv, j + i * 3, 16 + 18 * j, 42 + i * 23));
             }
         }
 
-        addSlotToContainer(new FilteredSlot(packagerInv, 9, 95, 33));
-        addSlotToContainer(new FilteredSlot(packagerInv, 10, 113, 33));
-        addSlotToContainer(new FilteredSlot(packagerInv, 11, 160, 64));
+        this.addSlotToContainer(new FilteredSlot(packagerInv, 9, 95, 33));
+        this.addSlotToContainer(new FilteredSlot(packagerInv, 10, 113, 33));
+        this.addSlotToContainer(new FilteredSlot(packagerInv, 11, 160, 64));
 
-        bindPlayerInventory();
+        this.bindPlayerInventory();
     }
 
     protected void bindPlayerInventory() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
-                addSlotToContainer(new Slot(this.playerInv, j + i * 9 + 9, 16 + j * 18, 151 + i * 18));
+                this.addSlotToContainer(new Slot(this.playerInv, j + i * 9 + 9, 16 + j * 18, 151 + i * 18));
             }
         }
         for (int i = 0; i < 9; i++) {
-            addSlotToContainer(new Slot(this.playerInv, i, 16 + i * 18, 209));
+            this.addSlotToContainer(new Slot(this.playerInv, i, 16 + i * 18, 209));
         }
     }
 
@@ -58,14 +58,14 @@ public class ContainerArcanePackager extends Container {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            int size = packagerInv.getSizeInventory();
+            int size = this.packagerInv.getSizeInventory();
             if (slotIndex < size) {
                 if (!this.mergeItemStack(itemstack1, size, this.inventorySlots.size(), true)) {
                     return null;
                 }
             } else {
                 int specialSlot = itemstack1.getItem() == Items.leather ? 9 : itemstack1.getItem() == Items.string ? 10 : -1;
-                if(specialSlot != -1 && (packagerInv.getStackInSlot(specialSlot) == null || packagerInv.getStackInSlot(specialSlot).stackSize < 64)) {
+                if(specialSlot != -1 && (this.packagerInv.getStackInSlot(specialSlot) == null || this.packagerInv.getStackInSlot(specialSlot).stackSize < 64)) {
                     this.mergeItemStack(itemstack1, specialSlot, specialSlot + 1, false);
 
                     if(itemstack1.stackSize == 0) {
@@ -90,7 +90,7 @@ public class ContainerArcanePackager extends Container {
 
     @Override
     public boolean enchantItem(EntityPlayer player, int id) {
-        TileArcanePackager tile = (TileArcanePackager) packagerInv;
+        TileArcanePackager tile = (TileArcanePackager) this.packagerInv;
 
         switch (id) {
             case 0:

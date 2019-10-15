@@ -18,7 +18,7 @@ public abstract class AbstractData {
     private byte providerId;
 
     public final void markDirty() {
-        AbstractDataProvider<? extends AbstractData> provider = Registry.getProvider(getProviderID());
+        AbstractDataProvider<? extends AbstractData> provider = Registry.getProvider(this.getProviderID());
         if(provider != null) {
             SyncDataHolder.markForUpdate(provider.getKey());
         }
@@ -29,7 +29,7 @@ public abstract class AbstractData {
     }
 
     public final byte getProviderID() {
-        return providerId;
+        return this.providerId;
     }
 
     public abstract boolean needsUpdate();
@@ -47,11 +47,11 @@ public abstract class AbstractData {
         private static Map<Byte, AbstractDataProvider<? extends AbstractData>> registry = new HashMap<Byte, AbstractDataProvider<? extends AbstractData>>();
 
         public static void register(AbstractDataProvider<? extends AbstractData> provider) {
-            registry.put(provider.getProviderId(), provider);
+            Registry.registry.put(provider.getProviderId(), provider);
         }
 
         public static AbstractDataProvider<? extends AbstractData> getProvider(Byte id) {
-            return registry.get(id);
+            return Registry.registry.get(id);
         }
     }
 
@@ -68,11 +68,11 @@ public abstract class AbstractData {
         public abstract T provideNewInstance();
 
         public final String getKey() {
-            return key;
+            return this.key;
         }
 
         public final byte getProviderId() {
-            return providerId;
+            return this.providerId;
         }
 
     }

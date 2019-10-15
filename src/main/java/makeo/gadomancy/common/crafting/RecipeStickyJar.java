@@ -25,12 +25,12 @@ public class RecipeStickyJar implements IArcaneRecipe {
 
     @Override
     public boolean matches(IInventory inv, World world, EntityPlayer player) {
-        return ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), SimpleResearchItem.getFullName("STICKYJAR")) && getJarItem(inv) != null;
+        return ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), SimpleResearchItem.getFullName("STICKYJAR")) && this.getJarItem(inv) != null;
     }
 
     @Override
     public ItemStack getCraftingResult(IInventory inv) {
-        ItemStack jarItem = getJarItem(inv);
+        ItemStack jarItem = this.getJarItem(inv);
         if(jarItem != null) {
             ItemStack result = jarItem.copy();
             result.stackSize = 1;

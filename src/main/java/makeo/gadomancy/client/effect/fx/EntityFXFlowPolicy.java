@@ -28,12 +28,12 @@ public abstract class EntityFXFlowPolicy {
 
         private EntityFXFlowPolicy policy;
 
-        private Policies(EntityFXFlowPolicy policy) {
+        Policies(EntityFXFlowPolicy policy) {
             this.policy = policy;
         }
 
         public EntityFXFlowPolicy getPolicy() {
-            return policy;
+            return this.policy;
         }
 
     }
@@ -42,13 +42,13 @@ public abstract class EntityFXFlowPolicy {
 
         @Override
         public void doSubParticles(FXFlow fxFlow, int policyCounter, double posX, double posY, double posZ, double lastPosX, double lastPosY, double lastPosZ) {
-            doParticles(fxFlow, policyCounter, posX, posY, posZ, fxFlow.getRand().nextInt(3) + 1);
+            this.doParticles(fxFlow, policyCounter, posX, posY, posZ, fxFlow.getRand().nextInt(3) + 1);
         }
 
         public void doParticles(FXFlow fxFlow, int policyCounter, double posX, double posY, double posZ, int count) {
             Random rand = fxFlow.getOriginWorld().rand;
             for (int i = 0; i < count; i++) {
-                Vector3 subOffset = genSubOffset(rand, fxFlow.getSurroundingDistance());
+                Vector3 subOffset = this.genSubOffset(rand, fxFlow.getSurroundingDistance());
                 Color c = (fxFlow.getFadingColor() != null && rand.nextBoolean()) ? fxFlow.getFadingColor() : fxFlow.getColor();
                 FXFlow.FXFlowBase flow = new FXFlow.FXFlowBase(fxFlow.getOriginWorld(), posX + subOffset.getX(), posY + subOffset.getY(), posZ + subOffset.getZ(), c, rand.nextInt(1) + fxFlow.getSurroundingParticleSize(), 6, 240);
                 Minecraft.getMinecraft().effectRenderer.addEffect(flow);
@@ -74,8 +74,8 @@ public abstract class EntityFXFlowPolicy {
             Vector3 perpendicular = rotationAxis.clone().perpendicular().normalize().multiply(fxFlow.getSurroundingDistance());
             Vector3 counterSide = perpendicular.clone().rotate(Math.toRadians(180), rotationAxis);
 
-            int currentDividedPolicyTick = policyCounter % TICKS_PER_FULL_TURN;
-            float currentDegree = 360F * (((float) currentDividedPolicyTick) / ((float) TICKS_PER_FULL_TURN));
+            int currentDividedPolicyTick = policyCounter % CircularPolicy.TICKS_PER_FULL_TURN;
+            float currentDegree = 360F * (((float) currentDividedPolicyTick) / ((float) CircularPolicy.TICKS_PER_FULL_TURN));
             double currentRad = Math.toRadians(currentDegree);
 
             perpendicular = perpendicular.rotate(currentRad, rotationAxis);

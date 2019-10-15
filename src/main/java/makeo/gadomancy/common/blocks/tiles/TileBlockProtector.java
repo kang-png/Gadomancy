@@ -33,45 +33,45 @@ public class TileBlockProtector extends TileJarFillable {
     private static final int MAX_RANGE = 15;
     private static final Aspect ASPECT = Aspect.ORDER;
 
-    private int range = 0;
-    private int saturation = 0;
-    private int count = 0;
+    private int range;
+    private int saturation;
+    private int count;
 
     public TileBlockProtector() {
-        maxAmount = 8;
-        aspectFilter = ASPECT;
+        this.maxAmount = 8;
+        this.aspectFilter = TileBlockProtector.ASPECT;
     }
 
     public int getCurrentRange() {
-        return range;
+        return this.range;
     }
 
     public int getPowerLevel() {
-        return Math.min(worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord), MAX_RANGE);
+        return Math.min(this.worldObj.getStrongestIndirectPower(this.xCoord, this.yCoord, this.zCoord), TileBlockProtector.MAX_RANGE);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setInteger("ProtectSaturation", saturation);
+        compound.setInteger("ProtectSaturation", this.saturation);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        saturation = compound.getInteger("ProtectSaturation");
+        this.saturation = compound.getInteger("ProtectSaturation");
     }
 
     @Override
     public void readCustomNBT(NBTTagCompound compound) {
         super.readCustomNBT(compound);
-        aspectFilter = ASPECT;
+        this.aspectFilter = TileBlockProtector.ASPECT;
 
-        int oldRange = range;
-        range = compound.getInteger("ProtectRange");
+        int oldRange = this.range;
+        this.range = compound.getInteger("ProtectRange");
 
-        if(worldObj != null && worldObj.isRemote && oldRange != range) {
-            worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
+        if(this.worldObj != null && this.worldObj.isRemote && oldRange != this.range) {
+            this.worldObj.updateLightByType(EnumSkyBlock.Block, this.xCoord, this.yCoord, this.zCoord);
         }
     }
 
@@ -79,57 +79,57 @@ public class TileBlockProtector extends TileJarFillable {
     public void writeCustomNBT(NBTTagCompound compound) {
         super.writeCustomNBT(compound);
         compound.removeTag("AspectFilter");
-        compound.setInteger("ProtectRange", range);
+        compound.setInteger("ProtectRange", this.range);
     }
 
     @Override
     public void updateEntity() {
-        if (!protectors.contains(this)) {
-            protectors.add(this);
+        if (!TileBlockProtector.protectors.contains(this)) {
+            TileBlockProtector.protectors.add(this);
         }
 
-        if (!worldObj.isRemote) {
-            if (++count % 5 == 0 && amount < maxAmount) {
-                fillJar();
+        if (!this.worldObj.isRemote) {
+            if (++this.count % 5 == 0 && this.amount < this.maxAmount) {
+                this.fillJar();
             }
 
-            if (count % UPDATE_TICKS == 0) {
-                if(range == 0) {
-                    saturation = 0;
+            if (this.count % TileBlockProtector.UPDATE_TICKS == 0) {
+                if(this.range == 0) {
+                    this.saturation = 0;
                 }
 
-                if (saturation > 0) {
-                    saturation--;
+                if (this.saturation > 0) {
+                    this.saturation--;
                     return;
                 }
 
-                int powerLevel = getPowerLevel();
-                boolean executeDecrease = range > powerLevel;
+                int powerLevel = this.getPowerLevel();
+                boolean executeDecrease = this.range > powerLevel;
 
-                if(range <= powerLevel && powerLevel > 0) {
+                if(this.range <= powerLevel && powerLevel > 0) {
                     executeDecrease = true;
-                    if (takeFromContainer(ASPECT, 1)) {
+                    if (this.takeFromContainer(TileBlockProtector.ASPECT, 1)) {
 
-                        if (range < powerLevel) {
-                            range++;
-                            markDirty();
-                            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                        if (this.range < powerLevel) {
+                            this.range++;
+                            this.markDirty();
+                            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 
-                            saturation = 16 - range;
+                            this.saturation = 16 - this.range;
                         }
                         executeDecrease = false;
                     }
                 }
 
-                if (executeDecrease && range > 0) {
-                    range--;
+                if (executeDecrease && this.range > 0) {
+                    this.range--;
 
-                    markDirty();
-                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    this.markDirty();
+                    this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                 }
             }
-        } else if(range > 0) {
-            float sizeMod = 1 - (range / 15f);
+        } else if(this.range > 0) {
+            float sizeMod = 1 - (this.range / 15f);
             if (this.worldObj.rand.nextInt(9 - Thaumcraft.proxy.particleCount(2)) == 0) {
                 Thaumcraft.proxy.wispFX3(this.worldObj, this.xCoord + 0.5F, this.yCoord + 0.68F, this.zCoord + 0.5F, this.xCoord + 0.3F + this.worldObj.rand.nextFloat() * 0.4F, this.yCoord + 0.68F, this.zCoord + 0.3F + this.worldObj.rand.nextFloat() * 0.4F, 0.3F - (0.15f*sizeMod), 6, true, -0.025F);
             }
@@ -138,14 +138,14 @@ public class TileBlockProtector extends TileJarFillable {
             }
         }
 
-        if(range > 0) {
-            for(EntityLivingBase entity : (List<EntityCreeper>)worldObj.getEntitiesWithinAABB(EntityLivingBase.class, getProtectedAABB())) {
+        if(this.range > 0) {
+            for(EntityLivingBase entity : (List<EntityCreeper>) this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.getProtectedAABB())) {
                 if(entity instanceof EntityCreeper) {
                     ((EntityCreeper) entity).timeSinceIgnited = 0;
                 }
 
-                if(worldObj.isRemote && !(entity instanceof EntityPlayer)) {
-                    spawnEntityParticles(entity);
+                if(this.worldObj.isRemote && !(entity instanceof EntityPlayer)) {
+                    this.spawnEntityParticles(entity);
                 }
             }
         }
@@ -153,12 +153,12 @@ public class TileBlockProtector extends TileJarFillable {
 
     private void spawnEntityParticles(EntityLivingBase entity) {
         AxisAlignedBB cube = entity.boundingBox;
-        if(cube != null && worldObj.rand.nextInt(20) == 0) {
-            double posX = worldObj.rand.nextDouble() * (cube.maxX - cube.minX) + cube.minX;
-            double posY = worldObj.rand.nextDouble() * (cube.maxX - cube.minX) + cube.minY;
-            double posZ = worldObj.rand.nextDouble() * (cube.maxX - cube.minX) + cube.minZ;
+        if(cube != null && this.worldObj.rand.nextInt(20) == 0) {
+            double posX = this.worldObj.rand.nextDouble() * (cube.maxX - cube.minX) + cube.minX;
+            double posY = this.worldObj.rand.nextDouble() * (cube.maxX - cube.minX) + cube.minY;
+            double posZ = this.worldObj.rand.nextDouble() * (cube.maxX - cube.minX) + cube.minZ;
 
-            switch (worldObj.rand.nextInt(5)) {
+            switch (this.worldObj.rand.nextInt(5)) {
                 case 0: posX = cube.maxX; break;
                 case 1: posY = cube.maxY; break;
                 case 2: posZ = cube.maxZ; break;
@@ -183,11 +183,11 @@ public class TileBlockProtector extends TileJarFillable {
             } else if ((this.aspect != null) && (this.amount > 0)) {
                 ta = this.aspect;
             } else if ((ic.getEssentiaAmount(ForgeDirection.UP) > 0) &&
-                    (ic.getSuctionAmount(ForgeDirection.UP) < getSuctionAmount(ForgeDirection.DOWN)) && (getSuctionAmount(ForgeDirection.DOWN) >= ic.getMinimumSuction())) {
+                    (ic.getSuctionAmount(ForgeDirection.UP) < this.getSuctionAmount(ForgeDirection.DOWN)) && (this.getSuctionAmount(ForgeDirection.DOWN) >= ic.getMinimumSuction())) {
                 ta = ic.getEssentiaType(ForgeDirection.UP);
             }
-            if ((ta != null) && (ic.getSuctionAmount(ForgeDirection.UP) < getSuctionAmount(ForgeDirection.DOWN))) {
-                addToContainer(ta, ic.takeEssentia(ta, 1, ForgeDirection.UP));
+            if ((ta != null) && (ic.getSuctionAmount(ForgeDirection.UP) < this.getSuctionAmount(ForgeDirection.DOWN))) {
+                this.addToContainer(ta, ic.takeEssentia(ta, 1, ForgeDirection.UP));
             }
         }
     }
@@ -220,28 +220,28 @@ public class TileBlockProtector extends TileJarFillable {
     private static List<TileBlockProtector> protectors = new ArrayList<TileBlockProtector>();
 
     public static boolean isSpotProtected(World world, final double x, final double y, final double z) {
-        return isSpotProtected(world, new ProtectionHelper() {
+        return TileBlockProtector.isSpotProtected(world, new ProtectionHelper() {
             @Override
             public boolean checkProtection(TileBlockProtector tile) {
-                return isSpotProtected(tile, x, y, z);
+                return TileBlockProtector.isSpotProtected(tile, x, y, z);
             }
         });
     }
 
     public static boolean isSpotProtected(World world, final Entity entity) {
-        return isSpotProtected(world, new ProtectionHelper() {
+        return TileBlockProtector.isSpotProtected(world, new ProtectionHelper() {
             @Override
             public boolean checkProtection(TileBlockProtector tile) {
-                return isSpotProtected(tile, entity);
+                return TileBlockProtector.isSpotProtected(tile, entity);
             }
         });
     }
 
     public static boolean isSpotProtected(World world, ProtectionHelper helper) {
-        for (int i = 0; i < protectors.size(); i++) {
-            TileBlockProtector protector = protectors.get(i);
+        for (int i = 0; i < TileBlockProtector.protectors.size(); i++) {
+            TileBlockProtector protector = TileBlockProtector.protectors.get(i);
             if (protector.isInvalid()) {
-                protectors.remove(i);
+                TileBlockProtector.protectors.remove(i);
                 i--;
             } else if (protector.worldObj.isRemote == world.isRemote
                     && helper.checkProtection(protector)) {
@@ -251,7 +251,7 @@ public class TileBlockProtector extends TileJarFillable {
         return false;
     }
 
-    private static interface ProtectionHelper {
+    private interface ProtectionHelper {
         boolean checkProtection(TileBlockProtector tile);
     }
 
@@ -260,11 +260,11 @@ public class TileBlockProtector extends TileJarFillable {
         if (entityAABB != null) {
             return tile.getProtectedAABB().intersectsWith(entityAABB.addCoord(entity.posX, entity.posY, entity.posZ));
         }
-        return isSpotProtected(tile, entity.posX, entity.posY, entity.posZ);
+        return TileBlockProtector.isSpotProtected(tile, entity.posX, entity.posY, entity.posZ);
     }
 
     private AxisAlignedBB getProtectedAABB() {
-        return AxisAlignedBB.getBoundingBox(xCoord - range, yCoord - range, zCoord - range, xCoord + range, yCoord + range, zCoord + range);
+        return AxisAlignedBB.getBoundingBox(this.xCoord - this.range, this.yCoord - this.range, this.zCoord - this.range, this.xCoord + this.range, this.yCoord + this.range, this.zCoord + this.range);
     }
 
     private static boolean isSpotProtected(TileBlockProtector tile, double x, double y, double z) {

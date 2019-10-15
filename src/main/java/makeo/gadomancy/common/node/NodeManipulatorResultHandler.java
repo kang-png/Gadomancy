@@ -27,13 +27,13 @@ public class NodeManipulatorResultHandler {
     private NodeManipulatorResultHandler() {}
 
     public static NodeManipulatorResult getRandomResult(World world, INode affectedNode, int percChance) {
-        return getRandomResult(world, world.rand, affectedNode, percChance);
+        return NodeManipulatorResultHandler.getRandomResult(world, world.rand, affectedNode, percChance);
     }
 
     public static NodeManipulatorResult getRandomResult(World world, Random random, INode affectedNode, int percChance) {
         int resultPositiveChance = Math.round(((float) percChance) / 5F);
         List<NodeManipulatorResult> localResults = new ArrayList<NodeManipulatorResult>();
-        for(NodeManipulatorResult result : possibleResults) {
+        for(NodeManipulatorResult result : NodeManipulatorResultHandler.possibleResults) {
             if(result.canAffect(world, affectedNode)) {
                 ResultType type = result.getResultType();
                 if(type == ResultType.NEGATIVE) {
@@ -48,7 +48,7 @@ public class NodeManipulatorResultHandler {
     }
 
     public static void combine(AspectList containingList, Aspect a, Aspect b, int addition) {
-        if(!canCombine(a, b)) return;
+        if(!NodeManipulatorResultHandler.canCombine(a, b)) return;
         Aspect combination = NodeManipulatorResultHandler.getCombination(a, b);
         int lowerAmount;
         if(containingList.getAmount(a) < containingList.getAmount(b)) {
@@ -62,7 +62,7 @@ public class NodeManipulatorResultHandler {
     }
 
     public static boolean canCombine(Aspect a, Aspect b) {
-        return getCombination(a, b) != null;
+        return NodeManipulatorResultHandler.getCombination(a, b) != null;
     }
 
     public static Aspect getCombination(Aspect a, Aspect b) {
@@ -78,26 +78,26 @@ public class NodeManipulatorResultHandler {
 
     static {
         //Aspect combination pair
-        possibleResults.add(RegisteredManipulations.resultBreakCompounds);
-        possibleResults.add(RegisteredManipulations.resultCombineAspects);
+        NodeManipulatorResultHandler.possibleResults.add(RegisteredManipulations.resultBreakCompounds);
+        NodeManipulatorResultHandler.possibleResults.add(RegisteredManipulations.resultCombineAspects);
 
         //Modifier pair
-        possibleResults.add(RegisteredManipulations.resultIncreaseModifier);
-        possibleResults.add(RegisteredManipulations.resultDecreaseModifier);
+        NodeManipulatorResultHandler.possibleResults.add(RegisteredManipulations.resultIncreaseModifier);
+        NodeManipulatorResultHandler.possibleResults.add(RegisteredManipulations.resultDecreaseModifier);
 
         //Switch node Type
-        possibleResults.add(RegisteredManipulations.resultSwitchType);
+        NodeManipulatorResultHandler.possibleResults.add(RegisteredManipulations.resultSwitchType);
 
         if(ModConfig.enableAdditionalNodeTypes) {
             //Almighty Growing
-            possibleResults.add(RegisteredManipulations.resultApplyGrowing);
+            NodeManipulatorResultHandler.possibleResults.add(RegisteredManipulations.resultApplyGrowing);
         }
 
         //Let the node gain primals
-        possibleResults.add(RegisteredManipulations.resultGainPrimal);
+        NodeManipulatorResultHandler.possibleResults.add(RegisteredManipulations.resultGainPrimal);
     }
 
-    public static enum ResultType {
+    public enum ResultType {
 
         POSITIVE,
         NEGATIVE,

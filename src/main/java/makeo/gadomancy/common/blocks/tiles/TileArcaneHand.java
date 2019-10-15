@@ -29,47 +29,47 @@ import java.util.UUID;
  * <p/>
  * Created by makeo @ 16.12.2015 11:50
  */
-public class TileArcaneHand extends SynchronizedTileEntity implements IInventory, ISidedInventory {
+public class TileArcaneHand extends SynchronizedTileEntity implements ISidedInventory {
     private GuiFakePlayer fakePlayer;
 
-    private ItemInWorldManager im = null;
-    private Container container = null;
-    private List<Slot> slots = null;
+    private ItemInWorldManager im;
+    private Container container;
+    private List<Slot> slots;
 
     @Override
     public void updateEntity() {
-        if(im == null) {
-            updateConnection();
+        if(this.im == null) {
+            this.updateConnection();
         }
     }
 
     public void updateConnection() {
-        container = null;
-        slots = null;
+        this.container = null;
+        this.slots = null;
 
-        if (im == null) {
-            im = new ItemInWorldManager(worldObj);
+        if (this.im == null) {
+            this.im = new ItemInWorldManager(this.worldObj);
         } else {
-            im.setWorld((WorldServer) worldObj);
+            this.im.setWorld((WorldServer) this.worldObj);
         }
 
-        TileEntity tile = getWorldObj().getTileEntity(xCoord, yCoord - 1, zCoord);
-        if (tile != null && worldObj instanceof WorldServer) {
-            if(fakePlayer == null) {
-                fakePlayer = new GuiFakePlayer(this);
+        TileEntity tile = this.getWorldObj().getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
+        if (tile != null && this.worldObj instanceof WorldServer) {
+            if(this.fakePlayer == null) {
+                this.fakePlayer = new GuiFakePlayer(this);
             }
 
-            fakePlayer.posX = xCoord;
-            fakePlayer.posY = yCoord;
-            fakePlayer.posZ = zCoord;
+            this.fakePlayer.posX = this.xCoord;
+            this.fakePlayer.posY = this.yCoord;
+            this.fakePlayer.posZ = this.zCoord;
 
-            this.im.activateBlockOrUseItem(fakePlayer, worldObj, null, xCoord, yCoord - 1, zCoord, ForgeDirection.UP.ordinal(), 0.5F, 0.5F, 0.5F);
+            this.im.activateBlockOrUseItem(this.fakePlayer, this.worldObj, null, this.xCoord, this.yCoord - 1, this.zCoord, ForgeDirection.UP.ordinal(), 0.5F, 0.5F, 0.5F);
         }
     }
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        if(container == null) {
+        if(this.container == null) {
             return new int[0];
         }
 
@@ -82,12 +82,12 @@ public class TileArcaneHand extends SynchronizedTileEntity implements IInventory
 
     @Override
     public boolean canInsertItem(int slot, ItemStack stack, int side) {
-        return slots.get(slot).isItemValid(stack);
+        return this.slots.get(slot).isItemValid(stack);
     }
 
     @Override
     public boolean canExtractItem(int slot, ItemStack stack, int side) {
-        return slots.get(slot).canTakeStack(fakePlayer);
+        return this.slots.get(slot).canTakeStack(this.fakePlayer);
     }
 
     private static class GuiFakePlayer extends AdvancedFakePlayer {
@@ -100,12 +100,12 @@ public class TileArcaneHand extends SynchronizedTileEntity implements IInventory
 
         public void openGui(Object mod, int modGuiId, World world, int x, int y, int z) {
             ModContainer mc = FMLCommonHandler.instance().findContainerFor(mod);
-            tile.container = NetworkRegistry.INSTANCE.getRemoteGuiContainer(mc, this, modGuiId, world, x, y, z);
-            if (tile.container != null) {
-                tile.slots = new ArrayList<Slot>();
-                for (Slot slot : (List<Slot>) tile.container.inventorySlots) {
-                    if(!inventory.equals(slot.inventory)) {
-                        tile.slots.add(slot);
+            this.tile.container = NetworkRegistry.INSTANCE.getRemoteGuiContainer(mc, this, modGuiId, world, x, y, z);
+            if (this.tile.container != null) {
+                this.tile.slots = new ArrayList<Slot>();
+                for (Slot slot : (List<Slot>) this.tile.container.inventorySlots) {
+                    if(!this.inventory.equals(slot.inventory)) {
+                        this.tile.slots.add(slot);
                     }
                 }
             }
@@ -124,17 +124,17 @@ public class TileArcaneHand extends SynchronizedTileEntity implements IInventory
 
     @Override
     public int getSizeInventory() {
-        return slots.size();
+        return this.slots.size();
     }
 
     @Override
     public ItemStack getStackInSlot(int slot) {
-        return slots.get(slot).getStack();
+        return this.slots.get(slot).getStack();
     }
 
     @Override
     public ItemStack decrStackSize(int slot, int amount) {
-        Slot s = slots.get(slot);
+        Slot s = this.slots.get(slot);
 
         if (s.getStack() != null) {
             ItemStack itemstack;
@@ -164,7 +164,7 @@ public class TileArcaneHand extends SynchronizedTileEntity implements IInventory
 
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack) {
-        slots.get(slot).putStack(stack);
+        this.slots.get(slot).putStack(stack);
     }
 
     @Override

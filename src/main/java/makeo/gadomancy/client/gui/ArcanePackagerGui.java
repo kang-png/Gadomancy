@@ -1,7 +1,6 @@
 package makeo.gadomancy.client.gui;
 
 import makeo.gadomancy.common.blocks.tiles.TileArcanePackager;
-import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.containers.ContainerArcanePackager;
 import makeo.gadomancy.common.utils.ColorHelper;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
@@ -41,30 +40,30 @@ public class ArcanePackagerGui extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
-        if(tile.isInvalid()) {
+        if(this.tile.isInvalid()) {
             Minecraft.getMinecraft().displayGuiScreen(null);
             return;
         }
 
         GL11.glEnable(GL11.GL_BLEND);
-        this.mc.renderEngine.bindTexture(TEXTURE);
+        this.mc.renderEngine.bindTexture(ArcanePackagerGui.TEXTURE);
 
         GL11.glColor3f(1, 1, 1);
 
-        if(tile.progress > 0) {
-            drawTexturedModalRect(89, 67, 210, 0, tile.progress, 9);
+        if(this.tile.progress > 0) {
+            this.drawTexturedModalRect(89, 67, 210, 0, this.tile.progress, 9);
         }
 
-        if(tile.useEssentia) {
-            drawTexturedModalRect(91, 97, 249, 10, 8, 8);
+        if(this.tile.useEssentia) {
+            this.drawTexturedModalRect(91, 97, 249, 10, 8, 8);
         }
 
-        if(tile.autoStart) {
-            drawTexturedModalRect(91, 110, 249, 10, 8, 8);
+        if(this.tile.autoStart) {
+            this.drawTexturedModalRect(91, 110, 249, 10, 8, 8);
         }
 
-        if(tile.disguise) {
-            drawTexturedModalRect(91, 123, 249, 10, 8, 8);
+        if(this.tile.disguise) {
+            this.drawTexturedModalRect(91, 123, 249, 10, 8, 8);
         }
 
         GL11.glDisable(GL11.GL_BLEND);
@@ -72,18 +71,18 @@ public class ArcanePackagerGui extends GuiContainer {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float mouseX, int mouseZ, int par3) {
-        this.mc.renderEngine.bindTexture(TEXTURE);
+        this.mc.renderEngine.bindTexture(ArcanePackagerGui.TEXTURE);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(GL11.GL_BLEND);
         int var5 = (this.width - this.xSize) / 2;
         int var6 = (this.height - this.ySize) / 2;
-        drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
+        this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
 
-        drawString(100, 98, "gadomancy.info.ArcanePackager.useEssentia", tile.useEssentia ? Color.WHITE : Color.GRAY);
+        this.drawString(100, 98, "gadomancy.info.ArcanePackager.useEssentia", this.tile.useEssentia ? Color.WHITE : Color.GRAY);
 
-        drawString(100, 111, "gadomancy.info.ArcanePackager.autoStart", tile.autoStart ? Color.WHITE : Color.GRAY);
+        this.drawString(100, 111, "gadomancy.info.ArcanePackager.autoStart", this.tile.autoStart ? Color.WHITE : Color.GRAY);
 
-        drawString(100, 124, "gadomancy.info.ArcanePackager.disguisePackage", tile.disguise ? Color.WHITE : Color.GRAY);
+        this.drawString(100, 124, "gadomancy.info.ArcanePackager.disguisePackage", this.tile.disguise ? Color.WHITE : Color.GRAY);
 
         GL11.glDisable(GL11.GL_BLEND);
     }
@@ -107,22 +106,22 @@ public class ArcanePackagerGui extends GuiContainer {
         int checkY = y - baseY - 97;
 
         if(checkX >= 0 && checkX < 8 && checkY >= 0 && checkY < 8) {
-            tile.useEssentia = !tile.useEssentia;
-            this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, tile.useEssentia ? 0 : 1);
+            this.tile.useEssentia = !this.tile.useEssentia;
+            this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, this.tile.useEssentia ? 0 : 1);
         }
 
         checkY = y - baseY - 110;
 
         if(checkX >= 0 && checkX < 8 && checkY >= 0 && checkY < 8) {
-            tile.autoStart = !tile.autoStart;
-            this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, tile.autoStart ? 2 : 3);
+            this.tile.autoStart = !this.tile.autoStart;
+            this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, this.tile.autoStart ? 2 : 3);
         }
 
         checkY = y - baseY - 123;
 
         if(checkX >= 0 && checkX < 8 && checkY >= 0 && checkY < 8) {
-            tile.disguise = !tile.disguise;
-            this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, tile.disguise ? 4 : 5);
+            this.tile.disguise = !this.tile.disguise;
+            this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, this.tile.disguise ? 4 : 5);
         }
     }
 

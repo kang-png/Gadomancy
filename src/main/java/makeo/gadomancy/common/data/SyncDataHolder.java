@@ -23,46 +23,46 @@ public class SyncDataHolder {
     private static Map<String, AbstractData> clientData = new HashMap<String, AbstractData>();
 
     private static List<String> dirtyData = new ArrayList<String>();
-    private static byte providerCounter = 0;
+    private static byte providerCounter;
 
     public static void register(AbstractData.AbstractDataProvider<? extends AbstractData> provider) {
         AbstractData.Registry.register(provider);
         AbstractData ad = provider.provideNewInstance();
         ad.setProviderId(provider.getProviderId());
-        serverData.put(provider.getKey(), ad);
+        SyncDataHolder.serverData.put(provider.getKey(), ad);
         ad = provider.provideNewInstance();
         ad.setProviderId(provider.getProviderId());
-        clientData.put(provider.getKey(), ad);
+        SyncDataHolder.clientData.put(provider.getKey(), ad);
     }
 
     public static byte allocateNewId() {
-        byte pId = providerCounter;
-        providerCounter++;
+        byte pId = SyncDataHolder.providerCounter;
+        SyncDataHolder.providerCounter++;
         return pId;
     }
 
     public static <T extends AbstractData> T getDataServer(String key) {
-        return (T) serverData.get(key);
+        return (T) SyncDataHolder.serverData.get(key);
     }
 
     public static <T extends AbstractData> T getDataClient(String key) {
-        return (T) clientData.get(key);
+        return (T) SyncDataHolder.clientData.get(key);
     }
 
     public static void markForUpdate(String key) {
-        if(!dirtyData.contains(key)) {
-            dirtyData.add(key);
+        if(!SyncDataHolder.dirtyData.contains(key)) {
+            SyncDataHolder.dirtyData.add(key);
         }
     }
 
     public static void syncAllDataTo(EntityPlayer player) {
-        PacketSyncData dataSync = new PacketSyncData(serverData, true);
+        PacketSyncData dataSync = new PacketSyncData(SyncDataHolder.serverData, true);
         PacketHandler.INSTANCE.sendTo(dataSync, (net.minecraft.entity.player.EntityPlayerMP) player);
     }
 
     public static void receiveServerPacket(Map<String, AbstractData> data) {
         for(String key : data.keySet()) {
-            AbstractData dat = clientData.get(key);
+            AbstractData dat = SyncDataHolder.clientData.get(key);
             if(dat != null) {
                 dat.handleIncomingData(data.get(key));
             }
@@ -70,22 +70,22 @@ public class SyncDataHolder {
     }
 
     public static void doNecessaryUpdates() {
-        if(dirtyData.isEmpty()) return;
+        if(SyncDataHolder.dirtyData.isEmpty()) return;
         Map<String, AbstractData> pktData = new HashMap<String, AbstractData>();
-        for(String s : dirtyData) {
-            AbstractData d = getDataServer(s);
+        for(String s : SyncDataHolder.dirtyData) {
+            AbstractData d = SyncDataHolder.getDataServer(s);
             if(d.needsUpdate()) {
                 pktData.put(s, d);
             }
         }
-        dirtyData.clear();
+        SyncDataHolder.dirtyData.clear();
         PacketSyncData dataSync = new PacketSyncData(pktData, false);
         PacketHandler.INSTANCE.sendToAll(dataSync);
     }
 
     public static void initialize() {
-        register(new DataFamiliar.Provider("FamiliarData"));
-        register(new DataAchromatic.Provider("AchromaticData"));
+        SyncDataHolder.register(new DataFamiliar.Provider("FamiliarData"));
+        SyncDataHolder.register(new DataAchromatic.Provider("AchromaticData"));
     }
 
 }

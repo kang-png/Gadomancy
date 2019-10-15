@@ -14,11 +14,7 @@ import makeo.gadomancy.common.entities.EntityItemElement;
 import makeo.gadomancy.common.items.ItemElement;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
-import makeo.gadomancy.common.utils.GolemEnumHelper;
-import makeo.gadomancy.common.utils.ItemUtils;
-import makeo.gadomancy.common.utils.MiscUtils;
-import makeo.gadomancy.common.utils.NBTHelper;
-import makeo.gadomancy.common.utils.WandHandler;
+import makeo.gadomancy.common.utils.*;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -42,12 +38,13 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.tiles.TileJarFillable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -64,9 +61,9 @@ public class EventHandlerWorld {
     public void on(EntityJoinWorldEvent event) {
         if(!event.world.isRemote && event.entity instanceof EntityItem) {
             ItemStack stack = ((EntityItem) event.entity).getEntityItem();
-            if(isDisguised(stack)) {
+            if(this.isDisguised(stack)) {
                 long time = event.world.getTotalWorldTime() + event.world.rand.nextInt(60) + 40;
-                trackedItems.put((EntityItem) event.entity, time);
+                this.trackedItems.put((EntityItem) event.entity, time);
             }
             if(stack.getItem() instanceof ItemElement && !(event.entity instanceof EntityItemElement)) {
                 event.setCanceled(true);
@@ -86,13 +83,13 @@ public class EventHandlerWorld {
     public void on(TickEvent.WorldTickEvent event) {
         if(event.phase == TickEvent.Phase.START && !event.world.isRemote && event.world.getTotalWorldTime() % 10 == 0) {
 
-            Iterator<Map.Entry<EntityItem, Long>> iterator = trackedItems.entrySet().iterator();
+            Iterator<Map.Entry<EntityItem, Long>> iterator = this.trackedItems.entrySet().iterator();
             while(iterator.hasNext()) {
                 Map.Entry<EntityItem, Long> entry = iterator.next();
                 EntityItem entity = entry.getKey();
 
                 if(event.world == entity.worldObj) {
-                    if(entity.isDead || !isDisguised(entity.getEntityItem())) {
+                    if(entity.isDead || !this.isDisguised(entity.getEntityItem())) {
                         iterator.remove();
                         continue;
                     }
@@ -133,13 +130,13 @@ public class EventHandlerWorld {
         return NBTHelper.hasPersistentData(stack) && NBTHelper.getPersistentData(stack).hasKey("disguise");
     }
 
-    private int serverTick = 0;
+    private int serverTick;
     private Entity lastUpdated;
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void on(LivingEvent.LivingUpdateEvent e) {
         if(!e.entityLiving.worldObj.isRemote) {
-            lastUpdated = e.entityLiving;
+            this.lastUpdated = e.entityLiving;
         }
     }
 
@@ -186,21 +183,21 @@ public class EventHandlerWorld {
 
         TCMazeHandler.scheduleTick();
         SyncDataHolder.doNecessaryUpdates();
-        serverTick++;
-        if((serverTick & 15) == 0) {
+        this.serverTick++;
+        if((this.serverTick & 15) == 0) {
             EventHandlerEntity.registeredLuxPylons.clear();
         }
     }
 
-    private Map<EntityPlayer, Integer> interacts = null;
+    private Map<EntityPlayer, Integer> interacts;
 
     @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
     public void on(BlockEvent.PlaceEvent e) {
         if (e.isCanceled()) {
-            if (interacts != null)
-                interacts.remove(e.player);
+            if (this.interacts != null)
+                this.interacts.remove(e.player);
         } else {
-            if (!e.world.isRemote && isStickyJar(e.itemInHand)) {
+            if (!e.world.isRemote && this.isStickyJar(e.itemInHand)) {
                 TileEntity parent = e.world.getTileEntity(e.x, e.y, e.z);
                 if (parent instanceof TileJarFillable) {
                     int metadata = e.world.getBlockMetadata(e.x, e.y, e.z);
@@ -208,7 +205,7 @@ public class EventHandlerWorld {
 
                     TileEntity tile = e.world.getTileEntity(e.x, e.y, e.z);
                     if (tile instanceof TileStickyJar) {
-                        Integer sideHit = interacts.get(e.player);
+                        Integer sideHit = this.interacts.get(e.player);
                         ((TileStickyJar) tile).init((TileJarFillable) parent, e.placedBlock, metadata,
                                 ForgeDirection.getOrientation(sideHit == null ? 1 : sideHit).getOpposite());
                         RegisteredBlocks.blockStickyJar.onBlockPlacedBy(e.world, e.x, e.y, e.z, e.player, e.itemInHand);
@@ -244,11 +241,11 @@ public class EventHandlerWorld {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void on(PlayerInteractEvent e) {
         if (!e.world.isRemote && e.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK
-                && isStickyJar(e.entityPlayer.getHeldItem())) {
-            if (interacts == null) {
-                interacts = new HashMap<EntityPlayer, Integer>();
+                && this.isStickyJar(e.entityPlayer.getHeldItem())) {
+            if (this.interacts == null) {
+                this.interacts = new HashMap<EntityPlayer, Integer>();
             }
-            interacts.put(e.entityPlayer, e.face);
+            this.interacts.put(e.entityPlayer, e.face);
         }
 
         if (e.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
@@ -299,7 +296,7 @@ public class EventHandlerWorld {
         public boolean getGameRuleBooleanValue() {
             boolean mobGriefing = super.getGameRuleBooleanValue();
             if(mobGriefing) {
-                Entity lastUpdated = handler.lastUpdated;
+                Entity lastUpdated = this.handler.lastUpdated;
                 if(lastUpdated != null) {
                     StackTraceElement[] elements = Thread.currentThread().getStackTrace();
                     for(StackTraceElement element : elements) {

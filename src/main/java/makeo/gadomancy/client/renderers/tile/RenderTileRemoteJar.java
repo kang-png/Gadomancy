@@ -40,8 +40,8 @@ public class RenderTileRemoteJar extends TileJarRenderer {
 
         renderer.func_147497_a(this.field_147501_a);
 
-        if(field_147501_a.field_147553_e != null) {
-            renderer.renderTileEntityAt(createFakeTile(tile, BlockRemoteJar.getJarTile(tile).networkId != null), 0, 0, 0, partialTicks);
+        if(this.field_147501_a.field_147553_e != null) {
+            renderer.renderTileEntityAt(this.createFakeTile(tile, BlockRemoteJar.getJarTile(tile).networkId != null), 0, 0, 0, partialTicks);
         }
 
         GL11.glPopMatrix();
@@ -51,7 +51,7 @@ public class RenderTileRemoteJar extends TileJarRenderer {
         GL11.glTranslatef(0.5f, 0.002f, 0.5f);
         GL11.glRotatef(180, 0, 0, 1);
 
-        bindTexture(OVERLAY_TEXTURE);
+        this.bindTexture(RenderTileRemoteJar.OVERLAY_TEXTURE);
 
         GL11.glScalef(1.002f, 1f, 1.002f);
 
@@ -59,7 +59,7 @@ public class RenderTileRemoteJar extends TileJarRenderer {
         GL11.glTranslatef(0, -1.5f, 0);
         //GL11.glRotatef(180, 1f, 0, 0);
 
-        MODEL_JAR_POT.render(null, 0f, 0f, 0f, 0f, 0f, 0.0625f);
+        RenderTileRemoteJar.MODEL_JAR_POT.render(null, 0f, 0f, 0f, 0f, 0f, 0.0625f);
 
         GL11.glPopMatrix();
         GL11.glPopAttrib();

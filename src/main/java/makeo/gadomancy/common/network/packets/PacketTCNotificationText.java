@@ -49,22 +49,22 @@ public class PacketTCNotificationText implements IMessage, IMessageHandler<Packe
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        color = buf.readInt();
+        this.color = buf.readInt();
 
-        text = StringHelper.readFromBuffer(buf);
+        this.text = StringHelper.readFromBuffer(buf);
 
-        additionalInfo = StringHelper.readFromBuffer(buf);
+        this.additionalInfo = StringHelper.readFromBuffer(buf);
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        buf.writeInt(color);
+        buf.writeInt(this.color);
 
-        StringHelper.writeToBuffer(buf, text);
+        StringHelper.writeToBuffer(buf, this.text);
 
-        if(additionalInfo == null) additionalInfo = "";
+        if(this.additionalInfo == null) this.additionalInfo = "";
 
-        StringHelper.writeToBuffer(buf, additionalInfo);
+        StringHelper.writeToBuffer(buf, this.additionalInfo);
     }
 
     @Override

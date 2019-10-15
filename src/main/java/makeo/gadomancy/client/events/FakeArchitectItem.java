@@ -26,7 +26,7 @@ public class FakeArchitectItem extends Item implements IArchitect {
 
     @Override
     public ArrayList<BlockCoordinates> getArchitectBlocks(ItemStack stack, World world, int x, int y, int z, int side, EntityPlayer player) {
-        return coords;
+        return this.coords;
     }
 
     @Override

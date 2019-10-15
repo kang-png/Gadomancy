@@ -33,16 +33,13 @@ public class ItemNodeRenderer implements IItemRenderer {
     }
 
     public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType type, ItemStack item, IItemRenderer.ItemRendererHelper helper) {
-        if (helper == IItemRenderer.ItemRendererHelper.EQUIPPED_BLOCK) {
-            return false;
-        }
-        return true;
+        return helper != ItemRendererHelper.EQUIPPED_BLOCK;
     }
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         //Gadomancy: Redirect.
-        renderNodeItem(type, item, data);
+        ItemNodeRenderer.renderNodeItem(type, item, data);
     }
 
     //Gadomancy: Renamed to access it static from another class and added aspects, nodeType and nodeModifier as params
@@ -60,18 +57,18 @@ public class ItemNodeRenderer implements IItemRenderer {
         GL11.glPushMatrix();
         GL11.glTranslated(0.5D, 0.5D, 0.5D);
         GL11.glScaled(2.0D, 2.0D, 2.0D);
-        renderItemNode(tjf);
+        ItemNodeRenderer.renderItemNode(tjf);
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
-        renderItemNode(tjf);
+        ItemNodeRenderer.renderItemNode(tjf);
         GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
-        renderItemNode(tjf);
+        ItemNodeRenderer.renderItemNode(tjf);
         GL11.glPopMatrix();
         GL11.glEnable(32826);
     }
 
 
     public static void renderNodeItem(IItemRenderer.ItemRenderType type, ItemStack item, Object... data) {
-        renderNodeItem(type, item, aspects, NodeType.NORMAL, null, data);
+        ItemNodeRenderer.renderNodeItem(type, item, ItemNodeRenderer.aspects, NodeType.NORMAL, null, data);
     }
 
     private static AspectList aspects = new AspectList().add(Aspect.AIR, 40).add(Aspect.FIRE, 40).add(Aspect.EARTH, 40).add(Aspect.WATER, 40);

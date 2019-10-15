@@ -32,22 +32,22 @@ import java.util.List;
 public class EventHandlerRedirect {
     private static final ItemStack ITEM_GOGGLES = new ItemStack(ConfigItems.itemGoggles);
 
-    private static boolean hasChanged = false;
+    private static boolean hasChanged;
     private static ItemStack oldItem;
     public static void addGoggles(Entity entity) {
-        if(entity instanceof EntityPlayer && hasGoggles((EntityPlayer) entity)) {
+        if(entity instanceof EntityPlayer && EventHandlerRedirect.hasGoggles((EntityPlayer) entity)) {
             ItemStack[] armorInv = ((EntityPlayer)entity).inventory.armorInventory;
-            oldItem = armorInv[3];
-            hasChanged = true;
-            armorInv[3] = ITEM_GOGGLES;
+            EventHandlerRedirect.oldItem = armorInv[3];
+            EventHandlerRedirect.hasChanged = true;
+            armorInv[3] = EventHandlerRedirect.ITEM_GOGGLES;
         }
     }
 
     public static void removeGoggles(Entity entity) {
-        if(hasChanged && entity instanceof EntityPlayer) {
-            ((EntityPlayer)entity).inventory.armorInventory[3] = oldItem;
-            oldItem = null;
-            hasChanged = false;
+        if(EventHandlerRedirect.hasChanged && entity instanceof EntityPlayer) {
+            ((EntityPlayer)entity).inventory.armorInventory[3] = EventHandlerRedirect.oldItem;
+            EventHandlerRedirect.oldItem = null;
+            EventHandlerRedirect.hasChanged = false;
         }
     }
 
@@ -59,20 +59,20 @@ public class EventHandlerRedirect {
 
     @SideOnly(Side.CLIENT)
     public static void preNodeRender(TileEntity tile) {
-        addGoggles(Minecraft.getMinecraft().renderViewEntity);
+        EventHandlerRedirect.addGoggles(Minecraft.getMinecraft().renderViewEntity);
     }
 
     @SideOnly(Side.CLIENT)
     public static void postNodeRender(TileEntity tile) {
-        removeGoggles(Minecraft.getMinecraft().renderViewEntity);
+        EventHandlerRedirect.removeGoggles(Minecraft.getMinecraft().renderViewEntity);
     }
 
     public static void preBlockHighlight(DrawBlockHighlightEvent event) {
-        addGoggles(event.player);
+        EventHandlerRedirect.addGoggles(event.player);
     }
 
     public static void postBlockHighlight(DrawBlockHighlightEvent event) {
-        removeGoggles(event.player);
+        EventHandlerRedirect.removeGoggles(event.player);
     }
 
     public static int getAdditionalVisDiscount(EntityPlayer player, Aspect aspect, int currentTotalDiscount) {
@@ -83,7 +83,7 @@ public class EventHandlerRedirect {
     }
 
     public static int getFortuneLevel(EntityLivingBase entity) {
-        int fortuneLevel = getRealEnchantmentLevel(Enchantment.fortune.effectId, entity.getHeldItem());
+        int fortuneLevel = EventHandlerRedirect.getRealEnchantmentLevel(Enchantment.fortune.effectId, entity.getHeldItem());
         if(entity.isPotionActive(RegisteredPotions.POTION_LUCK)) {
             int lvl = entity.getActivePotionEffect(RegisteredPotions.POTION_LUCK).getAmplifier() + 1; //Amplifier 0-indexed
             fortuneLevel += lvl;
@@ -92,7 +92,7 @@ public class EventHandlerRedirect {
     }
 
     public static int getLootingLevel(EntityLivingBase entity) {
-        int lootingLevel = getRealEnchantmentLevel(Enchantment.looting.effectId, entity.getHeldItem());
+        int lootingLevel = EventHandlerRedirect.getRealEnchantmentLevel(Enchantment.looting.effectId, entity.getHeldItem());
         if(entity.isPotionActive(RegisteredPotions.POTION_LUCK)) {
             int lvl = entity.getActivePotionEffect(RegisteredPotions.POTION_LUCK).getAmplifier() + 1; //Amplifier 0-indexed
             lootingLevel += lvl;
@@ -116,14 +116,14 @@ public class EventHandlerRedirect {
 
         if(possiblePlayer != null) {
             if(enchantmentId == Enchantment.fortune.effectId) {
-                return getFortuneLevel(possiblePlayer);
+                return EventHandlerRedirect.getFortuneLevel(possiblePlayer);
             } else if(enchantmentId == Enchantment.looting.effectId) {
-                return getLootingLevel(possiblePlayer);
+                return EventHandlerRedirect.getLootingLevel(possiblePlayer);
             }
 
         }
 
-        return getRealEnchantmentLevel(enchantmentId, stack);
+        return EventHandlerRedirect.getRealEnchantmentLevel(enchantmentId, stack);
     }
 
     private static int getRealEnchantmentLevel(int enchantmentId, ItemStack stack) {

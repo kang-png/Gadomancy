@@ -50,23 +50,23 @@ public class BlockExtendedNodeJarRenderer implements ISimpleBlockRenderingHandle
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
         IIcon i1 = ((BlockJar) ConfigBlocks.blockJar).iconJarTop;
         IIcon i2 = ((BlockJar) ConfigBlocks.blockJar).iconJarSide;
-        block.setBlockBounds(W3, 0.0F, W3, W13, W12, W13);
+        block.setBlockBounds(BlockExtendedNodeJarRenderer.W3, 0.0F, BlockExtendedNodeJarRenderer.W3, BlockExtendedNodeJarRenderer.W13, BlockExtendedNodeJarRenderer.W12, BlockExtendedNodeJarRenderer.W13);
         renderer.setRenderBoundsFromBlock(block);
-        drawFaces(renderer, block, ((BlockJar) ConfigBlocks.blockJar).iconJarBottom, i1, i2, i2, i2, i2, true);
-        block.setBlockBounds(W5, W12, W5, W11, W14, W11);
+        BlockExtendedNodeJarRenderer.drawFaces(renderer, block, ((BlockJar) ConfigBlocks.blockJar).iconJarBottom, i1, i2, i2, i2, i2, true);
+        block.setBlockBounds(BlockExtendedNodeJarRenderer.W5, BlockExtendedNodeJarRenderer.W12, BlockExtendedNodeJarRenderer.W5, BlockExtendedNodeJarRenderer.W11, BlockExtendedNodeJarRenderer.W14, BlockExtendedNodeJarRenderer.W11);
         renderer.setRenderBoundsFromBlock(block);
-        drawFaces(renderer, block, ((BlockJar) ConfigBlocks.blockJar).iconJarBottom, i1, i2, i2, i2, i2, true);
+        BlockExtendedNodeJarRenderer.drawFaces(renderer, block, ((BlockJar) ConfigBlocks.blockJar).iconJarBottom, i1, i2, i2, i2, i2, true);
         GL11.glPopMatrix();
     }
 
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-        int bb = setBrightness(world, x, y, z, block);
+        int bb = this.setBrightness(world, x, y, z, block);
         int metadata = world.getBlockMetadata(x, y, z);
-        block.setBlockBounds(W3, 0.0F, W3, W13, W12, W13);
+        block.setBlockBounds(BlockExtendedNodeJarRenderer.W3, 0.0F, BlockExtendedNodeJarRenderer.W3, BlockExtendedNodeJarRenderer.W13, BlockExtendedNodeJarRenderer.W12, BlockExtendedNodeJarRenderer.W13);
         renderer.setRenderBoundsFromBlock(block);
         renderer.renderStandardBlock(block, x, y, z);
-        block.setBlockBounds(W5, W12, W5, W11, W14, W11);
+        block.setBlockBounds(BlockExtendedNodeJarRenderer.W5, BlockExtendedNodeJarRenderer.W12, BlockExtendedNodeJarRenderer.W5, BlockExtendedNodeJarRenderer.W11, BlockExtendedNodeJarRenderer.W14, BlockExtendedNodeJarRenderer.W11);
         renderer.setRenderBoundsFromBlock(block);
         renderer.renderStandardBlock(block, x, y, z);
 

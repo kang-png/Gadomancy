@@ -28,11 +28,11 @@ import java.util.List;
 public class ItemAuraCore extends Item {
 
     public ItemAuraCore() {
-        setUnlocalizedName("ItemAuraCore");
-        setMaxDamage(0);
-        setMaxStackSize(1);
-        setHasSubtypes(true);
-        setCreativeTab(RegisteredItems.creativeTab);
+        this.setUnlocalizedName("ItemAuraCore");
+        this.setMaxDamage(0);
+        this.setMaxStackSize(1);
+        this.setHasSubtypes(true);
+        this.setCreativeTab(RegisteredItems.creativeTab);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ItemAuraCore extends Item {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean flag) {
-        AuraCoreType type = getCoreType(stack);
+        AuraCoreType type = this.getCoreType(stack);
         if(type != null) {
             list.add(EnumChatFormatting.GRAY + type.getLocalizedName());
         }
@@ -52,7 +52,7 @@ public class ItemAuraCore extends Item {
     public void getSubItems(Item item, CreativeTabs tab, List list) {
         for (int i = 0; i < AuraCoreType.values().length; i++) {
             ItemStack stack = new ItemStack(item);
-            setCoreType(stack, AuraCoreType.values()[i]);
+            this.setCoreType(stack, AuraCoreType.values()[i]);
             list.add(stack);
         }
     }
@@ -63,9 +63,9 @@ public class ItemAuraCore extends Item {
 
     @Override
     public void registerIcons(IIconRegister ir) {
-        coreBlankIcon = ir.registerIcon(Gadomancy.MODID + ":core_core_blank");
-        coreIcon = ir.registerIcon(Gadomancy.MODID + ":core_core");
-        borderIcon = ir.registerIcon(Gadomancy.MODID + ":core_border");
+        this.coreBlankIcon = ir.registerIcon(Gadomancy.MODID + ":core_core_blank");
+        this.coreIcon = ir.registerIcon(Gadomancy.MODID + ":core_core");
+        this.borderIcon = ir.registerIcon(Gadomancy.MODID + ":core_border");
     }
 
     @Override
@@ -74,10 +74,10 @@ public class ItemAuraCore extends Item {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        if(getCoreType(stack) == AuraCoreType.BLANK && pass == 0) {
-            return coreBlankIcon;
+        if(this.getCoreType(stack) == AuraCoreType.BLANK && pass == 0) {
+            return this.coreBlankIcon;
         }
-        return pass == 0 ? coreIcon : borderIcon;
+        return pass == 0 ? this.coreIcon : this.borderIcon;
     }
 
     @Override
@@ -88,7 +88,7 @@ public class ItemAuraCore extends Item {
     @Override
     public int getColorFromItemStack(ItemStack stack, int pass) {
         if(pass == 0) {
-            AuraCoreType type = getCoreType(stack);
+            AuraCoreType type = this.getCoreType(stack);
             if(type.isAspect()) {
                 if(type.ordinal() < 7) {
                     return BlockCustomOreItem.colors[type.ordinal()];
@@ -109,11 +109,11 @@ public class ItemAuraCore extends Item {
     }
 
     public boolean isBlank(ItemStack itemStack) {
-        AuraCoreType type = getCoreType(itemStack);
+        AuraCoreType type = this.getCoreType(itemStack);
         return type == AuraCoreType.BLANK || type == null;
     }
 
-    public static enum AuraCoreType {
+    public enum AuraCoreType {
         BLANK("blank"),
 
         AIR(Aspect.AIR),
@@ -144,20 +144,20 @@ public class ItemAuraCore extends Item {
         }
 
         public boolean isUnused() {
-            return unused;
+            return this.unused;
         }
 
         public boolean isAspect() {
-            return aspect != null;
+            return this.aspect != null;
         }
 
         public Aspect getAspect() {
-            return aspect;
+            return this.aspect;
         }
 
         public String getLocalizedName() {
-            String name = isAspect() ? aspect.getName() : StatCollector.translateToLocal("gadomancy.auracore." + unlocName);
-            if(unused) {
+            String name = this.isAspect() ? this.aspect.getName() : StatCollector.translateToLocal("gadomancy.auracore." + this.unlocName);
+            if(this.unused) {
                 name += " " + StatCollector.translateToLocal("gadomancy.auracore.unused");
             }
             return name;

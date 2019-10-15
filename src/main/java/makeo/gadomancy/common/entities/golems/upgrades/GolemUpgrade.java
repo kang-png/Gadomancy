@@ -22,11 +22,11 @@ public abstract class GolemUpgrade<T extends NBTBase> {
     public abstract String getName();
 
     public String getTagName() {
-        return getName();
+        return this.getName();
     }
 
     public String getText() {
-        return Gadomancy.MODID.toLowerCase() + ".upgrades." + getName().toLowerCase();
+        return Gadomancy.MODID.toLowerCase() + ".upgrades." + this.getName().toLowerCase();
     }
 
     public ItemStack getUpgradeItem() {
@@ -38,69 +38,69 @@ public abstract class GolemUpgrade<T extends NBTBase> {
     }
 
     protected T getUpgradeData(ItemStack stack) {
-        return getUpgradeData(NBTHelper.getPersistentData(stack));
+        return this.getUpgradeData(NBTHelper.getPersistentData(stack));
     }
 
     protected T getUpgradeData(EntityGolemBase golem) {
-        return getUpgradeData(NBTHelper.getPersistentData(golem));
+        return this.getUpgradeData(NBTHelper.getPersistentData(golem));
     }
 
     protected T getUpgradeData(NBTTagCompound compound) {
-        if(compound.hasKey(UPGRADE_COMPOUND)) {
-            NBTTagCompound upgrades = compound.getCompoundTag(UPGRADE_COMPOUND);
+        if(compound.hasKey(GolemUpgrade.UPGRADE_COMPOUND)) {
+            NBTTagCompound upgrades = compound.getCompoundTag(GolemUpgrade.UPGRADE_COMPOUND);
             try {
-                return (T) upgrades.getTag(getTagName());
+                return (T) upgrades.getTag(this.getTagName());
             } catch (ClassCastException ignored) {}
         }
         return null;
     }
 
     public boolean hasUpgrade(ItemStack stack) {
-        return hasUpgrade(NBTHelper.getPersistentData(stack));
+        return this.hasUpgrade(NBTHelper.getPersistentData(stack));
     }
 
     public boolean hasUpgrade(EntityGolemBase golem) {
-        return hasUpgrade(NBTHelper.getPersistentData(golem));
+        return this.hasUpgrade(NBTHelper.getPersistentData(golem));
     }
 
     protected boolean hasUpgrade(NBTTagCompound compound) {
-        return getUpgradeData(compound) != null;
+        return this.getUpgradeData(compound) != null;
     }
 
     public void addUpgrade(ItemStack stack) {
-        addUpgrade(NBTHelper.getPersistentData(stack));
+        this.addUpgrade(NBTHelper.getPersistentData(stack));
     }
 
     public void addUpgrade(EntityGolemBase golem) {
-        addUpgrade(NBTHelper.getPersistentData(golem));
+        this.addUpgrade(NBTHelper.getPersistentData(golem));
     }
 
     protected void addUpgrade(NBTTagCompound compound) {
-        NBTTagCompound upgrades = compound.getCompoundTag(UPGRADE_COMPOUND);
-        if(!compound.hasKey(UPGRADE_COMPOUND)) {
-            compound.setTag(UPGRADE_COMPOUND, upgrades);
+        NBTTagCompound upgrades = compound.getCompoundTag(GolemUpgrade.UPGRADE_COMPOUND);
+        if(!compound.hasKey(GolemUpgrade.UPGRADE_COMPOUND)) {
+            compound.setTag(GolemUpgrade.UPGRADE_COMPOUND, upgrades);
         }
 
-        NBTBase data = createUpgradeData();
-        upgrades.setTag(getTagName(), data == null ? new NBTTagByte((byte)1) : data);
+        NBTBase data = this.createUpgradeData();
+        upgrades.setTag(this.getTagName(), data == null ? new NBTTagByte((byte)1) : data);
     }
 
     public void removeUpgrade(ItemStack stack) {
-        removeUpgrade(NBTHelper.getPersistentData(stack));
+        this.removeUpgrade(NBTHelper.getPersistentData(stack));
     }
 
     public void removeUpgrade(EntityGolemBase golem) {
-        removeUpgrade(NBTHelper.getPersistentData(golem));
+        this.removeUpgrade(NBTHelper.getPersistentData(golem));
     }
 
     protected void removeUpgrade(NBTTagCompound compound) {
-        if(compound.hasKey(UPGRADE_COMPOUND)) {
-            compound.removeTag(getTagName());
+        if(compound.hasKey(GolemUpgrade.UPGRADE_COMPOUND)) {
+            compound.removeTag(this.getTagName());
         }
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof GolemUpgrade && ((GolemUpgrade) obj).getName().equals(getName());
+        return obj instanceof GolemUpgrade && ((GolemUpgrade) obj).getName().equals(this.getName());
     }
 }

@@ -32,15 +32,15 @@ public class ItemRenderRemoteJar extends ItemRenderTileEntity<TileRemoteJar> {
 
         AspectList aspects = ((ItemJarFilled)ConfigItems.itemJarFilled).getAspects(stack);
         if(aspects != null) {
-            tile.aspect = aspects.getAspects()[0];
-            tile.amount = aspects.getAmount(tile.aspect);
+            this.tile.aspect = aspects.getAspects()[0];
+            this.tile.amount = aspects.getAmount(this.tile.aspect);
         } else {
-            tile.aspect = null;
-            tile.amount = 0;
+            this.tile.aspect = null;
+            this.tile.amount = 0;
         }
 
         if(stack.hasTagCompound()) {
-            tile.networkId = NBTHelper.getUUID(stack.getTagCompound(), "networkId");
+            this.tile.networkId = NBTHelper.getUUID(stack.getTagCompound(), "networkId");
         }
 
         super.renderItem(type, stack, data);

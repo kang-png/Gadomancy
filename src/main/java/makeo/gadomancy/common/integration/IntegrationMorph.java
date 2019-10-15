@@ -19,7 +19,7 @@ import java.lang.reflect.Method;
 public class IntegrationMorph extends IntegrationMod {
     private static final Injector INJECTOR = new Injector();
 
-    private Method methodHasMorph = null;
+    private Method methodHasMorph;
 
     @Override
     public String getModId() {
@@ -37,9 +37,9 @@ public class IntegrationMorph extends IntegrationMod {
 
     @SideOnly(Side.CLIENT)
     public boolean isMorphed() {
-        if(methodHasMorph != null) {
+        if(this.methodHasMorph != null) {
             EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-            Boolean result = INJECTOR.invokeMethod(methodHasMorph, player.getCommandSenderName(), true);
+            Boolean result = IntegrationMorph.INJECTOR.invokeMethod(this.methodHasMorph, player.getCommandSenderName(), true);
             return result != null ? result : false;
         }
         return false;

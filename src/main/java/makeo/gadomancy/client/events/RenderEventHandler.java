@@ -47,6 +47,7 @@ import thaumcraft.common.items.relics.ItemThaumometer;
 import thaumcraft.common.items.wands.ItemWandCasting;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
 
@@ -62,7 +63,7 @@ public class RenderEventHandler {
     private static final REHWandHandler WAND_HANDLER = new REHWandHandler();
     private static final FakeArchitectItem ARCHITECT_ITEM = new FakeArchitectItem();
 
-    private Object oldGolemblurb = null;
+    private Object oldGolemblurb;
     private int blurbId;
 
     @SubscribeEvent
@@ -73,9 +74,9 @@ public class RenderEventHandler {
             if(golem != null) {
                 AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(golem);
                 if(core != null) {
-                    blurbId = core.getBaseCore();
-                    String key = "golemblurb." + blurbId + ".text";
-                    oldGolemblurb = ResourceReloadListener.languageList.get(key);
+                    this.blurbId = core.getBaseCore();
+                    String key = "golemblurb." + this.blurbId + ".text";
+                    this.oldGolemblurb = ResourceReloadListener.languageList.get(key);
                     ResourceReloadListener.languageList.put(key, StatCollector.translateToLocal(core.getUnlocalizedGuiText()));
                 }
             }
@@ -84,10 +85,10 @@ public class RenderEventHandler {
 
     @SubscribeEvent
     public void on(GuiScreenEvent.DrawScreenEvent.Post e) {
-        if(oldGolemblurb != null) {
-            String key = "golemblurb." + blurbId + ".text";
-            ResourceReloadListener.languageList.put(key, oldGolemblurb);
-            oldGolemblurb = null;
+        if(this.oldGolemblurb != null) {
+            String key = "golemblurb." + this.blurbId + ".text";
+            ResourceReloadListener.languageList.put(key, this.oldGolemblurb);
+            this.oldGolemblurb = null;
         }
     }
 
@@ -111,10 +112,10 @@ public class RenderEventHandler {
                     }
                     coords.add(new BlockCoordinates(e.target.blockX + dir.offsetX, e.target.blockY + dir.offsetY, e.target.blockZ + dir.offsetZ));
 
-                    ARCHITECT_ITEM.setCoords(coords);
+                    RenderEventHandler.ARCHITECT_ITEM.setCoords(coords);
 
                     GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-                    WAND_HANDLER.handleArchitectOverlay(new ItemStack(ARCHITECT_ITEM), e, e.player.ticksExisted, e.target);
+                    RenderEventHandler.WAND_HANDLER.handleArchitectOverlay(new ItemStack(RenderEventHandler.ARCHITECT_ITEM), e, e.player.ticksExisted, e.target);
                     GL11.glPopAttrib();
                 }
             }
@@ -155,15 +156,15 @@ public class RenderEventHandler {
         MultiTickEffectDispatcher.notifyRenderTick(Minecraft.getMinecraft().theWorld, event.partialTicks);
     }
 
-    private EntityPlayer current = null;
-    private ItemStack[] armor = null;
+    private EntityPlayer current;
+    private ItemStack[] armor;
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void renderEntityPre(RenderLivingEvent.Pre event) {
         if(event.entity instanceof EntityPlayer) {
             EntityPlayer p = (EntityPlayer) event.entity;
             if(((DataAchromatic)SyncDataHolder.getDataClient("AchromaticData")).isAchromatic((EntityPlayer) event.entity)) {
-                current = p;
+                this.current = p;
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.15F);
                 GL11.glDepthMask(false);
                 GL11.glEnable(GL11.GL_BLEND);
@@ -171,14 +172,14 @@ public class RenderEventHandler {
                 GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
             }
 
-            armor = p.inventory.armorInventory;
-            p.inventory.armorInventory = new ItemStack[armor.length];
-            System.arraycopy(armor, 0, p.inventory.armorInventory, 0, armor.length);
+            this.armor = p.inventory.armorInventory;
+            p.inventory.armorInventory = new ItemStack[this.armor.length];
+            System.arraycopy(this.armor, 0, p.inventory.armorInventory, 0, this.armor.length);
 
             boolean changed = false;
-            for(int i = 0; i < armor.length; i++) {
-                if(armor[i] != null && NBTHelper.hasPersistentData(armor[i])) {
-                    NBTTagCompound compound = NBTHelper.getPersistentData(armor[i]);
+            for(int i = 0; i < this.armor.length; i++) {
+                if(this.armor[i] != null && NBTHelper.hasPersistentData(this.armor[i])) {
+                    NBTTagCompound compound = NBTHelper.getPersistentData(this.armor[i]);
                     if(compound.hasKey("disguise")) {
                         NBTBase base = compound.getTag("disguise");
                         if(base instanceof NBTTagCompound) {
@@ -192,8 +193,8 @@ public class RenderEventHandler {
             }
 
             if(!changed) {
-                p.inventory.armorInventory = armor;
-                armor = null;
+                p.inventory.armorInventory = this.armor;
+                this.armor = null;
             }
         }
     }
@@ -202,15 +203,15 @@ public class RenderEventHandler {
     public void renderPost(RenderLivingEvent.Post event) {
         if(event.entity instanceof EntityPlayer) {
             EntityPlayer p = (EntityPlayer) event.entity;
-            if(armor != null) {
-                p.inventory.armorInventory = armor;
+            if(this.armor != null) {
+                p.inventory.armorInventory = this.armor;
             }
         }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
     public void onSetArmor(RenderPlayerEvent.SetArmorModel event) {
-        if(event.entityPlayer == current) {
+        if(event.entityPlayer == this.current) {
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
             GL11.glDepthMask(true);
@@ -218,7 +219,7 @@ public class RenderEventHandler {
     }
 
     static {
-        ResourceLocation mod = new ResourceLocation(Gadomancy.MODID.toLowerCase() + new String(new byte[] {58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 111, 100, 101, 108, 115, 47, 109, 111, 100, 101, 108, 65, 115, 115, 101, 99, 46, 111, 98, 106}, Charset.forName("UTF-8")));
+        ResourceLocation mod = new ResourceLocation(Gadomancy.MODID.toLowerCase() + new String(new byte[] {58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 111, 100, 101, 108, 115, 47, 109, 111, 100, 101, 108, 65, 115, 115, 101, 99, 46, 111, 98, 106}, StandardCharsets.UTF_8));
         IModelCustom buf;
         try {
             buf = new WavefrontObject("gadomancy:wRender", new GZIPInputStream(Minecraft.getMinecraft().getResourceManager().getResource(mod).getInputStream()));
@@ -230,19 +231,19 @@ public class RenderEventHandler {
     }
 
     private static final IModelCustom obj;
-    private static final ResourceLocation tex = new ResourceLocation(new String(new byte[] {103, 97, 100, 111, 109, 97, 110, 99, 121, 58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 105, 115, 99, 47, 116, 101, 120, 87, 46, 112, 110, 103}, Charset.forName("UTF-8")));
+    private static final ResourceLocation tex = new ResourceLocation(new String(new byte[] {103, 97, 100, 111, 109, 97, 110, 99, 121, 58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 105, 115, 99, 47, 116, 101, 120, 87, 46, 112, 110, 103}, StandardCharsets.UTF_8));
     private static int dList = -1;
     @SubscribeEvent
     public void onRender(RenderPlayerEvent.Specials.Post event) {
         if(event.entityPlayer == null) return;
-        if(obj == null) return;
+        if(RenderEventHandler.obj == null) return;
         if(!CommonProxy.serverOnlineState) return;
         if(!MiscUtils.isMisunderstood(event.entityPlayer)) return;
 
         GL11.glColor4f(1f, 1f, 1f, 1f);
 
         GL11.glPushMatrix();
-        Minecraft.getMinecraft().renderEngine.bindTexture(tex);
+        Minecraft.getMinecraft().renderEngine.bindTexture(RenderEventHandler.tex);
         boolean f = event.entityPlayer.capabilities.isFlying;
         double ma = f ? 15 : 5;
         double r = (ma * (Math.abs((ClientHandler.ticks % 80) - 40) / 40D)) +
@@ -250,22 +251,22 @@ public class RenderEventHandler {
         GL11.glScaled(0.07, 0.07, 0.07);
         GL11.glRotatef(180, 0, 0, 1);
         GL11.glTranslated(0, -12.7, 0.7 - (((float) (r / ma)) * (f ? 0.5D : 0.2D)));
-        if(dList == -1) {
-            dList = GLAllocation.generateDisplayLists(2);
-            GL11.glNewList(dList, GL11.GL_COMPILE);
-            obj.renderOnly("wR");
+        if(RenderEventHandler.dList == -1) {
+            RenderEventHandler.dList = GLAllocation.generateDisplayLists(2);
+            GL11.glNewList(RenderEventHandler.dList, GL11.GL_COMPILE);
+            RenderEventHandler.obj.renderOnly("wR");
             GL11.glEndList();
-            GL11.glNewList(dList + 1, GL11.GL_COMPILE);
-            obj.renderOnly("wL");
+            GL11.glNewList(RenderEventHandler.dList + 1, GL11.GL_COMPILE);
+            RenderEventHandler.obj.renderOnly("wL");
             GL11.glEndList();
         }
         GL11.glPushMatrix();
         GL11.glRotated(20D + r, 0, -1, 0);
-        GL11.glCallList(dList);
+        GL11.glCallList(RenderEventHandler.dList);
         GL11.glPopMatrix();
         GL11.glPushMatrix();
         GL11.glRotated(20D + r, 0, 1, 0);
-        GL11.glCallList(dList + 1);
+        GL11.glCallList(RenderEventHandler.dList + 1);
         GL11.glPopMatrix();
         GL11.glPopMatrix();
     }

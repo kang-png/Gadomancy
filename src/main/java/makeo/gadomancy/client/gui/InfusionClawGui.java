@@ -33,29 +33,29 @@ public class InfusionClawGui extends GuiContainer {
 
     public InfusionClawGui(InventoryPlayer playerInv, IInventory clawInv) {
         super(new ContainerInfusionClaw(playerInv, clawInv));
-        container = (ContainerInfusionClaw) super.inventorySlots;
+        this.container = (ContainerInfusionClaw) super.inventorySlots;
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
-        if(((TileInfusionClaw)container.clawInv).isInvalid()) {
+        if(((TileInfusionClaw) this.container.clawInv).isInvalid()) {
             Minecraft.getMinecraft().displayGuiScreen(null);
             return;
         }
 
-        ItemStack cursorStack = container.playerInv.getItemStack();
-        if(((TileInfusionClaw)container.clawInv).isRunning() || (cursorStack != null && cursorStack.stackSize > 0 && !container.clawInv.isItemValidForSlot(0, cursorStack))) {
+        ItemStack cursorStack = this.container.playerInv.getItemStack();
+        if(((TileInfusionClaw) this.container.clawInv).isRunning() || (cursorStack != null && cursorStack.stackSize > 0 && !this.container.clawInv.isItemValidForSlot(0, cursorStack))) {
             GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
 
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glColor4f(1, 1, 1, 0.5f);
 
-            this.mc.renderEngine.bindTexture(BACKGROUND);
+            this.mc.renderEngine.bindTexture(InfusionClawGui.BACKGROUND);
             float t = this.zLevel;
             this.zLevel = 200.0F;
             GL11.glEnable(3042);
-            drawTexturedModalRect(80, 32, 240, 0, 16, 16);
+            this.drawTexturedModalRect(80, 32, 240, 0, 16, 16);
             GL11.glDisable(3042);
             this.zLevel = t;
 
@@ -67,20 +67,20 @@ public class InfusionClawGui extends GuiContainer {
     protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
         GL11.glEnable(GL11.GL_BLEND);
 
-        this.mc.renderEngine.bindTexture(BACKGROUND);
+        this.mc.renderEngine.bindTexture(InfusionClawGui.BACKGROUND);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int var5 = (this.width - this.xSize) / 2;
         int var6 = (this.height - this.ySize) / 2;
-        drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
+        this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
 
         int baseX = this.guiLeft;
         int baseY = this.guiTop;
 
-        drawTexturedModalRect(baseX + 114, baseY + 36, 244, 19, 8, 8);
+        this.drawTexturedModalRect(baseX + 114, baseY + 36, 244, 19, 8, 8);
 
-        boolean isLocked = ((TileInfusionClaw)container.clawInv).isLocked();
+        boolean isLocked = ((TileInfusionClaw) this.container.clawInv).isLocked();
         if(isLocked) {
-            drawTexturedModalRect(baseX + 114, baseY + 36, 244, 27, 8, 8);
+            this.drawTexturedModalRect(baseX + 114, baseY + 36, 244, 27, 8, 8);
         }
 
         GL11.glPushMatrix();
@@ -103,7 +103,7 @@ public class InfusionClawGui extends GuiContainer {
         int checkY = y - baseY - 36;
 
         if(checkX >= 0 && checkX < 8 && checkY >= 0 && checkY < 8) {
-            TileInfusionClaw tile = ((TileInfusionClaw)container.clawInv);
+            TileInfusionClaw tile = ((TileInfusionClaw) this.container.clawInv);
             this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, tile.isLocked() ? 0 : 1);
             tile.setIsLocked(!tile.isLocked());
         }

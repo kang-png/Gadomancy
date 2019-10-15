@@ -14,7 +14,7 @@ public class TileManipulatorPillar extends TileInfusionPillar {
 
     public void setOrientation(byte orientation) {
         this.orientation = orientation;
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        markDirty();
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        this.markDirty();
     }
 }

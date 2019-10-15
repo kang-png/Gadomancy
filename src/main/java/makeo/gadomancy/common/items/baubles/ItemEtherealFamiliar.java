@@ -37,42 +37,42 @@ import java.util.Set;
 public class ItemEtherealFamiliar extends Item implements IBauble {
 
     public ItemEtherealFamiliar() {
-        setUnlocalizedName("ItemEtherealFamiliar");
-        setMaxStackSize(1);
-        setFull3D();
-        setCreativeTab(RegisteredItems.creativeTab);
+        this.setUnlocalizedName("ItemEtherealFamiliar");
+        this.setMaxStackSize(1);
+        this.setFull3D();
+        this.setCreativeTab(RegisteredItems.creativeTab);
 
-        setTextureName(Gadomancy.MODID + ":category_icon");
+        this.setTextureName(Gadomancy.MODID + ":category_icon");
     }
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
         ItemStack stack = new ItemStack(item);
-        setFamiliarAspect(stack, Aspect.MAGIC);
+        ItemEtherealFamiliar.setFamiliarAspect(stack, Aspect.MAGIC);
         list.add(stack);
 
         stack = new ItemStack(item);
-        setFamiliarAspect(stack, Aspect.FIRE);
-        addAugmentUnsafe(stack, FamiliarAugment.FIRE, 3);
-        addAugmentUnsafe(stack, FamiliarAugment.DAMAGE_INCREASE, 3);
+        ItemEtherealFamiliar.setFamiliarAspect(stack, Aspect.FIRE);
+        ItemEtherealFamiliar.addAugmentUnsafe(stack, FamiliarAugment.FIRE, 3);
+        ItemEtherealFamiliar.addAugmentUnsafe(stack, FamiliarAugment.DAMAGE_INCREASE, 3);
         list.add(stack);
 
         stack = new ItemStack(item);
-        setFamiliarAspect(stack, Aspect.WEATHER);
-        addAugmentUnsafe(stack, FamiliarAugment.SHOCK, 3);
-        addAugmentUnsafe(stack, FamiliarAugment.ATTACK_SPEED, 2);
+        ItemEtherealFamiliar.setFamiliarAspect(stack, Aspect.WEATHER);
+        ItemEtherealFamiliar.addAugmentUnsafe(stack, FamiliarAugment.SHOCK, 3);
+        ItemEtherealFamiliar.addAugmentUnsafe(stack, FamiliarAugment.ATTACK_SPEED, 2);
         list.add(stack);
 
         stack = new ItemStack(item);
-        setFamiliarAspect(stack, Aspect.POISON);
-        addAugmentUnsafe(stack, FamiliarAugment.POISON, 3);
-        addAugmentUnsafe(stack, FamiliarAugment.ATTACK_SPEED, 2);
+        ItemEtherealFamiliar.setFamiliarAspect(stack, Aspect.POISON);
+        ItemEtherealFamiliar.addAugmentUnsafe(stack, FamiliarAugment.POISON, 3);
+        ItemEtherealFamiliar.addAugmentUnsafe(stack, FamiliarAugment.ATTACK_SPEED, 2);
         list.add(stack);
 
         stack = new ItemStack(item);
-        setFamiliarAspect(stack, Aspect.WEAPON);
-        addAugmentUnsafe(stack, FamiliarAugment.WEAKNESS, 3);
-        addAugmentUnsafe(stack, FamiliarAugment.RANGE_INCREASE, 2);
+        ItemEtherealFamiliar.setFamiliarAspect(stack, Aspect.WEAPON);
+        ItemEtherealFamiliar.addAugmentUnsafe(stack, FamiliarAugment.WEAKNESS, 3);
+        ItemEtherealFamiliar.addAugmentUnsafe(stack, FamiliarAugment.RANGE_INCREASE, 2);
         list.add(stack);
     }
 
@@ -80,11 +80,11 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
     public void addInformation(ItemStack stack, EntityPlayer player, List lore, boolean flag) {
         List<String> newLore = new ArrayList<String>();
 
-        if(hasFamiliarAspect(stack)) {
-            newLore.add(EnumChatFormatting.GRAY + getFamiliarAspect(stack).getName());
+        if(ItemEtherealFamiliar.hasFamiliarAspect(stack)) {
+            newLore.add(EnumChatFormatting.GRAY + ItemEtherealFamiliar.getFamiliarAspect(stack).getName());
         }
 
-        List<FamiliarAugment.FamiliarAugmentPair> augments = getAugments(stack);
+        List<FamiliarAugment.FamiliarAugmentPair> augments = ItemEtherealFamiliar.getAugments(stack);
         for (FamiliarAugment.FamiliarAugmentPair pair : augments) {
             newLore.add(EnumChatFormatting.GRAY + pair.augment.getLocalizedName() + " " + MiscUtils.toRomanNumeral(pair.level));
         }
@@ -108,7 +108,7 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
     }
 
     public static boolean hasFamiliarAspect(ItemStack stack) {
-        return getFamiliarAspect(stack) != null;
+        return ItemEtherealFamiliar.getFamiliarAspect(stack) != null;
     }
 
     public static void setFamiliarAspect(ItemStack stack, Aspect aspect) {
@@ -124,7 +124,7 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
     }
 
     public static boolean hasAugment(ItemStack stack, FamiliarAugment augment) {
-        List<FamiliarAugment.FamiliarAugmentPair> pairs = getAugments(stack);
+        List<FamiliarAugment.FamiliarAugmentPair> pairs = ItemEtherealFamiliar.getAugments(stack);
         for (FamiliarAugment.FamiliarAugmentPair pair : pairs) {
             if(pair.augment.equals(augment)) return true;
         }
@@ -155,11 +155,11 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
     }*/
 
     public static boolean incrementAugmentLevel(ItemStack stack, FamiliarAugment toAdd) {
-        if(!hasAugment(stack, toAdd)) {
-            return addAugmentUnsafe(stack, toAdd, 1);
+        if(!ItemEtherealFamiliar.hasAugment(stack, toAdd)) {
+            return ItemEtherealFamiliar.addAugmentUnsafe(stack, toAdd, 1);
         } else {
-            int current = getAugments(stack).getLevel(toAdd);
-            return addAugmentUnsafe(stack, toAdd, current + 1);
+            int current = ItemEtherealFamiliar.getAugments(stack).getLevel(toAdd);
+            return ItemEtherealFamiliar.addAugmentUnsafe(stack, toAdd, current + 1);
         }
     }
 
@@ -184,7 +184,7 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
         if(itemStack == null) return;
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemEtherealFamiliar) {
             DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
-            Aspect a = getFamiliarAspect(itemStack);
+            Aspect a = ItemEtherealFamiliar.getFamiliarAspect(itemStack);
             if (a != null) {
                 familiarData.equipTick(((EntityPlayer) entity).worldObj, (EntityPlayer) entity, a);
             }
@@ -196,7 +196,7 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
         if(itemStack == null) return;
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemEtherealFamiliar) {
             DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
-            Aspect a = getFamiliarAspect(itemStack);
+            Aspect a = ItemEtherealFamiliar.getFamiliarAspect(itemStack);
             if(a != null) {
                 familiarData.handleEquip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity, a);
             }
@@ -208,7 +208,7 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
         if(itemStack == null) return;
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemEtherealFamiliar) {
             DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
-            Aspect a = getFamiliarAspect(itemStack);
+            Aspect a = ItemEtherealFamiliar.getFamiliarAspect(itemStack);
             if(a != null) {
                 familiarData.handleUnequip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity, a);
             }

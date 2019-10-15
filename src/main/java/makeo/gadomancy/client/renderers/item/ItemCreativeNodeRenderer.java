@@ -24,6 +24,6 @@ public class ItemCreativeNodeRenderer extends ItemExNodeRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        makeo.gadomancy.client.renderers.item.ItemNodeRenderer.renderNodeItem(type, item, ASPECTS, NodeType.values()[item.getItemDamage()], null, data);
+        makeo.gadomancy.client.renderers.item.ItemNodeRenderer.renderNodeItem(type, item, ItemCreativeNodeRenderer.ASPECTS, NodeType.values()[item.getItemDamage()], null, data);
     }
 }

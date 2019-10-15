@@ -10,7 +10,6 @@ import makeo.gadomancy.client.util.FamiliarHandlerClient;
 import makeo.gadomancy.common.Gadomancy;
 import net.minecraft.client.Minecraft;
 
-import java.util.List;
 import java.util.Queue;
 
 /**
@@ -29,7 +28,7 @@ public class ClientHandler {
     public void onClientTick(TickEvent.ClientTickEvent event) {
         if(event.phase.equals(TickEvent.Phase.END) && !Minecraft.getMinecraft().isGamePaused()) {
             FamiliarHandlerClient.playerTickEvent();
-            ticks++;
+            ClientHandler.ticks++;
 
             EffectHandler.getInstance().tick();
         }

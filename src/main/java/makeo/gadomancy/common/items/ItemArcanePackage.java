@@ -33,7 +33,7 @@ public class ItemArcanePackage extends ItemFakeLootbag {
     private static final int MAX_PACKAGE_SIZE = 65536;
 
     public ItemArcanePackage() {
-        setUnlocalizedName("ItemArcanePackage");
+        this.setUnlocalizedName("ItemArcanePackage");
     }
 
     @Override
@@ -75,7 +75,7 @@ public class ItemArcanePackage extends ItemFakeLootbag {
             //Prevent depth of more then 2 packages
             if(item.getItem() == RegisteredItems.itemPackage
                     || item.getItem() == RegisteredItems.itemFakeLootbag) {
-                List<ItemStack> packedItems = getContents(item);
+                List<ItemStack> packedItems = this.getContents(item);
                 for(ItemStack packedItem : packedItems) {
                     if(packedItem.getItem() == RegisteredItems.itemPackage) {
                         return false;
@@ -90,7 +90,7 @@ public class ItemArcanePackage extends ItemFakeLootbag {
         try {
             byte[] data = CompressedStreamTools.compress(compound);
             //If the compound is too long it will not work to prevent lag
-            if(data.length > MAX_PACKAGE_SIZE) {
+            if(data.length > ItemArcanePackage.MAX_PACKAGE_SIZE) {
                 return false;
             }
             NBTHelper.getData(stack).setByteArray("items", data);
@@ -124,7 +124,7 @@ public class ItemArcanePackage extends ItemFakeLootbag {
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (!world.isRemote) {
-            List<ItemStack> contents = getContents(stack);
+            List<ItemStack> contents = this.getContents(stack);
             for (ItemStack content : contents) {
                 world.spawnEntityInWorld(new EntityItem(world, player.posX, player.posY, player.posZ, content));
             }

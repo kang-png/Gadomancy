@@ -14,7 +14,7 @@ public class PotionMiningLuck extends PotionCustomTexture {
 
     public PotionMiningLuck(int id) {
         super(id, false, Aspect.GREED.getColor(), Aspect.GREED.getImage());
-        setPotionName("potion.luck");
+        this.setPotionName("potion.luck");
     }
 
 }

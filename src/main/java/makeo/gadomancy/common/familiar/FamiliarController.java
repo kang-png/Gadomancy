@@ -50,7 +50,7 @@ public class FamiliarController {
     public static final double WEAKNESS_DMG_DEC = 0.3;
 
     private static final Random RAND = new Random();
-    private int tickLastEffect = 0;
+    private int tickLastEffect;
     private final EntityPlayer owningPlayer;
 
     public FamiliarController(EntityPlayer owner) {
@@ -58,12 +58,12 @@ public class FamiliarController {
     }
 
     public void tick() {
-        IInventory baubles = BaublesApi.getBaubles(owningPlayer);
+        IInventory baubles = BaublesApi.getBaubles(this.owningPlayer);
         ItemStack stack = baubles.getStackInSlot(0);
         if (stack == null || !(stack.getItem() instanceof ItemEtherealFamiliar)) return;
 
-        if (tickLastEffect > 0) {
-            tickLastEffect--;
+        if (this.tickLastEffect > 0) {
+            this.tickLastEffect--;
             return;
         }
 
@@ -71,8 +71,8 @@ public class FamiliarController {
         if (augments == null) return;
 
         if (augments.isEmpty()) {
-            doDefaultAttack();
-            tickLastEffect = AS_DELAY_DEF;
+            this.doDefaultAttack();
+            this.tickLastEffect = FamiliarController.AS_DELAY_DEF;
         } else {
             FamiliarAugment.FamiliarAugmentPair effectElement = null;
             for (FamiliarAugment.FamiliarAugmentPair pair : augments) {
@@ -107,9 +107,9 @@ public class FamiliarController {
                 }
             }
 
-            double damage = DMG_DEF + (dmgLevel != -1 ? DMG_INC * dmgLevel : 0);
-            int ticksUntilNextAttack = AS_DELAY_DEF - (attackSpeedLevel != -1 ? AS_INC * attackSpeedLevel : 0);
-            double range = RANGE_DEF + (rangeLevel != -1 ? RANGE_INC * rangeLevel : 0);
+            double damage = FamiliarController.DMG_DEF + (dmgLevel != -1 ? FamiliarController.DMG_INC * dmgLevel : 0);
+            int ticksUntilNextAttack = FamiliarController.AS_DELAY_DEF - (attackSpeedLevel != -1 ? FamiliarController.AS_INC * attackSpeedLevel : 0);
+            double range = FamiliarController.RANGE_DEF + (rangeLevel != -1 ? FamiliarController.RANGE_INC * rangeLevel : 0);
             
             if(effectElement != null) {
                 for (int i = 0; i < effectElement.level; i++) {
@@ -117,22 +117,22 @@ public class FamiliarController {
                 }
             }
 
-            if (!owningPlayer.capabilities.isCreativeMode && !consumeVisFromInventory(owningPlayer, costs, false)) {
+            if (!this.owningPlayer.capabilities.isCreativeMode && !FamiliarController.consumeVisFromInventory(this.owningPlayer, costs, false)) {
                 return;
             }
 
             if (effectElement == null) {
-                if (doEnhancedDefaultAttack(damage, range)) {
-                    tickLastEffect = ticksUntilNextAttack;
-                    if(!owningPlayer.capabilities.isCreativeMode && RAND.nextInt(3) == 0) {
-                        consumeVisFromInventory(owningPlayer, costs, true);
+                if (this.doEnhancedDefaultAttack(damage, range)) {
+                    this.tickLastEffect = ticksUntilNextAttack;
+                    if(!this.owningPlayer.capabilities.isCreativeMode && FamiliarController.RAND.nextInt(3) == 0) {
+                        FamiliarController.consumeVisFromInventory(this.owningPlayer, costs, true);
                     }
                 }
             } else {
-                if (doAttack(effectElement, damage, range)) {
-                    tickLastEffect = ticksUntilNextAttack;
-                    if(!owningPlayer.capabilities.isCreativeMode && RAND.nextInt(3) == 0) {
-                        consumeVisFromInventory(owningPlayer, costs, true);
+                if (this.doAttack(effectElement, damage, range)) {
+                    this.tickLastEffect = ticksUntilNextAttack;
+                    if(!this.owningPlayer.capabilities.isCreativeMode && FamiliarController.RAND.nextInt(3) == 0) {
+                        FamiliarController.consumeVisFromInventory(this.owningPlayer, costs, true);
                     }
                 }
             }
@@ -146,28 +146,28 @@ public class FamiliarController {
         int boltType = 6;
         if (augment.equals(FamiliarAugment.SHOCK)) {
             boltType = 1;
-            damage += effectLevel * SHOCK_DMG_INC;
+            damage += effectLevel * FamiliarController.SHOCK_DMG_INC;
         } else if (augment.equals(FamiliarAugment.FIRE)) {
             boltType = 4;
-            damage += effectLevel * FIRE_DMG_INC;
+            damage += effectLevel * FamiliarController.FIRE_DMG_INC;
         } else if (augment.equals(FamiliarAugment.POISON)) {
             boltType = 3;
-            range += effectLevel * POISON_RANGE_INC;
+            range += effectLevel * FamiliarController.POISON_RANGE_INC;
         } else if (augment.equals(FamiliarAugment.WEAKNESS)) {
             boltType = 5;
-            damage -= effectLevel * WEAKNESS_DMG_DEC;
+            damage -= effectLevel * FamiliarController.WEAKNESS_DMG_DEC;
             if (effectLevel == 3) toSelect = 3;
         }
 
-        List<EntityLivingBase> toAttack = selectEntityToAttack(range, toSelect);
+        List<EntityLivingBase> toAttack = this.selectEntityToAttack(range, toSelect);
         if (toAttack == null || toAttack.isEmpty()) return false;
         for (EntityLivingBase entity : toAttack) {
-            attack(entity, damage, boltType);
+            this.attack(entity, damage, boltType);
         }
         if (augment.equals(FamiliarAugment.SHOCK)) {
             for (EntityLivingBase entity : toAttack) {
-                if (RAND.nextBoolean()) {
-                    Vector3 vel = MiscUtils.getPositionVector(entity).subtract(MiscUtils.getPositionVector(owningPlayer))
+                if (FamiliarController.RAND.nextBoolean()) {
+                    Vector3 vel = MiscUtils.getPositionVector(entity).subtract(MiscUtils.getPositionVector(this.owningPlayer))
                             .normalize().divide(2).multiply(0.8 * effectLevel);
                     if (vel.getY() < 0) vel.setY(-vel.getY());
                     entity.motionX += vel.getX();
@@ -230,48 +230,48 @@ public class FamiliarController {
     }
 
     private boolean doEnhancedDefaultAttack(double damage, double range) {
-        List<EntityLivingBase> toAttack = selectEntityToAttack(range, 1);
+        List<EntityLivingBase> toAttack = this.selectEntityToAttack(range, 1);
         if (toAttack == null || toAttack.isEmpty()) return false;
 
-        attack(toAttack.get(0), damage, 6);
+        this.attack(toAttack.get(0), damage, 6);
         return true;
     }
 
     private boolean doDefaultAttack() {
-        List<EntityLivingBase> toAttack = selectEntityToAttack(RANGE_DEF, 1);
+        List<EntityLivingBase> toAttack = this.selectEntityToAttack(FamiliarController.RANGE_DEF, 1);
         if (toAttack == null || toAttack.isEmpty()) return false;
 
-        attack(toAttack.get(0), DMG_DEF, 6);
+        this.attack(toAttack.get(0), FamiliarController.DMG_DEF, 6);
         return true;
     }
 
     private void attack(EntityLivingBase toAttack, double damage, int boltType) {
         toAttack.attackEntityFrom(DamageSource.magic, (float) damage);
         toAttack.worldObj.playSoundEffect(toAttack.posX + 0.5, toAttack.posY + 0.5, toAttack.posZ + 0.5, "thaumcraft:zap", 0.8F, 1.0F);
-        PacketFamiliarBolt bolt = new PacketFamiliarBolt(owningPlayer.getCommandSenderName(), (float) toAttack.posX, (float) toAttack.posY, (float) toAttack.posZ, boltType, true);
-        PacketHandler.INSTANCE.sendToAllAround(bolt, new NetworkRegistry.TargetPoint(toAttack.worldObj.provider.dimensionId, owningPlayer.posX,
-                owningPlayer.posY, owningPlayer.posZ, 16));
+        PacketFamiliarBolt bolt = new PacketFamiliarBolt(this.owningPlayer.getCommandSenderName(), (float) toAttack.posX, (float) toAttack.posY, (float) toAttack.posZ, boltType, true);
+        PacketHandler.INSTANCE.sendToAllAround(bolt, new NetworkRegistry.TargetPoint(toAttack.worldObj.provider.dimensionId, this.owningPlayer.posX,
+                this.owningPlayer.posY, this.owningPlayer.posZ, 16));
     }
 
     private List<EntityLivingBase> selectEntityToAttack(double rad, int amountToSelectMax) {
-        List<EntityLivingBase> attackable = getAttackableEntities(rad);
+        List<EntityLivingBase> attackable = this.getAttackableEntities(rad);
         if (attackable.size() <= 0) return null;
         List<EntityLivingBase> entities = new ArrayList<EntityLivingBase>();
         if (attackable.size() <= amountToSelectMax) {
             entities.addAll(attackable);
         } else {
             for (int i = 0; i < amountToSelectMax; i++) {
-                entities.add(attackable.remove(RAND.nextInt(attackable.size())));
+                entities.add(attackable.remove(FamiliarController.RAND.nextInt(attackable.size())));
             }
         }
         return entities;
     }
 
     private List<EntityLivingBase> getAttackableEntities(double rad) {
-        double x = owningPlayer.posX;
-        double y = owningPlayer.posY;
-        double z = owningPlayer.posZ;
-        List<EntityLivingBase> entities = owningPlayer.worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
+        double x = this.owningPlayer.posX;
+        double y = this.owningPlayer.posY;
+        double z = this.owningPlayer.posZ;
+        List<EntityLivingBase> entities = this.owningPlayer.worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
                 AxisAlignedBB.getBoundingBox(x - 0.5, y - 0.5, z - 0.5, x + 0.5, y + 0.5, z + 0.5).expand(rad, rad, rad));
 
         Iterator<EntityLivingBase> it = entities.iterator();

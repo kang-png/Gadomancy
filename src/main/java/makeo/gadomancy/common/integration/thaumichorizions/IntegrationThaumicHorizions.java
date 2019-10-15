@@ -46,28 +46,28 @@ public class IntegrationThaumicHorizions extends IntegrationMod {
                 RenderingRegistry.registerEntityRenderingHandler(EntityGolemTH.class, new RenderAdditionalGolemTH(render.mainModel));
             }
 
-            modMatrix = Block.getBlockFromName("ThaumicHorizons:modMatrix");
+            IntegrationThaumicHorizions.modMatrix = Block.getBlockFromName("ThaumicHorizons:modMatrix");
 
             RegisteredBlocks.registerClawClickBehavior(new ClickBehavior(true) {
                 private TileVat vat;
 
                 @Override
                 public boolean isValidForBlock() {
-                    if (block == modMatrix && metadata == 0) {
-                        this.vat = ((TileVatMatrix) world.getTileEntity(x, y, z)).getVat();
-                        return vat != null;
+                    if (this.block == IntegrationThaumicHorizions.modMatrix && this.metadata == 0) {
+                        this.vat = ((TileVatMatrix) this.world.getTileEntity(this.x, this.y, this.z)).getVat();
+                        return this.vat != null;
                     }
                     return false;
                 }
 
                 @Override
                 public int getComparatorOutput() {
-                    return (vat.mode != 0 && vat.mode != 4) ? 15 : 0;
+                    return (this.vat.mode != 0 && this.vat.mode != 4) ? 15 : 0;
                 }
 
                 @Override
                 public void addInstability(int instability) {
-                    vat.instability += Math.ceil(instability * 0.5);
+                    this.vat.instability += Math.ceil(instability * 0.5);
                 }
             });
         }

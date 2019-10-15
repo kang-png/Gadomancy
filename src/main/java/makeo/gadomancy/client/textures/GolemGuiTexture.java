@@ -47,7 +47,7 @@ public class GolemGuiTexture extends BaseTexture {
         {
             IResource iresource = resourceManager.getResource(this.textureLocation);
             inputstream = iresource.getInputStream();
-            BufferedImage bufferedimage = manipulateImage(resourceManager, ImageIO.read(inputstream));
+            BufferedImage bufferedimage = this.manipulateImage(resourceManager, ImageIO.read(inputstream));
 
             boolean flag = false;
             boolean flag1 = false;
@@ -66,7 +66,7 @@ public class GolemGuiTexture extends BaseTexture {
                 }
                 catch (RuntimeException runtimeexception)
                 {
-                    LOGGER.warn("Failed reading metadata of: " + this.textureLocation, runtimeexception);
+                    GolemGuiTexture.LOGGER.warn("Failed reading metadata of: " + this.textureLocation, runtimeexception);
                 }
             }
 
@@ -86,7 +86,7 @@ public class GolemGuiTexture extends BaseTexture {
 
         List<AdditionalGolemType> types = GadomancyApi.getAdditionalGolemTypes();
 
-        int newHeight = (24*scale) * (getMaxOrdinal() + 1);
+        int newHeight = (24*scale) * (this.getMaxOrdinal() + 1);
         BufferedImage newImg = new BufferedImage(image.getWidth(), newHeight < image.getHeight() ? image.getHeight() : newHeight, image.getType());
 
         for(int x = 0; x < image.getWidth(); x++) {
@@ -98,12 +98,12 @@ public class GolemGuiTexture extends BaseTexture {
         for(AdditionalGolemType type : types) {
             try {
                 int ordinal = type.getEnumEntry().ordinal();
-                BufferedImage slotImg = loadImage(resourceManager, type.getInvSlotTexture());
+                BufferedImage slotImg = this.loadImage(resourceManager, type.getInvSlotTexture());
 
                 float slotScale = (24*scale) / (float)slotImg.getWidth();
 
                 if(slotScale > 1) {
-                    slotImg = scaleImage(slotImg, slotScale, slotScale);
+                    slotImg = this.scaleImage(slotImg, slotScale, slotScale);
                 }
 
                 for(int x = 0; x < slotImg.getWidth(); x++) {
@@ -112,7 +112,7 @@ public class GolemGuiTexture extends BaseTexture {
                     }
                 }
             } catch (IOException e) {
-                LOGGER.warn("Failed loading golem inventory slot texture of: " + type.getModId() + ":" + type.getName());
+                GolemGuiTexture.LOGGER.warn("Failed loading golem inventory slot texture of: " + type.getModId() + ":" + type.getName());
             }
         }
         return newImg;

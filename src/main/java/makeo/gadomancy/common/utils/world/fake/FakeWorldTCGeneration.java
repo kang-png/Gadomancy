@@ -38,27 +38,25 @@ public class FakeWorldTCGeneration extends FakeWorld {
     public ChunkMap chunks = new ChunkMap();
     public List<Object> bufferedEntities = new ArrayList<Object>();
     public Map<ChunkCoordinates, TileEntity> gettedTE = new HashMap<ChunkCoordinates, TileEntity>();
-    public int blockCount = 0, blockOverwriteCount = 0;
+    public int blockCount, blockOverwriteCount;
 
     @Override
     public boolean setBlock(int x, int y, int z, Block block, int meta, int flags) {
         if(block == ConfigBlocks.blockEldritchPortal) return true;
         if(block == ConfigBlocks.blockEldritch && (meta == 1 || meta == 2 || meta == 3)) return true;
 
-        blockCount++;
+        this.blockCount++;
 
         long chKey = ((long) x >> 4) | ((long) z >> 4) << 32;
-        ChunkBuffer buf = chunks.get(chKey);
+        ChunkBuffer buf = this.chunks.get(chKey);
         int keyX = (x & 15) << 7 << 4;
         int keyZ = (z & 15) << 7;
         int key = keyX | keyZ | y;
 
         if(buf.blockData[key] != null) {
-            blockOverwriteCount++;
+            this.blockOverwriteCount++;
             ChunkCoordinates cc = new ChunkCoordinates(x, y, z);
-            if(gettedTE.containsKey(cc)) {
-                gettedTE.remove(cc);
-            }
+            this.gettedTE.remove(cc);
         }
 
         /*if(block == ConfigBlocks.blockEldritchNothing) {
@@ -76,7 +74,7 @@ public class FakeWorldTCGeneration extends FakeWorld {
     @Override
     public boolean setBlockMetadataWithNotify(int x, int y, int z, int metadata, int flags) {
         long chKey = ((long) x >> 4) | ((long) z >> 4) << 32;
-        ChunkBuffer buf = chunks.get(chKey);
+        ChunkBuffer buf = this.chunks.get(chKey);
         int keyX = (x & 15) << 7 << 4;
         int keyZ = (z & 15) << 7;
         int key = keyX | keyZ | y;
@@ -88,7 +86,7 @@ public class FakeWorldTCGeneration extends FakeWorld {
     @Override
     public Block getBlock(int x, int y, int z) {
         long chKey = ((long) x >> 4) | ((long) z >> 4) << 32;
-        ChunkBuffer buf = chunks.get(chKey);
+        ChunkBuffer buf = this.chunks.get(chKey);
         int keyX = (x & 15) << 7 << 4;
         int keyZ = (z & 15) << 7;
         int key = keyX | keyZ | y;
@@ -101,7 +99,7 @@ public class FakeWorldTCGeneration extends FakeWorld {
     @Override
     public int getBlockMetadata(int x, int y, int z) {
         long chKey = ((long) x >> 4) | ((long) z >> 4) << 32;
-        ChunkBuffer buf = chunks.get(chKey);
+        ChunkBuffer buf = this.chunks.get(chKey);
         int keyX = (x & 15) << 7 << 4;
         int keyZ = (z & 15) << 7;
         int key = keyX | keyZ | y;
@@ -122,7 +120,7 @@ public class FakeWorldTCGeneration extends FakeWorld {
     @Override
     public Chunk getChunkFromChunkCoords(int x, int z) {
         long key = ((long)x) | (((long)z) << 32);
-        return new FakeChunk(this, x, z, chunks.get(key));
+        return new FakeChunk(this, x, z, this.chunks.get(key));
     }
 
     private static class FakeChunk extends Chunk {
@@ -137,7 +135,7 @@ public class FakeWorldTCGeneration extends FakeWorld {
         public void setLightValue(EnumSkyBlock type, int x, int y, int z, int light) {
             if(type == EnumSkyBlock.Block) {
                 int key = ((x & 15) << 4 | (z & 15)) << 7 | y;
-                buf.lightData[key] = light;
+                this.buf.lightData[key] = light;
             }
         }
     }
@@ -145,7 +143,7 @@ public class FakeWorldTCGeneration extends FakeWorld {
     @Override
     public int getSavedLightValue(EnumSkyBlock type, int x, int y, int z) {
         if(type == EnumSkyBlock.Block) {
-            ChunkBuffer buf = chunks.get(((long) x >> 4) | ((long) z >> 4) << 32);
+            ChunkBuffer buf = this.chunks.get(((long) x >> 4) | ((long) z >> 4) << 32);
 
             int keyX = (x & 15) << 7 << 4;
             int keyZ = (z & 15) << 7;
@@ -157,12 +155,12 @@ public class FakeWorldTCGeneration extends FakeWorld {
 
     @Override
     public boolean isAirBlock(int x, int y, int z) {
-        return getBlock(x, y, z) == Blocks.air;
+        return this.getBlock(x, y, z) == Blocks.air;
     }
 
     @Override
     public boolean isSideSolid(int x, int y, int z, ForgeDirection side) {
-        return getBlock(x, y, z).isSideSolid(this, x, y, z, side);
+        return this.getBlock(x, y, z).isSideSolid(this, x, y, z, side);
     }
 
     @Override
@@ -172,10 +170,10 @@ public class FakeWorldTCGeneration extends FakeWorld {
 
     @Override
     public TileEntity getTileEntity(int x, int y, int z) {
-        TileEntity te = getBlock(x, y, z).createTileEntity(null, getBlockMetadata(x, y, z));
+        TileEntity te = this.getBlock(x, y, z).createTileEntity(null, this.getBlockMetadata(x, y, z));
         if(te == null) return null;
         ChunkCoordinates cc = new ChunkCoordinates(x, y, z);
-        if(!gettedTE.containsKey(cc)) gettedTE.put(cc, te);
+        if(!this.gettedTE.containsKey(cc)) this.gettedTE.put(cc, te);
         te.setWorldObj(this);
         te.xCoord = x;
         te.yCoord = y;
@@ -192,9 +190,9 @@ public class FakeWorldTCGeneration extends FakeWorld {
     @Override
     public boolean spawnEntityInWorld(Entity entity) {
         if(entity instanceof EntityPermanentItem) {
-            bufferedEntities.add(new EntityPermItem(entity.posX, entity.posY, entity.posZ, ((EntityPermanentItem) entity).getEntityItem()));
+            this.bufferedEntities.add(new EntityPermItem(entity.posX, entity.posY, entity.posZ, ((EntityPermanentItem) entity).getEntityItem()));
         } else if(entity instanceof EntityEldritchGuardian) {
-            bufferedEntities.add(new EntityGuardianBuf(((EntityEldritchGuardian) entity).getHomePosition(), entity.posX, entity.posY, entity.posZ, ((EntityEldritchGuardian) entity).func_110174_bM()));
+            this.bufferedEntities.add(new EntityGuardianBuf(((EntityEldritchGuardian) entity).getHomePosition(), entity.posX, entity.posY, entity.posZ, ((EntityEldritchGuardian) entity).func_110174_bM()));
         }
         return true;
     }
@@ -254,22 +252,22 @@ public class FakeWorldTCGeneration extends FakeWorld {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (o == null || this.getClass() != o.getClass()) return false;
             ChunkBuffer that = (ChunkBuffer) o;
-            return key == that.key;
+            return this.key == that.key;
         }
 
         @Override
         public int hashCode() {
-            return (int) (key ^ (key >>> 32));
+            return (int) (this.key ^ (this.key >>> 32));
         }
     }
 
     public static class ChunkMap extends HashMap<Long, ChunkBuffer> {
         @Override
         public ChunkBuffer get(Object key) {
-            if(!containsKey(key)) {
-                put((Long) key, new ChunkBuffer((Long) key));
+            if(!this.containsKey(key)) {
+                this.put((Long) key, new ChunkBuffer((Long) key));
             }
             return super.get(key);
         }
@@ -279,9 +277,9 @@ public class FakeWorldTCGeneration extends FakeWorld {
         private static TCFakeWorldProvider instance;
 
         static {
-            instance = new TCFakeWorldProvider();
-            instance.dimensionId = ModConfig.dimOuterId;
-            instance.hasNoSky = true;
+            TCFakeWorldProvider.instance = new TCFakeWorldProvider();
+            TCFakeWorldProvider.instance.dimensionId = ModConfig.dimOuterId;
+            TCFakeWorldProvider.instance.hasNoSky = true;
         }
 
         @Override

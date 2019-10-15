@@ -24,18 +24,18 @@ public class AIUncheckedDartAttack extends AIDartAttack {
 
     @Override
     public boolean shouldExecute() {
-        EntityLivingBase target = golem.getAttackTarget();
+        EntityLivingBase target = this.golem.getAttackTarget();
         if (target == null) {
             return false;
         }
 
-        double ra = golem.getDistanceSq(target.posX, target.boundingBox.minY, target.posZ);
+        double ra = this.golem.getDistanceSq(target.posX, target.boundingBox.minY, target.posZ);
         if (ra < 9.0D) {
             return false;
         }
 
-        INJECTOR.setObject(this);
-        INJECTOR.setField("attackTarget", target);
+        AIUncheckedDartAttack.INJECTOR.setObject(this);
+        AIUncheckedDartAttack.INJECTOR.setField("attackTarget", target);
 
         return true;
 

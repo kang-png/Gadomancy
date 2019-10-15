@@ -29,12 +29,12 @@ public class SilverwoodGolemType extends AdditionalGolemType {
     private IIcon icon;
     @Override
     public void registerIcons(IIconRegister ir) {
-        icon = ir.registerIcon(Gadomancy.MODID + ":golem_silverwood");
+        this.icon = ir.registerIcon(Gadomancy.MODID + ":golem_silverwood");
     }
 
     @Override
     public IIcon getIcon(ItemStack stack, int pass) {
-        return icon;
+        return this.icon;
     }
 
     @Override

@@ -36,7 +36,7 @@ public abstract class BlockRenderingHandler implements ISimpleBlockRenderingHand
     }
 
     protected void renderFace(ForgeDirection side, RenderBlocks renderer, Block block, int x, int y, int z, IIcon icon) {
-        renderFace(side.ordinal(), renderer, block, x, y, z, icon);
+        this.renderFace(side.ordinal(), renderer, block, x, y, z, icon);
     }
 
     /*protected void renderFaceHollow(int side, RenderBlocks renderer, Block block, int x, int y, int z, IIcon icon,

@@ -45,12 +45,12 @@ public class DeprecationItemPaybacks {
         int auram = 44;
         int magic = 51;
         int other = 37;
-        ItemStack phials = getPhialStack(Aspect.AURA, auram);
+        ItemStack phials = DeprecationItemPaybacks.getPhialStack(Aspect.AURA, auram);
         if(phials != null) reward.add(phials);
-        phials = getPhialStack(Aspect.MAGIC, magic);
+        phials = DeprecationItemPaybacks.getPhialStack(Aspect.MAGIC, magic);
         if(phials != null) reward.add(phials);
         if(aspect != null) {
-            phials = getPhialStack(aspect, other);
+            phials = DeprecationItemPaybacks.getPhialStack(aspect, other);
             if(phials != null) reward.add(phials);
         }
 
@@ -84,14 +84,14 @@ public class DeprecationItemPaybacks {
         int magic = 101;
         int permutatio = 54;
         int other = 81;
-        ItemStack phials = getPhialStack(Aspect.AURA, auram);
+        ItemStack phials = DeprecationItemPaybacks.getPhialStack(Aspect.AURA, auram);
         if(phials != null) reward.add(phials);
-        phials = getPhialStack(Aspect.EXCHANGE, permutatio);
+        phials = DeprecationItemPaybacks.getPhialStack(Aspect.EXCHANGE, permutatio);
         if(phials != null) reward.add(phials);
-        phials = getPhialStack(Aspect.MAGIC, magic);
+        phials = DeprecationItemPaybacks.getPhialStack(Aspect.MAGIC, magic);
         if(phials != null) reward.add(phials);
         if(aspect != null) {
-            phials = getPhialStack(aspect, other);
+            phials = DeprecationItemPaybacks.getPhialStack(aspect, other);
             if(phials != null) reward.add(phials);
         }
 
@@ -124,14 +124,14 @@ public class DeprecationItemPaybacks {
         int magic = 93;
         int telum = 49;
         int other = 104;
-        ItemStack phials = getPhialStack(Aspect.AURA, auram);
+        ItemStack phials = DeprecationItemPaybacks.getPhialStack(Aspect.AURA, auram);
         if(phials != null) reward.add(phials);
-        phials = getPhialStack(Aspect.WEAPON, telum);
+        phials = DeprecationItemPaybacks.getPhialStack(Aspect.WEAPON, telum);
         if(phials != null) reward.add(phials);
-        phials = getPhialStack(Aspect.MAGIC, magic);
+        phials = DeprecationItemPaybacks.getPhialStack(Aspect.MAGIC, magic);
         if(phials != null) reward.add(phials);
         if(aspect != null) {
-            phials = getPhialStack(aspect, other);
+            phials = DeprecationItemPaybacks.getPhialStack(aspect, other);
             if(phials != null) reward.add(phials);
         }
 
@@ -163,14 +163,14 @@ public class DeprecationItemPaybacks {
         int magic = 71;
         int other = 59;
         int eldritch = 37;
-        ItemStack phials = getPhialStack(Aspect.AURA, auram);
+        ItemStack phials = DeprecationItemPaybacks.getPhialStack(Aspect.AURA, auram);
         if(phials != null) reward.add(phials);
-        phials = getPhialStack(Aspect.ELDRITCH, eldritch);
+        phials = DeprecationItemPaybacks.getPhialStack(Aspect.ELDRITCH, eldritch);
         if(phials != null) reward.add(phials);
-        phials = getPhialStack(Aspect.MAGIC, magic);
+        phials = DeprecationItemPaybacks.getPhialStack(Aspect.MAGIC, magic);
         if(phials != null) reward.add(phials);
         if(aspect != null) {
-            phials = getPhialStack(aspect, other);
+            phials = DeprecationItemPaybacks.getPhialStack(aspect, other);
             if(phials != null) reward.add(phials);
         }
         ItemStack craftingPackage = new ItemStack(RegisteredItems.itemPackage, 1, 1);
@@ -198,12 +198,12 @@ public class DeprecationItemPaybacks {
         int auram = 37;
         int magic = 53;
         int other = 35;
-        ItemStack phials = getPhialStack(Aspect.AURA, auram);
+        ItemStack phials = DeprecationItemPaybacks.getPhialStack(Aspect.AURA, auram);
         if(phials != null) reward.add(phials);
-        phials = getPhialStack(Aspect.MAGIC, magic);
+        phials = DeprecationItemPaybacks.getPhialStack(Aspect.MAGIC, magic);
         if(phials != null) reward.add(phials);
         if(aspect != null) {
-            phials = getPhialStack(aspect, other);
+            phials = DeprecationItemPaybacks.getPhialStack(aspect, other);
             if(phials != null) reward.add(phials);
         }
         ItemStack craftingPackage = new ItemStack(RegisteredItems.itemPackage, 1, 1);
@@ -234,12 +234,12 @@ public class DeprecationItemPaybacks {
         int auram = 34;
         int magic = 51;
         int otherAspect = 46;
-        ItemStack phials = getPhialStack(Aspect.AURA, auram);
+        ItemStack phials = DeprecationItemPaybacks.getPhialStack(Aspect.AURA, auram);
         if(phials != null) rewardCrafting.add(phials);
-        phials = getPhialStack(Aspect.MAGIC, magic);
+        phials = DeprecationItemPaybacks.getPhialStack(Aspect.MAGIC, magic);
         if(phials != null) rewardCrafting.add(phials);
         if(aspect != null) {
-            phials = getPhialStack(aspect, otherAspect);
+            phials = DeprecationItemPaybacks.getPhialStack(aspect, otherAspect);
             if(phials != null) rewardCrafting.add(phials);
         }
         ItemStack craftingPackage = new ItemStack(RegisteredItems.itemPackage, 1, 1);
@@ -249,7 +249,7 @@ public class DeprecationItemPaybacks {
 
     private static ItemStack getPhialStack(Aspect aspect, int aspectAmount) {
         ItemEssence phial = (ItemEssence) ConfigItems.itemEssence;
-        ItemStack phialStack = new ItemStack(phial, getPhialAmount(aspectAmount), 1);
+        ItemStack phialStack = new ItemStack(phial, DeprecationItemPaybacks.getPhialAmount(aspectAmount), 1);
         if(phialStack.stackSize > 0) {
             phial.setAspects(phialStack, new AspectList().add(aspect, 8));
             return phialStack;

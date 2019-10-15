@@ -15,10 +15,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.fx.ParticleEngine;
-import thaumcraft.client.fx.particles.FXEssentiaTrail;
 import thaumcraft.client.fx.particles.FXWisp;
 
 import java.awt.*;
@@ -48,20 +46,20 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
         GL11.glPushMatrix();
         ResourceLocation textureToBind;
         if(tile instanceof TileAuraPylonTop) {
-            textureToBind = PYLON_TEXTURE_TOP;
+            textureToBind = RenderTileAuraPylon.PYLON_TEXTURE_TOP;
         } else if(((TileAuraPylon) tile).isInputTile() || ((TileAuraPylon) tile).isLowestTile()) {
-            textureToBind = PYLON_TEXTURE_BOTTOM;
+            textureToBind = RenderTileAuraPylon.PYLON_TEXTURE_BOTTOM;
         } else {
-            textureToBind = PYLON_TEXTURE;
+            textureToBind = RenderTileAuraPylon.PYLON_TEXTURE;
         }
-        bindTexture(textureToBind);
+        this.bindTexture(textureToBind);
         for(int i = 0; i < 4; i++) {
             if(tile instanceof TileAuraPylonTop) {
                 GL11.glPushMatrix();
                 GL11.glRotatef(180, 1, 0, 0);
                 GL11.glTranslatef(0, -2F, 0);
                 //bindTexture(PYLON_TEXTURE_TOP);
-                MODEL_AURA_PYLON_TOP.render(null, 0, 0, 0, 0, 0, 0.0625f);
+                RenderTileAuraPylon.MODEL_AURA_PYLON_TOP.render(null, 0, 0, 0, 0, 0, 0.0625f);
                 GL11.glPopMatrix();
             } else {
                 if(((TileAuraPylon) tile).isInputTile() || ((TileAuraPylon) tile).isLowestTile()) {
@@ -69,11 +67,11 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
                     GL11.glRotatef(180, 1, 0, 0);
                     GL11.glTranslatef(0, -2F, 0);
                     //bindTexture(PYLON_TEXTURE_BOTTOM);
-                    MODEL_AURA_PYLON_BOTTOM.render(null, 0, 0, 0, 0, 0, 0.0625f);
+                    RenderTileAuraPylon.MODEL_AURA_PYLON_BOTTOM.render(null, 0, 0, 0, 0, 0, 0.0625f);
                     GL11.glPopMatrix();
                 } else {
                     //bindTexture(PYLON_TEXTURE);
-                    MODEL_AURA_PYLON.render(null, 0, 0, 0, 0, 0, 0.0625f);
+                    RenderTileAuraPylon.MODEL_AURA_PYLON.render(null, 0, 0, 0, 0, 0, 0.0625f);
                 }
             }
 
@@ -98,17 +96,17 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
                 Color c = new Color(a.getColor());
                 if(tile.getWorldObj().rand.nextInt(12) == 0) {
                     if(a == Aspect.ENTROPY || a == Aspect.DARKNESS || a == Aspect.UNDEAD) {
-                        spawnWispParticles((TileAuraPylonTop) tile, 5, 0.5F, false);
+                        this.spawnWispParticles((TileAuraPylonTop) tile, 5, 0.5F, false);
                     } else {
-                        spawnWispParticles((TileAuraPylonTop) tile, c, 0.5F, false);
+                        this.spawnWispParticles((TileAuraPylonTop) tile, c, 0.5F, false);
                     }
                 }
                 c = c.darker().darker();
                 if(tile.getWorldObj().rand.nextInt(20) == 0) {
                     if(a == Aspect.ENTROPY || a == Aspect.DARKNESS || a == Aspect.UNDEAD) {
-                        spawnWispParticles((TileAuraPylonTop) tile, 5, 0.25F, false);
+                        this.spawnWispParticles((TileAuraPylonTop) tile, 5, 0.25F, false);
                     } else {
-                        spawnWispParticles((TileAuraPylonTop) tile, c, 0.25F, false);
+                        this.spawnWispParticles((TileAuraPylonTop) tile, c, 0.25F, false);
                     }
                 }
             }
@@ -123,9 +121,9 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
                         col |= (0x55 << 24);
                         Color c = new Color(col, true);
                         Random rand = tile.getWorldObj().rand;
-                        addNewOrbitalPoint(ta.orbital, rand, c);
-                        addNewOrbitalPoint(ta.orbital, rand, c);
-                        addNewOrbitalPoint(ta.orbital, rand, c);
+                        this.addNewOrbitalPoint(ta.orbital, rand, c);
+                        this.addNewOrbitalPoint(ta.orbital, rand, c);
+                        this.addNewOrbitalPoint(ta.orbital, rand, c);
                     }
                 }
             } else {
@@ -174,7 +172,7 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partTicks) {
-        renderTileEntity(tileEntity, x, y, z, partTicks);
+        this.renderTileEntity(tileEntity, x, y, z, partTicks);
     }
 
 }
