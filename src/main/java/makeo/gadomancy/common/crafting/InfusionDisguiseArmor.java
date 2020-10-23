@@ -38,7 +38,7 @@ public class InfusionDisguiseArmor extends InfusionRunicAugmentRecipe {
 
     @Override
     public boolean matches(ArrayList<ItemStack> input, ItemStack central, World world, EntityPlayer player) {
-        if(input.size() != InfusionDisguiseArmor.COMPONENTS.length + 1 || !ResearchManager.isResearchComplete(player.getCommandSenderName(), SimpleResearchItem.getFullName("STICKYJAR"))) {
+        if(input.size() != InfusionDisguiseArmor.COMPONENTS.length + 1 || !ResearchManager.isResearchComplete(player.getCommandSenderName(), SimpleResearchItem.getFullName("ARMORDISGUISE"))) {
             return false;
         }
 
