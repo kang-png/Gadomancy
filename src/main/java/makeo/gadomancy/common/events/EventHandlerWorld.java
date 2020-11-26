@@ -295,7 +295,7 @@ public class EventHandlerWorld {
         @Override
         public boolean getGameRuleBooleanValue() {
             boolean mobGriefing = super.getGameRuleBooleanValue();
-            if(mobGriefing) {
+            /*if(mobGriefing) {
                 Entity lastUpdated = this.handler.lastUpdated;
                 if(lastUpdated != null) {
                     StackTraceElement[] elements = Thread.currentThread().getStackTrace();
@@ -306,7 +306,7 @@ public class EventHandlerWorld {
                         }
                     }
                 }
-            }
+            }*/
             return mobGriefing;
         }
     }
