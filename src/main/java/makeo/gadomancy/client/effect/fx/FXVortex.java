@@ -115,22 +115,18 @@ public class FXVortex {
     }
 
     public static void sheduleRender(List<FXVortex> vortexes, Tessellator tessellator, float partialTicks) {
-        synchronized (EffectHandler.lockEffects) {
-            for (FXVortex vortex : vortexes) {
-                GL11.glPushMatrix();
-                vortex.render(tessellator, partialTicks);
-                GL11.glPopMatrix();
-            }
+        for (FXVortex vortex : vortexes) {
+            GL11.glPushMatrix();
+            vortex.render(tessellator, partialTicks);
+            GL11.glPopMatrix();
         }
     }
 
     public static void tickVortexes(List<FXVortex> vortexes) {
-        synchronized (EffectHandler.lockEffects) {
-            for(FXVortex vortex : vortexes) {
-                if((System.currentTimeMillis() - vortex.lastUpdateCall) > 100L) {
-                    //System.out.println("tickTimeout");
-                    EffectHandler.getInstance().unregisterVortex(vortex);
-                }
+        for(FXVortex vortex : vortexes) {
+            if((System.currentTimeMillis() - vortex.lastUpdateCall) > 100L) {
+                //System.out.println("tickTimeout");
+                EffectHandler.getInstance().unregisterVortex(vortex);
             }
         }
     }
