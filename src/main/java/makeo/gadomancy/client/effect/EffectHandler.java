@@ -9,32 +9,21 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
-import java.util.AbstractList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.locks.ReentrantLock;
-
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
  * GNU LESSER GENERAL PUBLIC LICENSE
  * for more read the LICENSE file
- *
+ * <p>
  * Created by HellFirePvP @ 17.11.2015 18:39
  */
 public class EffectHandler {
 
     public static final EffectHandler instance = new EffectHandler();
 
-    public static List<Orbital> orbitals = new LinkedList<Orbital>();
-    public static List<FXFlow> fxFlows = new LinkedList<FXFlow>();
-    public static List<FXVortex> fxVortexes = new LinkedList<FXVortex>();
-
-    //Object that the EffectHandler locks on.
-    private static final Object lockEffects = new Object();
+    private static final CheckpointingSet<Orbital> orbitals = new CheckpointingSet<>();
+    private static final CheckpointingSet<FXFlow> fxFlows = new CheckpointingSet<>();
+    private static final CheckpointingSet<FXVortex> fxVortexes = new CheckpointingSet<>();
 
     public static EffectHandler getInstance() {
         return EffectHandler.instance;
@@ -47,6 +36,10 @@ public class EffectHandler {
         FXFlow.FXFlowBase.sheduleRender(tessellator);
         Orbital.sheduleRenders(EffectHandler.orbitals, event.partialTicks);
         FXVortex.sheduleRender(EffectHandler.fxVortexes, tessellator, event.partialTicks);
+
+        orbitals.update();
+        fxFlows.update();
+        fxVortexes.update();
     }
 
     public FXFlow effectFlow(World world, Vector3 origin, FXFlow.EntityFlowProperties properties) {
@@ -94,24 +87,5 @@ public class EffectHandler {
         EffectHandler.orbitals.clear();
         EffectHandler.fxFlows.clear();
         EffectHandler.fxVortexes.clear();
-    }
-
-    public static class NonReentrantReentrantLock extends ReentrantLock {
-
-        @Override
-        public boolean isHeldByCurrentThread() {
-            return false;
-        }
-
-        @Override
-        public void lock() {
-            super.lock();
-        }
-
-        @Override
-        public void unlock() {
-            super.unlock();
-        }
-
     }
 }

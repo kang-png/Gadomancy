@@ -41,7 +41,7 @@ public final class Orbital {
     }
 
     public void addOrbitalPoint(OrbitalRenderProperties properties) {
-        if(!this.orbitals.contains(properties)) {
+        if (!this.orbitals.contains(properties)) {
             this.orbitals.add(properties);
         }
     }
@@ -55,10 +55,11 @@ public final class Orbital {
     }
 
     public void doRender(float partialTicks) {
-        if(MiscUtils.getPositionVector(Minecraft.getMinecraft().renderViewEntity).distance(this.center) > ModConfig.renderParticleDistance) return;
-        if(Minecraft.getMinecraft().isGamePaused()) return;
+        if (MiscUtils.getPositionVector(Minecraft.getMinecraft().renderViewEntity).distance(this.center) > ModConfig.renderParticleDistance)
+            return;
+        if (Minecraft.getMinecraft().isGamePaused()) return;
 
-        for(OrbitalRenderProperties orbitalNode : this.orbitals) {
+        for (OrbitalRenderProperties orbitalNode : this.orbitals) {
             Axis axis = orbitalNode.getAxis();
             int counterOffset = orbitalNode.getOffsetTicks() % orbitalNode.getTicksForFullCircle();
 
@@ -68,16 +69,16 @@ public final class Orbital {
 
             Vector3 point = axis.getAxis().clone().perpendicular().normalize().multiply(orbitalNode.getOffset()).rotate(currentRad, axis.getAxis()).add(this.center);
 
-            if(orbitalNode.getRunnable() != null) {
+            if (orbitalNode.getRunnable() != null) {
                 orbitalNode.getRunnable().onRender(this.world, point, orbitalNode, this.orbitalCounter, partialTicks);
             }
 
-            if(orbitalNode.getParticleSize() <= 0) continue;
+            if (orbitalNode.getParticleSize() <= 0) continue;
 
             FXFlow.FXFlowBase flow = new FXFlow.FXFlowBase(this.world, point.getX(), point.getY(), point.getZ(),
                     orbitalNode.getColor(), orbitalNode.getParticleSize(), orbitalNode.getMultiplier(), orbitalNode.getBrightness());
 
-            if(orbitalNode.getSubParticleColor() != null && this.world.rand.nextInt(3) == 0) {
+            if (orbitalNode.getSubParticleColor() != null && this.world.rand.nextInt(3) == 0) {
                 Vector3 subOffset = this.genSubOffset(this.world.rand, 0.8F);
                 Color c = (this.world.rand.nextBoolean()) ? orbitalNode.getSubParticleColor() : orbitalNode.getColor();
                 FXFlow.FXFlowBase flow2 = new FXFlow.FXFlowBase(this.world,
@@ -99,7 +100,7 @@ public final class Orbital {
     }
 
     public void reduceAllOffsets(float percent) {
-        for(OrbitalRenderProperties node : this.orbitals) {
+        for (OrbitalRenderProperties node : this.orbitals) {
             node.reduceOffset(percent);
         }
     }
@@ -108,7 +109,7 @@ public final class Orbital {
         Vector3[] arr = new Vector3[properties.length];
         for (int i = 0; i < properties.length; i++) {
             OrbitalRenderProperties property = properties[i];
-            if(property == null) {
+            if (property == null) {
                 arr[i] = null;
                 continue;
             }
@@ -125,15 +126,15 @@ public final class Orbital {
         return arr;
     }
 
-    public static void sheduleRenders(List<Orbital> orbitals, float partialTicks) {
-        for(Orbital orbital : orbitals) {
+    public static void sheduleRenders(Iterable<Orbital> orbitals, float partialTicks) {
+        for (Orbital orbital : orbitals) {
             orbital.doRender(partialTicks);
         }
     }
 
-    public static void tickOrbitals(List<Orbital> orbitals) {
-        for(Orbital orbital : orbitals) {
-            if((System.currentTimeMillis() - orbital.lastRenderCall) > 1000L) {
+    public static void tickOrbitals(Iterable<Orbital> orbitals) {
+        for (Orbital orbital : orbitals) {
+            if ((System.currentTimeMillis() - orbital.lastRenderCall) > 1000L) {
                 orbital.clearOrbitals();
                 EffectHandler.getInstance().unregisterOrbital(orbital);
             } else {
@@ -176,7 +177,7 @@ public final class Orbital {
         }
 
         public OrbitalRenderProperties setSubSizeRunnable(OrbitalSubSizeRunnable subSizeRunnable) {
-            if(subSizeRunnable == null) return this;
+            if (subSizeRunnable == null) return this;
             this.subSizeRunnable = subSizeRunnable;
             return this;
         }
