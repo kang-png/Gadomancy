@@ -14,7 +14,6 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.QuadHelper;
 import thaumcraft.client.lib.UtilsFX;
 
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -62,9 +61,9 @@ public class FXVortex {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         float agescale = (float) (ClientHandler.ticks % 800) / 400F;
-        if(agescale >= 1.0F) agescale = 2 - agescale;
+        if (agescale >= 1.0F) agescale = 2 - agescale;
         float size = 0.2F + 0.1F * agescale;
-        if(this.parent != null) {
+        if (this.parent != null) {
             size += size * (((float) this.parent.getSizeStage()) * 0.04F);
         }
 
@@ -72,7 +71,7 @@ public class FXVortex {
         float angle = FXVortex.RAD - FXVortex.RAD * anglePerc;
 
         Vector3 iV = MiscUtils.interpolateEntityPosition(Minecraft.getMinecraft().renderViewEntity, pTicks);
-        if(this.parent != null && this.parent.getSizeStage() > 4) {
+        if (this.parent != null && this.parent.getSizeStage() > 4) {
             float mult = 0.001F * (this.parent.getSizeStage() - 4F);
             Vector3 shake = new Vector3(
                     FXVortex.RAND.nextFloat() * mult * (FXVortex.RAND.nextBoolean() ? 1 : -1),
@@ -114,7 +113,7 @@ public class FXVortex {
         GL11.glPopMatrix();
     }
 
-    public static void sheduleRender(List<FXVortex> vortexes, Tessellator tessellator, float partialTicks) {
+    public static void sheduleRender(Iterable<FXVortex> vortexes, Tessellator tessellator, float partialTicks) {
         for (FXVortex vortex : vortexes) {
             GL11.glPushMatrix();
             vortex.render(tessellator, partialTicks);
@@ -122,9 +121,9 @@ public class FXVortex {
         }
     }
 
-    public static void tickVortexes(List<FXVortex> vortexes) {
-        for(FXVortex vortex : vortexes) {
-            if((System.currentTimeMillis() - vortex.lastUpdateCall) > 100L) {
+    public static void tickVortexes(Iterable<FXVortex> vortexes) {
+        for (FXVortex vortex : vortexes) {
+            if ((System.currentTimeMillis() - vortex.lastUpdateCall) > 100L) {
                 //System.out.println("tickTimeout");
                 EffectHandler.getInstance().unregisterVortex(vortex);
             }

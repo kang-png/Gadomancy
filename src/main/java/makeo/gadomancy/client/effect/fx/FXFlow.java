@@ -14,7 +14,6 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayDeque;
-import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
@@ -135,8 +134,8 @@ public class FXFlow {
     }
 
     private void calculateVelocity() {
-        if(this.target == null) return;
-        if(this.livingTicks <= 0) return; //Never happens..
+        if (this.target == null) return;
+        if (this.livingTicks <= 0) return; //Never happens..
 
         Vector3 pos = this.getPositionVector();
         double motDirX = this.target.getX() - pos.getX();
@@ -159,11 +158,11 @@ public class FXFlow {
     }
 
     private void doParticles() {
-        if(Minecraft.getMinecraft().theWorld == null) {
+        if (Minecraft.getMinecraft().theWorld == null) {
             EffectHandler.getInstance().unregisterFlow(this);
             return;
         }
-        if(Minecraft.getMinecraft().theWorld.provider.dimensionId != this.origin.provider.dimensionId) {
+        if (Minecraft.getMinecraft().theWorld.provider.dimensionId != this.origin.provider.dimensionId) {
             EffectHandler.getInstance().unregisterFlow(this);
             return;
         }
@@ -176,7 +175,7 @@ public class FXFlow {
         FXFlowBase flow2 = new FXFlowBase(this.origin, lastPosX, lastPosY, lastPosZ, this.color, (float) (this.mainParticleSize * 0.8), 8, 240);
         Minecraft.getMinecraft().effectRenderer.addEffect(flow2); //Consistency to last position
 
-        if(this.policy != null)
+        if (this.policy != null)
             this.policy.doSubParticles(this, this.policyCounter, this.posX, this.posY, this.posZ, lastPosX, lastPosY, lastPosZ);
     }
 
@@ -211,13 +210,14 @@ public class FXFlow {
     public Vector3 getTarget() {
         return this.target;
     }
-    
+
     public World getOriginWorld() {
         return this.origin;
     }
 
     public Vector3 getMovementVector() {
-        if(this.isMovementVectorNullLength()) return new Vector3(this.unmodMotionBufX, this.unmodMotionBufY, this.unmodMotionBufZ);
+        if (this.isMovementVectorNullLength())
+            return new Vector3(this.unmodMotionBufX, this.unmodMotionBufY, this.unmodMotionBufZ);
         return new Vector3(this.motionBufferX, this.motionBufferY, this.motionBufferZ);
     }
 
@@ -226,43 +226,43 @@ public class FXFlow {
     }
 
     public FXFlow applyProperties(EntityFlowProperties properties) {
-        if(properties != null) {
-            if(properties.hasTarget) {
+        if (properties != null) {
+            if (properties.hasTarget) {
                 this.applyTarget(properties.target);
             }
-            if(properties.color != null) {
-                if(properties.fading != null) {
+            if (properties.color != null) {
+                if (properties.fading != null) {
                     this.setColor(properties.fading);
                     this.setColor(properties.color);
                 } else {
                     this.setColor(properties.color);
                 }
             } else {
-                if(properties.fading != null) {
+                if (properties.fading != null) {
                     this.setColor(properties.fading);
                 }
             }
-            if(properties.livingTicks != -1)
+            if (properties.livingTicks != -1)
                 this.setLivingTicks(properties.livingTicks);
-            if(properties.mainParticleSize != -1)
+            if (properties.mainParticleSize != -1)
                 this.setMainParticleSize(properties.mainParticleSize);
-            if(properties.surroundingDistance != -1)
+            if (properties.surroundingDistance != -1)
                 this.setSurroundingDistance(properties.surroundingDistance);
-            if(properties.surroundingParticleSize != -1)
+            if (properties.surroundingParticleSize != -1)
                 this.setSurroundingParticleSize(properties.surroundingParticleSize);
-            if(properties.motionMultiplier != Float.MAX_VALUE) {
+            if (properties.motionMultiplier != Float.MAX_VALUE) {
                 this.setMotionMultiplier(properties.motionMultiplier);
             }
-            if(properties.policy != null) {
+            if (properties.policy != null) {
                 this.setPolicy(properties.policy);
             }
         }
         return this;
     }
 
-    public static void tickFlows(List<FXFlow> fxFlows) {
-        for(FXFlow flow : fxFlows) {
-            if((System.currentTimeMillis() - flow.lastUpdateCall) > 1000L) {
+    public static void tickFlows(Iterable<FXFlow> fxFlows) {
+        for (FXFlow flow : fxFlows) {
+            if ((System.currentTimeMillis() - flow.lastUpdateCall) > 1000L) {
                 EffectHandler.getInstance().unregisterFlow(flow);
             }
             flow.tick();
@@ -279,7 +279,8 @@ public class FXFlow {
         protected int livingTicks = -1;
         protected float motionMultiplier = Float.MAX_VALUE;
 
-        public EntityFlowProperties() {}
+        public EntityFlowProperties() {
+        }
 
         public EntityFlowProperties setTarget(Vector3 target) {
             this.hasTarget = target != null;
@@ -350,7 +351,7 @@ public class FXFlow {
 
         public FXFlowBase(World world, double x, double y, double z, Color color, float size, int multiplier, int brightness) {
             super(world, x, y, z);
-            if(color != null) {
+            if (color != null) {
                 this.partBlue = color.getBlue() / 255F;
                 this.partGreen = color.getGreen() / 255F;
                 this.partRed = color.getRed() / 255F;
@@ -380,12 +381,12 @@ public class FXFlow {
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
-            if(isLightingEnabled)
+            if (isLightingEnabled)
                 GL11.glDisable(GL11.GL_LIGHTING);
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.75F);
 
-            for(FXFlowBase fx : FXFlowBase.fxQueue) {
+            for (FXFlowBase fx : FXFlowBase.fxQueue) {
                 tessellator.startDrawingQuads();
                 fx.renderEssenceBase(tessellator);
                 tessellator.draw();
@@ -393,7 +394,7 @@ public class FXFlow {
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.75F);
 
-            if(isLightingEnabled)
+            if (isLightingEnabled)
                 GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
             GL11.glDisable(GL11.GL_BLEND);
@@ -406,14 +407,14 @@ public class FXFlow {
             tessellator.setBrightness(this.rendBrightness);
             GL11.glColor4f(this.partRed, this.partGreen, this.partBlue, this.partAlpha);
             Minecraft.getMinecraft().renderEngine.bindTexture(this.texture);
-            if(this.particleAge >= this.particleMaxAge) return;
+            if (this.particleAge >= this.particleMaxAge) return;
             float agescale = (float) this.particleAge / this.buffHalfLife;
-            if(agescale >= 1.0F) agescale = 2 - agescale;
+            if (agescale >= 1.0F) agescale = 2 - agescale;
             this.particleScale = this.buffParticleScale * agescale;
             float f10 = 0.5F * this.particleScale;
-            float f11 = (float)(this.prevPosX + (this.posX - this.prevPosX) * this.partialTicks - EntityFX.interpPosX);
-            float f12 = (float)(this.prevPosY + (this.posY - this.prevPosY) * this.partialTicks - EntityFX.interpPosY);
-            float f13 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * this.partialTicks - EntityFX.interpPosZ);
+            float f11 = (float) (this.prevPosX + (this.posX - this.prevPosX) * this.partialTicks - EntityFX.interpPosX);
+            float f12 = (float) (this.prevPosY + (this.posY - this.prevPosY) * this.partialTicks - EntityFX.interpPosY);
+            float f13 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * this.partialTicks - EntityFX.interpPosZ);
 
             tessellator.addVertexWithUV(f11 - this.rendArg1 * f10 - this.rendArg4 * f10, f12 - this.rendArg2 * f10, f13 - this.rendArg3 * f10 - this.rendArg5 * f10, 0, 1);
             tessellator.addVertexWithUV(f11 - this.rendArg1 * f10 + this.rendArg4 * f10, f12 + this.rendArg2 * f10, f13 - this.rendArg3 * f10 + this.rendArg5 * f10, 1, 1);
@@ -423,7 +424,8 @@ public class FXFlow {
 
         @Override
         public void renderParticle(Tessellator tessellator, float partialTicks, float par3, float par4, float par5, float par6, float par7) {
-            if(MiscUtils.getPositionVector(Minecraft.getMinecraft().renderViewEntity).distance(new Vector3(this.posX, this.posY, this.posZ)) > ModConfig.renderParticleDistance) return;
+            if (MiscUtils.getPositionVector(Minecraft.getMinecraft().renderViewEntity).distance(new Vector3(this.posX, this.posY, this.posZ)) > ModConfig.renderParticleDistance)
+                return;
 
             this.partialTicks = partialTicks;
             this.rendArg1 = par3;
