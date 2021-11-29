@@ -227,9 +227,13 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IE
         return false;
     }
 
+    private int currentStorageSize() {
+        return TileEssentiaCompressor.STD_ASPECT_STORAGE + this.incSize * ((TileEssentiaCompressor.MAX_ASPECT_STORAGE - TileEssentiaCompressor.STD_ASPECT_STORAGE) / TileEssentiaCompressor.MAX_SIZE);
+    }
+
     private boolean canAccept(Aspect a) {
         int current = this.al.getAmount(a);
-        int max = TileEssentiaCompressor.STD_ASPECT_STORAGE + this.incSize * ((TileEssentiaCompressor.MAX_ASPECT_STORAGE - TileEssentiaCompressor.STD_ASPECT_STORAGE) / TileEssentiaCompressor.MAX_SIZE);
+        int max = this.currentStorageSize();
         return current < max;
     }
 
@@ -565,6 +569,9 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IE
         if(this.doesContainerAccept(aspect) && this.canAccept(aspect)) {
             TileEssentiaCompressor master = this.tryFindMasterTile();
             if(master == null) return 0;
+            int diff = master.currentStorageSize() - master.al.getAmount(aspect);
+            if(diff <= 0) return 0;
+            i = master.currentStorageSize() >= master.al.getAmount(aspect) + i ? i : diff;
             master.al.add(aspect, i);
             this.worldObj.markBlockForUpdate(master.xCoord, master.yCoord, master.zCoord);
             this.markDirty();
@@ -688,7 +695,9 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IE
     public int addEssentia(Aspect aspect, int i, ForgeDirection direction) {
         if(this.canInputFrom(direction) && this.canAccept(aspect)) {
             TileEssentiaCompressor master = this.tryFindMasterTile();
-            if(master == null) return 0;
+            int diff = master.currentStorageSize() - master.al.getAmount(aspect);
+            if(diff <= 0) return 0;
+            i = master.currentStorageSize() >= master.al.getAmount(aspect) + i ? i : diff;
             master.al.add(aspect, i);
             this.worldObj.markBlockForUpdate(master.xCoord, master.yCoord, master.zCoord);
             this.markDirty();
