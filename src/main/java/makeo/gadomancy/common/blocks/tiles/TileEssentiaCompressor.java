@@ -695,6 +695,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IE
     public int addEssentia(Aspect aspect, int i, ForgeDirection direction) {
         if(this.canInputFrom(direction) && this.canAccept(aspect)) {
             TileEssentiaCompressor master = this.tryFindMasterTile();
+            if(master == null) return 0;
             int diff = master.currentStorageSize() - master.al.getAmount(aspect);
             if(diff <= 0) return 0;
             i = master.currentStorageSize() >= master.al.getAmount(aspect) + i ? i : diff;
