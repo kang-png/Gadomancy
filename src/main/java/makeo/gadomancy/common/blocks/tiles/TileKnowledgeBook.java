@@ -64,6 +64,8 @@ public class TileKnowledgeBook extends SynchronizedTileEntity implements EntityP
     private int timeSinceLastItemInfo;
     private int ticksExisted;
     private int ticksCognitio;
+    private int ticksEnvironmentCheck;
+    private int ticksResearchSearch;
 
     //Sound effect stuff. I didn't like it when it's like changing pages 4 times in a row...
     private boolean turnedPagesLastTick;
@@ -148,6 +150,11 @@ public class TileKnowledgeBook extends SynchronizedTileEntity implements EntityP
     }
 
     private void checkSurroundings() {
+        if (this.ticksEnvironmentCheck > 0) {
+            this.ticksEnvironmentCheck--;
+            return;
+        }
+        this.ticksEnvironmentCheck = 200;
         this.surroundingKnowledge = 0;
         for (int xx = -TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; xx <= TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; xx++) {
             for (int zz = -TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; zz <= TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; zz++) {
@@ -336,6 +343,11 @@ public class TileKnowledgeBook extends SynchronizedTileEntity implements EntityP
     }
 
     private void tryVortexUnfinishedResearchNotes() {
+        if (this.ticksResearchSearch > 0) {
+            this.ticksResearchSearch--;
+            return;
+        }
+        this.ticksResearchSearch = 50;
         float centerY = this.yCoord + 0.4F;
         List entityItems = this.worldObj.selectEntitiesWithinAABB(EntityItem.class,
                 AxisAlignedBB.getBoundingBox(this.xCoord - 0.5, centerY - 0.5, this.zCoord - 0.5, this.xCoord + 0.5, centerY + 0.5, this.zCoord + 0.5).expand(8, 8, 8), new IEntitySelector() {
