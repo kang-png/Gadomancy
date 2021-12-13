@@ -347,7 +347,6 @@ public class TileKnowledgeBook extends SynchronizedTileEntity implements EntityP
             this.ticksResearchSearch--;
             return;
         }
-        this.ticksResearchSearch = 50;
         float centerY = this.yCoord + 0.4F;
         List entityItems = this.worldObj.selectEntitiesWithinAABB(EntityItem.class,
                 AxisAlignedBB.getBoundingBox(this.xCoord - 0.5, centerY - 0.5, this.zCoord - 0.5, this.xCoord + 0.5, centerY + 0.5, this.zCoord + 0.5).expand(8, 8, 8), new IEntitySelector() {
@@ -378,7 +377,10 @@ public class TileKnowledgeBook extends SynchronizedTileEntity implements EntityP
                 }
             }
         }
-        if(entity == null) return;
+        if(entity == null) {
+            this.ticksResearchSearch = 50;
+            return;
+        }
         if(dummy.getDistanceToEntity(entity) < 1 && !this.worldObj.isRemote) {
             ItemStack inter = entity.getEntityItem();
             inter.stackSize--;
