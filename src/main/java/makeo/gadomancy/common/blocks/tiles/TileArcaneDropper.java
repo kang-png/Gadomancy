@@ -3,12 +3,12 @@ package makeo.gadomancy.common.blocks.tiles;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
@@ -201,7 +201,7 @@ public class TileArcaneDropper extends TileEntity implements ISidedInventory {
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
-        return false;
+        return player instanceof FakePlayer;
     }
 
     @Override
