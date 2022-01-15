@@ -1,10 +1,10 @@
 [
 {
-  "modid": "gadomancy",
-  "name": "Gadomancy",
+  "modid": "${modId}",
+  "name": "${modName}",
   "description": "An addon for Thaumcraft.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
+  "version": "${modVersion}",
+  "mcversion": "${minecraftVersion}",
   "url": "",
   "updateUrl": "",
   "authorList": ["makeo", "HellFirePvP"],
