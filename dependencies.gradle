@@ -8,7 +8,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:waila:master-SNAPSHOT:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:ThaumicHorizons:migrate-build-script-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:ThaumicHorizons:master-SNAPSHOT:dev") {
         transitive = false
     }
     compileOnly("curse.maven:automagy-222153:2285272") {
