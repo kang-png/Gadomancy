@@ -27,6 +27,7 @@ public class SilverwoodGolemType extends AdditionalGolemType {
     }
 
     private IIcon icon;
+
     @Override
     public void registerIcons(IIconRegister ir) {
         this.icon = ir.registerIcon(Gadomancy.MODID + ":golem_silverwood");

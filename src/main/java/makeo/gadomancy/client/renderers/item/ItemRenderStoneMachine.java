@@ -1,12 +1,11 @@
 package makeo.gadomancy.client.renderers.item;
 
+import java.util.HashMap;
+import java.util.Map;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -19,7 +18,7 @@ import java.util.Map;
 public class ItemRenderStoneMachine extends ItemRenderTileEntity<TileEntity> {
     private final Map<Integer, RenderInfo> renderers = new HashMap<Integer, RenderInfo>();
 
-    public ItemRenderStoneMachine() { }
+    public ItemRenderStoneMachine() {}
 
     private static class RenderInfo {
         private TileEntity tile;
@@ -32,7 +31,7 @@ public class ItemRenderStoneMachine extends ItemRenderTileEntity<TileEntity> {
         info.tile = tile;
         this.renderers.put(metadata, info);
 
-        if(tile.getWorldObj() == null) {
+        if (tile.getWorldObj() == null) {
             tile.setWorldObj(ItemRenderTileEntity.FAKE_WORLD);
         }
     }
@@ -44,8 +43,8 @@ public class ItemRenderStoneMachine extends ItemRenderTileEntity<TileEntity> {
         this.tile = info.tile;
         this.renderer = info.renderer;
 
-        if(stack.getItemDamage() == 0) {
-            GL11.glTranslatef(0, 2/16f, 0);
+        if (stack.getItemDamage() == 0) {
+            GL11.glTranslatef(0, 2 / 16f, 0);
         }
 
         super.renderItem(type, stack, data);

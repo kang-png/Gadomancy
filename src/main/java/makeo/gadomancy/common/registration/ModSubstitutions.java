@@ -22,17 +22,20 @@ import thaumcraft.common.config.ConfigBlocks;
 public class ModSubstitutions {
 
     public static void preInit() {
-        if(ModConfig.enableAdditionalNodeTypes) {
+        if (ModConfig.enableAdditionalNodeTypes) {
             try {
                 ItemBlock item = (ItemBlock) Item.getItemFromBlock(ConfigBlocks.blockAiry);
 
                 item.field_150939_a = RegisteredBlocks.blockNode;
 
-                //Hacky way
+                // Hacky way
                 FMLControlledNamespacedRegistry<Block> registry = GameData.getBlockRegistry();
-                registry.underlyingIntegerMap.field_148749_a.put(RegisteredBlocks.blockNode, Block.getIdFromBlock(ConfigBlocks.blockAiry));
-                registry.underlyingIntegerMap.field_148748_b.set(Block.getIdFromBlock(ConfigBlocks.blockAiry), RegisteredBlocks.blockNode);
-                ((BiMap)registry.field_148758_b).forcePut(RegisteredBlocks.blockNode, registry.field_148758_b.get(ConfigBlocks.blockAiry));
+                registry.underlyingIntegerMap.field_148749_a.put(
+                        RegisteredBlocks.blockNode, Block.getIdFromBlock(ConfigBlocks.blockAiry));
+                registry.underlyingIntegerMap.field_148748_b.set(
+                        Block.getIdFromBlock(ConfigBlocks.blockAiry), RegisteredBlocks.blockNode);
+                ((BiMap) registry.field_148758_b)
+                        .forcePut(RegisteredBlocks.blockNode, registry.field_148758_b.get(ConfigBlocks.blockAiry));
 
                 registry.underlyingIntegerMap.field_148749_a.remove(ConfigBlocks.blockAiry);
 
@@ -41,14 +44,12 @@ public class ModSubstitutions {
                 e.printStackTrace();
             }
         }
-}
-
-    public static void init() {
-
     }
 
+    public static void init() {}
+
     public static void postInit() {
-        if(ModConfig.enableAdditionalNodeTypes) {
+        if (ModConfig.enableAdditionalNodeTypes) {
             CommonProxy.unregisterWandHandler("Thaumcraft", Blocks.glass, -1);
         }
     }

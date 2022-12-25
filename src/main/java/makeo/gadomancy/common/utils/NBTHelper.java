@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.utils;
 
+import java.util.UUID;
 import makeo.gadomancy.common.Gadomancy;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -7,8 +8,6 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-
-import java.util.UUID;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -31,7 +30,7 @@ public class NBTHelper {
 
     public static NBTTagCompound getPersistentData(NBTTagCompound base) {
         NBTTagCompound compound;
-        if(NBTHelper.hasPersistentData(base)) {
+        if (NBTHelper.hasPersistentData(base)) {
             compound = base.getCompoundTag(Gadomancy.MODID);
         } else {
             compound = new NBTTagCompound();
@@ -53,28 +52,26 @@ public class NBTHelper {
         return modData != null && modData instanceof NBTTagCompound;
     }
 
-
     public static void removePersistentData(Entity entity) {
         NBTHelper.removePersistentData(entity.getEntityData());
     }
+
     public static void removePersistentData(ItemStack item) {
-        if(item.hasTagCompound()) NBTHelper.removePersistentData(item.getTagCompound());
+        if (item.hasTagCompound()) NBTHelper.removePersistentData(item.getTagCompound());
     }
 
     public static void removePersistentData(NBTTagCompound base) {
         base.removeTag(Gadomancy.MODID);
     }
 
-
     public static NBTTagCompound getData(ItemStack stack) {
         NBTTagCompound compound = stack.getTagCompound();
-        if(compound == null) {
+        if (compound == null) {
             compound = new NBTTagCompound();
             stack.setTagCompound(compound);
         }
         return compound;
     }
-
 
     public static void setStack(NBTTagCompound compound, String tag, ItemStack stack) {
         NBTTagCompound stackCompound = new NBTTagCompound();
@@ -96,13 +93,13 @@ public class NBTHelper {
     }
 
     public static AspectList getAspectList(NBTTagCompound compound, String tag, AspectList defaultValue) {
-        if(!compound.hasKey(tag)) return defaultValue;
+        if (!compound.hasKey(tag)) return defaultValue;
         NBTTagCompound cmp = compound.getCompoundTag(tag);
         AspectList out = new AspectList();
         for (Object key : cmp.func_150296_c()) {
             String strKey = (String) key;
             Aspect a = Aspect.getAspect(strKey);
-            if(a != null) {
+            if (a != null) {
                 out.add(a, cmp.getInteger(strKey));
             }
         }
@@ -124,16 +121,16 @@ public class NBTHelper {
         return NBTHelper.getUUID(compound, tag, null);
     }
 
-    //Get tags with default value
+    // Get tags with default value
     public static ItemStack getStack(NBTTagCompound compound, String tag, ItemStack defaultValue) {
-        if(compound.hasKey(tag)) {
+        if (compound.hasKey(tag)) {
             return ItemStack.loadItemStackFromNBT(compound.getCompoundTag(tag));
         }
         return defaultValue;
     }
 
     public static UUID getUUID(NBTTagCompound compound, String tag, UUID defaultValue) {
-        if(compound.hasKey(tag)) {
+        if (compound.hasKey(tag)) {
             NBTTagCompound uuidComp = compound.getCompoundTag(tag);
             return new UUID(uuidComp.getLong("mostSigBits"), uuidComp.getLong("leastSigBits"));
         }

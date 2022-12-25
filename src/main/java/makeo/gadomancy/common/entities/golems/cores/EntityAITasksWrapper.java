@@ -1,14 +1,13 @@
 package makeo.gadomancy.common.entities.golems.cores;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import thaumcraft.common.entities.golems.EntityGolemBase;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -44,10 +43,11 @@ public class EntityAITasksWrapper extends EntityAITasks {
 
         @Override
         public void clear() {
-            if(!EntityAITasksWrapper.this.isLocked()) {
+            if (!EntityAITasksWrapper.this.isLocked()) {
                 super.clear();
-            } else if(EntityAITasksWrapper.this.scheduleUpdate) {
-                ((ExtendedGolemProperties) EntityAITasksWrapper.this.golem.getExtendedProperties(Gadomancy.MODID)).updateGolem();
+            } else if (EntityAITasksWrapper.this.scheduleUpdate) {
+                ((ExtendedGolemProperties) EntityAITasksWrapper.this.golem.getExtendedProperties(Gadomancy.MODID))
+                        .updateGolem();
             }
         }
     }
@@ -66,7 +66,7 @@ public class EntityAITasksWrapper extends EntityAITasks {
 
     @Override
     public void addTask(int index, EntityAIBase ai) {
-        if(!this.isLocked()) {
+        if (!this.isLocked()) {
             this.original.addTask(index, ai);
         }
     }

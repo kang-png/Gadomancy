@@ -13,7 +13,7 @@ import net.minecraft.entity.Entity;
  * Created by makeo @ 09.11.2015 23:08
  */
 public class ModelFocusPortalPart extends ModelBase {
-    //fields
+    // fields
     ModelRenderer shape1;
     ModelRenderer shape2;
     ModelRenderer shape3;

@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.items;
 
+import java.util.List;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
 import makeo.gadomancy.common.node.ExtendedNodeType;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
@@ -24,8 +25,6 @@ import thaumcraft.api.nodes.NodeType;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ItemJarNode;
 import thaumcraft.common.config.ConfigItems;
-
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -66,7 +65,7 @@ public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
         String desc = "§9" + StatCollector.translateToLocal("nodetype." + this.getNodeType(stack) + ".name");
-        if(this.getExtendedNodeType(stack) != null) {
+        if (this.getExtendedNodeType(stack) != null) {
             desc = desc + ", " + StatCollector.translateToLocal("gadomancy.nodes." + this.getExtendedNodeType(stack));
         }
         if (this.getNodeModifier(stack) != null) {
@@ -86,11 +85,24 @@ public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem 
         super.addInformation(stack, player, list, par4);
     }
 
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
+    public boolean onItemUse(
+            ItemStack stack,
+            EntityPlayer player,
+            World world,
+            int x,
+            int y,
+            int z,
+            int side,
+            float par8,
+            float par9,
+            float par10) {
         Block var11 = world.getBlock(x, y, z);
         if (var11 == Blocks.snow_layer) {
             side = 1;
-        } else if ((var11 != Blocks.vine) && (var11 != Blocks.tallgrass) && (var11 != Blocks.deadbush) && ((var11.isAir(world, x, y, z)) || (!var11.isReplaceable(world, x, y, z)))) {
+        } else if ((var11 != Blocks.vine)
+                && (var11 != Blocks.tallgrass)
+                && (var11 != Blocks.deadbush)
+                && ((var11.isAir(world, x, y, z)) || (!var11.isReplaceable(world, x, y, z)))) {
             if (side == 0) {
                 y--;
             }
@@ -122,7 +134,8 @@ public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem 
         if (world.canPlaceEntityOnSide(RegisteredBlocks.blockExtendedNodeJar, x, y, z, false, side, player, stack)) {
             Block var12 = RegisteredBlocks.blockExtendedNodeJar;
             int var13 = 2;
-            int var14 = RegisteredBlocks.blockExtendedNodeJar.onBlockPlaced(world, x, y, z, side, par8, par9, par10, var13);
+            int var14 =
+                    RegisteredBlocks.blockExtendedNodeJar.onBlockPlaced(world, x, y, z, side, par8, par9, par10, var13);
             if (this.placeBlockAt(stack, player, world, x, y, z, side, par8, par9, par10, var14)) {
                 TileEntity te = world.getTileEntity(x, y, z);
 
@@ -140,8 +153,13 @@ public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem 
                     }
                 }
 
-
-                world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, var12.stepSound.getStepResourcePath(), (var12.stepSound.getVolume() + 1.0F) / 2.0F, var12.stepSound.getPitch() * 0.8F);
+                world.playSoundEffect(
+                        x + 0.5F,
+                        y + 0.5F,
+                        z + 0.5F,
+                        var12.stepSound.getStepResourcePath(),
+                        (var12.stepSound.getVolume() + 1.0F) / 2.0F,
+                        var12.stepSound.getPitch() * 0.8F);
                 stack.stackSize -= 1;
             }
             return true;
@@ -149,7 +167,18 @@ public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem 
         return false;
     }
 
-    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
+    public boolean placeBlockAt(
+            ItemStack stack,
+            EntityPlayer player,
+            World world,
+            int x,
+            int y,
+            int z,
+            int side,
+            float hitX,
+            float hitY,
+            float hitZ,
+            int metadata) {
         if (!world.setBlock(x, y, z, RegisteredBlocks.blockExtendedNodeJar, metadata, 3)) {
             return false;
         }
@@ -178,7 +207,8 @@ public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem 
         aspects.writeToNBT(itemstack.getTagCompound());
     }
 
-    public void setNodeAttributes(ItemStack itemstack, NodeType type, NodeModifier mod, ExtendedNodeType extendedNodeType, String id) {
+    public void setNodeAttributes(
+            ItemStack itemstack, NodeType type, NodeModifier mod, ExtendedNodeType extendedNodeType, String id) {
         if (!itemstack.hasTagCompound()) {
             itemstack.setTagCompound(new NBTTagCompound());
         }
@@ -186,14 +216,14 @@ public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem 
         if (mod != null) {
             itemstack.setTagInfo("nodemod", new NBTTagInt(mod.ordinal()));
         }
-        if(extendedNodeType != null) {
+        if (extendedNodeType != null) {
             itemstack.setTagInfo("nodeExMod", new NBTTagInt(extendedNodeType.ordinal()));
         }
         itemstack.setTagInfo("nodeid", new NBTTagString(id));
     }
 
     public void setBehaviorSnapshot(ItemStack itemstack, NBTTagCompound tagCompound) {
-        if(tagCompound == null) return;
+        if (tagCompound == null) return;
         if (!itemstack.hasTagCompound()) {
             itemstack.setTagCompound(new NBTTagCompound());
         }
@@ -234,5 +264,4 @@ public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem 
         }
         return itemstack.getTagCompound().getString("nodeid");
     }
-
 }

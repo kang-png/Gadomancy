@@ -35,19 +35,21 @@ public class IfAnyParentResearchItem extends SimpleResearchItem {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean isHidden() {
-        if(this.anyParents != null) {
+        if (this.anyParents != null) {
             boolean hasFoundAny = false;
             boolean doesAnyExist = false;
-            for(String res : this.anyParents) {
+            for (String res : this.anyParents) {
                 ResearchItem ri = ResearchCategories.getResearch(res);
-                if(ri != null) {
+                if (ri != null) {
                     doesAnyExist = true;
-                    if(GuiResearchBrowser.completedResearch.get(Minecraft.getMinecraft().thePlayer.getCommandSenderName()).contains(ri.key)) {
+                    if (GuiResearchBrowser.completedResearch
+                            .get(Minecraft.getMinecraft().thePlayer.getCommandSenderName())
+                            .contains(ri.key)) {
                         hasFoundAny = true;
                     }
                 }
             }
-            if(doesAnyExist) {
+            if (doesAnyExist) {
                 return !hasFoundAny;
             }
         }
@@ -58,5 +60,4 @@ public class IfAnyParentResearchItem extends SimpleResearchItem {
         this.anyParents = parents;
         return this;
     }
-
 }

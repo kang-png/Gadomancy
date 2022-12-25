@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.blocks;
 
+import java.util.ArrayList;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileKnowledgeBook;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
@@ -18,15 +19,14 @@ import net.minecraft.world.World;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 
-import java.util.ArrayList;
-
 /**
  * HellFirePvP@Admin
  * Date: 19.04.2016 / 14:52
  * on Gadomancy
  * BlockKnowledgeBook
  */
-public class BlockKnowledgeBook extends BlockContainer implements IBlockTransparent, TileKnowledgeBook.IKnowledgeProvider {
+public class BlockKnowledgeBook extends BlockContainer
+        implements IBlockTransparent, TileKnowledgeBook.IKnowledgeProvider {
 
     private IIcon icon;
 
@@ -54,7 +54,16 @@ public class BlockKnowledgeBook extends BlockContainer implements IBlockTranspar
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
+    public boolean onBlockActivated(
+            World world,
+            int x,
+            int y,
+            int z,
+            EntityPlayer player,
+            int p_149727_6_,
+            float p_149727_7_,
+            float p_149727_8_,
+            float p_149727_9_) {
         ItemStack thaumonomicon = new ItemStack(ConfigItems.itemThaumonomicon);
         ConfigItems.itemThaumonomicon.onItemRightClick(thaumonomicon, world, player);
         /*if(world.isRemote) {
@@ -70,21 +79,21 @@ public class BlockKnowledgeBook extends BlockContainer implements IBlockTranspar
 
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
-        if(world.isRemote) return;
+        if (world.isRemote) return;
         Block lower = world.getBlock(x, y - 1, z);
         int metaLower = world.getBlockMetadata(x, y - 1, z);
-        if(!lower.equals(ConfigBlocks.blockStoneDevice) || metaLower != 1) {
+        if (!lower.equals(ConfigBlocks.blockStoneDevice) || metaLower != 1) {
             this.breakThisBlock(world, x, y, z);
         }
-        if(!world.isAirBlock(x, y + 1, z)) {
+        if (!world.isAirBlock(x, y + 1, z)) {
             this.breakThisBlock(world, x, y, z);
         }
     }
 
     private void breakThisBlock(World world, int x, int y, int z) {
-        if(world.isRemote) return;
+        if (world.isRemote) return;
         ArrayList<ItemStack> stacks = this.getDrops(world, x, y, z, 0, 0);
-        for(ItemStack i : stacks) {
+        for (ItemStack i : stacks) {
             EntityItem item = new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, i);
             world.spawnEntityInWorld(item);
         }
@@ -103,8 +112,8 @@ public class BlockKnowledgeBook extends BlockContainer implements IBlockTranspar
     public int getComparatorInputOverride(World world, int x, int y, int z, int p_149736_5_) {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileKnowledgeBook) {
-            if(((TileKnowledgeBook) te).isResearching()) {
-                if(((TileKnowledgeBook) te).hasCognitio()) {
+            if (((TileKnowledgeBook) te).isResearching()) {
+                if (((TileKnowledgeBook) te).hasCognitio()) {
                     return 15;
                 }
                 return 1;

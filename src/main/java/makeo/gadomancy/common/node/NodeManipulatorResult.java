@@ -30,5 +30,4 @@ public abstract class NodeManipulatorResult extends WeightedRandom.Item {
     }
 
     public abstract boolean affect(World world, INode node);
-
 }

@@ -29,7 +29,15 @@ public abstract class AdditionalGolemType {
     public final int regenDelay;
     public final int strength;
 
-    public AdditionalGolemType(int maxHealth, int armor, float movementSpeed, boolean fireResist, int upgradeAmount, int carryLimit, int regenDelay, int strength) {
+    public AdditionalGolemType(
+            int maxHealth,
+            int armor,
+            float movementSpeed,
+            boolean fireResist,
+            int upgradeAmount,
+            int carryLimit,
+            int regenDelay,
+            int strength) {
         this.maxHealth = maxHealth;
         this.armor = armor;
         this.movementSpeed = movementSpeed;
@@ -43,9 +51,12 @@ public abstract class AdditionalGolemType {
     public abstract String getUnlocalizedName();
 
     public abstract void registerIcons(IIconRegister ir);
+
     public abstract IIcon getIcon(ItemStack stack, int pass);
 
-    public int getRenderPasses() { return 1; }
+    public int getRenderPasses() {
+        return 1;
+    }
 
     public abstract ResourceLocation getEntityTexture();
 

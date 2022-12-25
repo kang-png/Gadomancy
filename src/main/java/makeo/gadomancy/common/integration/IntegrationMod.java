@@ -20,7 +20,7 @@ public abstract class IntegrationMod {
     }
 
     public final void init() {
-        if(Loader.isModLoaded(this.getModId())) {
+        if (Loader.isModLoaded(this.getModId())) {
             this.isPresent = true;
             this.doInit();
         }

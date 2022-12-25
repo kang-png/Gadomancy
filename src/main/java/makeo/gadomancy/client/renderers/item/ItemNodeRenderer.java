@@ -29,21 +29,30 @@ import thaumcraft.common.tiles.TileNode;
 public class ItemNodeRenderer implements IItemRenderer {
 
     public boolean handleRenderType(ItemStack item, IItemRenderer.ItemRenderType type) {
-        return (item != null) && (item.getItem() == Item.getItemFromBlock(ConfigBlocks.blockAiry)) && ((item.getItemDamage() == 0) || (item.getItemDamage() == 5));
+        return (item != null)
+                && (item.getItem() == Item.getItemFromBlock(ConfigBlocks.blockAiry))
+                && ((item.getItemDamage() == 0) || (item.getItemDamage() == 5));
     }
 
-    public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType type, ItemStack item, IItemRenderer.ItemRendererHelper helper) {
+    public boolean shouldUseRenderHelper(
+            IItemRenderer.ItemRenderType type, ItemStack item, IItemRenderer.ItemRendererHelper helper) {
         return helper != ItemRendererHelper.EQUIPPED_BLOCK;
     }
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        //Gadomancy: Redirect.
+        // Gadomancy: Redirect.
         ItemNodeRenderer.renderNodeItem(type, item, data);
     }
 
-    //Gadomancy: Renamed to access it static from another class and added aspects, nodeType and nodeModifier as params
-    public static void renderNodeItem(IItemRenderer.ItemRenderType type, ItemStack item, AspectList aspects, NodeType nodeType, NodeModifier nodeModifier, Object... data) {
+    // Gadomancy: Renamed to access it static from another class and added aspects, nodeType and nodeModifier as params
+    public static void renderNodeItem(
+            IItemRenderer.ItemRenderType type,
+            ItemStack item,
+            AspectList aspects,
+            NodeType nodeType,
+            NodeModifier nodeModifier,
+            Object... data) {
         if (type == IItemRenderer.ItemRenderType.ENTITY) {
             GL11.glTranslatef(-0.5F, -0.25F, -0.5F);
         } else if ((type == IItemRenderer.ItemRenderType.EQUIPPED) && ((data[1] instanceof EntityPlayer))) {
@@ -66,12 +75,15 @@ public class ItemNodeRenderer implements IItemRenderer {
         GL11.glEnable(32826);
     }
 
-
     public static void renderNodeItem(IItemRenderer.ItemRenderType type, ItemStack item, Object... data) {
         ItemNodeRenderer.renderNodeItem(type, item, ItemNodeRenderer.aspects, NodeType.NORMAL, null, data);
     }
 
-    private static AspectList aspects = new AspectList().add(Aspect.AIR, 40).add(Aspect.FIRE, 40).add(Aspect.EARTH, 40).add(Aspect.WATER, 40);
+    private static AspectList aspects = new AspectList()
+            .add(Aspect.AIR, 40)
+            .add(Aspect.FIRE, 40)
+            .add(Aspect.EARTH, 40)
+            .add(Aspect.WATER, 40);
 
     public static void renderItemNode(INode node) {
         if (node.getAspects().size() > 0) {
@@ -118,7 +130,8 @@ public class ItemNodeRenderer implements IItemRenderer {
                 GL11.glBlendFunc(770, aspect.getBlend());
                 scale = MathHelper.sin(viewer.ticksExisted / (14.0F - count)) * bscale + bscale * 2.0F;
                 scale = 0.2F + scale * (node.getAspects().getAmount(aspect) / 50.0F);
-                UtilsFX.renderAnimatedQuadStrip(scale, alpha / node.getAspects().size(), frames, 0, i, 0.0F, aspect.getColor());
+                UtilsFX.renderAnimatedQuadStrip(
+                        scale, alpha / node.getAspects().size(), frames, 0, i, 0.0F, aspect.getColor());
                 GL11.glDisable(3042);
                 GL11.glPopMatrix();
                 count++;
@@ -171,5 +184,4 @@ public class ItemNodeRenderer implements IItemRenderer {
             GL11.glPopMatrix();
         }
     }
-
 }

@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.aura;
 
+import java.util.*;
 import makeo.gadomancy.api.AuraEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,8 +8,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
-
-import java.util.*;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -23,12 +22,14 @@ public class AuraEffectHandler {
     public static Map<Aspect, AuraEffect> registeredEffects = new HashMap<Aspect, AuraEffect>();
 
     public static void distributeEffects(Aspect aspect, World worldObj, double x, double y, double z, int tick) {
-        if(!AuraEffectHandler.registeredEffects.containsKey(aspect) || worldObj.isRemote || AuraResearchManager.isBlacklisted(aspect)) return;
+        if (!AuraEffectHandler.registeredEffects.containsKey(aspect)
+                || worldObj.isRemote
+                || AuraResearchManager.isBlacklisted(aspect)) return;
         AuraEffect effect = AuraEffectHandler.registeredEffects.get(aspect);
-        if((tick % effect.getTickInterval()) != 0) return;
+        if ((tick % effect.getTickInterval()) != 0) return;
 
         AuraEffect.EffectType type = effect.getEffectType();
-        if(type != null) {
+        if (type != null) {
             switch (type) {
                 case ENTITY_EFFECT:
                     AuraEffectHandler.doEntityEffects(effect, worldObj, x, y, z);
@@ -42,11 +43,14 @@ public class AuraEffectHandler {
             AuraEffectHandler.doBlockEffects(effect, worldObj, x, y, z);
         }
 
-        //Distribute research
+        // Distribute research
         double range = effect.getRange();
-        List players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(x - 0.5, y - 0.5, z - 0.5, x + 0.5, y + 0.5, z + 0.5).expand(range, range, range));
-        for(Object p : players) {
-            if(p == null || !(p instanceof EntityPlayer)) continue;
+        List players = worldObj.getEntitiesWithinAABB(
+                EntityPlayer.class,
+                AxisAlignedBB.getBoundingBox(x - 0.5, y - 0.5, z - 0.5, x + 0.5, y + 0.5, z + 0.5)
+                        .expand(range, range, range));
+        for (Object p : players) {
+            if (p == null || !(p instanceof EntityPlayer)) continue;
             EntityPlayer player = (EntityPlayer) p;
             AuraResearchManager.tryUnlockAuraEffect(player, aspect);
         }
@@ -64,7 +68,7 @@ public class AuraEffectHandler {
             int zz = worldObj.rand.nextInt(intRange) - worldObj.rand.nextInt(intRange);
 
             ChunkCoordinates blockCC = new ChunkCoordinates((int) x + xx, (int) y + yy, (int) z + zz);
-            if(foundBlocks.contains(blockCC)) {
+            if (foundBlocks.contains(blockCC)) {
                 count++;
             } else {
                 foundBlocks.add(blockCC);
@@ -75,20 +79,22 @@ public class AuraEffectHandler {
 
     private static void doEntityEffects(AuraEffect effect, World worldObj, double x, double y, double z) {
         double range = effect.getRange();
-        List entitiesInRange = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(x - 0.5, y - 0.5, z - 0.5, x + 0.5, y + 0.5, z + 0.5).expand(range, range, range));
+        List entitiesInRange = worldObj.getEntitiesWithinAABB(
+                Entity.class,
+                AxisAlignedBB.getBoundingBox(x - 0.5, y - 0.5, z - 0.5, x + 0.5, y + 0.5, z + 0.5)
+                        .expand(range, range, range));
         Iterator it = entitiesInRange.iterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             Entity e = (Entity) it.next();
-            if(e == null || e.isDead) {
+            if (e == null || e.isDead) {
                 it.remove();
                 continue;
             }
-            if(!effect.isEntityApplicable(e)) it.remove();
+            if (!effect.isEntityApplicable(e)) it.remove();
         }
         ChunkCoordinates origin = new ChunkCoordinates((int) x, (int) y, (int) z);
-        for(Object e : entitiesInRange) {
+        for (Object e : entitiesInRange) {
             effect.doEntityEffect(origin, (Entity) e);
         }
     }
-
 }

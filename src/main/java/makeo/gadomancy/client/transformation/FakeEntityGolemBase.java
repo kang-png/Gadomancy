@@ -31,7 +31,7 @@ public class FakeEntityGolemBase extends EntityGolemBase {
         this.player = player;
     }
 
-    //Golem stuff
+    // Golem stuff
     @Override
     public String getGolemDecoration() {
         return this.golem.getGolemDecoration();
@@ -62,7 +62,7 @@ public class FakeEntityGolemBase extends EntityGolemBase {
         return this.golem.getUpgradeAmount(type);
     }
 
-    //Player stuff
+    // Player stuff
     @Override
     public float getEyeHeight() {
         return this.player.getEyeHeight();
@@ -161,11 +161,11 @@ public class FakeEntityGolemBase extends EntityGolemBase {
 
         this.itemCarried = this.player.getHeldItem();
 
-        if(this.player.isSwingInProgress) {
-            if(this.player.getHeldItem() == null) {
+        if (this.player.isSwingInProgress) {
+            if (this.player.getHeldItem() == null) {
                 this.action = 6 - this.player.swingProgressInt;
             } else {
-                this.rightArm = 5 - (int)(this.player.swingProgress * 5);
+                this.rightArm = 5 - (int) (this.player.swingProgress * 5);
             }
         } else {
             this.action = 0;

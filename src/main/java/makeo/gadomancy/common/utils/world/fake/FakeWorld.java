@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.utils.world.fake;
 
+import java.io.File;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -11,8 +12,6 @@ import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.storage.IPlayerFileData;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.WorldInfo;
-
-import java.io.File;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -87,8 +86,7 @@ public class FakeWorld extends World {
         }
 
         @Override
-        public void checkSessionLock() throws MinecraftException {
-        }
+        public void checkSessionLock() throws MinecraftException {}
 
         @Override
         public IChunkLoader getChunkLoader(WorldProvider p_75763_1_) {
@@ -96,12 +94,10 @@ public class FakeWorld extends World {
         }
 
         @Override
-        public void saveWorldInfoWithPlayer(WorldInfo p_75755_1_, NBTTagCompound p_75755_2_) {
-        }
+        public void saveWorldInfoWithPlayer(WorldInfo p_75755_1_, NBTTagCompound p_75755_2_) {}
 
         @Override
-        public void saveWorldInfo(WorldInfo p_75761_1_) {
-        }
+        public void saveWorldInfo(WorldInfo p_75761_1_) {}
 
         @Override
         public IPlayerFileData getSaveHandler() {

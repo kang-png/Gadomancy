@@ -1,13 +1,12 @@
 package makeo.gadomancy.common.data;
 
-import makeo.gadomancy.common.network.PacketHandler;
-import makeo.gadomancy.common.network.packets.PacketSyncData;
-import net.minecraft.entity.player.EntityPlayer;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketSyncData;
+import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -50,7 +49,7 @@ public class SyncDataHolder {
     }
 
     public static void markForUpdate(String key) {
-        if(!SyncDataHolder.dirtyData.contains(key)) {
+        if (!SyncDataHolder.dirtyData.contains(key)) {
             SyncDataHolder.dirtyData.add(key);
         }
     }
@@ -61,20 +60,20 @@ public class SyncDataHolder {
     }
 
     public static void receiveServerPacket(Map<String, AbstractData> data) {
-        for(String key : data.keySet()) {
+        for (String key : data.keySet()) {
             AbstractData dat = SyncDataHolder.clientData.get(key);
-            if(dat != null) {
+            if (dat != null) {
                 dat.handleIncomingData(data.get(key));
             }
         }
     }
 
     public static void doNecessaryUpdates() {
-        if(SyncDataHolder.dirtyData.isEmpty()) return;
+        if (SyncDataHolder.dirtyData.isEmpty()) return;
         Map<String, AbstractData> pktData = new HashMap<String, AbstractData>();
-        for(String s : SyncDataHolder.dirtyData) {
+        for (String s : SyncDataHolder.dirtyData) {
             AbstractData d = SyncDataHolder.getDataServer(s);
-            if(d.needsUpdate()) {
+            if (d.needsUpdate()) {
                 pktData.put(s, d);
             }
         }
@@ -87,5 +86,4 @@ public class SyncDataHolder {
         SyncDataHolder.register(new DataFamiliar.Provider("FamiliarData"));
         SyncDataHolder.register(new DataAchromatic.Provider("AchromaticData"));
     }
-
 }

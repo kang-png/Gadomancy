@@ -32,11 +32,13 @@ public class PacketTCNodeBolt implements IMessage, IMessageHandler<PacketTCNodeB
      * 6: blue
      */
     private int type;
+
     private boolean mightGetLong;
 
     public PacketTCNodeBolt() {}
 
-    public PacketTCNodeBolt(float x, float y, float z, float targetX, float targetY, float targetZ, int type, boolean mightGetLong) {
+    public PacketTCNodeBolt(
+            float x, float y, float z, float targetX, float targetY, float targetZ, int type, boolean mightGetLong) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -47,7 +49,15 @@ public class PacketTCNodeBolt implements IMessage, IMessageHandler<PacketTCNodeB
         this.mightGetLong = mightGetLong;
     }
 
-    public PacketTCNodeBolt(double posX, double posY, double posZ, double targetX, double targetY, double targetZ, int type, boolean mightGetLong) {
+    public PacketTCNodeBolt(
+            double posX,
+            double posY,
+            double posZ,
+            double targetX,
+            double targetY,
+            double targetZ,
+            int type,
+            boolean mightGetLong) {
         this.x = (float) posX;
         this.y = (float) posY;
         this.z = (float) posZ;
@@ -85,7 +95,18 @@ public class PacketTCNodeBolt implements IMessage, IMessageHandler<PacketTCNodeB
     @Override
     @SideOnly(Side.CLIENT)
     public IMessage onMessage(PacketTCNodeBolt p, MessageContext ctx) {
-        FXLightningBolt bolt = new FXLightningBolt(Minecraft.getMinecraft().theWorld, p.x, p.y, p.z, p.targetX, p.targetY, p.targetZ, Minecraft.getMinecraft().theWorld.rand.nextLong(), 10, 4.0F, 5);
+        FXLightningBolt bolt = new FXLightningBolt(
+                Minecraft.getMinecraft().theWorld,
+                p.x,
+                p.y,
+                p.z,
+                p.targetX,
+                p.targetY,
+                p.targetZ,
+                Minecraft.getMinecraft().theWorld.rand.nextLong(),
+                10,
+                4.0F,
+                5);
         bolt.defaultFractal();
         bolt.setType(p.type);
         bolt.finalizeBolt();

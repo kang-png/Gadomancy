@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.utils;
 
+import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.AxisAlignedBB;
@@ -7,8 +8,6 @@ import net.minecraft.world.World;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.playerdata.PacketResearchComplete;
 import thaumcraft.common.lib.research.ResearchManager;
-
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -21,14 +20,17 @@ import java.util.List;
 public class ResearchHelper {
 
     public static void distributeResearch(String research, World world, double x, double y, double z, double radius) {
-        List players = world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(radius, radius, radius));
-        for(Object pl : players) {
+        List players = world.getEntitiesWithinAABB(
+                EntityPlayer.class,
+                AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(radius, radius, radius));
+        for (Object pl : players) {
             EntityPlayer player = (EntityPlayer) pl;
-            if(!ResearchManager.isResearchComplete(player.getCommandSenderName(), research) && ResearchManager.doesPlayerHaveRequisites(player.getCommandSenderName(), research)) {
-                thaumcraft.common.lib.network.PacketHandler.INSTANCE.sendTo(new PacketResearchComplete(research), (EntityPlayerMP)player);
+            if (!ResearchManager.isResearchComplete(player.getCommandSenderName(), research)
+                    && ResearchManager.doesPlayerHaveRequisites(player.getCommandSenderName(), research)) {
+                thaumcraft.common.lib.network.PacketHandler.INSTANCE.sendTo(
+                        new PacketResearchComplete(research), (EntityPlayerMP) player);
                 Thaumcraft.proxy.getResearchManager().completeResearch(player, research);
             }
         }
     }
-
 }

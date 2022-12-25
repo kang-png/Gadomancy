@@ -1,14 +1,13 @@
 package makeo.gadomancy.common.data;
 
+import java.util.ArrayList;
+import java.util.List;
 import makeo.gadomancy.common.registration.RegisteredPotions;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -30,49 +29,49 @@ public class DataAchromatic extends AbstractData {
     }
 
     public void handleApplication(EntityLivingBase entity) {
-        if(entity.worldObj.isRemote) return;
+        if (entity.worldObj.isRemote) return;
 
         int entityId = entity.getEntityId();
 
         boolean needsUpdate = false;
-        if(!this.addClientQueue.contains(entityId) && !this.achromaticEntities.contains(entityId)) {
+        if (!this.addClientQueue.contains(entityId) && !this.achromaticEntities.contains(entityId)) {
             this.addClientQueue.add(entityId);
             this.achromaticEntities.add(entityId);
             needsUpdate = true;
         }
-        if(this.removeClientQueue.contains(entityId)) {
+        if (this.removeClientQueue.contains(entityId)) {
             this.removeClientQueue.remove(Integer.valueOf(entityId));
             this.addClientQueue.remove(Integer.valueOf(entityId));
             needsUpdate = false;
         }
-        if(needsUpdate) {
+        if (needsUpdate) {
             this.markDirty();
         }
     }
 
     public void handleRemoval(EntityLivingBase entity) {
-        if(entity.worldObj.isRemote) return;
+        if (entity.worldObj.isRemote) return;
 
         int entityId = entity.getEntityId();
 
         boolean needsUpdate = false;
-        if(!this.removeClientQueue.contains(entityId) && this.achromaticEntities.contains(entityId)) {
+        if (!this.removeClientQueue.contains(entityId) && this.achromaticEntities.contains(entityId)) {
             this.removeClientQueue.add(entityId);
             this.achromaticEntities.remove(Integer.valueOf(entityId));
             needsUpdate = true;
         }
-        if(this.addClientQueue.contains(entityId)) {
+        if (this.addClientQueue.contains(entityId)) {
             this.addClientQueue.remove(Integer.valueOf(entityId));
             this.removeClientQueue.remove(Integer.valueOf(entityId));
             needsUpdate = false;
         }
-        if(needsUpdate) {
+        if (needsUpdate) {
             this.markDirty();
         }
     }
 
     public void checkPotionEffect(EntityPlayerMP p) {
-        if(p.isPotionActive(RegisteredPotions.ACHROMATIC)) {
+        if (p.isPotionActive(RegisteredPotions.ACHROMATIC)) {
             this.handleApplication(p);
         }
     }
@@ -112,14 +111,14 @@ public class DataAchromatic extends AbstractData {
     @Override
     public void readRawFromPacket(NBTTagCompound compound) {
         int[] array = compound.getIntArray("removals");
-        if(array != null && array.length > 0) {
-            for(int i : array) {
+        if (array != null && array.length > 0) {
+            for (int i : array) {
                 this.removeClientQueue.add(i);
             }
         }
         array = compound.getIntArray("additions");
-        if(array != null && array.length > 0) {
-            for(int i : array) {
+        if (array != null && array.length > 0) {
+            for (int i : array) {
                 this.addClientQueue.add(i);
             }
         }
@@ -145,5 +144,4 @@ public class DataAchromatic extends AbstractData {
             return new DataAchromatic();
         }
     }
-
 }

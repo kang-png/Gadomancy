@@ -1,11 +1,12 @@
 package makeo.gadomancy.common.blocks.tiles;
 
+import java.util.ArrayList;
+import java.util.List;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.ItemUtils;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,9 +14,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.tiles.TileJarFillable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -30,7 +28,7 @@ public class TileArcanePackager extends TileJarFillable implements ISidedInvento
 
     private ItemStack[] contents = new ItemStack[12];
 
-    //0 - 46
+    // 0 - 46
     public byte progress = -1;
     public boolean autoStart;
     public boolean useEssentia;
@@ -86,7 +84,8 @@ public class TileArcanePackager extends TileJarFillable implements ISidedInvento
             }
         } else {
             if (this.redstoneState == null) {
-                this.redstoneState = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
+                this.redstoneState =
+                        this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
             }
 
             if (this.progress >= 47) {
@@ -108,7 +107,7 @@ public class TileArcanePackager extends TileJarFillable implements ISidedInvento
     }
 
     public void updateRedstone(boolean state) {
-        if(this.redstoneState != null && state && !this.redstoneState) {
+        if (this.redstoneState != null && state && !this.redstoneState) {
             if (this.canPack()) {
                 this.progress = 0;
                 this.markForUpdate();
@@ -145,7 +144,6 @@ public class TileArcanePackager extends TileJarFillable implements ISidedInvento
             ItemStack string = this.getStackInSlot(10);
             return string != null && string.stackSize >= 1 && string.getItem() == Items.string;
         }
-
     }
 
     private void doPack() {
@@ -158,7 +156,10 @@ public class TileArcanePackager extends TileJarFillable implements ISidedInvento
                 }
             }
 
-            ItemStack pack = new ItemStack(this.disguise ? RegisteredItems.itemFakeLootbag : RegisteredItems.itemPackage, 1, this.useEssentia ? 1 : 0);
+            ItemStack pack = new ItemStack(
+                    this.disguise ? RegisteredItems.itemFakeLootbag : RegisteredItems.itemPackage,
+                    1,
+                    this.useEssentia ? 1 : 0);
             boolean success = RegisteredItems.itemPackage.setContents(pack, contents);
 
             if (success) {
@@ -174,12 +175,14 @@ public class TileArcanePackager extends TileJarFillable implements ISidedInvento
                     this.setInventorySlotContents(i, null);
                 }
             } else {
-                this.worldObj.newExplosion(null, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, 1, false, false);
+                this.worldObj.newExplosion(
+                        null, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, 1, false, false);
 
-                for(int i = 0; i < 9; i++) {
+                for (int i = 0; i < 9; i++) {
                     ItemStack stack = this.contents[i];
-                    if(stack != null) {
-                        EntityItem entityItem = new EntityItem(this.worldObj, this.xCoord + 0.5, this.yCoord + (13/16f), this.zCoord + 0.5, stack);
+                    if (stack != null) {
+                        EntityItem entityItem = new EntityItem(
+                                this.worldObj, this.xCoord + 0.5, this.yCoord + (13 / 16f), this.zCoord + 0.5, stack);
                         ItemUtils.applyRandomDropOffset(entityItem, this.worldObj.rand);
                         this.worldObj.spawnEntityInWorld(entityItem);
                         this.contents[i] = null;
@@ -301,14 +304,10 @@ public class TileArcanePackager extends TileJarFillable implements ISidedInvento
     }
 
     @Override
-    public void openInventory() {
-
-    }
+    public void openInventory() {}
 
     @Override
-    public void closeInventory() {
-
-    }
+    public void closeInventory() {}
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
@@ -324,11 +323,11 @@ public class TileArcanePackager extends TileJarFillable implements ISidedInvento
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
         if (side == 0) {
-            return new int[]{11};
+            return new int[] {11};
         }
 
         if (TileArcanePackager.ORIENTATION_MAPPING[side] == super.facing) {
-            return new int[]{9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8};
+            return new int[] {9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8};
         }
 
         return new int[0];

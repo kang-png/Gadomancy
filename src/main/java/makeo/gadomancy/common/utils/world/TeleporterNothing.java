@@ -22,10 +22,12 @@ public class TeleporterNothing extends Teleporter {
     public void removeStalePortalLocations(long p_85189_1_) {}
 
     @Override
-    public void placeInPortal(Entity p_77185_1_, double p_77185_2_, double p_77185_4_, double p_77185_6_, float p_77185_8_) {}
+    public void placeInPortal(
+            Entity p_77185_1_, double p_77185_2_, double p_77185_4_, double p_77185_6_, float p_77185_8_) {}
 
     @Override
-    public boolean placeInExistingPortal(Entity p_77184_1_, double p_77184_2_, double p_77184_4_, double p_77184_6_, float p_77184_8_) {
+    public boolean placeInExistingPortal(
+            Entity p_77184_1_, double p_77184_2_, double p_77184_4_, double p_77184_6_, float p_77184_8_) {
         return true;
     }
 

@@ -1,6 +1,10 @@
 package makeo.gadomancy.common.api;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import makeo.gadomancy.api.AuraEffect;
 import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
@@ -22,11 +26,6 @@ import org.apache.logging.log4j.Logger;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -44,11 +43,12 @@ public class DefaultApiHandler implements IApiHandler {
     @Override
     public boolean registerAdditionalGolemType(String name, String modId, AdditionalGolemType newType) {
         String uniqueName = name.toUpperCase();
-        if(!DefaultApiHandler.additionalGolemTypes.containsKey(uniqueName)) {
+        if (!DefaultApiHandler.additionalGolemTypes.containsKey(uniqueName)) {
             GolemEnumHelper.addGolemType(uniqueName, newType);
 
             ItemAdditionalGolemPlacer placerItem = new ItemAdditionalGolemPlacer(newType);
-            GameRegistry.registerItem(placerItem, "item" + StringHelper.firstToUpper(name.toLowerCase()) + "GolemPlacer");
+            GameRegistry.registerItem(
+                    placerItem, "item" + StringHelper.firstToUpper(name.toLowerCase()) + "GolemPlacer");
             newType.setModId(modId);
             newType.setPlacerItem(placerItem);
 
@@ -73,7 +73,7 @@ public class DefaultApiHandler implements IApiHandler {
     @Override
     public AdditionalGolemCore getAdditionalGolemCore(EntityGolemBase golem) {
         String coreName = golem.getDataWatcher().getWatchableObjectString(ModConfig.golemDatawatcherId);
-        if(!coreName.isEmpty()) {
+        if (!coreName.isEmpty()) {
             return DefaultApiHandler.additionalGolemCores.get(coreName);
         }
         return null;
@@ -81,9 +81,9 @@ public class DefaultApiHandler implements IApiHandler {
 
     @Override
     public AdditionalGolemCore getAdditionalGolemCore(ItemStack placer) {
-        if(NBTHelper.hasPersistentData(placer)) {
+        if (NBTHelper.hasPersistentData(placer)) {
             NBTTagCompound persistent = NBTHelper.getPersistentData(placer);
-            if(persistent.hasKey("Core")) {
+            if (persistent.hasKey("Core")) {
                 return DefaultApiHandler.additionalGolemCores.get(persistent.getString("Core"));
             }
         }
@@ -92,7 +92,7 @@ public class DefaultApiHandler implements IApiHandler {
 
     @Override
     public boolean registerAdditionalGolemCore(String name, AdditionalGolemCore core) {
-        if(!DefaultApiHandler.additionalGolemCores.containsKey(name)) {
+        if (!DefaultApiHandler.additionalGolemCores.containsKey(name)) {
             core.setName(name);
             DefaultApiHandler.additionalGolemCores.put(name, core);
             return true;
@@ -107,15 +107,15 @@ public class DefaultApiHandler implements IApiHandler {
         golem.setCore(core == null ? -1 : core.getBaseCore());
         golem.getDataWatcher().updateObject(ModConfig.golemDatawatcherId, coreName);
 
-        if(!golem.worldObj.isRemote) {
+        if (!golem.worldObj.isRemote) {
             NBTHelper.getPersistentData(golem).setString("Core", coreName);
-            ((ExtendedGolemProperties)golem.getExtendedProperties(Gadomancy.MODID)).updateGolem();
+            ((ExtendedGolemProperties) golem.getExtendedProperties(Gadomancy.MODID)).updateGolem();
         } else {
             golem.setupGolem();
             golem.setupGolemInventory();
         }
 
-        golem.worldObj.setEntityState(golem, (byte)7);
+        golem.worldObj.setEntityState(golem, (byte) 7);
     }
 
     @Override
@@ -130,8 +130,8 @@ public class DefaultApiHandler implements IApiHandler {
 
     @Override
     public void registerAdditionalAuraEffect(Aspect aspect, AuraEffect effect) {
-        if(aspect == null || effect == null) return;
-        if(AuraEffectHandler.registeredEffects.containsKey(aspect)) {
+        if (aspect == null || effect == null) return;
+        if (AuraEffectHandler.registeredEffects.containsKey(aspect)) {
             DefaultApiHandler.log.warn("AuraEffect for '" + aspect.getTag() + "' is already registered!");
         } else {
             AuraEffectHandler.registeredEffects.put(aspect, effect);

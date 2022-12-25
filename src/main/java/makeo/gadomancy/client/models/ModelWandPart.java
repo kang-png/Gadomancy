@@ -1,5 +1,6 @@
 package makeo.gadomancy.client.models;
 
+import java.awt.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -20,8 +21,6 @@ import thaumcraft.client.renderers.models.gear.ModelWand;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.items.wands.ItemWandCasting;
 
-import java.awt.*;
-
 /**
  * This class is NOT part of the Gadomancy Mod
  * This file is copied from Azanors thaumcraft.client.renderers.models.gear.ModelWand.java and contains small modifications
@@ -34,7 +33,7 @@ public class ModelWandPart extends ModelWand {
     ModelRenderer Rod;
     ModelRenderer Focus;
     ModelRenderer Cap;
-    //ModelRenderer CapBottom;
+    // ModelRenderer CapBottom;
 
     private int runeCount;
 
@@ -51,16 +50,16 @@ public class ModelWandPart extends ModelWand {
         this.Cap.mirror = true;
         this.setRotation(this.Cap, 0.0F, 0.0F, 0.0F);
 
-        //this.CapBottom = new ModelRenderer(this, 0, 0);
-        //this.CapBottom.addBox(-1.0F, -1.0F, -1.0F, 2, 2, 2);
-        //this.CapBottom.setRotationPoint(0.0F, 20.0F, 0.0F);
-        //this.CapBottom.setTextureSize(64, 32);
-        //this.CapBottom.mirror = true;
-        //setRotation(this.CapBottom, 0.0F, 0.0F, 0.0F);
+        // this.CapBottom = new ModelRenderer(this, 0, 0);
+        // this.CapBottom.addBox(-1.0F, -1.0F, -1.0F, 2, 2, 2);
+        // this.CapBottom.setRotationPoint(0.0F, 20.0F, 0.0F);
+        // this.CapBottom.setTextureSize(64, 32);
+        // this.CapBottom.mirror = true;
+        // setRotation(this.CapBottom, 0.0F, 0.0F, 0.0F);
 
         this.Rod = new ModelRenderer(this, 0, 8);
 
-        //this.Rod.addBox(-1.0F, -1.0F, -1.0F, 2, 18, 2);
+        // this.Rod.addBox(-1.0F, -1.0F, -1.0F, 2, 18, 2);
 
         this.Rod.addBox(-1.0F, -1.0F, -1.0F, 2, height, 2);
 
@@ -140,7 +139,7 @@ public class ModelWandPart extends ModelWand {
             GL11.glPopMatrix();
             GL11.glTranslated(0.0D, 0.65D, 0.0D);
         }
-        //this.CapBottom.render(0.0625F);
+        // this.CapBottom.render(0.0625F);
         GL11.glPopMatrix();
         if (wand.getFocus(wandStack) != null) {
             if (wand.getFocus(wandStack).getOrnament(focusStack) != null) {
@@ -158,13 +157,15 @@ public class ModelWandPart extends ModelWand {
                 GL11.glPushMatrix();
                 GL11.glTranslatef(-0.25F, -0.1F, 0.0275F);
                 GL11.glScaled(0.5D, 0.5D, 0.5D);
-                ItemRenderer.renderItemIn2D(tessellator, f1, f2, f3, f4, icon.getIconWidth(), icon.getIconHeight(), 0.1F);
+                ItemRenderer.renderItemIn2D(
+                        tessellator, f1, f2, f3, f4, icon.getIconWidth(), icon.getIconHeight(), 0.1F);
                 GL11.glPopMatrix();
                 GL11.glPushMatrix();
                 GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
                 GL11.glTranslatef(-0.25F, -0.1F, 0.0275F);
                 GL11.glScaled(0.5D, 0.5D, 0.5D);
-                ItemRenderer.renderItemIn2D(tessellator, f1, f2, f3, f4, icon.getIconWidth(), icon.getIconHeight(), 0.1F);
+                ItemRenderer.renderItemIn2D(
+                        tessellator, f1, f2, f3, f4, icon.getIconWidth(), icon.getIconHeight(), 0.1F);
                 GL11.glPopMatrix();
                 GL11.glPopMatrix();
             }
@@ -180,7 +181,8 @@ public class ModelWandPart extends ModelWand {
                 }
                 Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
                 this.renderBlocks.setRenderBoundsFromBlock(Blocks.stone);
-                BlockRenderer.drawFaces(this.renderBlocks, null, wand.getFocus(wandStack).getFocusDepthLayerIcon(focusStack), false);
+                BlockRenderer.drawFaces(
+                        this.renderBlocks, null, wand.getFocus(wandStack).getFocusDepthLayerIcon(focusStack), false);
                 GL11.glPopMatrix();
                 alpha = 0.6F;
             }
@@ -236,11 +238,11 @@ public class ModelWandPart extends ModelWand {
                 for (int a = 0; a < 14; a++) {
                     int rune = (a + rot * 3) % 16;
 
-                    //edit start
-                    if(a < this.runeCount) {
+                    // edit start
+                    if (a < this.runeCount) {
                         this.drawRune(0.36D + a * 0.14D, -0.009999999776482582D, -0.08D, rune, player);
                     }
-                    //edit end
+                    // edit end
                 }
             }
             GL11.glBlendFunc(770, 771);

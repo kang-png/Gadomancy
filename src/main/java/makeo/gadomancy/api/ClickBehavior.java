@@ -44,7 +44,7 @@ public abstract class ClickBehavior {
      */
     public abstract boolean isValidForBlock();
 
-    //TODO not handled as expected.
+    // TODO not handled as expected.
     public boolean hasVisCost() {
         return this.hasVisCost;
     }
@@ -53,5 +53,5 @@ public abstract class ClickBehavior {
         return 0;
     }
 
-    public void addInstability(int instability) { }
+    public void addInstability(int instability) {}
 }

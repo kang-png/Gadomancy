@@ -1,13 +1,12 @@
 package makeo.gadomancy.common.entities.fake;
 
+import java.util.Collection;
+import java.util.UUID;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.WorldServer;
 import thaumcraft.common.entities.golems.EntityGolemBase;
-
-import java.util.Collection;
-import java.util.UUID;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -81,6 +80,5 @@ public class GolemFakePlayer extends AdvancedFakePlayer {
     }
 
     @Override
-    protected void updatePotionEffects() {
-    }
+    protected void updatePotionEffects() {}
 }

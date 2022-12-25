@@ -24,28 +24,28 @@ import thaumcraft.api.wands.ItemFocusBasic;
  * Created by makeo @ 13.07.2015 02:14
  */
 public class ItemTransformationFocus extends ItemFocusBasic {
-    private static final AspectList VIS_USAGE = new AspectList().add(Aspect.AIR, 15).add(Aspect.EARTH, 15).add(Aspect.ORDER, 15);
+    private static final AspectList VIS_USAGE =
+            new AspectList().add(Aspect.AIR, 15).add(Aspect.EARTH, 15).add(Aspect.ORDER, 15);
 
     private IIcon iconOrnament;
     private IIcon iconDepth;
 
     public ItemTransformationFocus() {
-        //setCreativeTab(RegisteredItems.creativeTab);
+        // setCreativeTab(RegisteredItems.creativeTab);
         this.setCreativeTab(null);
         this.setUnlocalizedName("ItemTransformationFocus");
     }
 
     @Override
-    public ItemStack onFocusRightClick(ItemStack wandStack, World world, EntityPlayer player, MovingObjectPosition movingobjectposition) {
+    public ItemStack onFocusRightClick(
+            ItemStack wandStack, World world, EntityPlayer player, MovingObjectPosition movingobjectposition) {
         player.setItemInUse(wandStack, 2147483647);
-        //WandManager.setCooldown(player, -1);
+        // WandManager.setCooldown(player, -1);
         return wandStack;
     }
 
     @Override
-    public void onUsingFocusTick(ItemStack wandstack, EntityPlayer player, int count) {
-
-    }
+    public void onUsingFocusTick(ItemStack wandstack, EntityPlayer player, int count) {}
 
     @Override
     public EnumRarity getRarity(ItemStack focusstack) {

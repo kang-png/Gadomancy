@@ -13,14 +13,14 @@ import net.minecraft.entity.Entity;
  * Created by makeo @ 08.10.2015 16:14
  */
 public class ModelInfusionClawPart extends ModelBase {
-    //fields
+    // fields
     ModelRenderer shape1;
 
     public ModelInfusionClawPart(int num) {
         this.textureWidth = 32;
         this.textureHeight = 64;
 
-        this.shape1 = new ModelRenderer(this, 0, 8*num);
+        this.shape1 = new ModelRenderer(this, 0, 8 * num);
         this.shape1.addBox(-3F, -1F, -3F, 6, 2, 6);
         this.shape1.setRotationPoint(0F, 0F, 0F);
         this.shape1.setTextureSize(32, 64);

@@ -1,12 +1,11 @@
 package makeo.gadomancy.common.familiar;
 
 import baubles.api.BaublesApi;
+import java.util.*;
 import makeo.gadomancy.common.registration.RegisteredFamiliarAI_Old;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-
-import java.util.*;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -20,7 +19,8 @@ public class FamiliarAIController_Old {
 
     private static final Random RAND = new Random();
 
-    private static Map<EntityPlayer, LinkedList<EntityLivingBase>> targetMap = new HashMap<EntityPlayer, LinkedList<EntityLivingBase>>();
+    private static Map<EntityPlayer, LinkedList<EntityLivingBase>> targetMap =
+            new HashMap<EntityPlayer, LinkedList<EntityLivingBase>>();
 
     private List<FamiliarAIProcess_Old> availableTasks = new ArrayList<FamiliarAIProcess_Old>();
     private Map<FamiliarAIProcess_Old, Integer> cooldownProcesses = new HashMap<FamiliarAIProcess_Old, Integer>();
@@ -40,15 +40,17 @@ public class FamiliarAIController_Old {
 
     public void scheduleTick() {
         this.reduceRunningCooldowns();
-        if(this.runningTask == null) {
+        if (this.runningTask == null) {
             this.selectNewTask();
         } else {
             ItemStack famStack = BaublesApi.getBaubles(this.owningPlayer).getStackInSlot(0);
             this.runningTask.tick(this.ticksInTask, this.owningPlayer.worldObj, this.owningPlayer, famStack);
             this.ticksInTask++;
-            if(this.ticksInTask >= this.runningTask.getDuration()) {
-                if(this.runningTask.getCooldownDuration(famStack) > 0) this.cooldownProcesses.put(this.runningTask, this.runningTask.getCooldownDuration(famStack));
-                if(this.runningTask.tryLoop() && !this.requestedLoop.contains(this.runningTask)) this.requestedLoop.addLast(this.runningTask);
+            if (this.ticksInTask >= this.runningTask.getDuration()) {
+                if (this.runningTask.getCooldownDuration(famStack) > 0)
+                    this.cooldownProcesses.put(this.runningTask, this.runningTask.getCooldownDuration(famStack));
+                if (this.runningTask.tryLoop() && !this.requestedLoop.contains(this.runningTask))
+                    this.requestedLoop.addLast(this.runningTask);
                 this.runningTask = null;
                 this.ticksInTask = 0;
             }
@@ -56,11 +58,11 @@ public class FamiliarAIController_Old {
     }
 
     private void selectNewTask() {
-        if(!this.requestedLoop.isEmpty()) {
+        if (!this.requestedLoop.isEmpty()) {
             Iterator<FamiliarAIProcess_Old> it = this.requestedLoop.iterator();
-            while(it.hasNext()) {
+            while (it.hasNext()) {
                 FamiliarAIProcess_Old process = it.next();
-                if(!this.cooldownProcesses.containsKey(process)) {
+                if (!this.cooldownProcesses.containsKey(process)) {
                     this.runningTask = process;
                     it.remove();
                     return;
@@ -72,19 +74,26 @@ public class FamiliarAIController_Old {
         for (int i = 0; i < size; i++) {
             int index = (randIndex + i) % size;
             FamiliarAIProcess_Old process = this.availableTasks.get(index);
-            if(process.canRun(this.owningPlayer.worldObj, this.owningPlayer.posX, this.owningPlayer.posY, this.owningPlayer.posZ, this.owningPlayer, BaublesApi.getBaubles(this.owningPlayer).getStackInSlot(0)) &&
-                    !this.cooldownProcesses.containsKey(process)) {
+            if (process.canRun(
+                            this.owningPlayer.worldObj,
+                            this.owningPlayer.posX,
+                            this.owningPlayer.posY,
+                            this.owningPlayer.posZ,
+                            this.owningPlayer,
+                            BaublesApi.getBaubles(this.owningPlayer).getStackInSlot(0))
+                    && !this.cooldownProcesses.containsKey(process)) {
                 this.runningTask = process;
             }
         }
     }
 
     private void reduceRunningCooldowns() {
-        Iterator<FamiliarAIProcess_Old> itProcesses = this.cooldownProcesses.keySet().iterator();
-        while(itProcesses.hasNext()) {
+        Iterator<FamiliarAIProcess_Old> itProcesses =
+                this.cooldownProcesses.keySet().iterator();
+        while (itProcesses.hasNext()) {
             FamiliarAIProcess_Old process = itProcesses.next();
             int cd = this.cooldownProcesses.get(process) - 1;
-            if(cd <= 0) {
+            if (cd <= 0) {
                 itProcesses.remove();
             } else {
                 this.cooldownProcesses.put(process, cd);
@@ -97,38 +106,40 @@ public class FamiliarAIController_Old {
     }
 
     public static boolean hasLastTargetter(EntityPlayer player) {
-        return FamiliarAIController_Old.targetMap.containsKey(player) && FamiliarAIController_Old.targetMap.get(player).size() >= 1;
+        return FamiliarAIController_Old.targetMap.containsKey(player)
+                && FamiliarAIController_Old.targetMap.get(player).size() >= 1;
     }
 
     public static LinkedList<EntityLivingBase> getLastTargetters(EntityPlayer player) {
-        if(!FamiliarAIController_Old.targetMap.containsKey(player)) return null;
-        if(FamiliarAIController_Old.targetMap.get(player).size() < 1) return null;
+        if (!FamiliarAIController_Old.targetMap.containsKey(player)) return null;
+        if (FamiliarAIController_Old.targetMap.get(player).size() < 1) return null;
         return FamiliarAIController_Old.targetMap.get(player);
     }
 
     public static void cleanTargetterList(EntityPlayer player) {
-        if(!FamiliarAIController_Old.targetMap.containsKey(player)) return;
-        Iterator<EntityLivingBase> it = FamiliarAIController_Old.targetMap.get(player).iterator();
-        while(it.hasNext()) {
+        if (!FamiliarAIController_Old.targetMap.containsKey(player)) return;
+        Iterator<EntityLivingBase> it =
+                FamiliarAIController_Old.targetMap.get(player).iterator();
+        while (it.hasNext()) {
             EntityLivingBase living = it.next();
-            if(living.isDead) it.remove();
+            if (living.isDead) it.remove();
         }
     }
 
     public static void notifyTargetEvent(EntityLivingBase targetter, EntityPlayer targetted) {
         LinkedList<EntityLivingBase> targetters;
         boolean needsUpdate = false;
-        if(FamiliarAIController_Old.targetMap.containsKey(targetted)) {
+        if (FamiliarAIController_Old.targetMap.containsKey(targetted)) {
             targetters = FamiliarAIController_Old.targetMap.get(targetted);
         } else {
             targetters = new LinkedList<EntityLivingBase>();
             needsUpdate = true;
         }
 
-        if(!targetters.contains(targetter)) {
+        if (!targetters.contains(targetter)) {
             targetters.addLast(targetter);
         }
-        if(needsUpdate) {
+        if (needsUpdate) {
             FamiliarAIController_Old.targetMap.put(targetted, targetters);
         }
     }

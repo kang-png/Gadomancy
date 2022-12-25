@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.integration.waila;
 
+import java.util.List;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -11,8 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -23,31 +22,51 @@ import java.util.List;
  */
 public class InfusionClawProvider implements IWailaDataProvider {
     @Override
-    public ItemStack getWailaStack(IWailaDataAccessor paramIWailaDataAccessor, IWailaConfigHandler paramIWailaConfigHandler) {
+    public ItemStack getWailaStack(
+            IWailaDataAccessor paramIWailaDataAccessor, IWailaConfigHandler paramIWailaConfigHandler) {
         return null;
     }
 
     @Override
-    public List<String> getWailaHead(ItemStack paramItemStack, List<String> paramList, IWailaDataAccessor paramIWailaDataAccessor, IWailaConfigHandler paramIWailaConfigHandler) {
+    public List<String> getWailaHead(
+            ItemStack paramItemStack,
+            List<String> paramList,
+            IWailaDataAccessor paramIWailaDataAccessor,
+            IWailaConfigHandler paramIWailaConfigHandler) {
         return null;
     }
 
     @Override
-    public List<String> getWailaBody(ItemStack paramItemStack, List<String> strings, IWailaDataAccessor dataAccessor, IWailaConfigHandler paramIWailaConfigHandler) {
+    public List<String> getWailaBody(
+            ItemStack paramItemStack,
+            List<String> strings,
+            IWailaDataAccessor dataAccessor,
+            IWailaConfigHandler paramIWailaConfigHandler) {
         TileInfusionClaw tile = (TileInfusionClaw) dataAccessor.getTileEntity();
-        if(tile.hasOwner()) {
+        if (tile.hasOwner()) {
             strings.add(StatCollector.translateToLocal("gadomancy.info.InfusionClaw.waila") + " " + tile.getOwner());
         }
         return strings;
     }
 
     @Override
-    public List<String> getWailaTail(ItemStack paramItemStack, List<String> paramList, IWailaDataAccessor dataAccessor, IWailaConfigHandler paramIWailaConfigHandler) {
+    public List<String> getWailaTail(
+            ItemStack paramItemStack,
+            List<String> paramList,
+            IWailaDataAccessor dataAccessor,
+            IWailaConfigHandler paramIWailaConfigHandler) {
         return null;
     }
 
     @Override
-    public NBTTagCompound getNBTData(EntityPlayerMP paramEntityPlayerMP, TileEntity paramTileEntity, NBTTagCompound paramNBTTagCompound, World paramWorld, int paramInt1, int paramInt2, int paramInt3) {
+    public NBTTagCompound getNBTData(
+            EntityPlayerMP paramEntityPlayerMP,
+            TileEntity paramTileEntity,
+            NBTTagCompound paramNBTTagCompound,
+            World paramWorld,
+            int paramInt1,
+            int paramInt2,
+            int paramInt3) {
         return null;
     }
 }

@@ -1,5 +1,7 @@
 package makeo.gadomancy.common.blocks;
 
+import java.util.ArrayList;
+import java.util.List;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
@@ -15,9 +17,6 @@ import net.minecraft.world.World;
 import thaumcraft.common.blocks.BlockJar;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.tiles.TileJarFillable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -55,12 +54,12 @@ public class BlockRemoteJar extends BlockJar {
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         ArrayList<ItemStack> drops = super.getDrops(world, x, y, z, metadata, fortune);
 
-        for(ItemStack drop : drops) {
-            if(drop.getItem() == ConfigItems.itemJarFilled || drop.getItem() == Item.getItemFromBlock(this)) {
+        for (ItemStack drop : drops) {
+            if (drop.getItem() == ConfigItems.itemJarFilled || drop.getItem() == Item.getItemFromBlock(this)) {
                 drop.func_150996_a(Item.getItemFromBlock(this));
 
                 TileRemoteJar tile = BlockRemoteJar.getJarTile(world, x, y, z);
-                if(tile.networkId != null) {
+                if (tile.networkId != null) {
                     NBTHelper.setUUID(NBTHelper.getData(drop), "networkId", tile.networkId);
                 }
             }
@@ -69,11 +68,13 @@ public class BlockRemoteJar extends BlockJar {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float these, float are, float variables) {
+    public boolean onBlockActivated(
+            World world, int x, int y, int z, EntityPlayer player, int side, float these, float are, float variables) {
         ItemStack heldItem = player.getHeldItem();
         if (heldItem != null && heldItem.getItem() == ConfigItems.itemEssence) {
-            if(!world.isRemote) {
-                BlockStickyJar.handlePhial(world, x, y, z, player, heldItem, (TileJarFillable) world.getTileEntity(x, y, z));
+            if (!world.isRemote) {
+                BlockStickyJar.handlePhial(
+                        world, x, y, z, player, heldItem, (TileJarFillable) world.getTileEntity(x, y, z));
             }
             return true;
         }

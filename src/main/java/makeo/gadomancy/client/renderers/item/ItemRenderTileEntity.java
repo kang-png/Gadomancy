@@ -27,12 +27,12 @@ public class ItemRenderTileEntity<T extends TileEntity> implements IItemRenderer
         this.renderer = renderer;
         this.tile = tile;
 
-        if(tile.getWorldObj() == null) {
+        if (tile.getWorldObj() == null) {
             tile.setWorldObj(ItemRenderTileEntity.FAKE_WORLD);
         }
     }
 
-    protected ItemRenderTileEntity() { }
+    protected ItemRenderTileEntity() {}
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
@@ -46,13 +46,11 @@ public class ItemRenderTileEntity<T extends TileEntity> implements IItemRenderer
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        if(type == IItemRenderer.ItemRenderType.ENTITY)
-            GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        if (type == IItemRenderer.ItemRenderType.ENTITY) GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
-        if(type == ItemRenderType.INVENTORY)
-            GL11.glTranslatef(0, -0.1F, 0);
+        if (type == ItemRenderType.INVENTORY) GL11.glTranslatef(0, -0.1F, 0);
 
-        if(type == ItemRenderType.EQUIPPED_FIRST_PERSON && this.tile instanceof TileManipulationFocus)
+        if (type == ItemRenderType.EQUIPPED_FIRST_PERSON && this.tile instanceof TileManipulationFocus)
             GL11.glTranslatef(0, 0.6F, 0);
 
         this.renderer.renderTileEntityAt(this.tile, 0.0D, 0.0D, 0.0D, 0.0F);

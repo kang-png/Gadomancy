@@ -1,5 +1,6 @@
 package makeo.gadomancy.api.internal;
 
+import java.util.List;
 import makeo.gadomancy.api.AuraEffect;
 import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
@@ -7,8 +8,6 @@ import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import net.minecraft.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.entities.golems.EntityGolemBase;
-
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod

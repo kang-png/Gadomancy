@@ -1,9 +1,8 @@
 package makeo.gadomancy.common.data;
 
-import net.minecraft.nbt.NBTTagCompound;
-
 import java.util.HashMap;
 import java.util.Map;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -19,7 +18,7 @@ public abstract class AbstractData {
 
     public final void markDirty() {
         AbstractDataProvider<? extends AbstractData> provider = Registry.getProvider(this.getProviderID());
-        if(provider != null) {
+        if (provider != null) {
             SyncDataHolder.markForUpdate(provider.getKey());
         }
     }
@@ -44,7 +43,8 @@ public abstract class AbstractData {
 
     public static class Registry {
 
-        private static Map<Byte, AbstractDataProvider<? extends AbstractData>> registry = new HashMap<Byte, AbstractDataProvider<? extends AbstractData>>();
+        private static Map<Byte, AbstractDataProvider<? extends AbstractData>> registry =
+                new HashMap<Byte, AbstractDataProvider<? extends AbstractData>>();
 
         public static void register(AbstractDataProvider<? extends AbstractData> provider) {
             Registry.registry.put(provider.getProviderId(), provider);
@@ -74,7 +74,6 @@ public abstract class AbstractData {
         public final byte getProviderId() {
             return this.providerId;
         }
-
     }
 
     public abstract static class ProviderAutoAllocate<T extends AbstractData> extends AbstractDataProvider<T> {
@@ -82,7 +81,5 @@ public abstract class AbstractData {
         public ProviderAutoAllocate(String key) {
             super(key, SyncDataHolder.allocateNewId());
         }
-
     }
-
 }

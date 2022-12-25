@@ -1,5 +1,9 @@
 package makeo.gadomancy.common.aura;
 
+import static makeo.gadomancy.common.utils.MiscUtils.ticksForMinutes;
+import static makeo.gadomancy.common.utils.MiscUtils.ticksForSeconds;
+
+import java.util.Random;
 import makeo.gadomancy.api.AuraEffect;
 import makeo.gadomancy.common.events.EventHandlerEntity;
 import makeo.gadomancy.common.integration.IntegrationThaumicTinkerer;
@@ -42,11 +46,6 @@ import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 
-import java.util.Random;
-
-import static makeo.gadomancy.common.utils.MiscUtils.ticksForMinutes;
-import static makeo.gadomancy.common.utils.MiscUtils.ticksForSeconds;
-
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -56,35 +55,79 @@ import static makeo.gadomancy.common.utils.MiscUtils.ticksForSeconds;
  * Created by HellFirePvP @ 29.11.2015 19:09
  */
 public class AuraEffects {
-    private static final ItemStack[][] ITEMS_SOUL = {{new ItemStack(Items.bow), new ItemStack(Items.wooden_sword), new ItemStack(Items.stone_sword), new ItemStack(Items.iron_sword), new ItemStack(Items.stone_axe), new ItemStack(Items.iron_axe)},{new ItemStack(Items.leather_boots), new ItemStack(Items.chainmail_boots), new ItemStack(Items.iron_boots)},{new ItemStack(Items.leather_leggings), new ItemStack(Items.chainmail_leggings), new ItemStack(Items.iron_leggings)},{new ItemStack(Items.leather_chestplate), new ItemStack(Items.chainmail_chestplate), new ItemStack(Items.iron_chestplate)},{new ItemStack(Blocks.lit_pumpkin), new ItemStack(Blocks.pumpkin)}};
+    private static final ItemStack[][] ITEMS_SOUL = {
+        {
+            new ItemStack(Items.bow),
+            new ItemStack(Items.wooden_sword),
+            new ItemStack(Items.stone_sword),
+            new ItemStack(Items.iron_sword),
+            new ItemStack(Items.stone_axe),
+            new ItemStack(Items.iron_axe)
+        },
+        {new ItemStack(Items.leather_boots), new ItemStack(Items.chainmail_boots), new ItemStack(Items.iron_boots)},
+        {
+            new ItemStack(Items.leather_leggings),
+            new ItemStack(Items.chainmail_leggings),
+            new ItemStack(Items.iron_leggings)
+        },
+        {
+            new ItemStack(Items.leather_chestplate),
+            new ItemStack(Items.chainmail_chestplate),
+            new ItemStack(Items.iron_chestplate)
+        },
+        {new ItemStack(Blocks.lit_pumpkin), new ItemStack(Blocks.pumpkin)}
+    };
 
-    //Potion amplifiers start with 0 == lvl 1!
+    // Potion amplifiers start with 0 == lvl 1!
 
-    //Std. potion effects
-    public static final AuraEffect AER = new PotionDistributionEffect(Potion.moveSpeed, 4, 6, ticksForMinutes(6), 1).register(Aspect.AIR);
-    public static final AuraEffect AQUA = new PotionDistributionEffect(Potion.waterBreathing, 4, 10, ticksForMinutes(10), 0).register(Aspect.WATER);
-    public static final AuraEffect TERRA = new PotionDistributionEffect(Potion.resistance, 4, 8, ticksForMinutes(5), 0).register(Aspect.EARTH);
-    public static final AuraEffect ORDO = new PotionDistributionEffect(Potion.regeneration, 4, 6, ticksForMinutes(3), 0).register(Aspect.ORDER);
-    public static final AuraEffect PERDITIO = new PotionDistributionEffect(Potion.weakness, 4, 8, ticksForMinutes(3), 0).register(Aspect.ENTROPY);
-    public static final AuraEffect TELUM = new PotionDistributionEffect(Potion.damageBoost, 4, 6, ticksForMinutes(6), 2).register(Aspect.WEAPON);
-    public static final AuraEffect TUTAMEN = new PotionDistributionEffect(Potion.resistance, 4, 6, ticksForMinutes(6), 1).register(Aspect.ARMOR);
-    public static final AuraEffect MOTUS = new PotionDistributionEffect(Potion.moveSpeed, 4, 6, ticksForMinutes(2), 2).register(Aspect.MOTION); //Fast speed for short duration, long charge time
-    public static final AuraEffect ITER = new PotionDistributionEffect(Potion.moveSpeed, 2, 10, ticksForMinutes(15), 0).register(Aspect.TRAVEL); //Slower speed for long duration, fast charge time
-    public static final AuraEffect FAMES = new PotionDistributionEffect(Potion.hunger, 4, 6, ticksForMinutes(2), 0).register(Aspect.HUNGER);
-    public static final AuraEffect SENSUS = new PotionDistributionEffect(Potion.nightVision, 2, 8, ticksForMinutes(8), 0).register(Aspect.SENSES);
-    public static final AuraEffect VOLATUS = new PotionDistributionEffect(Potion.jump, 2, 5, ticksForMinutes(4), 0).register(Aspect.FLIGHT);
-    public static final AuraEffect POTENTIA = new PotionDistributionEffect(Potion.damageBoost, 4, 6, ticksForMinutes(4), 0).register(Aspect.ENERGY);
-    public static final AuraEffect TENEBRAE = new PotionDistributionEffect(Potion.blindness, 4, 6, ticksForMinutes(1), 0).register(Aspect.DARKNESS);
-    public static final AuraEffect SANO = new PotionDistributionEffect(Potion.regeneration, 8, 10, ticksForMinutes(5), 1).register(Aspect.HEAL);
-    public static final AuraEffect MORTUUS = new PotionDistributionEffect(Potion.wither, 4, 6, ticksForMinutes(3), 1).register(Aspect.DEATH);
-    public static final AuraEffect HUMANUS = new PotionDistributionEffect(Potion.field_76434_w, 2, 5, ticksForMinutes(4), 1).register(Aspect.MAN);
-    public static final AuraEffect INSTRUMENTUM = new PotionDistributionEffect(Potion.digSpeed, 2, 7, ticksForMinutes(6), 0).register(Aspect.TOOL);
-    public static final AuraEffect PERFODIO = new PotionDistributionEffect(Potion.digSpeed, 2, 7, ticksForMinutes(5), 2).register(Aspect.MINE);
-    public static final AuraEffect VENENUM = new PotionDistributionEffect(Potion.poison, 2, 6, ticksForMinutes(1), 0).register(Aspect.POISON);
-    public static final AuraEffect VINCULUM = new PotionDistributionEffect(Potion.moveSlowdown, 4, 6, ticksForMinutes(3), 0).register(Aspect.TRAP);
+    // Std. potion effects
+    public static final AuraEffect AER =
+            new PotionDistributionEffect(Potion.moveSpeed, 4, 6, ticksForMinutes(6), 1).register(Aspect.AIR);
+    public static final AuraEffect AQUA =
+            new PotionDistributionEffect(Potion.waterBreathing, 4, 10, ticksForMinutes(10), 0).register(Aspect.WATER);
+    public static final AuraEffect TERRA =
+            new PotionDistributionEffect(Potion.resistance, 4, 8, ticksForMinutes(5), 0).register(Aspect.EARTH);
+    public static final AuraEffect ORDO =
+            new PotionDistributionEffect(Potion.regeneration, 4, 6, ticksForMinutes(3), 0).register(Aspect.ORDER);
+    public static final AuraEffect PERDITIO =
+            new PotionDistributionEffect(Potion.weakness, 4, 8, ticksForMinutes(3), 0).register(Aspect.ENTROPY);
+    public static final AuraEffect TELUM =
+            new PotionDistributionEffect(Potion.damageBoost, 4, 6, ticksForMinutes(6), 2).register(Aspect.WEAPON);
+    public static final AuraEffect TUTAMEN =
+            new PotionDistributionEffect(Potion.resistance, 4, 6, ticksForMinutes(6), 1).register(Aspect.ARMOR);
+    public static final AuraEffect MOTUS = new PotionDistributionEffect(Potion.moveSpeed, 4, 6, ticksForMinutes(2), 2)
+            .register(Aspect.MOTION); // Fast speed for short duration, long charge time
+    public static final AuraEffect ITER = new PotionDistributionEffect(Potion.moveSpeed, 2, 10, ticksForMinutes(15), 0)
+            .register(Aspect.TRAVEL); // Slower speed for long duration, fast charge time
+    public static final AuraEffect FAMES =
+            new PotionDistributionEffect(Potion.hunger, 4, 6, ticksForMinutes(2), 0).register(Aspect.HUNGER);
+    public static final AuraEffect SENSUS =
+            new PotionDistributionEffect(Potion.nightVision, 2, 8, ticksForMinutes(8), 0).register(Aspect.SENSES);
+    public static final AuraEffect VOLATUS =
+            new PotionDistributionEffect(Potion.jump, 2, 5, ticksForMinutes(4), 0).register(Aspect.FLIGHT);
+    public static final AuraEffect POTENTIA =
+            new PotionDistributionEffect(Potion.damageBoost, 4, 6, ticksForMinutes(4), 0).register(Aspect.ENERGY);
+    public static final AuraEffect TENEBRAE =
+            new PotionDistributionEffect(Potion.blindness, 4, 6, ticksForMinutes(1), 0).register(Aspect.DARKNESS);
+    public static final AuraEffect SANO =
+            new PotionDistributionEffect(Potion.regeneration, 8, 10, ticksForMinutes(5), 1).register(Aspect.HEAL);
+    public static final AuraEffect MORTUUS =
+            new PotionDistributionEffect(Potion.wither, 4, 6, ticksForMinutes(3), 1).register(Aspect.DEATH);
+    public static final AuraEffect HUMANUS =
+            new PotionDistributionEffect(Potion.field_76434_w, 2, 5, ticksForMinutes(4), 1).register(Aspect.MAN);
+    public static final AuraEffect INSTRUMENTUM =
+            new PotionDistributionEffect(Potion.digSpeed, 2, 7, ticksForMinutes(6), 0).register(Aspect.TOOL);
+    public static final AuraEffect PERFODIO =
+            new PotionDistributionEffect(Potion.digSpeed, 2, 7, ticksForMinutes(5), 2).register(Aspect.MINE);
+    public static final AuraEffect VENENUM =
+            new PotionDistributionEffect(Potion.poison, 2, 6, ticksForMinutes(1), 0).register(Aspect.POISON);
+    public static final AuraEffect VINCULUM =
+            new PotionDistributionEffect(Potion.moveSlowdown, 4, 6, ticksForMinutes(3), 0).register(Aspect.TRAP);
 
-    //Special effects..
-    public static final AuraEffect LUCRUM = new PotionDistributionEffect(RegisteredPotions.POTION_LUCK, 4, 6, ticksForMinutes(5), 1).register(Aspect.GREED); //Mining luck (Adding fortune)
+    // Special effects..
+    public static final AuraEffect LUCRUM = new PotionDistributionEffect(
+                    RegisteredPotions.POTION_LUCK, 4, 6, ticksForMinutes(5), 1)
+            .register(Aspect.GREED); // Mining luck (Adding fortune)
     public static final AuraEffect VICTUS = new AuraEffect.EntityAuraEffect() {
         @Override
         public boolean isEntityApplicable(Entity e) {
@@ -93,9 +136,9 @@ public class AuraEffects {
 
         @Override
         public void doEntityEffect(ChunkCoordinates originTile, Entity e) {
-            if(e instanceof EntityPlayer) return;
+            if (e instanceof EntityPlayer) return;
             EntityAgeable ageable = (EntityAgeable) e;
-            if(ageable.worldObj.rand.nextInt(20) == 0) ageable.setGrowingAge(0); //setAdult
+            if (ageable.worldObj.rand.nextInt(20) == 0) ageable.setGrowingAge(0); // setAdult
         }
     }.register(Aspect.LIFE);
     public static final AuraEffect PANNUS = new AuraEffect.EntityAuraEffect() {
@@ -107,7 +150,7 @@ public class AuraEffects {
         @Override
         public void doEntityEffect(ChunkCoordinates originTile, Entity e) {
             EntitySheep sheep = (EntitySheep) e;
-            if(sheep.worldObj.rand.nextInt(10) == 0) sheep.setSheared(false);
+            if (sheep.worldObj.rand.nextInt(10) == 0) sheep.setSheared(false);
         }
 
         @Override
@@ -123,7 +166,7 @@ public class AuraEffects {
 
         @Override
         public void doEntityEffect(ChunkCoordinates originTile, Entity e) {
-            if(!EventHandlerEntity.registeredLuxPylons.contains(originTile))
+            if (!EventHandlerEntity.registeredLuxPylons.contains(originTile))
                 EventHandlerEntity.registeredLuxPylons.add(originTile);
         }
 
@@ -146,7 +189,8 @@ public class AuraEffects {
         @Override
         public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
             int highestY = world.getTopSolidOrLiquidBlock(selectedBlock.posX, selectedBlock.posZ);
-            EntityLightningBolt entityLightning = new EntityLightningBolt(world, selectedBlock.posX + 0.5, highestY, selectedBlock.posZ + 0.5);
+            EntityLightningBolt entityLightning =
+                    new EntityLightningBolt(world, selectedBlock.posX + 0.5, highestY, selectedBlock.posZ + 0.5);
             world.addWeatherEffect(entityLightning);
         }
     }.register(Aspect.WEATHER);
@@ -163,8 +207,10 @@ public class AuraEffects {
 
         @Override
         public void doEntityEffect(ChunkCoordinates originTile, Entity e) {
-            if(e.worldObj.rand.nextInt(20) == 0 && !((EntityLivingBase) e).isPotionActive(Config.potionTaintPoisonID)) {
-                ((EntityLivingBase) e).addPotionEffect(new PotionEffect(Config.potionTaintPoisonID, ticksForSeconds(20), 0, true));
+            if (e.worldObj.rand.nextInt(20) == 0
+                    && !((EntityLivingBase) e).isPotionActive(Config.potionTaintPoisonID)) {
+                ((EntityLivingBase) e)
+                        .addPotionEffect(new PotionEffect(Config.potionTaintPoisonID, ticksForSeconds(20), 0, true));
             }
         }
 
@@ -175,12 +221,12 @@ public class AuraEffects {
 
         @Override
         public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
-            if(!Config.genTaint) return;
+            if (!Config.genTaint) return;
             int x = selectedBlock.posX;
             int y = selectedBlock.posY;
             int z = selectedBlock.posZ;
             BlockTaintFibres.spreadFibres(world, x, y, z);
-            if(world.rand.nextInt(12) == 0) {
+            if (world.rand.nextInt(12) == 0) {
                 Utils.setBiomeAt(world, x, z, ThaumcraftWorldGenerator.biomeTaint);
                 world.addBlockEvent(x, y, z, world.getBlock(x, y, z), 1, 0);
             }
@@ -206,13 +252,13 @@ public class AuraEffects {
         public void doEntityEffect(ChunkCoordinates originTile, Entity e) {
             EntityLivingBase living = (EntityLivingBase) e;
             int activeDuration = 0;
-            if(living.isPotionActive(Potion.moveSlowdown)) {
+            if (living.isPotionActive(Potion.moveSlowdown)) {
                 PotionEffect effect = living.getActivePotionEffect(Potion.moveSlowdown);
                 activeDuration = effect.getDuration();
             }
 
             boolean canAdd = (ticksForMinutes(3) - activeDuration) >= 5;
-            if(canAdd) {
+            if (canAdd) {
                 living.addPotionEffect(new PotionEffect(Potion.moveSlowdown.getId(), activeDuration + 5, 1, true));
             }
         }
@@ -230,7 +276,8 @@ public class AuraEffects {
         @Override
         public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
             Block selected = world.getBlock(selectedBlock.posX, selectedBlock.posY, selectedBlock.posZ);
-            if(selected.equals(Blocks.water) && world.getBlockMetadata(selectedBlock.posX, selectedBlock.posY, selectedBlock.posZ) == 0) {
+            if (selected.equals(Blocks.water)
+                    && world.getBlockMetadata(selectedBlock.posX, selectedBlock.posY, selectedBlock.posZ) == 0) {
                 world.setBlock(selectedBlock.posX, selectedBlock.posY, selectedBlock.posZ, Blocks.ice);
             }
         }
@@ -248,9 +295,12 @@ public class AuraEffects {
 
         @Override
         public void doEntityEffect(ChunkCoordinates originTile, Entity e) {
-            AuraEffects.addOrExtendPotionEffect(Potion.damageBoost, (EntityLivingBase) e, ticksForMinutes(3), 30, 1, false);
-            AuraEffects.addOrExtendPotionEffect(Potion.moveSpeed, (EntityLivingBase) e, ticksForMinutes(3), 30, 0, false);
-            AuraEffects.addOrExtendPotionEffect(Potion.regeneration, (EntityLivingBase) e, ticksForMinutes(3), 30, 0, false);
+            AuraEffects.addOrExtendPotionEffect(
+                    Potion.damageBoost, (EntityLivingBase) e, ticksForMinutes(3), 30, 1, false);
+            AuraEffects.addOrExtendPotionEffect(
+                    Potion.moveSpeed, (EntityLivingBase) e, ticksForMinutes(3), 30, 0, false);
+            AuraEffects.addOrExtendPotionEffect(
+                    Potion.regeneration, (EntityLivingBase) e, ticksForMinutes(3), 30, 0, false);
         }
 
         @Override
@@ -266,8 +316,9 @@ public class AuraEffects {
         @Override
         public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
             EntityBrainyZombie zombie = new EntityBrainyZombie(world);
-            boolean canSpawn = AuraEffects.setAndCheckPosition(zombie, selectedBlock, world, true) && zombie.getCanSpawnHere(); //Position for getCanSpawn here is updated.
-            if(canSpawn) {
+            boolean canSpawn = AuraEffects.setAndCheckPosition(zombie, selectedBlock, world, true)
+                    && zombie.getCanSpawnHere(); // Position for getCanSpawn here is updated.
+            if (canSpawn) {
                 ChunkCoordinates pos = new ChunkCoordinates((int) zombie.posX, (int) zombie.posY, (int) zombie.posZ);
                 pos = AuraEffects.iterateDown(pos, world);
                 zombie.setPosition(pos.posX + 0.5, pos.posY, pos.posZ + 0.5);
@@ -290,12 +341,14 @@ public class AuraEffects {
         public void doEntityEffect(ChunkCoordinates originTile, Entity e) {
             EntityPlayer player = (EntityPlayer) e;
 
-            if(player.getHeldItem() != null && player.getHeldItem().getItem() != null && player.getHeldItem().getItem() instanceof ItemWandCasting) {
+            if (player.getHeldItem() != null
+                    && player.getHeldItem().getItem() != null
+                    && player.getHeldItem().getItem() instanceof ItemWandCasting) {
                 ItemStack wand = player.getHeldItem();
                 ItemWandCasting wandCasting = (ItemWandCasting) wand.getItem();
                 AspectList al = wandCasting.getAspectsWithRoom(wand);
-                for(Aspect a : al.getAspects()) {
-                    if(a != null) wandCasting.addRealVis(wand, a, 4, true);
+                for (Aspect a : al.getAspects()) {
+                    if (a != null) wandCasting.addRealVis(wand, a, 4, true);
                 }
             }
         }
@@ -315,10 +368,10 @@ public class AuraEffects {
         public void doEntityEffect(ChunkCoordinates originTile, Entity e) {
             EntityPlayer player = (EntityPlayer) e;
 
-            for(Aspect a : Aspect.getPrimalAspects()) {
-                if(a != null && e.worldObj.rand.nextInt(40) == 0) {
-                    if(e.worldObj.rand.nextInt(20) == 0) {
-                        //1 temp warp.
+            for (Aspect a : Aspect.getPrimalAspects()) {
+                if (a != null && e.worldObj.rand.nextInt(40) == 0) {
+                    if (e.worldObj.rand.nextInt(20) == 0) {
+                        // 1 temp warp.
                         Thaumcraft.addWarpToPlayer(player, 1, true);
                     }
                     ScanManager.checkAndSyncAspectKnowledge(player, a, 1);
@@ -399,7 +452,7 @@ public class AuraEffects {
 
         @Override
         public void doEntityEffect(ChunkCoordinates originTile, Entity e) {
-            if(!e.isImmuneToFire()) {
+            if (!e.isImmuneToFire()) {
                 e.setFire(10);
             }
         }
@@ -407,10 +460,12 @@ public class AuraEffects {
     public static final AuraEffect ELDRITCH = new AuraEffect.EntityAuraEffect() {
         @Override
         public boolean isEntityApplicable(Entity e) {
-            if(e instanceof EntityMob) {
+            if (e instanceof EntityMob) {
                 EntityMob mob = (EntityMob) e;
-                if(mob.getEntityAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue() < 0
-                        && mob.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue() >= 10.0D) {
+                if (mob.getEntityAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue() < 0
+                        && mob.getEntityAttribute(SharedMonsterAttributes.maxHealth)
+                                        .getBaseValue()
+                                >= 10.0D) {
                     boolean whitelisted = false;
                     for (Class clazz : ConfigEntities.championModWhitelist.keySet()) {
                         if (clazz.isAssignableFrom(e.getClass())) {
@@ -430,15 +485,18 @@ public class AuraEffects {
 
         @Override
         public void doEntityEffect(ChunkCoordinates originTile, Entity e) {
-            if(e.worldObj.rand.nextInt(4) == 0) {
+            if (e.worldObj.rand.nextInt(4) == 0) {
                 EntityMob mob = (EntityMob) e;
                 PotionEffect effect = mob.getActivePotionEffect(RegisteredPotions.ELDRITCH);
 
-                if(effect != null && effect.getAmplifier() > 4) {
+                if (effect != null && effect.getAmplifier() > 4) {
                     EntityUtils.makeChampion(mob, false);
                     mob.removePotionEffect(RegisteredPotions.ELDRITCH.getId());
                 } else {
-                    mob.addPotionEffect(new PotionEffect(RegisteredPotions.ELDRITCH.getId(), MiscUtils.ticksForMinutes(1), effect == null ? 1 : effect.getAmplifier() + 1));
+                    mob.addPotionEffect(new PotionEffect(
+                            RegisteredPotions.ELDRITCH.getId(),
+                            MiscUtils.ticksForMinutes(1),
+                            effect == null ? 1 : effect.getAmplifier() + 1));
                 }
             }
         }
@@ -457,19 +515,22 @@ public class AuraEffects {
         @Override
         public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
             EntityLiving mob = world.rand.nextBoolean() ? new EntitySkeleton(world) : new EntityZombie(world);
-            if(AuraEffects.setAndCheckPosition(mob, selectedBlock, world, true) && world.difficultySetting != EnumDifficulty.PEACEFUL) {
-                for(int i = 0; i < 5; i++) {
+            if (AuraEffects.setAndCheckPosition(mob, selectedBlock, world, true)
+                    && world.difficultySetting != EnumDifficulty.PEACEFUL) {
+                for (int i = 0; i < 5; i++) {
                     mob.setCurrentItemOrArmor(i, null);
                 }
 
                 int timeout = 40;
                 int totalCount = (world.rand.nextInt(3) == 0 ? 1 : 0) + 2;
                 do {
-                    int slot = mob.getEquipmentInSlot(0) == null ? 0 : (mob.getEquipmentInSlot(4) == null ? 4 : (world.rand.nextInt(3)+1));
-                    if(mob.getEquipmentInSlot(slot) == null) {
+                    int slot = mob.getEquipmentInSlot(0) == null
+                            ? 0
+                            : (mob.getEquipmentInSlot(4) == null ? 4 : (world.rand.nextInt(3) + 1));
+                    if (mob.getEquipmentInSlot(slot) == null) {
                         ItemStack[] items = AuraEffects.ITEMS_SOUL[slot];
                         ItemStack stack = items[world.rand.nextInt(items.length)];
-                        if(stack.getItem() != Items.bow || mob instanceof EntitySkeleton) {
+                        if (stack.getItem() != Items.bow || mob instanceof EntitySkeleton) {
                             totalCount--;
                             mob.setCurrentItemOrArmor(slot, stack);
                             mob.setEquipmentDropChance(slot, 0);
@@ -478,8 +539,9 @@ public class AuraEffects {
                     timeout--;
                 } while (totalCount > 0 && timeout > 0);
 
-                if(timeout > 0) {
-                    mob.addPotionEffect(new PotionEffect(Potion.invisibility.getId(), MiscUtils.ticksForMinutes(60*24*365), 1, true));
+                if (timeout > 0) {
+                    mob.addPotionEffect(new PotionEffect(
+                            Potion.invisibility.getId(), MiscUtils.ticksForMinutes(60 * 24 * 365), 1, true));
 
                     ChunkCoordinates pos = new ChunkCoordinates((int) mob.posX, (int) mob.posY, (int) mob.posZ);
                     pos = AuraEffects.iterateDown(pos, world);
@@ -489,7 +551,9 @@ public class AuraEffects {
             }
         }
     }.register(Aspect.SOUL);
-    public static final AuraEffect PRAECANTATIO = new PotionDistributionEffect(RegisteredPotions.VIS_DISCOUNT, 4, 6, ticksForMinutes(5), 1).register(Aspect.MAGIC);
+    public static final AuraEffect PRAECANTATIO = new PotionDistributionEffect(
+                    RegisteredPotions.VIS_DISCOUNT, 4, 6, ticksForMinutes(5), 1)
+            .register(Aspect.MAGIC);
     public static final AuraEffect LIMUS = new AuraEffect.BlockAuraEffect() {
         @Override
         public int getBlockCount(Random random) {
@@ -503,8 +567,9 @@ public class AuraEffects {
             slime.writeEntityToNBT(data);
             data.setInteger("Size", 0);
             slime.readEntityFromNBT(data);
-            boolean canSpawn = AuraEffects.setAndCheckPosition(slime, selectedBlock, world, true) && world.difficultySetting != EnumDifficulty.PEACEFUL;
-            if(canSpawn) {
+            boolean canSpawn = AuraEffects.setAndCheckPosition(slime, selectedBlock, world, true)
+                    && world.difficultySetting != EnumDifficulty.PEACEFUL;
+            if (canSpawn) {
                 ChunkCoordinates pos = new ChunkCoordinates((int) slime.posX, (int) slime.posY, (int) slime.posZ);
                 pos = AuraEffects.iterateDown(pos, world);
                 slime.setPosition(pos.posX + 0.5, pos.posY, pos.posZ + 0.5);
@@ -519,7 +584,8 @@ public class AuraEffects {
     }.register(Aspect.SLIME);
     public static final AuraEffect BESTIA = new AuraEffect.BlockAuraEffect() {
 
-        private final Class[] animalClasses = { EntitySheep.class, EntityCow.class, EntityChicken.class, EntityPig.class };
+        private final Class[] animalClasses = {EntitySheep.class, EntityCow.class, EntityChicken.class, EntityPig.class
+        };
 
         @Override
         public int getBlockCount(Random random) {
@@ -531,12 +597,13 @@ public class AuraEffects {
             Class animalClass = this.animalClasses[world.rand.nextInt(this.animalClasses.length)];
             EntityLivingBase animal;
             try {
-                animal = (EntityLivingBase) animalClass.getConstructor(World.class).newInstance(world);
+                animal = (EntityLivingBase)
+                        animalClass.getConstructor(World.class).newInstance(world);
             } catch (Exception e) {
                 return;
             }
             boolean canSpawn = AuraEffects.setAndCheckPosition(animal, selectedBlock, world, true);
-            if(canSpawn) {
+            if (canSpawn) {
                 ChunkCoordinates pos = new ChunkCoordinates((int) animal.posX, (int) animal.posY, (int) animal.posZ);
                 pos = AuraEffects.iterateDown(pos, world);
                 animal.setPosition(pos.posX + 0.5, pos.posY, pos.posZ + 0.5);
@@ -550,19 +617,21 @@ public class AuraEffects {
         }
     }.register(Aspect.BEAST);
 
-    public static final AuraEffect VITREUS = new PotionDistributionEffect(RegisteredPotions.ACHROMATIC, 4, 6, ticksForMinutes(5), 0) {
-        @Override
-        public boolean isEntityApplicable(Entity e) {
-            return e instanceof EntityPlayer;
-        }
-    }.register(Aspect.CRYSTAL);
+    public static final AuraEffect VITREUS =
+            new PotionDistributionEffect(RegisteredPotions.ACHROMATIC, 4, 6, ticksForMinutes(5), 0) {
+                @Override
+                public boolean isEntityApplicable(Entity e) {
+                    return e instanceof EntityPlayer;
+                }
+            }.register(Aspect.CRYSTAL);
 
     public static class PotionDistributionEffect extends AuraEffect.EntityAuraEffect {
 
         private Potion potion;
         private int tickInterval, addedDuration, durationCap, amplifier;
 
-        public PotionDistributionEffect(Potion potion, int tickInterval, int addedDuration, int durationCap, int amplifier) {
+        public PotionDistributionEffect(
+                Potion potion, int tickInterval, int addedDuration, int durationCap, int amplifier) {
             this.potion = potion;
             this.tickInterval = tickInterval;
             this.addedDuration = addedDuration;
@@ -580,7 +649,8 @@ public class AuraEffects {
             if (e == null || !(e instanceof EntityLivingBase)) return;
 
             EntityLivingBase living = (EntityLivingBase) e;
-            AuraEffects.addOrExtendPotionEffect(this.potion, living, this.durationCap, this.addedDuration, this.amplifier);
+            AuraEffects.addOrExtendPotionEffect(
+                    this.potion, living, this.durationCap, this.addedDuration, this.amplifier);
         }
 
         @Override
@@ -592,74 +662,80 @@ public class AuraEffects {
     private static void waterLocation(ChunkCoordinates coordinates, World world) {
         Block block = world.getBlock(coordinates.posX, coordinates.posY, coordinates.posZ);
         if (block.getTickRandomly()) {
-            world.scheduleBlockUpdate(coordinates.posX, coordinates.posY, coordinates.posZ, block, world.rand.nextInt(8) + 2);
+            world.scheduleBlockUpdate(
+                    coordinates.posX, coordinates.posY, coordinates.posZ, block, world.rand.nextInt(8) + 2);
         }
-        if(IntegrationThaumicTinkerer.isCropBlock(block)) {
+        if (IntegrationThaumicTinkerer.isCropBlock(block)) {
             TileEntity te = world.getTileEntity(coordinates.posX, coordinates.posY, coordinates.posZ);
-            if(te != null && IntegrationThaumicTinkerer.isCropTile(te)) {
+            if (te != null && IntegrationThaumicTinkerer.isCropTile(te)) {
                 for (int i = 0; i < 10; i++) {
-                    te.updateEntity(); //Badumm tss..
+                    te.updateEntity(); // Badumm tss..
                 }
             }
         }
     }
 
-    private static void addOrExtendPotionEffect(Potion potion, EntityLivingBase entityLiving, int cap, int durToAdd, int amplifier, boolean ambient) {
+    private static void addOrExtendPotionEffect(
+            Potion potion, EntityLivingBase entityLiving, int cap, int durToAdd, int amplifier, boolean ambient) {
         int activeDuration = 0;
-        if(entityLiving.isPotionActive(potion)) {
+        if (entityLiving.isPotionActive(potion)) {
             PotionEffect effect = entityLiving.getActivePotionEffect(potion);
             activeDuration = effect.getDuration();
         }
 
         boolean canAdd = (cap - activeDuration) >= durToAdd;
-        if(canAdd) {
-            entityLiving.addPotionEffect(new PotionEffect(potion.getId(), activeDuration + durToAdd, amplifier, ambient));
+        if (canAdd) {
+            entityLiving.addPotionEffect(
+                    new PotionEffect(potion.getId(), activeDuration + durToAdd, amplifier, ambient));
         }
     }
 
-    private static void addOrExtendPotionEffect(Potion potion, EntityLivingBase entityLiving, int cap, int durToAdd, int amplifier) {
+    private static void addOrExtendPotionEffect(
+            Potion potion, EntityLivingBase entityLiving, int cap, int durToAdd, int amplifier) {
         AuraEffects.addOrExtendPotionEffect(potion, entityLiving, cap, durToAdd, amplifier, true);
     }
 
     private static ChunkCoordinates iterateDown(ChunkCoordinates pos, World world) {
-        while(world.isAirBlock(pos.posX, pos.posY, pos.posZ)) {
+        while (world.isAirBlock(pos.posX, pos.posY, pos.posZ)) {
             pos.posY -= 1;
         }
         pos.posY += 1;
         return pos;
     }
 
-    //Designed for spawning. Looks in 1 block radius for possible location, and if one location is found, teleporting the entity there.
-    //Call with mayVary == true to search in 1 block radius, call with mayVary == false for only checking the current block.
-    private static boolean setAndCheckPosition(EntityLivingBase entity, ChunkCoordinates cc, World world, boolean mayVary) {
-        if(!world.isAirBlock(cc.posX, cc.posY, cc.posZ)) {
-            if(!mayVary) return false;
+    // Designed for spawning. Looks in 1 block radius for possible location, and if one location is found, teleporting
+    // the entity there.
+    // Call with mayVary == true to search in 1 block radius, call with mayVary == false for only checking the current
+    // block.
+    private static boolean setAndCheckPosition(
+            EntityLivingBase entity, ChunkCoordinates cc, World world, boolean mayVary) {
+        if (!world.isAirBlock(cc.posX, cc.posY, cc.posZ)) {
+            if (!mayVary) return false;
             ChunkCoordinates up = new ChunkCoordinates(cc.posX, cc.posY + 1, cc.posZ);
-            if(AuraEffects.setAndCheckPosition(entity, up, world, false)) {
+            if (AuraEffects.setAndCheckPosition(entity, up, world, false)) {
                 return true;
             }
             ChunkCoordinates down = new ChunkCoordinates(cc.posX, cc.posY - 1, cc.posZ);
             return AuraEffects.setAndCheckPosition(entity, down, world, false);
         }
         ChunkCoordinates up = new ChunkCoordinates(cc.posX, cc.posY + 1, cc.posZ);
-        if(world.isAirBlock(up.posX, up.posY, up.posZ)) {
+        if (world.isAirBlock(up.posX, up.posY, up.posZ)) {
             entity.setPosition(up.posX, up.posY, up.posZ);
             return true;
         }
         ChunkCoordinates down = new ChunkCoordinates(cc.posX, cc.posY - 1, cc.posZ);
-        if(world.isAirBlock(down.posX, down.posY, down.posZ)) {
+        if (world.isAirBlock(down.posX, down.posY, down.posZ)) {
             entity.setPosition(down.posX, down.posY, down.posZ);
             return true;
         }
-        if(!mayVary) return false;
-        ChunkCoordinates hMove = new ChunkCoordinates(cc.posX + 1, cc.posY, cc.posZ    );
-        if(AuraEffects.setAndCheckPosition(entity, hMove, world, false)) return true;
-        hMove =                  new ChunkCoordinates(cc.posX    , cc.posY, cc.posZ + 1);
-        if(AuraEffects.setAndCheckPosition(entity, hMove, world, false)) return true;
-        hMove =                  new ChunkCoordinates(cc.posX - 1, cc.posY, cc.posZ    );
-        if(AuraEffects.setAndCheckPosition(entity, hMove, world, false)) return true;
-        hMove =                  new ChunkCoordinates(cc.posX    , cc.posY, cc.posZ - 1);
+        if (!mayVary) return false;
+        ChunkCoordinates hMove = new ChunkCoordinates(cc.posX + 1, cc.posY, cc.posZ);
+        if (AuraEffects.setAndCheckPosition(entity, hMove, world, false)) return true;
+        hMove = new ChunkCoordinates(cc.posX, cc.posY, cc.posZ + 1);
+        if (AuraEffects.setAndCheckPosition(entity, hMove, world, false)) return true;
+        hMove = new ChunkCoordinates(cc.posX - 1, cc.posY, cc.posZ);
+        if (AuraEffects.setAndCheckPosition(entity, hMove, world, false)) return true;
+        hMove = new ChunkCoordinates(cc.posX, cc.posY, cc.posZ - 1);
         return AuraEffects.setAndCheckPosition(entity, hMove, world, false);
     }
-
 }

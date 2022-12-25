@@ -1,12 +1,11 @@
 package makeo.gadomancy.common.registration;
 
+import java.lang.reflect.Field;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.enchantments.EnchantmentRevealer;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.enchantment.Enchantment;
-
-import java.lang.reflect.Field;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -24,8 +23,8 @@ public class RegisteredEnchantments {
     }
 
     public static void createConfigEntries() {
-        for(Field field : RegisteredEnchantments.class.getFields()) {
-            if(Enchantment.class.isAssignableFrom(field.getType())) {
+        for (Field field : RegisteredEnchantments.class.getFields()) {
+            if (Enchantment.class.isAssignableFrom(field.getType())) {
                 ModConfig.loadEnchantmentId(field.getType().getSimpleName());
             }
         }
@@ -33,18 +32,19 @@ public class RegisteredEnchantments {
 
     public static <T extends Enchantment> T registerEnchantment(Class<T> enchClass) {
         int id = ModConfig.loadEnchantmentId(enchClass.getSimpleName());
-        if(id == -1) {
+        if (id == -1) {
             id = RegisteredEnchantments.getUnassignedId(enchClass);
         }
         return new Injector(enchClass).invokeConstructor(int.class, id);
     }
 
     private static int getUnassignedId(Class<? extends Enchantment> enchClass) {
-        for(int i = 0; i < Enchantment.enchantmentsList.length; i++) {
-            if(Enchantment.enchantmentsList[i] == null) {
+        for (int i = 0; i < Enchantment.enchantmentsList.length; i++) {
+            if (Enchantment.enchantmentsList[i] == null) {
                 return i;
             }
         }
-        throw new RuntimeException("Failed to find free id for " + Gadomancy.NAME + " enchantment (" + enchClass.getName() + ")! Please consider using the config option to change the enchantment id.");
+        throw new RuntimeException("Failed to find free id for " + Gadomancy.NAME + " enchantment ("
+                + enchClass.getName() + ")! Please consider using the config option to change the enchantment id.");
     }
 }

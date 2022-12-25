@@ -5,6 +5,9 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
+import java.util.ArrayDeque;
+import java.util.List;
+import java.util.Queue;
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.events.ClientHandler;
 import makeo.gadomancy.client.events.RenderEventHandler;
@@ -48,10 +51,6 @@ import thaumcraft.common.tiles.TileEldritchAltar;
 import thaumcraft.common.tiles.TileEldritchCap;
 import thaumcraft.common.tiles.TileEldritchObelisk;
 
-import java.util.ArrayDeque;
-import java.util.List;
-import java.util.Queue;
-
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -72,7 +71,7 @@ public class ClientProxy extends CommonProxy {
 
         ClientProxy.injectGolemTextures();
 
-        //Tiles
+        // Tiles
         ClientRegistry.bindTileEntitySpecialRenderer(TileStickyJar.class, new RenderTileStickyJar());
 
         RenderTileRemoteJar renderTileRemoteJar = new RenderTileRemoteJar();
@@ -96,15 +95,18 @@ public class ClientProxy extends CommonProxy {
         RenderTileManipulationFocus renderTileManipulationFocus = new RenderTileManipulationFocus();
         ClientRegistry.bindTileEntitySpecialRenderer(TileManipulationFocus.class, renderTileManipulationFocus);
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileAdditionalEldritchPortal.class, new TileEldritchPortalRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileAdditionalEldritchPortal.class, new TileEldritchPortalRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEldritchObelisk.class, new RenderTileObelisk());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEldritchAltar.class, new RenderTileCapEldritch("textures/models/obelisk_cap_altar.png"));
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEldritchCap.class, new RenderTileCapEldritch("textures/models/obelisk_cap.png"));
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEldritchAltar.class, new RenderTileCapEldritch("textures/models/obelisk_cap_altar.png"));
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEldritchCap.class, new RenderTileCapEldritch("textures/models/obelisk_cap.png"));
         RenderTileEssentiaCompressor renderTileEssentiaCompressor = new RenderTileEssentiaCompressor();
         ClientRegistry.bindTileEntitySpecialRenderer(TileEssentiaCompressor.class, renderTileEssentiaCompressor);
 
-        //ClientRegistry.bindTileEntitySpecialRenderer(TileAIShutdown.class, new RenderTileAIShutdown());
+        // ClientRegistry.bindTileEntitySpecialRenderer(TileAIShutdown.class, new RenderTileAIShutdown());
 
         RenderTileAuraPylon renderTileAuraPylon = new RenderTileAuraPylon();
         ClientRegistry.bindTileEntitySpecialRenderer(TileAuraPylon.class, renderTileAuraPylon);
@@ -119,28 +121,41 @@ public class ClientProxy extends CommonProxy {
         RenderTileKnowledgeBook bookRender = new RenderTileKnowledgeBook();
         ClientRegistry.bindTileEntitySpecialRenderer(TileKnowledgeBook.class, bookRender);
 
-        //Items
+        // Items
         TileArcaneDropper fakeTile = new TileArcaneDropper();
         fakeTile.blockMetadata = 8 | ForgeDirection.SOUTH.ordinal();
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockArcaneDropper), new ItemRenderTileEntity<TileArcaneDropper>(renderTileArcaneDropper, fakeTile));
+        MinecraftForgeClient.registerItemRenderer(
+                Item.getItemFromBlock(RegisteredBlocks.blockArcaneDropper),
+                new ItemRenderTileEntity<TileArcaneDropper>(renderTileArcaneDropper, fakeTile));
 
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockInfusionClaw), new ItemRenderTileEntity<TileInfusionClaw>(renderTileInfusionClaw, new TileInfusionClaw()));
+        MinecraftForgeClient.registerItemRenderer(
+                Item.getItemFromBlock(RegisteredBlocks.blockInfusionClaw),
+                new ItemRenderTileEntity<TileInfusionClaw>(renderTileInfusionClaw, new TileInfusionClaw()));
 
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockEssentiaCompressor), new ItemRenderTileEntity<TileEssentiaCompressor>(renderTileEssentiaCompressor, new TileEssentiaCompressor()));
+        MinecraftForgeClient.registerItemRenderer(
+                Item.getItemFromBlock(RegisteredBlocks.blockEssentiaCompressor),
+                new ItemRenderTileEntity<TileEssentiaCompressor>(
+                        renderTileEssentiaCompressor, new TileEssentiaCompressor()));
 
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ConfigBlocks.blockAiry), new ItemExNodeRenderer());
+        MinecraftForgeClient.registerItemRenderer(
+                Item.getItemFromBlock(ConfigBlocks.blockAiry), new ItemExNodeRenderer());
 
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockKnowledgeBook), new ItemRenderTEKnowledgeBook(bookRender));
+        MinecraftForgeClient.registerItemRenderer(
+                Item.getItemFromBlock(RegisteredBlocks.blockKnowledgeBook), new ItemRenderTEKnowledgeBook(bookRender));
 
-        ItemRenderTileEntityMulti multi = new ItemRenderTileEntityMulti(new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylon(), 0),
-               new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylonTop(), 1));
+        ItemRenderTileEntityMulti multi = new ItemRenderTileEntityMulti(
+                new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylon(), 0),
+                new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylonTop(), 1));
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockAuraPylon), multi);
 
-        MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemExtendedNodeJar, new ItemJarExtendedNodeRenderer());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockRemoteJar), new ItemRenderRemoteJar(renderTileRemoteJar));
+        MinecraftForgeClient.registerItemRenderer(
+                RegisteredItems.itemExtendedNodeJar, new ItemJarExtendedNodeRenderer());
+        MinecraftForgeClient.registerItemRenderer(
+                Item.getItemFromBlock(RegisteredBlocks.blockRemoteJar), new ItemRenderRemoteJar(renderTileRemoteJar));
 
         ItemRenderStoneMachine itemRenderStoneMachine = new ItemRenderStoneMachine();
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockStoneMachine), itemRenderStoneMachine);
+        MinecraftForgeClient.registerItemRenderer(
+                Item.getItemFromBlock(RegisteredBlocks.blockStoneMachine), itemRenderStoneMachine);
         itemRenderStoneMachine.registerRenderer(0, new TileManipulationFocus(), renderTileManipulationFocus);
         TileManipulationFocus tileManipulationFocus = new TileManipulationFocus();
         tileManipulationFocus.blockMetadata = 3;
@@ -153,11 +168,11 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemEtherealFamiliar, new ItemRenderFamiliar());
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemCreativeNode, new ItemCreativeNodeRenderer());
 
-        //Entities
+        // Entities
         RenderingRegistry.registerEntityRenderingHandler(EntityPermNoClipItem.class, new RenderSpecialItem());
         RenderingRegistry.registerEntityRenderingHandler(EntityAuraCore.class, new RenderEntityAuraCore());
 
-        //Blocks
+        // Blocks
         RegisteredBlocks.rendererTransparentBlock = this.registerBlockRenderer(new RenderBlockTransparent());
         RegisteredBlocks.rendererExtendedNodeJarBlock = this.registerBlockRenderer(new BlockExtendedNodeJarRenderer());
         RegisteredBlocks.rendererBlockStoneMachine = this.registerBlockRenderer(new RenderBlockStoneMachine());
@@ -166,7 +181,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void postInitalize() {
         IResourceManager manager = Minecraft.getMinecraft().getResourceManager();
-        if(manager instanceof SimpleReloadableResourceManager) {
+        if (manager instanceof SimpleReloadableResourceManager) {
             SimpleReloadableResourceManager rm = (SimpleReloadableResourceManager) manager;
             rm.registerReloadListener(ResourceReloadListener.getInstance());
         }
@@ -188,9 +203,8 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void spawnBubbles(World world, float posX, float posY, float posZ, float rangeAroundItem) {
-        MultiTickEffectDispatcher.BubbleFXInfo bubbles =
-                new MultiTickEffectDispatcher.BubbleFXInfo(Minecraft.getMinecraft().theWorld.provider.dimensionId,
-                        posX, posY, posZ, 10, rangeAroundItem);
+        MultiTickEffectDispatcher.BubbleFXInfo bubbles = new MultiTickEffectDispatcher.BubbleFXInfo(
+                Minecraft.getMinecraft().theWorld.provider.dimensionId, posX, posY, posZ, 10, rangeAroundItem);
         MultiTickEffectDispatcher.registerBubbles(bubbles);
     }
 
@@ -199,7 +213,7 @@ public class ClientProxy extends CommonProxy {
         switch (ID) {
             case 0:
                 return new GuiGolem(player, (EntityGolemBase) world.getEntityByID(x));
-                //return new AdditionalGolemGui(player, (EntityGolemBase)world.getEntityByID(x));
+                // return new AdditionalGolemGui(player, (EntityGolemBase)world.getEntityByID(x));
             case 1:
                 return new InfusionClawGui(player.inventory, (IInventory) world.getTileEntity(x, y, z));
             case 2:
@@ -210,7 +224,7 @@ public class ClientProxy extends CommonProxy {
 
     public static void injectGolemTextures() {
         RenderGolemBase render = ClientProxy.unregisterRenderer(EntityGolemBase.class, RenderGolemBase.class);
-        if(render != null) {
+        if (render != null) {
             RenderingRegistry.registerEntityRenderingHandler(EntityGolemBase.class, new RenderAdditionalGolemBase());
         }
     }
@@ -219,21 +233,21 @@ public class ClientProxy extends CommonProxy {
         Injector registry = new Injector(RenderingRegistry.instance());
         List entityRenderers = registry.getField("entityRenderers");
 
-        if(entityRenderers == null) {
+        if (entityRenderers == null) {
             FMLLog.severe("Failed to get entityRenderers field in RenderingRegistry!");
             return null;
         }
 
-        for(int i = 0; i < entityRenderers.size(); i++) {
+        for (int i = 0; i < entityRenderers.size(); i++) {
             Injector pair = new Injector(entityRenderers.get(i));
 
             Class<? extends Entity> target = pair.getField("target");
 
-            if(entityClass.equals(target)) {
+            if (entityClass.equals(target)) {
                 Render render = pair.getField("renderer");
-                if(renderClass.isInstance(render)) {
+                if (renderClass.isInstance(render)) {
                     entityRenderers.remove(i);
-                    return (T)render;
+                    return (T) render;
                 }
             }
         }

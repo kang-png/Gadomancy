@@ -1,6 +1,10 @@
 package makeo.gadomancy.common.registration;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import makeo.gadomancy.common.familiar.FamiliarAIController_Old;
 import makeo.gadomancy.common.familiar.FamiliarAIProcess_Old;
 import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
@@ -12,11 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -56,22 +55,27 @@ public class RegisteredFamiliarAI_Old {
             int rangeInc = ((ItemFamiliar_Old) itemStack.getItem()).getAttackRangeIncrease(itemStack);
 
             List<EntityLivingBase> lastTargetters = this.getPotentialTargets(world, parent, rangeInc);
-            if(lastTargetters.size() == 0) {
+            if (lastTargetters.size() == 0) {
                 FamiliarAIController_Old.cleanTargetterList(parent);
                 return;
             }
             EntityLivingBase mob = lastTargetters.get(world.rand.nextInt(lastTargetters.size()));
-            if(mob.isDead || mob instanceof EntityPlayer) {
+            if (mob.isDead || mob instanceof EntityPlayer) {
                 FamiliarAIController_Old.cleanTargetterList(parent);
                 return;
             }
 
-            mob.attackEntityFrom(DamageSource.magic, ((ItemFamiliar_Old) itemStack.getItem()).getAttackStrength(itemStack));
+            mob.attackEntityFrom(
+                    DamageSource.magic, ((ItemFamiliar_Old) itemStack.getItem()).getAttackStrength(itemStack));
 
             world.playSoundEffect(mob.posX + 0.5, mob.posY + 0.5, mob.posZ + 0.5, "thaumcraft:zap", 0.8F, 1.0F);
 
-            PacketFamiliarBolt bolt = new PacketFamiliarBolt(parent.getCommandSenderName(), (float) mob.posX, (float) mob.posY, (float) mob.posZ, 6, true);
-            PacketHandler.INSTANCE.sendToAllAround(bolt, new NetworkRegistry.TargetPoint(mob.worldObj.provider.dimensionId, mob.posX, mob.posY, mob.posZ, 32));
+            PacketFamiliarBolt bolt = new PacketFamiliarBolt(
+                    parent.getCommandSenderName(), (float) mob.posX, (float) mob.posY, (float) mob.posZ, 6, true);
+            PacketHandler.INSTANCE.sendToAllAround(
+                    bolt,
+                    new NetworkRegistry.TargetPoint(
+                            mob.worldObj.provider.dimensionId, mob.posX, mob.posY, mob.posZ, 32));
             FamiliarAIController_Old.cleanTargetterList(parent);
         }
 
@@ -80,27 +84,39 @@ public class RegisteredFamiliarAI_Old {
 
             EntityLivingBase attacker = player.getLastAttacker();
             int range = 8 + rangeInc;
-            if(attacker != null && !validTargets.contains(attacker) && !attacker.isDead && attacker.getDistanceSq(player.posX, player.posY, player.posZ) <= range * range) {
+            if (attacker != null
+                    && !validTargets.contains(attacker)
+                    && !attacker.isDead
+                    && attacker.getDistanceSq(player.posX, player.posY, player.posZ) <= range * range) {
                 validTargets.add(attacker);
             }
 
             Iterator<EntityLivingBase> it = validTargets.iterator();
-            while(it.hasNext()) {
+            while (it.hasNext()) {
                 EntityLivingBase e = it.next();
-                if(e.isDead || e instanceof EntityPlayer) it.remove();
+                if (e.isDead || e instanceof EntityPlayer) it.remove();
             }
             return validTargets;
         }
 
         private List<EntityLivingBase> getCloseEnoughTargetters(World world, EntityPlayer parent, int rangeInc) {
             LinkedList<EntityLivingBase> lastTargetters = FamiliarAIController_Old.getLastTargetters(parent);
-            if(lastTargetters == null || lastTargetters.isEmpty()) return new ArrayList<EntityLivingBase>();
+            if (lastTargetters == null || lastTargetters.isEmpty()) return new ArrayList<EntityLivingBase>();
             List<EntityLivingBase> closeEnoughLastTargetters = new ArrayList<EntityLivingBase>();
             int range = 8 + rangeInc;
-            List livingAround = world.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(parent.posX - 0.5, parent.posY - 0.5, parent.posZ - 0.5, parent.posX + 0.5, parent.posY + 0.5, parent.posZ + 0.5).expand(range, range, range));
-            for(Object living : livingAround) {
-                if(!(living instanceof EntityLivingBase)) continue;
-                if(lastTargetters.contains(living)) closeEnoughLastTargetters.add((EntityLivingBase) living);
+            List livingAround = world.getEntitiesWithinAABB(
+                    EntityLivingBase.class,
+                    AxisAlignedBB.getBoundingBox(
+                                    parent.posX - 0.5,
+                                    parent.posY - 0.5,
+                                    parent.posZ - 0.5,
+                                    parent.posX + 0.5,
+                                    parent.posY + 0.5,
+                                    parent.posZ + 0.5)
+                            .expand(range, range, range));
+            for (Object living : livingAround) {
+                if (!(living instanceof EntityLivingBase)) continue;
+                if (lastTargetters.contains(living)) closeEnoughLastTargetters.add((EntityLivingBase) living);
             }
             return closeEnoughLastTargetters;
         }
@@ -115,5 +131,4 @@ public class RegisteredFamiliarAI_Old {
             return 20 - ((ItemFamiliar_Old) itemStack.getItem()).getAttackCooldownReduction(itemStack);
         }
     };
-
 }

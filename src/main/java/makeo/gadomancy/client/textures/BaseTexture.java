@@ -1,14 +1,13 @@
 package makeo.gadomancy.client.textures;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.imageio.ImageIO;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -30,8 +29,7 @@ public abstract class BaseTexture extends SimpleTexture {
             IResource iresource = resourceManager.getResource(location);
             inputstream = iresource.getInputStream();
             return ImageIO.read(inputstream);
-        }
-        finally {
+        } finally {
             if (inputstream != null) {
                 inputstream.close();
             }

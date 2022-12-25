@@ -1,11 +1,10 @@
 package makeo.gadomancy.api;
 
+import java.util.Random;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
-
-import java.util.Random;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -137,14 +136,10 @@ public abstract class AuraEffect {
 
         @Override
         public final void doEntityEffect(ChunkCoordinates originTile, Entity e) {}
-
     }
 
     public enum EffectType {
-
         ENTITY_EFFECT,
         BLOCK_EFFECT
-
     }
-
 }

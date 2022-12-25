@@ -1,6 +1,10 @@
 package makeo.gadomancy.common.data;
 
 import baubles.api.BaublesApi;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
 import makeo.gadomancy.common.familiar.FamiliarController;
 import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
@@ -11,11 +15,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -34,35 +33,35 @@ public class DataFamiliar extends AbstractData {
     private List<FamiliarData> removeClientQueue = new ArrayList<FamiliarData>();
 
     public boolean hasFamiliar(EntityPlayer player) {
-        for(FamiliarData fam : this.playersWithFamiliar) {
-            if(fam.owner.equals(player.getCommandSenderName())) return true;
+        for (FamiliarData fam : this.playersWithFamiliar) {
+            if (fam.owner.equals(player.getCommandSenderName())) return true;
         }
         return false;
     }
 
     public void handleEquip(World world, EntityPlayer player, Aspect aspect) {
-        if(world.isRemote) return;
+        if (world.isRemote) return;
 
         String playerName = player.getCommandSenderName();
         FamiliarData data = new FamiliarData(playerName, aspect.getTag());
 
-        if(!this.addClientQueue.contains(data)) this.addClientQueue.add(data);
-        if(!this.playersWithFamiliar.contains(data)) this.playersWithFamiliar.add(data);
+        if (!this.addClientQueue.contains(data)) this.addClientQueue.add(data);
+        if (!this.playersWithFamiliar.contains(data)) this.playersWithFamiliar.add(data);
         this.markDirty();
 
-        if(!this.familiarControllers.containsKey(player)) {
+        if (!this.familiarControllers.containsKey(player)) {
             FamiliarController controller = new FamiliarController(player);
             this.familiarControllers.put(player, controller);
         }
     }
 
     public void handleUnequip(World world, EntityPlayer player, Aspect aspect) {
-        if(world.isRemote) return;
+        if (world.isRemote) return;
 
         String playerName = player.getCommandSenderName();
         FamiliarData data = new FamiliarData(playerName, aspect.getTag());
 
-        if(!this.removeClientQueue.contains(data)) this.removeClientQueue.add(data);
+        if (!this.removeClientQueue.contains(data)) this.removeClientQueue.add(data);
         this.playersWithFamiliar.remove(data);
         this.markDirty();
 
@@ -70,17 +69,17 @@ public class DataFamiliar extends AbstractData {
     }
 
     public void equipTick(World world, EntityPlayer player, Aspect aspect) {
-        if(world.isRemote) return;
+        if (world.isRemote) return;
 
         FamiliarData data = new FamiliarData(player.getCommandSenderName(), aspect.getTag());
 
         IInventory baublesInv = BaublesApi.getBaubles(player);
-        if(baublesInv.getStackInSlot(0) == null) {
+        if (baublesInv.getStackInSlot(0) == null) {
             this.handleUnequip(world, player, aspect);
             return;
         }
 
-        if(this.familiarControllers.get(player) == null || !this.playersWithFamiliar.contains(data)) {
+        if (this.familiarControllers.get(player) == null || !this.playersWithFamiliar.contains(data)) {
             this.handleEquip(world, player, aspect);
         }
 
@@ -89,11 +88,11 @@ public class DataFamiliar extends AbstractData {
 
     public void checkPlayerEquipment(EntityPlayer p) {
         IInventory baublesInv = BaublesApi.getBaubles(p);
-        if(baublesInv.getStackInSlot(0) != null) {
+        if (baublesInv.getStackInSlot(0) != null) {
             ItemStack amulet = baublesInv.getStackInSlot(0);
-            if(amulet.getItem() != null && amulet.getItem() instanceof ItemEtherealFamiliar) {
+            if (amulet.getItem() != null && amulet.getItem() instanceof ItemEtherealFamiliar) {
                 Aspect a = ItemEtherealFamiliar.getFamiliarAspect(amulet);
-                if(a != null) {
+                if (a != null) {
                     this.handleEquip(p.worldObj, p, a);
                 }
             }
@@ -108,7 +107,7 @@ public class DataFamiliar extends AbstractData {
     @Override
     public void writeAllDataToPacket(NBTTagCompound compound) {
         NBTTagList list = new NBTTagList();
-        for(FamiliarData data : this.playersWithFamiliar) {
+        for (FamiliarData data : this.playersWithFamiliar) {
             NBTTagCompound cmp = new NBTTagCompound();
             cmp.setString("owner", data.owner);
             cmp.setString("aspect", data.aspectTag);
@@ -121,7 +120,7 @@ public class DataFamiliar extends AbstractData {
     @Override
     public void writeToPacket(NBTTagCompound compound) {
         NBTTagList removal = new NBTTagList();
-        for(FamiliarData data : this.removeClientQueue) {
+        for (FamiliarData data : this.removeClientQueue) {
             NBTTagCompound cmp = new NBTTagCompound();
             cmp.setString("owner", data.owner);
             cmp.setString("aspect", data.aspectTag);
@@ -130,7 +129,7 @@ public class DataFamiliar extends AbstractData {
         compound.setTag("removals", removal);
 
         NBTTagList additions = new NBTTagList();
-        for(FamiliarData data : this.addClientQueue) {
+        for (FamiliarData data : this.addClientQueue) {
             NBTTagCompound cmp = new NBTTagCompound();
             cmp.setString("owner", data.owner);
             cmp.setString("aspect", data.aspectTag);
@@ -173,12 +172,12 @@ public class DataFamiliar extends AbstractData {
 
     public void handleUnsafeUnequip(EntityPlayer player) {
         FamiliarData data = null;
-        for(FamiliarData fam : this.playersWithFamiliar) {
-            if(fam.owner.equals(player.getCommandSenderName())) {
+        for (FamiliarData fam : this.playersWithFamiliar) {
+            if (fam.owner.equals(player.getCommandSenderName())) {
                 data = fam;
             }
         }
-        if(data != null) {
+        if (data != null) {
             this.handleUnequip(player.worldObj, player, Aspect.getAspect(data.aspectTag));
         }
     }
@@ -200,8 +199,8 @@ public class DataFamiliar extends AbstractData {
 
             FamiliarData that = (FamiliarData) o;
 
-            return (this.aspectTag != null ? this.aspectTag.equals(that.aspectTag) : that.aspectTag == null) && (this.owner != null ? this.owner.equals(that.owner) : that.owner == null);
-
+            return (this.aspectTag != null ? this.aspectTag.equals(that.aspectTag) : that.aspectTag == null)
+                    && (this.owner != null ? this.owner.equals(that.owner) : that.owner == null);
         }
 
         @Override
@@ -223,5 +222,4 @@ public class DataFamiliar extends AbstractData {
             return new DataFamiliar();
         }
     }
-
 }

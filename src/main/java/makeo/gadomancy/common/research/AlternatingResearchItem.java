@@ -1,13 +1,12 @@
 package makeo.gadomancy.common.research;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.List;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.item.ItemStack;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchItem;
-
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -41,7 +40,7 @@ public class AlternatingResearchItem extends SimpleResearchItem {
     }
 
     private int calcIndex(int max) {
-        return (int)(System.currentTimeMillis() / 1000L % max);
+        return (int) (System.currentTimeMillis() / 1000L % max);
     }
 
     @Override

@@ -29,8 +29,8 @@ public class DisguiseResearchItem extends AlternatingResearchItem {
 
     @Override
     public ResearchItem setPages(ResearchPage... pages) {
-        for(ResearchPage page : pages) {
-            if(page.type == ResearchPage.PageType.INFUSION_CRAFTING
+        for (ResearchPage page : pages) {
+            if (page.type == ResearchPage.PageType.INFUSION_CRAFTING
                     && page.recipe instanceof InfusionVisualDisguiseArmor) {
                 this.recipe = (InfusionVisualDisguiseArmor) page.recipe;
             }

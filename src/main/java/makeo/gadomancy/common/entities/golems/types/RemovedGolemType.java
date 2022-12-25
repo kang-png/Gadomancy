@@ -25,6 +25,7 @@ public class RemovedGolemType extends AdditionalGolemType {
     }
 
     private IIcon icon;
+
     @Override
     public void registerIcons(IIconRegister ir) {
         this.icon = ir.registerIcon("");

@@ -44,7 +44,7 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
     public PacketStartAnimation(byte annimationId, int x, int y, int z) {
         this(annimationId, x, y, z, (byte) 0);
     }
-    
+
     public PacketStartAnimation(byte annimationId, int x, int y, int z, int additionalData) {
         this.annimationId = annimationId;
         this.x = x;
@@ -78,21 +78,28 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
     public IMessage onMessage(PacketStartAnimation message, MessageContext ctx) {
         switch (message.annimationId) {
             case PacketStartAnimation.ID_INFUSIONCLAW:
-                TileInfusionClaw tile = (TileInfusionClaw) Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z);
-                if(tile != null) {
+                TileInfusionClaw tile = (TileInfusionClaw)
+                        Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z);
+                if (tile != null) {
                     tile.animationStates[8] = 1;
                 }
                 break;
             case PacketStartAnimation.ID_EX_VORTEX:
                 TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z);
-                if(te == null || !(te instanceof TileExtendedNode)) return null;
+                if (te == null || !(te instanceof TileExtendedNode)) return null;
                 ExplosionHelper.VortexExplosion.vortexLightning((TileExtendedNode) te);
                 break;
             case PacketStartAnimation.ID_BURST:
-                Thaumcraft.proxy.burst(Minecraft.getMinecraft().theWorld, message.x + 0.5F, message.y + 0.5F, message.z + 0.5F, Minecraft.getMinecraft().theWorld.rand.nextInt(3) + 1);
+                Thaumcraft.proxy.burst(
+                        Minecraft.getMinecraft().theWorld,
+                        message.x + 0.5F,
+                        message.y + 0.5F,
+                        message.z + 0.5F,
+                        Minecraft.getMinecraft().theWorld.rand.nextInt(3) + 1);
                 break;
             case PacketStartAnimation.ID_RUNES:
-                UtilsFX.doRuneEffects(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z, message.additionalData);
+                UtilsFX.doRuneEffects(
+                        Minecraft.getMinecraft().theWorld, message.x, message.y, message.z, message.additionalData);
                 break;
             case PacketStartAnimation.ID_SPARKLE_SPREAD:
                 UtilsFX.doSparkleEffectsAround(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z);
@@ -101,16 +108,29 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
                 UtilsFX.doSparkleEffects(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z);
                 break;
             case PacketStartAnimation.ID_SMOKE:
-                UtilsFX.doSmokeEffects(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z, Float.intBitsToFloat(message.additionalData));
+                UtilsFX.doSmokeEffects(
+                        Minecraft.getMinecraft().theWorld,
+                        message.x,
+                        message.y,
+                        message.z,
+                        Float.intBitsToFloat(message.additionalData));
                 break;
             case PacketStartAnimation.ID_SMOKE_SPREAD:
-                UtilsFX.doSmokeEffectsAround(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z, Float.intBitsToFloat(message.additionalData));
+                UtilsFX.doSmokeEffectsAround(
+                        Minecraft.getMinecraft().theWorld,
+                        message.x,
+                        message.y,
+                        message.z,
+                        Float.intBitsToFloat(message.additionalData));
                 break;
             case PacketStartAnimation.ID_BUBBLES:
-                MultiTickEffectDispatcher.BubbleFXInfo bubbles =
-                        new MultiTickEffectDispatcher.BubbleFXInfo(Minecraft.getMinecraft().theWorld.provider.dimensionId,
-                                Float.intBitsToFloat(message.x), Float.intBitsToFloat(message.y), Float.intBitsToFloat(message.z),
-                                10, Float.intBitsToFloat(message.additionalData));
+                MultiTickEffectDispatcher.BubbleFXInfo bubbles = new MultiTickEffectDispatcher.BubbleFXInfo(
+                        Minecraft.getMinecraft().theWorld.provider.dimensionId,
+                        Float.intBitsToFloat(message.x),
+                        Float.intBitsToFloat(message.y),
+                        Float.intBitsToFloat(message.z),
+                        10,
+                        Float.intBitsToFloat(message.additionalData));
                 MultiTickEffectDispatcher.registerBubbles(bubbles);
                 break;
         }

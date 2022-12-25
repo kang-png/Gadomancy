@@ -1,5 +1,6 @@
 package makeo.gadomancy.client.gui;
 
+import java.awt.*;
 import makeo.gadomancy.common.blocks.tiles.TileArcanePackager;
 import makeo.gadomancy.common.containers.ContainerArcanePackager;
 import makeo.gadomancy.common.utils.ColorHelper;
@@ -11,8 +12,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -40,7 +39,7 @@ public class ArcanePackagerGui extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
-        if(this.tile.isInvalid()) {
+        if (this.tile.isInvalid()) {
             Minecraft.getMinecraft().displayGuiScreen(null);
             return;
         }
@@ -50,19 +49,19 @@ public class ArcanePackagerGui extends GuiContainer {
 
         GL11.glColor3f(1, 1, 1);
 
-        if(this.tile.progress > 0) {
+        if (this.tile.progress > 0) {
             this.drawTexturedModalRect(89, 67, 210, 0, this.tile.progress, 9);
         }
 
-        if(this.tile.useEssentia) {
+        if (this.tile.useEssentia) {
             this.drawTexturedModalRect(91, 97, 249, 10, 8, 8);
         }
 
-        if(this.tile.autoStart) {
+        if (this.tile.autoStart) {
             this.drawTexturedModalRect(91, 110, 249, 10, 8, 8);
         }
 
-        if(this.tile.disguise) {
+        if (this.tile.disguise) {
             this.drawTexturedModalRect(91, 123, 249, 10, 8, 8);
         }
 
@@ -78,11 +77,17 @@ public class ArcanePackagerGui extends GuiContainer {
         int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
 
-        this.drawString(100, 98, "gadomancy.info.ArcanePackager.useEssentia", this.tile.useEssentia ? Color.WHITE : Color.GRAY);
+        this.drawString(
+                100, 98, "gadomancy.info.ArcanePackager.useEssentia", this.tile.useEssentia ? Color.WHITE : Color.GRAY);
 
-        this.drawString(100, 111, "gadomancy.info.ArcanePackager.autoStart", this.tile.autoStart ? Color.WHITE : Color.GRAY);
+        this.drawString(
+                100, 111, "gadomancy.info.ArcanePackager.autoStart", this.tile.autoStart ? Color.WHITE : Color.GRAY);
 
-        this.drawString(100, 124, "gadomancy.info.ArcanePackager.disguisePackage", this.tile.disguise ? Color.WHITE : Color.GRAY);
+        this.drawString(
+                100,
+                124,
+                "gadomancy.info.ArcanePackager.disguisePackage",
+                this.tile.disguise ? Color.WHITE : Color.GRAY);
 
         GL11.glDisable(GL11.GL_BLEND);
     }
@@ -105,25 +110,23 @@ public class ArcanePackagerGui extends GuiContainer {
         int checkX = x - baseX - 90;
         int checkY = y - baseY - 97;
 
-        if(checkX >= 0 && checkX < 8 && checkY >= 0 && checkY < 8) {
+        if (checkX >= 0 && checkX < 8 && checkY >= 0 && checkY < 8) {
             this.tile.useEssentia = !this.tile.useEssentia;
             this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, this.tile.useEssentia ? 0 : 1);
         }
 
         checkY = y - baseY - 110;
 
-        if(checkX >= 0 && checkX < 8 && checkY >= 0 && checkY < 8) {
+        if (checkX >= 0 && checkX < 8 && checkY >= 0 && checkY < 8) {
             this.tile.autoStart = !this.tile.autoStart;
             this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, this.tile.autoStart ? 2 : 3);
         }
 
         checkY = y - baseY - 123;
 
-        if(checkX >= 0 && checkX < 8 && checkY >= 0 && checkY < 8) {
+        if (checkX >= 0 && checkX < 8 && checkY >= 0 && checkY < 8) {
             this.tile.disguise = !this.tile.disguise;
             this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, this.tile.disguise ? 4 : 5);
         }
     }
-
-
 }

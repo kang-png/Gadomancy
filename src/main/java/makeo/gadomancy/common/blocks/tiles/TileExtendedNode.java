@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.blocks.tiles;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
+import java.util.List;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
@@ -19,15 +20,12 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.EnumDifficulty;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
-import thaumcraft.api.nodes.INode;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.entities.monster.EntityWisp;
 import thaumcraft.common.items.ItemCrystalEssence;
 import thaumcraft.common.items.ItemManaBean;
 import thaumcraft.common.items.ItemWispEssence;
 import thaumcraft.common.tiles.TileNode;
-
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -46,7 +44,6 @@ public class TileExtendedNode extends TileNode {
     private boolean doingVortexExplosion;
     private ExplosionHelper.VortexExplosion vortexExplosion;
 
-
     public TileExtendedNode() {
         this.behavior = new GrowingNodeBehavior(this);
     }
@@ -57,11 +54,11 @@ public class TileExtendedNode extends TileNode {
 
         this.ticksExisted++;
 
-        if(this.doingVortexExplosion) {
-            if(this.vortexExplosion == null) {
+        if (this.doingVortexExplosion) {
+            if (this.vortexExplosion == null) {
                 this.vortexExplosion = new ExplosionHelper.VortexExplosion(this);
             }
-            if(this.vortexExplosion.isFinished()) {
+            if (this.vortexExplosion.isFinished()) {
                 this.vortexExplosion = null;
                 this.doingVortexExplosion = false;
             } else {
@@ -74,35 +71,63 @@ public class TileExtendedNode extends TileNode {
         needUpdate = this.handleGrowingNodeFirst(false);
         needUpdate = this.handleGrowingNodeSecond(needUpdate);
 
-        if(!this.worldObj.isRemote && needUpdate) {
+        if (!this.worldObj.isRemote && needUpdate) {
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             this.markDirty();
         }
     }
 
     private boolean handleGrowingNodeSecond(boolean needUpdate) {
-        if(this.extendedNodeType == null || this.extendedNodeType != ExtendedNodeType.GROWING) return needUpdate;
+        if (this.extendedNodeType == null || this.extendedNodeType != ExtendedNodeType.GROWING) return needUpdate;
 
-        if(this.worldObj.difficultySetting == EnumDifficulty.PEACEFUL) return needUpdate;
-        if(this.worldObj.isRemote) return needUpdate;
-        if(this.ticksExisted % 8 != 0) return needUpdate;
+        if (this.worldObj.difficultySetting == EnumDifficulty.PEACEFUL) return needUpdate;
+        if (this.worldObj.isRemote) return needUpdate;
+        if (this.ticksExisted % 8 != 0) return needUpdate;
 
-        List livingEntities = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(6.0D, 6.0D, 6.0D));
+        List livingEntities = this.worldObj.getEntitiesWithinAABB(
+                EntityLivingBase.class,
+                AxisAlignedBB.getBoundingBox(
+                                this.xCoord,
+                                this.yCoord,
+                                this.zCoord,
+                                this.xCoord + 1,
+                                this.yCoord + 1,
+                                this.zCoord + 1)
+                        .expand(6.0D, 6.0D, 6.0D));
         if ((livingEntities != null) && (livingEntities.size() > 0)) {
             for (Object e : livingEntities) {
                 EntityLivingBase livingEntity = (EntityLivingBase) e;
                 if ((livingEntity.isEntityAlive()) && (!livingEntity.isEntityInvulnerable())) {
-                    if(livingEntity instanceof EntityPlayer && ((EntityPlayer) livingEntity).capabilities.isCreativeMode) continue;
-                    if(!this.behavior.mayZapNow()) continue;
+                    if (livingEntity instanceof EntityPlayer
+                            && ((EntityPlayer) livingEntity).capabilities.isCreativeMode) continue;
+                    if (!this.behavior.mayZapNow()) continue;
 
-                    ResearchHelper.distributeResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION", this.worldObj, this.xCoord, this.yCoord, this.zCoord, 6);
+                    ResearchHelper.distributeResearch(
+                            Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION",
+                            this.worldObj,
+                            this.xCoord,
+                            this.yCoord,
+                            this.zCoord,
+                            6);
 
                     livingEntity.attackEntityFrom(DamageSource.magic, this.behavior.getZapDamage());
 
-                    this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "thaumcraft:zap", 0.8F, 1.0F);
+                    this.worldObj.playSoundEffect(
+                            this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "thaumcraft:zap", 0.8F, 1.0F);
 
-                    PacketTCNodeBolt packet = new PacketTCNodeBolt(this.xCoord + 0.5F, this.yCoord + 0.5F, this.zCoord + 0.5F, (float) livingEntity.posX, (float) (livingEntity.posY + livingEntity.height), (float) livingEntity.posZ, 0, false);
-                    PacketHandler.INSTANCE.sendToAllAround(packet, new NetworkRegistry.TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 32.0D));
+                    PacketTCNodeBolt packet = new PacketTCNodeBolt(
+                            this.xCoord + 0.5F,
+                            this.yCoord + 0.5F,
+                            this.zCoord + 0.5F,
+                            (float) livingEntity.posX,
+                            (float) (livingEntity.posY + livingEntity.height),
+                            (float) livingEntity.posZ,
+                            0,
+                            false);
+                    PacketHandler.INSTANCE.sendToAllAround(
+                            packet,
+                            new NetworkRegistry.TargetPoint(
+                                    this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 32.0D));
                 }
             }
         }
@@ -111,7 +136,7 @@ public class TileExtendedNode extends TileNode {
     }
 
     private boolean handleGrowingNodeFirst(boolean needUpdate) {
-        if(this.extendedNodeType == null || this.extendedNodeType != ExtendedNodeType.GROWING) return needUpdate;
+        if (this.extendedNodeType == null || this.extendedNodeType != ExtendedNodeType.GROWING) return needUpdate;
 
         needUpdate = this.doVortex(EntityAspectOrb.class, needUpdate, new GrowingNodeVortexRunnable<EntityAspectOrb>() {
             @Override
@@ -127,18 +152,27 @@ public class TileExtendedNode extends TileNode {
         needUpdate = this.doVortex(EntityItem.class, needUpdate, new GrowingNodeVortexRunnable<EntityItem>() {
             @Override
             public boolean doesVortex(EntityItem entity) {
-                return entity.getEntityItem().getItem() instanceof ItemWispEssence || entity.getEntityItem().getItem() instanceof ItemManaBean || entity.getEntityItem().getItem() instanceof ItemCrystalEssence;
+                return entity.getEntityItem().getItem() instanceof ItemWispEssence
+                        || entity.getEntityItem().getItem() instanceof ItemManaBean
+                        || entity.getEntityItem().getItem() instanceof ItemCrystalEssence;
             }
 
             @Override
             public Aspect getAspect(EntityItem entity) {
-                IEssentiaContainerItem container = (IEssentiaContainerItem) entity.getEntityItem().getItem();
-                return container.getAspects(entity.getEntityItem()).getAspects().length > 0 ? container.getAspects(entity.getEntityItem()).getAspects()[0] : null;
+                IEssentiaContainerItem container =
+                        (IEssentiaContainerItem) entity.getEntityItem().getItem();
+                return container.getAspects(entity.getEntityItem()).getAspects().length > 0
+                        ? container.getAspects(entity.getEntityItem()).getAspects()[0]
+                        : null;
             }
 
             @Override
             public GrowingNodeBehavior.AspectType getAspectType(EntityItem entity) {
-                return entity.getEntityItem().getItem() instanceof ItemWispEssence ? GrowingNodeBehavior.AspectType.WISP_ESSENCE : entity.getEntityItem().getItem() instanceof ItemCrystalEssence ? GrowingNodeBehavior.AspectType.CRYSTAL_ESSENCE : GrowingNodeBehavior.AspectType.MANA_BEAN;
+                return entity.getEntityItem().getItem() instanceof ItemWispEssence
+                        ? GrowingNodeBehavior.AspectType.WISP_ESSENCE
+                        : entity.getEntityItem().getItem() instanceof ItemCrystalEssence
+                                ? GrowingNodeBehavior.AspectType.CRYSTAL_ESSENCE
+                                : GrowingNodeBehavior.AspectType.MANA_BEAN;
             }
         });
         needUpdate = this.doVortex(EntityWisp.class, needUpdate, new GrowingNodeVortexRunnable<EntityWisp>() {
@@ -152,18 +186,18 @@ public class TileExtendedNode extends TileNode {
                 return GrowingNodeBehavior.AspectType.WISP;
             }
         });
-        if(this.worldObj.isRemote) return needUpdate;
+        if (this.worldObj.isRemote) return needUpdate;
 
-        if(this.behavior.lookingForNode()) {
+        if (this.behavior.lookingForNode()) {
             int xx = this.worldObj.rand.nextInt(8) - this.worldObj.rand.nextInt(8);
             int yy = this.worldObj.rand.nextInt(8) - this.worldObj.rand.nextInt(8);
             int zz = this.worldObj.rand.nextInt(8) - this.worldObj.rand.nextInt(8);
             TileEntity t = this.worldObj.getTileEntity(this.xCoord + xx, this.yCoord + yy, this.zCoord + zz);
-            if(t != null && t instanceof TileNode && !(xx == 0 && yy == 0 && zz == 0)) {
+            if (t != null && t instanceof TileNode && !(xx == 0 && yy == 0 && zz == 0)) {
                 TileNode node = (TileNode) t;
                 int thisSize = this.getAspectsBase().visSize();
                 int othersSize = node.getAspectsBase().visSize();
-                if(thisSize >= othersSize) {
+                if (thisSize >= othersSize) {
                     this.behavior.lockOnTo(node);
                     this.worldObj.markBlockForUpdate(this.xCoord + xx, this.yCoord + yy, this.zCoord + zz);
                     node.markDirty();
@@ -190,22 +224,32 @@ public class TileExtendedNode extends TileNode {
         }
     }
 
-    private <E extends Entity> boolean doVortex(Class<E> entityClass, boolean needUpdate, GrowingNodeVortexRunnable<E> runnable) {
-        List entities = this.worldObj.getEntitiesWithinAABB(entityClass, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(15.0D, 15.0D, 15.0D));
+    private <E extends Entity> boolean doVortex(
+            Class<E> entityClass, boolean needUpdate, GrowingNodeVortexRunnable<E> runnable) {
+        List entities = this.worldObj.getEntitiesWithinAABB(
+                entityClass,
+                AxisAlignedBB.getBoundingBox(
+                                this.xCoord,
+                                this.yCoord,
+                                this.zCoord,
+                                this.xCoord + 1,
+                                this.yCoord + 1,
+                                this.zCoord + 1)
+                        .expand(15.0D, 15.0D, 15.0D));
         if ((entities != null) && (entities.size() > 0)) {
             for (Object eObj : entities) {
                 E entity = (E) eObj;
-                if(!runnable.doesVortex(entity)) continue;
+                if (!runnable.doesVortex(entity)) continue;
                 if ((entity.isEntityAlive()) && (!entity.isEntityInvulnerable())) {
                     double d = this.getDistanceTo(entity.posX, entity.posY, entity.posZ);
-                    if (d < 0.5D) { //prev: 2.0D
+                    if (d < 0.5D) { // prev: 2.0D
                         Aspect a = runnable.getAspect(entity);
-                        if(a != null) {
+                        if (a != null) {
                             if (this.getAspects().getAmount(a) < this.getNodeVisBase(a)) {
                                 this.addToContainer(a, 1);
                             } else {
-                                //Adding it permanently
-                                if(!this.worldObj.isRemote && this.behavior.doesAccept(a)) {
+                                // Adding it permanently
+                                if (!this.worldObj.isRemote && this.behavior.doesAccept(a)) {
                                     this.behavior.addAspect(runnable.getAspectType(entity), a, 1);
                                 }
                             }
@@ -229,7 +273,7 @@ public class TileExtendedNode extends TileNode {
     }
 
     public NBTTagCompound getBehaviorSnapshot() {
-        if(this.extendedNodeType != null && this.extendedNodeType == ExtendedNodeType.GROWING) {
+        if (this.extendedNodeType != null && this.extendedNodeType == ExtendedNodeType.GROWING) {
             NBTTagCompound behaviorCompound = new NBTTagCompound();
             this.behavior.writeToNBT(behaviorCompound);
             return behaviorCompound;
@@ -238,7 +282,7 @@ public class TileExtendedNode extends TileNode {
     }
 
     public void readBehaviorSnapshot(NBTTagCompound tagCompound) {
-        if(tagCompound != null && this.extendedNodeType != null && this.extendedNodeType == ExtendedNodeType.GROWING) {
+        if (tagCompound != null && this.extendedNodeType != null && this.extendedNodeType == ExtendedNodeType.GROWING) {
             this.behavior.readFromNBT(tagCompound);
         }
     }
@@ -250,13 +294,13 @@ public class TileExtendedNode extends TileNode {
         NBTTagCompound compound = nbttagcompound.getCompoundTag("Gadomancy");
 
         String exName = compound.getString("exNodeType");
-        if(exName != null && !exName.isEmpty()) {
+        if (exName != null && !exName.isEmpty()) {
             this.extendedNodeType = ExtendedNodeType.valueOf(exName);
         } else {
             this.extendedNodeType = null;
         }
 
-        if(this.extendedNodeType != null && this.extendedNodeType == ExtendedNodeType.GROWING) {
+        if (this.extendedNodeType != null && this.extendedNodeType == ExtendedNodeType.GROWING) {
             NBTTagCompound growingNodeBehavior = compound.getCompoundTag("NodeBehavior");
             this.behavior.readFromNBT(growingNodeBehavior);
         }
@@ -268,10 +312,10 @@ public class TileExtendedNode extends TileNode {
 
         NBTTagCompound compound = new NBTTagCompound();
 
-        if(this.extendedNodeType != null) {
+        if (this.extendedNodeType != null) {
             compound.setString("exNodeType", this.extendedNodeType.name());
 
-            if(this.extendedNodeType == ExtendedNodeType.GROWING) {
+            if (this.extendedNodeType == ExtendedNodeType.GROWING) {
                 NBTTagCompound behaviorCompound = new NBTTagCompound();
                 this.behavior.writeToNBT(behaviorCompound);
                 compound.setTag("NodeBehavior", behaviorCompound);
@@ -294,7 +338,5 @@ public class TileExtendedNode extends TileNode {
         public abstract Aspect getAspect(E entity);
 
         public abstract GrowingNodeBehavior.AspectType getAspectType(E entity);
-
     }
-
 }

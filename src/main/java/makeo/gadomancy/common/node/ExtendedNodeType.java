@@ -9,7 +9,5 @@ package makeo.gadomancy.common.node;
  * Created by HellFirePvP @ 25.10.2015 10:33
  */
 public enum ExtendedNodeType {
-
     GROWING
-
 }

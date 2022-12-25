@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.blocks;
 
+import java.util.List;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
 import makeo.gadomancy.common.registration.RegisteredItems;
@@ -14,8 +15,6 @@ import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.common.blocks.BlockStoneDevice;
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.lib.research.ResearchManager;
-
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -50,11 +49,10 @@ public class BlockNodeManipulator extends BlockStoneDevice {
         return null;
     }
 
-    //TC stuff...
+    // TC stuff...
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
-        if (metadata == 5)
-            return new TileNodeManipulator();
+        if (metadata == 5) return new TileNodeManipulator();
         return null;
     }
 
@@ -73,17 +71,22 @@ public class BlockNodeManipulator extends BlockStoneDevice {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9) {
+    public boolean onBlockActivated(
+            World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9) {
         TileNodeManipulator tile = (TileNodeManipulator) world.getTileEntity(x, y, z);
         ItemStack heldItem = player.getHeldItem();
-        if(tile.isInMultiblock()) {
+        if (tile.isInMultiblock()) {
             super.onBlockActivated(world, x, y, z, player, side, par7, par8, par9);
-        } else if(!world.isRemote && heldItem != null && heldItem.getItem() instanceof ItemWandCasting) {
+        } else if (!world.isRemote && heldItem != null && heldItem.getItem() instanceof ItemWandCasting) {
             tile.checkMultiblock();
             if (tile.isMultiblockStructurePresent()) {
                 String research = tile.getMultiblockType().getResearchNeeded();
-                if(!ResearchManager.isResearchComplete(player.getCommandSenderName(), research)) return false;
-                if (ThaumcraftApiHelper.consumeVisFromWandCrafting(player.getCurrentEquippedItem(), player, tile.getMultiblockType().getMultiblockCosts(), true)) {
+                if (!ResearchManager.isResearchComplete(player.getCommandSenderName(), research)) return false;
+                if (ThaumcraftApiHelper.consumeVisFromWandCrafting(
+                        player.getCurrentEquippedItem(),
+                        player,
+                        tile.getMultiblockType().getMultiblockCosts(),
+                        true)) {
                     tile.formMultiblock();
                     return true;
                 }

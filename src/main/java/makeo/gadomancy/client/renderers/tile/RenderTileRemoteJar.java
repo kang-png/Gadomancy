@@ -33,15 +33,20 @@ public class RenderTileRemoteJar extends TileJarRenderer {
 
         GL11.glPushMatrix();
 
-        GL11.glTranslatef(0.45f/2, 0.003f, 0.45f/2);
+        GL11.glTranslatef(0.45f / 2, 0.003f, 0.45f / 2);
         GL11.glScalef(0.55f, 1, 0.55f);
 
         TileMirrorRenderer renderer = new TileMirrorRenderer();
 
         renderer.func_147497_a(this.field_147501_a);
 
-        if(this.field_147501_a.field_147553_e != null) {
-            renderer.renderTileEntityAt(this.createFakeTile(tile, BlockRemoteJar.getJarTile(tile).networkId != null), 0, 0, 0, partialTicks);
+        if (this.field_147501_a.field_147553_e != null) {
+            renderer.renderTileEntityAt(
+                    this.createFakeTile(tile, BlockRemoteJar.getJarTile(tile).networkId != null),
+                    0,
+                    0,
+                    0,
+                    partialTicks);
         }
 
         GL11.glPopMatrix();
@@ -55,9 +60,8 @@ public class RenderTileRemoteJar extends TileJarRenderer {
 
         GL11.glScalef(1.002f, 1f, 1.002f);
 
-
         GL11.glTranslatef(0, -1.5f, 0);
-        //GL11.glRotatef(180, 1f, 0, 0);
+        // GL11.glRotatef(180, 1f, 0, 0);
 
         RenderTileRemoteJar.MODEL_JAR_POT.render(null, 0f, 0f, 0f, 0f, 0f, 0.0625f);
 
@@ -72,13 +76,13 @@ public class RenderTileRemoteJar extends TileJarRenderer {
         fake.linked = linked;
         fake.blockMetadata = 7;
 
-        if(tile.getWorldObj() == null) {
+        if (tile.getWorldObj() == null) {
             fake.setWorldObj(new FakeWorld());
         } else {
             fake.setWorldObj(tile.getWorldObj());
         }
 
-        if(tile.getWorldObj() instanceof FakeWorld) {
+        if (tile.getWorldObj() instanceof FakeWorld) {
             EntityPlayer p = Minecraft.getMinecraft().thePlayer;
             fake.xCoord = (int) p.posX;
             fake.yCoord = (int) p.posY;

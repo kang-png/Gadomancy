@@ -13,7 +13,7 @@ import net.minecraft.entity.Entity;
  * Created by makeo @ 23.10.2015 23:13
  */
 public class ModelJarPot extends ModelBase {
-    //fields
+    // fields
     ModelRenderer shape1;
     ModelRenderer shape2;
     ModelRenderer shape3;

@@ -32,21 +32,21 @@ public class RenderTileArcanePackager extends TileEntitySpecialRenderer {
 
         GL11.glTranslated(x, y, z);
 
-        GL11.glRotatef(180 , 1, 0, 0);
+        GL11.glRotatef(180, 1, 0, 0);
         GL11.glTranslatef(0.5f, -1.5f, -0.5f);
 
-        GL11.glRotatef(-90*((TileJarFillable)tile).facing + 270, 0, 1, 0);
+        GL11.glRotatef(-90 * ((TileJarFillable) tile).facing + 270, 0, 1, 0);
 
         GL11.glPushMatrix();
 
         float pistonOffset;
-        int pixelProgress = ((TileArcanePackager)tile).progress;
-        if(pixelProgress <= 40) {
-            pistonOffset = (pixelProgress / 40f) * (3/16f);
+        int pixelProgress = ((TileArcanePackager) tile).progress;
+        if (pixelProgress <= 40) {
+            pistonOffset = (pixelProgress / 40f) * (3 / 16f);
         } else {
             pixelProgress -= 41;
             float progress = pixelProgress / 5f;
-            pistonOffset = (3/16f) - (progress * (3/16f));
+            pistonOffset = (3 / 16f) - (progress * (3 / 16f));
         }
 
         GL11.glTranslatef(0, pistonOffset, 0);
@@ -56,7 +56,7 @@ public class RenderTileArcanePackager extends TileEntitySpecialRenderer {
 
         this.bindTexture(RenderTileArcanePackager.TEXTURE_PISTON);
 
-        if(pistonOffset < 1/16f) {
+        if (pistonOffset < 1 / 16f) {
             RenderTileArcanePackager.MODEL_PISTON_CUT.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         } else {
             RenderTileArcanePackager.MODEL_PISTON.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);

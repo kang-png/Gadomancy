@@ -26,16 +26,29 @@ public abstract class BlockRenderingHandler implements ISimpleBlockRenderingHand
 
     protected void renderFace(int side, RenderBlocks renderer, Block block, int x, int y, int z, IIcon icon) {
         switch (side) {
-            case 0: renderer.renderFaceYNeg(block, x, y, z, icon); break;
-            case 1: renderer.renderFaceYPos(block, x, y, z, icon); break;
-            case 2: renderer.renderFaceZNeg(block, x, y, z, icon); break;
-            case 3: renderer.renderFaceZPos(block, x, y, z, icon); break;
-            case 4: renderer.renderFaceXNeg(block, x, y, z, icon); break;
-            case 5: renderer.renderFaceXPos(block, x, y, z, icon); break;
+            case 0:
+                renderer.renderFaceYNeg(block, x, y, z, icon);
+                break;
+            case 1:
+                renderer.renderFaceYPos(block, x, y, z, icon);
+                break;
+            case 2:
+                renderer.renderFaceZNeg(block, x, y, z, icon);
+                break;
+            case 3:
+                renderer.renderFaceZPos(block, x, y, z, icon);
+                break;
+            case 4:
+                renderer.renderFaceXNeg(block, x, y, z, icon);
+                break;
+            case 5:
+                renderer.renderFaceXPos(block, x, y, z, icon);
+                break;
         }
     }
 
-    protected void renderFace(ForgeDirection side, RenderBlocks renderer, Block block, int x, int y, int z, IIcon icon) {
+    protected void renderFace(
+            ForgeDirection side, RenderBlocks renderer, Block block, int x, int y, int z, IIcon icon) {
         this.renderFace(side.ordinal(), renderer, block, x, y, z, icon);
     }
 

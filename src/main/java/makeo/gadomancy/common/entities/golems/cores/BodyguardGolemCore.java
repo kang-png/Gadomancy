@@ -1,5 +1,7 @@
 package makeo.gadomancy.common.entities.golems.cores;
 
+import java.util.ArrayList;
+import java.util.Random;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.entities.ai.AIFollowOwner;
@@ -21,9 +23,6 @@ import net.minecraft.pathfinding.PathNavigate;
 import thaumcraft.common.entities.ai.misc.AIOpenDoor;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.Marker;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -104,7 +103,7 @@ public class BodyguardGolemCore extends AdditionalGolemCore {
 
         @Override
         public IAttributeInstance getEntityAttribute(IAttribute p_110148_1_) {
-            if(this.golem != null) {
+            if (this.golem != null) {
                 return this.golem.getEntityAttribute(p_110148_1_);
             }
             return super.getEntityAttribute(p_110148_1_);

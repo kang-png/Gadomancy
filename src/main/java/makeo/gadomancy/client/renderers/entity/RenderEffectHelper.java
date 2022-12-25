@@ -1,7 +1,3 @@
 package makeo.gadomancy.client.renderers.entity;
 
-public class RenderEffectHelper {
-
-
-
-}
+public class RenderEffectHelper {}

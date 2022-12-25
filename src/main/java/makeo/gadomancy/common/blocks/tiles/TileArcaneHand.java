@@ -3,10 +3,12 @@ package makeo.gadomancy.common.blocks.tiles;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import makeo.gadomancy.common.entities.fake.AdvancedFakePlayer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -16,10 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -38,7 +36,7 @@ public class TileArcaneHand extends SynchronizedTileEntity implements ISidedInve
 
     @Override
     public void updateEntity() {
-        if(this.im == null) {
+        if (this.im == null) {
             this.updateConnection();
         }
     }
@@ -55,7 +53,7 @@ public class TileArcaneHand extends SynchronizedTileEntity implements ISidedInve
 
         TileEntity tile = this.getWorldObj().getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
         if (tile != null && this.worldObj instanceof WorldServer) {
-            if(this.fakePlayer == null) {
+            if (this.fakePlayer == null) {
                 this.fakePlayer = new GuiFakePlayer(this);
             }
 
@@ -63,18 +61,28 @@ public class TileArcaneHand extends SynchronizedTileEntity implements ISidedInve
             this.fakePlayer.posY = this.yCoord;
             this.fakePlayer.posZ = this.zCoord;
 
-            this.im.activateBlockOrUseItem(this.fakePlayer, this.worldObj, null, this.xCoord, this.yCoord - 1, this.zCoord, ForgeDirection.UP.ordinal(), 0.5F, 0.5F, 0.5F);
+            this.im.activateBlockOrUseItem(
+                    this.fakePlayer,
+                    this.worldObj,
+                    null,
+                    this.xCoord,
+                    this.yCoord - 1,
+                    this.zCoord,
+                    ForgeDirection.UP.ordinal(),
+                    0.5F,
+                    0.5F,
+                    0.5F);
         }
     }
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        if(this.container == null) {
+        if (this.container == null) {
             return new int[0];
         }
 
         int[] slots = new int[this.slots.size()];
-        for(int i = 0; i < slots.length; i++) {
+        for (int i = 0; i < slots.length; i++) {
             slots[i] = i;
         }
         return slots;
@@ -104,7 +112,7 @@ public class TileArcaneHand extends SynchronizedTileEntity implements ISidedInve
             if (this.tile.container != null) {
                 this.tile.slots = new ArrayList<Slot>();
                 for (Slot slot : (List<Slot>) this.tile.container.inventorySlots) {
-                    if(!this.inventory.equals(slot.inventory)) {
+                    if (!this.inventory.equals(slot.inventory)) {
                         this.tile.slots.add(slot);
                     }
                 }
@@ -188,14 +196,10 @@ public class TileArcaneHand extends SynchronizedTileEntity implements ISidedInve
     }
 
     @Override
-    public void openInventory() {
-
-    }
+    public void openInventory() {}
 
     @Override
-    public void closeInventory() {
-
-    }
+    public void closeInventory() {}
 
     @Override
     public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {

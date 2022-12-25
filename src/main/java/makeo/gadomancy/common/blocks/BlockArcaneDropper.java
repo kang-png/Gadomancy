@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.blocks;
 
+import java.util.List;
 import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.block.material.Material;
@@ -13,8 +14,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -48,7 +47,7 @@ public class BlockArcaneDropper extends BlockTransparent {
     }
 
     @Override
-    public boolean isOpaqueCube(){
+    public boolean isOpaqueCube() {
         return false;
     }
 
@@ -59,18 +58,21 @@ public class BlockArcaneDropper extends BlockTransparent {
         ForgeDirection direction = ForgeDirection.getOrientation(metadata & 7);
         boolean flipped = (metadata & 8) == 8;
 
-        if(direction == ForgeDirection.SOUTH
-                || direction == ForgeDirection.NORTH) {
+        if (direction == ForgeDirection.SOUTH || direction == ForgeDirection.NORTH) {
             flipped = !flipped;
         }
 
-        ForgeDirection rotated = direction.getRotation(flipped ? ForgeDirection.getOrientation((direction.ordinal() + 4) % 6) : ForgeDirection.getOrientation((direction.ordinal() + 2) % 6));
+        ForgeDirection rotated = direction.getRotation(
+                flipped
+                        ? ForgeDirection.getOrientation((direction.ordinal() + 4) % 6)
+                        : ForgeDirection.getOrientation((direction.ordinal() + 2) % 6));
 
         return direction != side && rotated != side && rotated.getOpposite() != side;
     }
 
     @Override
-    public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
+    public int onBlockPlaced(
+            World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
         return side;
     }
 
@@ -84,30 +86,30 @@ public class BlockArcaneDropper extends BlockTransparent {
     }
 
     private static final AxisAlignedBB[] COLLISION_BOXES = {
-            AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 0.3125f, 1),//down
-            AxisAlignedBB.getBoundingBox(0, 0.6875f, 0, 1, 1, 1),//up
-
-            AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 0.3125f),//north
-            AxisAlignedBB.getBoundingBox(0, 0, 0.6875f, 1, 1, 1),//south
-
-            AxisAlignedBB.getBoundingBox(0, 0, 0, 0.3125f, 1, 1),//west
-            AxisAlignedBB.getBoundingBox(0.6875f, 0, 0, 1, 1, 1), //east
+        AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 0.3125f, 1), // down
+        AxisAlignedBB.getBoundingBox(0, 0.6875f, 0, 1, 1, 1), // up
+        AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 0.3125f), // north
+        AxisAlignedBB.getBoundingBox(0, 0, 0.6875f, 1, 1, 1), // south
+        AxisAlignedBB.getBoundingBox(0, 0, 0, 0.3125f, 1, 1), // west
+        AxisAlignedBB.getBoundingBox(0.6875f, 0, 0, 1, 1, 1), // east
     };
 
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB boundingBox, List list, Entity entity) {
+    public void addCollisionBoxesToList(
+            World world, int x, int y, int z, AxisAlignedBB boundingBox, List list, Entity entity) {
         ForgeDirection side = ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z) & 7);
 
-        for(int i = 0; i < BlockArcaneDropper.COLLISION_BOXES.length; i++) {
-            if(i != side.ordinal()) {
+        for (int i = 0; i < BlockArcaneDropper.COLLISION_BOXES.length; i++) {
+            if (i != side.ordinal()) {
                 this.setBlockBounds(BlockArcaneDropper.COLLISION_BOXES[i]);
                 super.addCollisionBoxesToList(world, x, y, z, boundingBox, list, entity);
             }
         }
 
-        if(side.offsetX + side.offsetY + side.offsetZ < 0) {
+        if (side.offsetX + side.offsetY + side.offsetZ < 0) {
             this.setBlockBounds(side.offsetX * -0.125f, side.offsetY * -0.125f, side.offsetZ * -0.125f, 1f, 1f, 1f);
         } else {
-            this.setBlockBounds(0f, 0f, 0f, 1 - side.offsetX * 0.125f, 1 - side.offsetY * 0.125f, 1 - side.offsetZ * 0.125f);
+            this.setBlockBounds(
+                    0f, 0f, 0f, 1 - side.offsetX * 0.125f, 1 - side.offsetY * 0.125f, 1 - side.offsetZ * 0.125f);
         }
         super.addCollisionBoxesToList(world, x, y, z, boundingBox, list, entity);
 
@@ -124,7 +126,7 @@ public class BlockArcaneDropper extends BlockTransparent {
         float pitch = entity.rotationPitch;
 
         boolean flipped;
-        if(side == ForgeDirection.UP || side == ForgeDirection.DOWN) {
+        if (side == ForgeDirection.UP || side == ForgeDirection.DOWN) {
             yaw += 180;
             flipped = yaw > 315 || yaw < 45 || (yaw < 225 && yaw > 135);
         } else {
@@ -138,8 +140,8 @@ public class BlockArcaneDropper extends BlockTransparent {
                 case EAST:
                     yaw += 90;
                     break;
-			default:
-				break;
+                default:
+                    break;
             }
             flipped = Math.abs(yaw) < Math.abs(pitch);
         }

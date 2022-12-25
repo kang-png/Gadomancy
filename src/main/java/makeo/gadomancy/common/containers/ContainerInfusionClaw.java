@@ -41,7 +41,7 @@ public class ContainerInfusionClaw extends Container {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
-        if(((TileInfusionClaw) this.clawInv).isRunning()) {
+        if (((TileInfusionClaw) this.clawInv).isRunning()) {
             return null;
         }
 
@@ -57,7 +57,7 @@ public class ContainerInfusionClaw extends Container {
                     return null;
                 }
             } else {
-                if(!((Slot) this.inventorySlots.get(0)).isItemValid(itemstack1)) {
+                if (!((Slot) this.inventorySlots.get(0)).isItemValid(itemstack1)) {
                     return null;
                 }
 

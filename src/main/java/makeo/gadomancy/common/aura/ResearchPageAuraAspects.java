@@ -1,5 +1,8 @@
 package makeo.gadomancy.common.aura;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -7,10 +10,6 @@ import net.minecraft.util.StatCollector;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -42,34 +41,37 @@ public class ResearchPageAuraAspects extends ResearchPage {
 
     public static int getAdditionalPagesFor(EntityPlayer player) {
         List<String> knowledge = AuraResearchManager.getKnowledge(player);
-        if(knowledge.size() == 0) return 0;
+        if (knowledge.size() == 0) return 0;
         return ((knowledge.size() & 3) == 0) ? (knowledge.size() >> 2) : ((knowledge.size() >> 2) + 1);
     }
 
     public static List<String> getAspectTagsForPageIndex(EntityPlayer player, int pageIndex) {
         List<String> knowledge = AuraResearchManager.getKnowledge(player);
-        if(knowledge.size() <= 0) return new ArrayList<String>();
+        if (knowledge.size() <= 0) return new ArrayList<String>();
         Collections.sort(knowledge);
         int startIndex = pageIndex << 2;
-        if(knowledge.size() <= startIndex) return new ArrayList<String>(); //Should not happen, because getAdditionalPages should only return indexes within range
+        if (knowledge.size() <= startIndex)
+            return new ArrayList<
+                    String>(); // Should not happen, because getAdditionalPages should only return indexes within range
         return knowledge.subList(startIndex, (startIndex + 4 > knowledge.size()) ? knowledge.size() : startIndex + 4);
     }
 
     public static AspectList createPageAspectList(List<String> tagList) {
         AspectList list = new AspectList();
-        for(String tag : tagList) {
+        for (String tag : tagList) {
             Aspect a = ResearchPageAuraAspects.createAuraFakeAspect(tag);
-            if(a != null) list.add(a, 0);
+            if (a != null) list.add(a, 0);
         }
         return list;
     }
 
     private static Aspect createAuraFakeAspect(String tag) {
         Aspect original = Aspect.getAspect(tag);
-        if(original == null) return null;
+        if (original == null) return null;
         String fakeTemp = "GADOMANCY_TEMP_" + tag;
 
-        Aspect fake = new FakeAspect(fakeTemp, original.getColor(), null, original.getImage(), original.getBlend(), true);
+        Aspect fake =
+                new FakeAspect(fakeTemp, original.getColor(), null, original.getImage(), original.getBlend(), true);
         fake.setTag(original.getTag());
         return fake;
     }
@@ -78,7 +80,8 @@ public class ResearchPageAuraAspects extends ResearchPage {
 
         private boolean headAspect;
 
-        public FakeAspect(String tag, int color, Aspect[] components, ResourceLocation image, int blend, boolean isHead) {
+        public FakeAspect(
+                String tag, int color, Aspect[] components, ResourceLocation image, int blend, boolean isHead) {
             super(tag, color, components, image, blend);
             Aspect.aspects.remove(tag);
             this.headAspect = isHead;
@@ -86,11 +89,10 @@ public class ResearchPageAuraAspects extends ResearchPage {
 
         @Override
         public String getName() {
-            if(this.headAspect) return super.getName();
+            if (this.headAspect) return super.getName();
             String tag = super.getTag();
-            if(tag == null || tag.isEmpty() || tag.equals("")) return "";
+            if (tag == null || tag.isEmpty() || tag.equals("")) return "";
             return StatCollector.translateToLocal(tag);
         }
     }
-
 }

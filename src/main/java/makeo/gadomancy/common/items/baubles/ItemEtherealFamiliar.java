@@ -2,6 +2,9 @@ package makeo.gadomancy.common.items.baubles;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.DataFamiliar;
 import makeo.gadomancy.common.data.SyncDataHolder;
@@ -21,10 +24,6 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.input.Keyboard;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.lib.research.ResearchManager;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -80,20 +79,23 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
     public void addInformation(ItemStack stack, EntityPlayer player, List lore, boolean flag) {
         List<String> newLore = new ArrayList<String>();
 
-        if(ItemEtherealFamiliar.hasFamiliarAspect(stack)) {
-            newLore.add(EnumChatFormatting.GRAY + ItemEtherealFamiliar.getFamiliarAspect(stack).getName());
+        if (ItemEtherealFamiliar.hasFamiliarAspect(stack)) {
+            newLore.add(EnumChatFormatting.GRAY
+                    + ItemEtherealFamiliar.getFamiliarAspect(stack).getName());
         }
 
         List<FamiliarAugment.FamiliarAugmentPair> augments = ItemEtherealFamiliar.getAugments(stack);
         for (FamiliarAugment.FamiliarAugmentPair pair : augments) {
-            newLore.add(EnumChatFormatting.GRAY + pair.augment.getLocalizedName() + " " + MiscUtils.toRomanNumeral(pair.level));
+            newLore.add(EnumChatFormatting.GRAY + pair.augment.getLocalizedName() + " "
+                    + MiscUtils.toRomanNumeral(pair.level));
         }
 
-
-        if(Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54)) {
+        if (Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54)) {
             lore.addAll(newLore);
         } else {
-            if(!newLore.isEmpty()) lore.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + StatCollector.translateToLocal("gadomancy.lore.hasAdditionalLore"));
+            if (!newLore.isEmpty())
+                lore.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC
+                        + StatCollector.translateToLocal("gadomancy.lore.hasAdditionalLore"));
         }
     }
 
@@ -112,32 +114,33 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
     }
 
     public static void setFamiliarAspect(ItemStack stack, Aspect aspect) {
-        if(stack == null || !(stack.getItem() instanceof ItemEtherealFamiliar)) return;
+        if (stack == null || !(stack.getItem() instanceof ItemEtherealFamiliar)) return;
         NBTHelper.getData(stack).setString("aspect", aspect.getTag());
     }
 
     public static Aspect getFamiliarAspect(ItemStack stack) {
-        if(stack == null || !(stack.getItem() instanceof ItemEtherealFamiliar)) return null;
+        if (stack == null || !(stack.getItem() instanceof ItemEtherealFamiliar)) return null;
         String tag = NBTHelper.getData(stack).getString("aspect");
-        if(tag == null || tag.equalsIgnoreCase("")) return null;
+        if (tag == null || tag.equalsIgnoreCase("")) return null;
         return Aspect.getAspect(tag);
     }
 
     public static boolean hasAugment(ItemStack stack, FamiliarAugment augment) {
         List<FamiliarAugment.FamiliarAugmentPair> pairs = ItemEtherealFamiliar.getAugments(stack);
         for (FamiliarAugment.FamiliarAugmentPair pair : pairs) {
-            if(pair.augment.equals(augment)) return true;
+            if (pair.augment.equals(augment)) return true;
         }
         return false;
     }
 
     public static FamiliarAugment.FamiliarAugmentList getAugments(ItemStack stack) {
-        if(stack == null || !(stack.getItem() instanceof ItemEtherealFamiliar)) return new FamiliarAugment.FamiliarAugmentList();
+        if (stack == null || !(stack.getItem() instanceof ItemEtherealFamiliar))
+            return new FamiliarAugment.FamiliarAugmentList();
         NBTTagCompound augmentTag = NBTHelper.getData(stack).getCompoundTag("augments");
         Set<String> strKeySet = augmentTag.func_150296_c();
-        if(strKeySet == null || strKeySet.size() <= 0) return new FamiliarAugment.FamiliarAugmentList();
+        if (strKeySet == null || strKeySet.size() <= 0) return new FamiliarAugment.FamiliarAugmentList();
         FamiliarAugment.FamiliarAugmentList augmentList = new FamiliarAugment.FamiliarAugmentList();
-        for(String key : strKeySet) {
+        for (String key : strKeySet) {
             FamiliarAugment augment = FamiliarAugment.getByUnlocalizedName(key);
             int level = augmentTag.getInteger(key);
             augmentList.add(new FamiliarAugment.FamiliarAugmentPair(augment, level));
@@ -155,7 +158,7 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
     }*/
 
     public static boolean incrementAugmentLevel(ItemStack stack, FamiliarAugment toAdd) {
-        if(!ItemEtherealFamiliar.hasAugment(stack, toAdd)) {
+        if (!ItemEtherealFamiliar.hasAugment(stack, toAdd)) {
             return ItemEtherealFamiliar.addAugmentUnsafe(stack, toAdd, 1);
         } else {
             int current = ItemEtherealFamiliar.getAugments(stack).getLevel(toAdd);
@@ -169,7 +172,7 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
     }*/
 
     public static boolean addAugmentUnsafe(ItemStack stack, FamiliarAugment augment, int level) {
-        if(stack == null || !(stack.getItem() instanceof ItemEtherealFamiliar) || level <= 0) return false;
+        if (stack == null || !(stack.getItem() instanceof ItemEtherealFamiliar) || level <= 0) return false;
         NBTTagCompound tag = NBTHelper.getData(stack);
 
         NBTTagCompound augmentTag = NBTHelper.getData(stack).getCompoundTag("augments");
@@ -181,8 +184,8 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
 
     @Override
     public void onWornTick(ItemStack itemStack, EntityLivingBase entity) {
-        if(itemStack == null) return;
-        if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemEtherealFamiliar) {
+        if (itemStack == null) return;
+        if (entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemEtherealFamiliar) {
             DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
             Aspect a = ItemEtherealFamiliar.getFamiliarAspect(itemStack);
             if (a != null) {
@@ -193,11 +196,11 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
 
     @Override
     public void onEquipped(ItemStack itemStack, EntityLivingBase entity) {
-        if(itemStack == null) return;
-        if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemEtherealFamiliar) {
+        if (itemStack == null) return;
+        if (entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemEtherealFamiliar) {
             DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
             Aspect a = ItemEtherealFamiliar.getFamiliarAspect(itemStack);
-            if(a != null) {
+            if (a != null) {
                 familiarData.handleEquip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity, a);
             }
         }
@@ -205,11 +208,11 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
 
     @Override
     public void onUnequipped(ItemStack itemStack, EntityLivingBase entity) {
-        if(itemStack == null) return;
-        if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemEtherealFamiliar) {
+        if (itemStack == null) return;
+        if (entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemEtherealFamiliar) {
             DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
             Aspect a = ItemEtherealFamiliar.getFamiliarAspect(itemStack);
-            if(a != null) {
+            if (a != null) {
                 familiarData.handleUnequip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity, a);
             }
         }
@@ -217,13 +220,13 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
 
     @Override
     public boolean canEquip(ItemStack itemStack, EntityLivingBase entityLivingBase) {
-        if(!(entityLivingBase instanceof EntityPlayer)) return false;
-        return ResearchManager.isResearchComplete(entityLivingBase.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".ETHEREAL_FAMILIAR");
+        if (!(entityLivingBase instanceof EntityPlayer)) return false;
+        return ResearchManager.isResearchComplete(
+                entityLivingBase.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".ETHEREAL_FAMILIAR");
     }
 
     @Override
     public boolean canUnequip(ItemStack itemStack, EntityLivingBase entityLivingBase) {
         return true;
     }
-
 }

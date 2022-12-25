@@ -1,5 +1,7 @@
 package makeo.gadomancy.common.blocks;
 
+import java.util.List;
+import java.util.Random;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileArcanePackager;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
@@ -29,9 +31,6 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.TileJarFillable;
 import thaumcraft.common.tiles.TilePedestal;
-
-import java.util.List;
-import java.util.Random;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -82,7 +81,7 @@ public class BlockStoneMachine extends Block {
             }
         } else if (metadata == 2) {
             return this.protectorIcon;
-        } else if(metadata == 4) {
+        } else if (metadata == 4) {
             return this.packagerIcon;
         }
 
@@ -91,7 +90,13 @@ public class BlockStoneMachine extends Block {
 
     @Override
     public boolean hasTileEntity(int metadata) {
-        return metadata == 15 || metadata == 0 || metadata == 1 || metadata == 2 || metadata == 3 || metadata == 4 || metadata == 5;
+        return metadata == 15
+                || metadata == 0
+                || metadata == 1
+                || metadata == 2
+                || metadata == 3
+                || metadata == 4
+                || metadata == 5;
     }
 
     @Override
@@ -123,11 +128,11 @@ public class BlockStoneMachine extends Block {
             return new TileBlockProtector();
         } else if (metadata == 3) {
             return new TileManipulationFocus();
-        } else if(metadata == 4) {
+        } else if (metadata == 4) {
             return new TileArcanePackager();
-        }/* else if(metadata == 5) {
-            return new TileAIShutdown();
-        }*/
+        } /* else if(metadata == 5) {
+              return new TileAIShutdown();
+          }*/
         return null;
     }
 
@@ -148,13 +153,13 @@ public class BlockStoneMachine extends Block {
     public void breakBlock(World world, int x, int y, int z, Block block, int metadata) {
         if (metadata == 1) {
             InventoryUtils.dropItems(world, x, y, z);
-        } else if(metadata == 4) {
-            if(!world.isRemote) {
+        } else if (metadata == 4) {
+            if (!world.isRemote) {
                 TileArcanePackager tile = (TileArcanePackager) world.getTileEntity(x, y, z);
 
-                for(int i = 0; i < tile.getSizeInventory(); i++) {
+                for (int i = 0; i < tile.getSizeInventory(); i++) {
                     ItemStack stack = tile.getStackInSlot(i);
-                    if(stack != null && stack.stackSize > 0) {
+                    if (stack != null && stack.stackSize > 0) {
                         float f = world.rand.nextFloat() * 0.8F + 0.1F;
                         float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
                         float f2 = world.rand.nextFloat() * 0.8F + 0.1F;
@@ -169,14 +174,14 @@ public class BlockStoneMachine extends Block {
             }
         }
 
-
         super.breakBlock(world, x, y, z, block, metadata);
     }
 
     @Override
     public boolean canReplace(World world, int x, int y, int z, int side, ItemStack stack) {
         int damage = stack.getItemDamage();
-        if ((damage == 0 || damage == 3) && (y < 1 || world.getBlock(x, y - 1, z) != RegisteredBlocks.blockNodeManipulator)) {
+        if ((damage == 0 || damage == 3)
+                && (y < 1 || world.getBlock(x, y - 1, z) != RegisteredBlocks.blockNodeManipulator)) {
             return false;
         }
         return super.canReplace(world, x, y, z, side, stack);
@@ -186,7 +191,8 @@ public class BlockStoneMachine extends Block {
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase ent, ItemStack stack) {
         int metadata = world.getBlockMetadata(x, y, z);
         if (metadata == 2 || metadata == 4) {
-            ((TileJarFillable) world.getTileEntity(x, y, z)).facing = MathHelper.floor_double(-ent.rotationYaw * 4.0F / 360.0F + 0.5D) & 0x3;
+            ((TileJarFillable) world.getTileEntity(x, y, z)).facing =
+                    MathHelper.floor_double(-ent.rotationYaw * 4.0F / 360.0F + 0.5D) & 0x3;
         }
     }
 
@@ -204,16 +210,17 @@ public class BlockStoneMachine extends Block {
                 world.setBlockToAir(x, y, z);
             }
         } else if (metadata == 0 || metadata == 3) {
-            if (world.getBlock(x, y - 1, z) != RegisteredBlocks.blockNodeManipulator || world.getBlockMetadata(x, y - 1, z) != 5) {
+            if (world.getBlock(x, y - 1, z) != RegisteredBlocks.blockNodeManipulator
+                    || world.getBlockMetadata(x, y - 1, z) != 5) {
                 this.dropBlockAsItem(world, x, y, z, metadata, 0);
                 world.setBlockToAir(x, y, z);
             }
-        } else if(metadata == 1) {
+        } else if (metadata == 1) {
             if (!world.isAirBlock(x, y + 1, z)) {
                 InventoryUtils.dropItems(world, x, y, z);
             }
-        } else if(metadata == 4) {
-            if(!world.isRemote) {
+        } else if (metadata == 4) {
+            if (!world.isRemote) {
                 TileArcanePackager tile = (TileArcanePackager) world.getTileEntity(x, y, z);
                 tile.updateRedstone(world.isBlockIndirectlyGettingPowered(x, y, z));
             }
@@ -223,7 +230,7 @@ public class BlockStoneMachine extends Block {
     @Override
     public int getLightValue(IBlockAccess world, int x, int y, int z) {
         int metadata = world.getBlockMetadata(x, y, z);
-        if(metadata == 2) {
+        if (metadata == 2) {
             TileBlockProtector protector = (TileBlockProtector) world.getTileEntity(x, y, z);
             return protector.getCurrentRange();
         }
@@ -238,7 +245,7 @@ public class BlockStoneMachine extends Block {
     @Override
     public int getComparatorInputOverride(World world, int x, int y, int z, int side) {
         int metadata = world.getBlockMetadata(x, y, z);
-        if(metadata == 2) {
+        if (metadata == 2) {
             TileBlockProtector protector = (TileBlockProtector) world.getTileEntity(x, y, z);
             return protector.getCurrentRange();
         }
@@ -246,19 +253,21 @@ public class BlockStoneMachine extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(
+            World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         int metadata = world.getBlockMetadata(x, y, z);
 
         if (metadata == 0 || metadata == 3) {
-            if (world.getBlock(x, y - 1, z).equals(RegisteredBlocks.blockNodeManipulator) && world.getBlockMetadata(x, y - 1, z) == 5) {
+            if (world.getBlock(x, y - 1, z).equals(RegisteredBlocks.blockNodeManipulator)
+                    && world.getBlockMetadata(x, y - 1, z) == 5) {
                 return world.getBlock(x, y - 1, z).onBlockActivated(world, x, y - 1, z, player, side, hitX, hitY, hitZ);
             }
         } else if (metadata == 1) {
-            if(world.isAirBlock(x, y + 1, z)) {
+            if (world.isAirBlock(x, y + 1, z)) {
                 return ConfigBlocks.blockStoneDevice.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
             }
             return true;
-        } else if(metadata == 4) {
+        } else if (metadata == 4) {
             player.openGui(Gadomancy.instance, 2, world, x, y, z);
             return true;
         }
@@ -277,23 +286,24 @@ public class BlockStoneMachine extends Block {
             this.setBlockBounds(3 / 16f, 0, 3 / 16f, 1 - (3 / 16f), 6 / 16f, 1 - (3 / 16f));
         } else if (metadata == 1) {
             this.setBlockBounds(0.25f, 0, 0.25f, 0.75f, 0.99f, 0.75f);
-        } else if(metadata == 2) {
-            this.setBlockBounds(0, 0, 0, 1, 3/16f, 1);
-        } else if(metadata == 4) {
-            this.setBlockBounds(0, 0, 0, 1, 12/16f, 1);
-        }/* else if(metadata == 5) {
-            setBlockBounds(0, 0, 0, 1, 1, 1);
-        }*/
+        } else if (metadata == 2) {
+            this.setBlockBounds(0, 0, 0, 1, 3 / 16f, 1);
+        } else if (metadata == 4) {
+            this.setBlockBounds(0, 0, 0, 1, 12 / 16f, 1);
+        } /* else if(metadata == 5) {
+              setBlockBounds(0, 0, 0, 1, 1, 1);
+          }*/
         super.setBlockBoundsBasedOnState(world, x, y, z);
     }
 
     @Override
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List list, Entity entity) {
+    public void addCollisionBoxesToList(
+            World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List list, Entity entity) {
         int metadata = world.getBlockMetadata(x, y, z);
         if (metadata == 11 || metadata == 15 || metadata == 1) {
             this.setBlockBounds(0, 0, 0, 1, 1, 1);
-        } else if(metadata == 2) {
-            this.setBlockBounds(3 / 16f, 0, 3 / 16f, 1 - (3 / 16f), 9.5f/16f, 1 - (3 / 16f));
+        } else if (metadata == 2) {
+            this.setBlockBounds(3 / 16f, 0, 3 / 16f, 1 - (3 / 16f), 9.5f / 16f, 1 - (3 / 16f));
             super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
             this.setBlockBoundsBasedOnState(world, x, y, z);
         } else {

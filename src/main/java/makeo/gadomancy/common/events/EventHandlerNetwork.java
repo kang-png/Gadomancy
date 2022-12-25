@@ -25,13 +25,14 @@ import net.minecraft.server.MinecraftServer;
  */
 public class EventHandlerNetwork {
 
-    //TODO Restore old client configs on server leave again.
+    // TODO Restore old client configs on server leave again.
     @SubscribeEvent
     public void on(PlayerEvent.PlayerLoggedInEvent e) {
         EntityPlayerMP p = (EntityPlayerMP) e.player;
         PacketHandler.INSTANCE.sendTo(new PacketUpdateGolemTypeOrder(GolemEnumHelper.getCurrentMapping()), p);
         PacketHandler.INSTANCE.sendTo(new PacketSyncConfigs(), p);
-        PacketHandler.INSTANCE.sendTo(new PacketUpdateOnlineState(MinecraftServer.getServer().isServerInOnlineMode()), p);
+        PacketHandler.INSTANCE.sendTo(
+                new PacketUpdateOnlineState(MinecraftServer.getServer().isServerInOnlineMode()), p);
         ((DataFamiliar) SyncDataHolder.getDataServer("FamiliarData")).checkPlayerEquipment(p);
         ((DataAchromatic) SyncDataHolder.getDataServer("AchromaticData")).checkPotionEffect(p);
         SyncDataHolder.syncAllDataTo(p);
@@ -41,7 +42,7 @@ public class EventHandlerNetwork {
     public void on(PlayerEvent.PlayerLoggedOutEvent e) {
         EntityPlayer player = e.player;
         DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
-        if(familiarData.hasFamiliar(player)) {
+        if (familiarData.hasFamiliar(player)) {
             familiarData.handleUnsafeUnequip(player);
         }
 

@@ -59,8 +59,7 @@ class CheckpointingSet<E> implements Iterable<E> {
 
             @Override
             public void remove() {
-                if (!initialized)
-                    throw new IllegalStateException();
+                if (!initialized) throw new IllegalStateException();
                 toRemove.add(cur);
             }
         };

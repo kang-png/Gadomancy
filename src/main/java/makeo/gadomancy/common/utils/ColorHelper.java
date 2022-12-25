@@ -27,10 +27,10 @@ public class ColorHelper {
         StringBuilder output = new StringBuilder();
 
         boolean isColor = false;
-        for(char c : input.toCharArray()) {
-            if(c == ColorHelper.COLOR_CHAR) {
+        for (char c : input.toCharArray()) {
+            if (c == ColorHelper.COLOR_CHAR) {
                 isColor = true;
-            } else if(isColor) {
+            } else if (isColor) {
                 isColor = false;
                 output.append(ColorHelper.COLOR_CHAR).append(c);
             }

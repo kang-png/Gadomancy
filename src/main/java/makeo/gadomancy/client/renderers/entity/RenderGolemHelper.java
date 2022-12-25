@@ -1,5 +1,6 @@
 package makeo.gadomancy.client.renderers.entity;
 
+import java.awt.*;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -17,8 +18,6 @@ import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.renderers.models.entities.ModelGolem;
 import thaumcraft.common.entities.golems.EntityGolemBase;
-
-import java.awt.*;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -46,7 +45,8 @@ public class RenderGolemHelper {
         float f3 = icon.getMinU();
         float f4 = icon.getMaxV();
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
-        ItemRenderer.renderItemIn2D(Tessellator.instance, f1, f2, f3, f4, icon.getIconWidth(), icon.getIconHeight(), 0.2F);
+        ItemRenderer.renderItemIn2D(
+                Tessellator.instance, f1, f2, f3, f4, icon.getIconWidth(), icon.getIconHeight(), 0.2F);
 
         GL11.glPopMatrix();
     }
@@ -74,8 +74,15 @@ public class RenderGolemHelper {
                 Color color = new Color(item.getItem().getColorFromItemStack(item, renderPass));
                 GL11.glColor3ub((byte) color.getRed(), (byte) color.getGreen(), (byte) color.getBlue());
 
-                ItemRenderer.renderItemIn2D(Tessellator.instance, icon.getMaxU(), icon.getMinV(), icon.getMinU(),
-                        icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), 0.0625F);
+                ItemRenderer.renderItemIn2D(
+                        Tessellator.instance,
+                        icon.getMaxU(),
+                        icon.getMinV(),
+                        icon.getMinU(),
+                        icon.getMaxV(),
+                        icon.getIconWidth(),
+                        icon.getIconHeight(),
+                        0.0625F);
 
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
             }
@@ -85,7 +92,8 @@ public class RenderGolemHelper {
         GL11.glPopMatrix();
     }
 
-    public static void renderToolItem(EntityGolemBase golem, ItemStack itemstack, ModelBase mainModel, RenderManager renderManager) {
+    public static void renderToolItem(
+            EntityGolemBase golem, ItemStack itemstack, ModelBase mainModel, RenderManager renderManager) {
         GL11.glPushMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -101,36 +109,39 @@ public class RenderGolemHelper {
         float fs = 0.66F;
         GL11.glScalef(fs, fs, fs);
 
-        net.minecraftforge.client.IItemRenderer customRenderer = net.minecraftforge.client.MinecraftForgeClient.getItemRenderer(itemstack, net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED);
-        boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED, itemstack, net.minecraftforge.client.IItemRenderer.ItemRendererHelper.BLOCK_3D));
+        net.minecraftforge.client.IItemRenderer customRenderer =
+                net.minecraftforge.client.MinecraftForgeClient.getItemRenderer(
+                        itemstack, net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED);
+        boolean is3D = (customRenderer != null
+                && customRenderer.shouldUseRenderHelper(
+                        net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED,
+                        itemstack,
+                        net.minecraftforge.client.IItemRenderer.ItemRendererHelper.BLOCK_3D));
 
         Item item = itemstack.getItem();
         float f1;
 
-        if (item instanceof ItemBlock && (is3D || RenderBlocks.renderItemIn3d(Block.getBlockFromItem(item).getRenderType())))
-        {
+        if (item instanceof ItemBlock
+                && (is3D
+                        || RenderBlocks.renderItemIn3d(
+                                Block.getBlockFromItem(item).getRenderType()))) {
             f1 = 0.5F;
             GL11.glTranslatef(0.0F, 0.1875F, -0.3125F);
             f1 *= 0.75F;
             GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
             GL11.glScalef(-f1, -f1, f1);
-        }
-        else if (item == Items.bow)
-        {
+        } else if (item == Items.bow) {
             f1 = 0.625F;
             GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
             GL11.glRotatef(-20.0F, 0.0F, 1.0F, 0.0F);
             GL11.glScalef(f1, -f1, f1);
             GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-        }
-        else if (item.isFull3D())
-        {
+        } else if (item.isFull3D()) {
             f1 = 0.625F;
 
-            if (item.shouldRotateAroundWhenRendering())
-            {
+            if (item.shouldRotateAroundWhenRendering()) {
                 GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
                 GL11.glTranslatef(0.0F, -0.125F, 0.0F);
             }
@@ -140,9 +151,7 @@ public class RenderGolemHelper {
             GL11.glScalef(f1, -f1, f1);
             GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-        }
-        else
-        {
+        } else {
             f1 = 0.375F;
             GL11.glTranslatef(0.25F, 0.1875F, -0.1875F);
             GL11.glScalef(f1, f1, f1);
@@ -155,30 +164,25 @@ public class RenderGolemHelper {
         int i;
         float f5;
 
-        if (itemstack.getItem().requiresMultipleRenderPasses())
-        {
-            for (i = 0; i < itemstack.getItem().getRenderPasses(itemstack.getItemDamage()); ++i)
-            {
+        if (itemstack.getItem().requiresMultipleRenderPasses()) {
+            for (i = 0; i < itemstack.getItem().getRenderPasses(itemstack.getItemDamage()); ++i) {
                 int j = itemstack.getItem().getColorFromItemStack(itemstack, i);
-                f5 = (float)(j >> 16 & 255) / 255.0F;
-                f2 = (float)(j >> 8 & 255) / 255.0F;
-                float f3 = (float)(j & 255) / 255.0F;
+                f5 = (float) (j >> 16 & 255) / 255.0F;
+                f2 = (float) (j >> 8 & 255) / 255.0F;
+                float f3 = (float) (j & 255) / 255.0F;
                 GL11.glColor4f(f5, f2, f3, 1.0F);
 
                 renderManager.itemRenderer.renderItem(golem, itemstack, i);
             }
-        }
-        else
-        {
+        } else {
             i = itemstack.getItem().getColorFromItemStack(itemstack, 0);
-            float f4 = (float)(i >> 16 & 255) / 255.0F;
-            f5 = (float)(i >> 8 & 255) / 255.0F;
-            f2 = (float)(i & 255) / 255.0F;
+            float f4 = (float) (i >> 16 & 255) / 255.0F;
+            f5 = (float) (i >> 8 & 255) / 255.0F;
+            f2 = (float) (i & 255) / 255.0F;
             GL11.glColor4f(f4, f5, f2, 1.0F);
 
             renderManager.itemRenderer.renderItem(golem, itemstack, 0);
         }
-
 
         GL11.glScaled(1.0D, 1.0D, 1.0D);
 

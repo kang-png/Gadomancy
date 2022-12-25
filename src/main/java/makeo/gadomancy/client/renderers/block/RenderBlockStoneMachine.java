@@ -23,18 +23,20 @@ public class RenderBlockStoneMachine implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
-        if(metadata == 1) {
-            BlockStoneMachine blockStoneMachine = (BlockStoneMachine)block;
+        if (metadata == 1) {
+            BlockStoneMachine blockStoneMachine = (BlockStoneMachine) block;
             RenderBlockStoneMachine.DEVICE_BLOCK.iconPedestal[0] = blockStoneMachine.pedestalSideIcon;
             RenderBlockStoneMachine.DEVICE_BLOCK.iconPedestal[1] = blockStoneMachine.pedestalTopIcon;
-            RenderBlockStoneMachine.DEVICE_RENDERER.renderInventoryBlock(RenderBlockStoneMachine.DEVICE_BLOCK, 1, modelId, renderer);
+            RenderBlockStoneMachine.DEVICE_RENDERER.renderInventoryBlock(
+                    RenderBlockStoneMachine.DEVICE_BLOCK, 1, modelId, renderer);
         }
     }
 
     @Override
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(
+            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         int metadata = world.getBlockMetadata(x, y, z);
-        if(metadata == 1) {
+        if (metadata == 1) {
             RenderBlockStoneMachine.DEVICE_RENDERER.renderWorldBlock(world, x, y, z, block, modelId, renderer);
             return true;
         }

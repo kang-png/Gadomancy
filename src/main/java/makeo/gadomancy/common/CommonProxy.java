@@ -4,6 +4,9 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import makeo.gadomancy.client.ClientProxy;
 import makeo.gadomancy.common.aura.AuraEffects;
 import makeo.gadomancy.common.containers.ContainerArcanePackager;
@@ -29,10 +32,6 @@ import thaumcraft.api.wands.WandTriggerRegistry;
 import thaumcraft.common.entities.golems.ContainerGolem;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -47,7 +46,7 @@ public class CommonProxy implements IGuiHandler {
 
     public static final EventHandlerGolem EVENT_HANDLER_GOLEM = new EventHandlerGolem();
 
-    public void onConstruct() { }
+    public void onConstruct() {}
 
     public void preInitalize() {
         PacketHandler.init();
@@ -85,7 +84,7 @@ public class CommonProxy implements IGuiHandler {
 
     public void postInitalize() {
         RegisteredPotions.init();
-        AuraEffects.AER.getTickInterval(); //initalize AuraEffects
+        AuraEffects.AER.getTickInterval(); // initalize AuraEffects
 
         RegisteredResearches.init();
         RegisteredIntegrations.init();
@@ -100,25 +99,28 @@ public class CommonProxy implements IGuiHandler {
     public static void unregisterWandHandler(String modid, Block block, int metadata) {
         HashMap<String, HashMap<List, List>> triggers = new Injector(WandTriggerRegistry.class).getField("triggers");
         HashMap<List, List> modTriggers = triggers.get(modid);
-        if(modTriggers == null) return;
+        if (modTriggers == null) return;
         List arrKey = Arrays.asList(block, metadata);
         modTriggers.remove(arrKey);
         triggers.put(modid, modTriggers);
     }
 
     public void spawnBubbles(World world, float posX, float posY, float posZ, float rangeAroundItem) {
-        PacketStartAnimation pkt = new PacketStartAnimation(PacketStartAnimation.ID_BUBBLES,
-                Float.floatToIntBits(posX), Float.floatToIntBits(posY), Float.floatToIntBits(posZ),
+        PacketStartAnimation pkt = new PacketStartAnimation(
+                PacketStartAnimation.ID_BUBBLES,
+                Float.floatToIntBits(posX),
+                Float.floatToIntBits(posY),
+                Float.floatToIntBits(posZ),
                 Float.floatToIntBits(rangeAroundItem));
-        PacketHandler.INSTANCE.sendToAllAround(pkt, new NetworkRegistry.TargetPoint(world.provider.dimensionId,
-                posX, posY, posZ, 32));
+        PacketHandler.INSTANCE.sendToAllAround(
+                pkt, new NetworkRegistry.TargetPoint(world.provider.dimensionId, posX, posY, posZ, 32));
     }
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         switch (ID) {
             case 0:
-                return new ContainerGolem(player.inventory, ((EntityGolemBase)world.getEntityByID(x)).inventory);
+                return new ContainerGolem(player.inventory, ((EntityGolemBase) world.getEntityByID(x)).inventory);
             case 1:
                 return new ContainerInfusionClaw(player.inventory, (IInventory) world.getTileEntity(x, y, z));
             case 2:
@@ -132,7 +134,7 @@ public class CommonProxy implements IGuiHandler {
         return null;
     }
 
-    public void runDelayedClientSide(Runnable run) { }
+    public void runDelayedClientSide(Runnable run) {}
 
     public Side getSide() {
         return this instanceof ClientProxy ? Side.CLIENT : Side.SERVER;

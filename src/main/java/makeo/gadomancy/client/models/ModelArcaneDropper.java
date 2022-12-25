@@ -14,7 +14,7 @@ import net.minecraft.entity.Entity;
  * using Techne: http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-tools/1261123
  */
 public class ModelArcaneDropper extends ModelBase {
-    //fields
+    // fields
     ModelRenderer shape1;
     ModelRenderer shape2;
     ModelRenderer shape3;

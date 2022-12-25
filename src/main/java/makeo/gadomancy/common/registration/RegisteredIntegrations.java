@@ -26,43 +26,46 @@ public class RegisteredIntegrations {
 
     public static void init() {
         RegisteredIntegrations.morph = RegisteredIntegrations.registerIndependent(IntegrationMorph.class);
-        RegisteredIntegrations.thaumicExploration = RegisteredIntegrations.registerIndependent(IntegrationThaumicExploration.class);
+        RegisteredIntegrations.thaumicExploration =
+                RegisteredIntegrations.registerIndependent(IntegrationThaumicExploration.class);
         RegisteredIntegrations.automagy = RegisteredIntegrations.registerIndependent(IntegrationAutomagy.class);
         RegisteredIntegrations.nei = RegisteredIntegrations.registerIndependent(IntegrationNEI.class);
         RegisteredIntegrations.mystcraft = RegisteredIntegrations.registerIndependent(IntegrationMystcraft.class);
-        RegisteredIntegrations.thaumicTinkerer = RegisteredIntegrations.registerIndependent(IntegrationThaumicTinkerer.class);
+        RegisteredIntegrations.thaumicTinkerer =
+                RegisteredIntegrations.registerIndependent(IntegrationThaumicTinkerer.class);
 
-        RegisteredIntegrations.registerDependent("ThaumicHorizons", "makeo.gadomancy.common.integration.thaumichorizions.IntegrationThaumicHorizions");
+        RegisteredIntegrations.registerDependent(
+                "ThaumicHorizons", "makeo.gadomancy.common.integration.thaumichorizions.IntegrationThaumicHorizions");
         RegisteredIntegrations.registerDependent("Waila", "makeo.gadomancy.common.integration.waila.IntegrationWaila");
     }
 
     private static void registerDependent(String modId, String clazz) {
-        if(!Loader.isModLoaded(modId)) {
+        if (!Loader.isModLoaded(modId)) {
             return;
         }
 
         Object integration;
         try {
             integration = Injector.getClass(clazz).newInstance();
-        } catch (Throwable e) {//InstantiationException | IllegalAccessException
+        } catch (Throwable e) { // InstantiationException | IllegalAccessException
             return;
         }
 
-        if(integration instanceof IntegrationMod) {
+        if (integration instanceof IntegrationMod) {
             ((IntegrationMod) integration).init();
         }
     }
 
-    private static  <T extends IntegrationMod> T registerIndependent(Class<T> clazz) {
+    private static <T extends IntegrationMod> T registerIndependent(Class<T> clazz) {
         T integration;
         try {
             integration = clazz.newInstance();
-        } catch (Exception e) {//InstantiationException | IllegalAccessException
+        } catch (Exception e) { // InstantiationException | IllegalAccessException
             return null;
         }
 
         integration.init();
-        if(integration.isPresent()) {
+        if (integration.isPresent()) {
             Gadomancy.log.info("Initialized hook for mod \"" + integration.getModId() + "\"!");
         }
         return integration;

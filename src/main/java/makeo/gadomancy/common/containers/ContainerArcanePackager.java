@@ -64,11 +64,14 @@ public class ContainerArcanePackager extends Container {
                     return null;
                 }
             } else {
-                int specialSlot = itemstack1.getItem() == Items.leather ? 9 : itemstack1.getItem() == Items.string ? 10 : -1;
-                if(specialSlot != -1 && (this.packagerInv.getStackInSlot(specialSlot) == null || this.packagerInv.getStackInSlot(specialSlot).stackSize < 64)) {
+                int specialSlot =
+                        itemstack1.getItem() == Items.leather ? 9 : itemstack1.getItem() == Items.string ? 10 : -1;
+                if (specialSlot != -1
+                        && (this.packagerInv.getStackInSlot(specialSlot) == null
+                                || this.packagerInv.getStackInSlot(specialSlot).stackSize < 64)) {
                     this.mergeItemStack(itemstack1, specialSlot, specialSlot + 1, false);
 
-                    if(itemstack1.stackSize == 0) {
+                    if (itemstack1.stackSize == 0) {
                         slot.putStack(null);
                     }
 

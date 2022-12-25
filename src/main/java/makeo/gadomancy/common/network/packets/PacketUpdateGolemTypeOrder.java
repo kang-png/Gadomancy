@@ -4,10 +4,9 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import makeo.gadomancy.common.utils.GolemEnumHelper;
-
 import java.io.*;
 import java.util.Map;
+import makeo.gadomancy.common.utils.GolemEnumHelper;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -21,6 +20,7 @@ public class PacketUpdateGolemTypeOrder implements IMessage, IMessageHandler<Pac
     private Map<String, Integer> mapping;
 
     public PacketUpdateGolemTypeOrder() {}
+
     public PacketUpdateGolemTypeOrder(Map<String, Integer> mapping) {
         this.mapping = mapping;
     }
@@ -34,7 +34,8 @@ public class PacketUpdateGolemTypeOrder implements IMessage, IMessageHandler<Pac
         try {
             this.mapping = (Map<String, Integer>) new ObjectInputStream(in).readObject();
             in.close();
-        } catch (Exception ignored) { }//IOException | ClassNotFoundException ignored
+        } catch (Exception ignored) {
+        } // IOException | ClassNotFoundException ignored
     }
 
     @Override
@@ -42,7 +43,8 @@ public class PacketUpdateGolemTypeOrder implements IMessage, IMessageHandler<Pac
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
             new ObjectOutputStream(out).writeObject(this.mapping);
-        } catch (IOException ignored) { }
+        } catch (IOException ignored) {
+        }
 
         byte[] data = out.toByteArray();
 
@@ -51,12 +53,13 @@ public class PacketUpdateGolemTypeOrder implements IMessage, IMessageHandler<Pac
 
         try {
             out.close();
-        } catch (IOException ignored) { }
+        } catch (IOException ignored) {
+        }
     }
 
     @Override
     public IMessage onMessage(PacketUpdateGolemTypeOrder message, MessageContext ctx) {
-        if(message.mapping != null) {
+        if (message.mapping != null) {
             GolemEnumHelper.reorderEnum(message.mapping);
         }
         return null;

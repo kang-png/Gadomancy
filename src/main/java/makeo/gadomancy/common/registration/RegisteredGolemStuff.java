@@ -1,5 +1,7 @@
 package makeo.gadomancy.common.registration;
 
+import java.util.ArrayList;
+import java.util.List;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
@@ -9,9 +11,6 @@ import makeo.gadomancy.common.entities.golems.cores.BreakGolemCore;
 import makeo.gadomancy.common.entities.golems.types.SilverwoodGolemType;
 import makeo.gadomancy.common.entities.golems.upgrades.GolemUpgrade;
 import makeo.gadomancy.common.entities.golems.upgrades.GolemUpgradeRunicShield;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -28,19 +27,22 @@ public class RegisteredGolemStuff {
     public static GolemUpgradeRunicShield upgradeRunicShield;
 
     public static SilverwoodGolemType typeSilverwood;
-    //public static ObsidianGolemType typeObsidian;
+    // public static ObsidianGolemType typeObsidian;
 
     public static AdditionalGolemCore breakCore;
     public static AdditionalGolemCore bodyguardCore;
 
     public static void init() {
-        RegisteredGolemStuff.typeSilverwood = RegisteredGolemStuff.registerGolemType("SILVERWOOD", new SilverwoodGolemType());
-        //typeObsidian = registerGolemType("OBSIDIAN", new ObsidianGolemType());
+        RegisteredGolemStuff.typeSilverwood =
+                RegisteredGolemStuff.registerGolemType("SILVERWOOD", new SilverwoodGolemType());
+        // typeObsidian = registerGolemType("OBSIDIAN", new ObsidianGolemType());
 
         RegisteredGolemStuff.breakCore = RegisteredGolemStuff.registerGolemCore("breakCore", new BreakGolemCore());
-        RegisteredGolemStuff.bodyguardCore = RegisteredGolemStuff.registerGolemCore("bodyguardCore", new BodyguardGolemCore());
+        RegisteredGolemStuff.bodyguardCore =
+                RegisteredGolemStuff.registerGolemCore("bodyguardCore", new BodyguardGolemCore());
 
-        RegisteredGolemStuff.upgradeRunicShield = RegisteredGolemStuff.registerGolemUpgrade(new GolemUpgradeRunicShield());
+        RegisteredGolemStuff.upgradeRunicShield =
+                RegisteredGolemStuff.registerGolemUpgrade(new GolemUpgradeRunicShield());
     }
 
     private static <T extends AdditionalGolemType> T registerGolemType(String name, T type) {

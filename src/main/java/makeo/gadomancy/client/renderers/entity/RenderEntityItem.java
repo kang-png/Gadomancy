@@ -22,7 +22,7 @@ public class RenderEntityItem extends Render {
 
     @Override
     public void doRender(Entity entity, double x, double y, double z, float parf1, float parf2) {
-        if(!(entity instanceof EntityItem)) return;
+        if (!(entity instanceof EntityItem)) return;
         RenderEntityItem.ri.doRender(entity, x, y, z, parf1, parf2);
     }
 
@@ -35,5 +35,4 @@ public class RenderEntityItem extends Render {
         RenderEntityItem.ri = new RenderItem();
         RenderEntityItem.ri.setRenderManager(RenderManager.instance);
     }
-
 }

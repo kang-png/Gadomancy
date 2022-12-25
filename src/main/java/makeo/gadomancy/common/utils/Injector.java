@@ -1,7 +1,6 @@
 package makeo.gadomancy.common.utils;
 
 import cpw.mods.fml.relauncher.ReflectionHelper;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -19,6 +18,7 @@ import java.util.Arrays;
 public class Injector {
     Class clazz;
     Object object;
+
     public Injector(Object object, Class clazz) {
         this.object = object;
         this.clazz = clazz;
@@ -67,7 +67,7 @@ public class Injector {
     }
 
     public <T> T invokeConstructor(Class clazz, Object param) {
-        return this.invokeConstructor(new Class[]{clazz}, param);
+        return this.invokeConstructor(new Class[] {clazz}, param);
     }
 
     public <T> T invokeConstructor(Class[] classes, Object... params) {
@@ -75,7 +75,8 @@ public class Injector {
             Constructor constructor = this.clazz.getDeclaredConstructor(classes);
             this.object = constructor.newInstance(params);
             return (T) this.object;
-        } catch (Exception e) {//NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException
+        } catch (Exception e) { // NoSuchMethodException | InvocationTargetException | InstantiationException |
+            // IllegalAccessException
             e.printStackTrace();
         }
         return null;
@@ -86,14 +87,14 @@ public class Injector {
     }
 
     public <T> T invokeMethod(String name, Class clazz, Object param) {
-        return this.invokeMethod(name, new Class[]{clazz}, param);
+        return this.invokeMethod(name, new Class[] {clazz}, param);
     }
 
     public <T> T invokeMethod(String name, Class[] classes, Object... params) {
         try {
             Method method = this.clazz.getDeclaredMethod(name, classes);
             return this.invokeMethod(method, params);
-        } catch (Exception e) {//NoSuchMethodException | ClassCastException
+        } catch (Exception e) { // NoSuchMethodException | ClassCastException
             e.printStackTrace();
         }
         return null;
@@ -103,9 +104,8 @@ public class Injector {
         try {
             method.setAccessible(true);
             Object result = method.invoke(this.object, params);
-            if(result != null)
-                return (T) result;
-        } catch (Exception e) {//InvocationTargetException | IllegalAccessException | ClassCastException
+            if (result != null) return (T) result;
+        } catch (Exception e) { // InvocationTargetException | IllegalAccessException | ClassCastException
             e.printStackTrace();
         }
         return null;
@@ -113,8 +113,7 @@ public class Injector {
 
     private Class[] extractClasses(Object... objects) {
         Class[] classes = new Class[objects.length];
-        for(int i = 0; i < objects.length; i++)
-            classes[i] = objects[i].getClass();
+        for (int i = 0; i < objects.length; i++) classes[i] = objects[i].getClass();
         return classes;
     }
 
@@ -129,7 +128,7 @@ public class Injector {
 
     public boolean setField(Field field, Object value) {
         try {
-            if(Modifier.isFinal(field.getModifiers())) {
+            if (Modifier.isFinal(field.getModifiers())) {
                 Field modifiers = Field.class.getDeclaredField("modifiers");
                 modifiers.setAccessible(true);
                 modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
@@ -138,7 +137,7 @@ public class Injector {
             field.setAccessible(true);
             field.set(this.object, value);
             return true;
-        } catch (Exception e) {//IllegalAccessException | NoSuchFieldException
+        } catch (Exception e) { // IllegalAccessException | NoSuchFieldException
             e.printStackTrace();
             return false;
         }
@@ -153,13 +152,12 @@ public class Injector {
         return null;
     }
 
-    public  <T> T getField(Field field) {
+    public <T> T getField(Field field) {
         try {
             field.setAccessible(true);
             Object result = field.get(this.object);
-            if(result != null)
-                return (T) result;
-        } catch (Exception e) {//IllegalAccessException | ClassCastException
+            if (result != null) return (T) result;
+        } catch (Exception e) { // IllegalAccessException | ClassCastException
             e.printStackTrace();
         }
         return null;
@@ -174,8 +172,9 @@ public class Injector {
     }
 
     public static Method findMethod(Class clazz, Class returnType, Class[] paramTypes) {
-        for(Method m : clazz.getDeclaredMethods()) {
-            if(Arrays.equals(m.getParameterTypes(), paramTypes) && m.getReturnType().equals(returnType)) {
+        for (Method m : clazz.getDeclaredMethods()) {
+            if (Arrays.equals(m.getParameterTypes(), paramTypes)
+                    && m.getReturnType().equals(returnType)) {
                 return m;
             }
         }
@@ -191,8 +190,8 @@ public class Injector {
     }
 
     public static Field findField(Class clazz, Class type) {
-        for(Field f : clazz.getDeclaredFields()) {
-            if(f.getType().equals(type)) {
+        for (Field f : clazz.getDeclaredFields()) {
+            if (f.getType().equals(type)) {
                 return f;
             }
         }
@@ -209,8 +208,7 @@ public class Injector {
     }
 
     public static Method getMethod(String name, Class clazz, Class... classes) {
-        if(clazz == null)
-            return null;
+        if (clazz == null) return null;
 
         try {
             return clazz.getDeclaredMethod(name, classes);

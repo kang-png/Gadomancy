@@ -30,11 +30,12 @@ public class PacketTransformationInfo implements IMessage, IMessageHandler<Packe
         this.golem = golem;
     }
 
-    public PacketTransformationInfo() { }
+    public PacketTransformationInfo() {}
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        this.golem = (EntityGolemBase) EntityList.createEntityFromNBT(ByteBufUtils.readTag(buf), PacketTransformationInfo.WORLD);
+        this.golem = (EntityGolemBase)
+                EntityList.createEntityFromNBT(ByteBufUtils.readTag(buf), PacketTransformationInfo.WORLD);
     }
 
     @Override
@@ -63,22 +64,23 @@ public class PacketTransformationInfo implements IMessage, IMessageHandler<Packe
 
         @Override
         public PacketTransformationInfo onMessage(Request message, MessageContext ctx) {
-            //TODO: send transformation info
+            // TODO: send transformation info
             EntityPlayer sender = ctx.getServerHandler().playerEntity;
             EntityPlayer player = (EntityPlayer) sender.worldObj.getEntityByID(this.player);
 
-            //get from custom data
+            // get from custom data
             /*if(player != null) {
 
             }*/
 
-            return new PacketTransformationInfo(new EntityGolemBase(PacketTransformationInfo.WORLD, EnumGolemType.CLAY, true));
+            return new PacketTransformationInfo(
+                    new EntityGolemBase(PacketTransformationInfo.WORLD, EnumGolemType.CLAY, true));
         }
     }
 
     @Override
     public IMessage onMessage(PacketTransformationInfo message, MessageContext ctx) {
-        //handle stuff
+        // handle stuff
 
         return null;
     }

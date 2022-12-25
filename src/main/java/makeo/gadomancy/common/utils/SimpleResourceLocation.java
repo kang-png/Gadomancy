@@ -16,5 +16,4 @@ public class SimpleResourceLocation extends ResourceLocation {
     public SimpleResourceLocation(String file) {
         super(Gadomancy.MODID.toLowerCase(), "textures/" + (file.startsWith("/") ? file.substring(1) : file));
     }
-
 }

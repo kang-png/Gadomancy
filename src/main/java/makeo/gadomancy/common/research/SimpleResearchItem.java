@@ -29,5 +29,4 @@ public class SimpleResearchItem extends ResearchItem {
     public static String getFullName(String name) {
         return SimpleResearchItem.PREFIX + name;
     }
-
 }

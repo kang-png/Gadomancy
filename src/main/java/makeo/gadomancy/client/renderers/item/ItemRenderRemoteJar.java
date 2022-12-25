@@ -30,8 +30,8 @@ public class ItemRenderRemoteJar extends ItemRenderTileEntity<TileRemoteJar> {
     public void renderItem(IItemRenderer.ItemRenderType type, ItemStack stack, Object... data) {
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-        AspectList aspects = ((ItemJarFilled)ConfigItems.itemJarFilled).getAspects(stack);
-        if(aspects != null) {
+        AspectList aspects = ((ItemJarFilled) ConfigItems.itemJarFilled).getAspects(stack);
+        if (aspects != null) {
             this.tile.aspect = aspects.getAspects()[0];
             this.tile.amount = aspects.getAmount(this.tile.aspect);
         } else {
@@ -39,7 +39,7 @@ public class ItemRenderRemoteJar extends ItemRenderTileEntity<TileRemoteJar> {
             this.tile.amount = 0;
         }
 
-        if(stack.hasTagCompound()) {
+        if (stack.hasTagCompound()) {
             this.tile.networkId = NBTHelper.getUUID(stack.getTagCompound(), "networkId");
         }
 
@@ -48,7 +48,12 @@ public class ItemRenderRemoteJar extends ItemRenderTileEntity<TileRemoteJar> {
         GL11.glPushMatrix();
         GL11.glTranslatef(0.5f, 0.5f, 0.5f);
 
-        RenderingRegistry.instance().renderInventoryBlock(RenderBlocks.getInstance(), RegisteredBlocks.blockRemoteJar, 0, RegisteredBlocks.blockRemoteJar.getRenderType());
+        RenderingRegistry.instance()
+                .renderInventoryBlock(
+                        RenderBlocks.getInstance(),
+                        RegisteredBlocks.blockRemoteJar,
+                        0,
+                        RegisteredBlocks.blockRemoteJar.getRenderType());
         GL11.glPopMatrix();
     }
 }

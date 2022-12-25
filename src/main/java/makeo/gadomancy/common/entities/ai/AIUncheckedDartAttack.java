@@ -38,6 +38,5 @@ public class AIUncheckedDartAttack extends AIDartAttack {
         AIUncheckedDartAttack.INJECTOR.setField("attackTarget", target);
 
         return true;
-
     }
 }

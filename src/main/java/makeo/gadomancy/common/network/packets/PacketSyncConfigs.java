@@ -4,14 +4,13 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import makeo.gadomancy.common.data.config.ModConfig;
-import makeo.gadomancy.common.data.config.Sync;
-
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import makeo.gadomancy.common.data.config.ModConfig;
+import makeo.gadomancy.common.data.config.Sync;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -29,7 +28,7 @@ public class PacketSyncConfigs implements IMessage, IMessageHandler<PacketSyncCo
         int count = buf.readByte();
         this.fieldData = new Tuple[count];
 
-        for(int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             byte[] data = new byte[buf.readShort()];
             buf.readBytes(data);
 
@@ -42,7 +41,7 @@ public class PacketSyncConfigs implements IMessage, IMessageHandler<PacketSyncCo
             } catch (Exception ignored) {
             }
 
-            if(tuple == null) {
+            if (tuple == null) {
                 this.fieldData = null;
                 break;
             }
@@ -54,8 +53,8 @@ public class PacketSyncConfigs implements IMessage, IMessageHandler<PacketSyncCo
     public void toBytes(ByteBuf buf) {
         List<byte[]> fieldData = new ArrayList<byte[]>();
 
-        for(Field field : ModConfig.class.getFields()) {
-            if(Modifier.isStatic(field.getModifiers()) && field.isAnnotationPresent(Sync.class)) {
+        for (Field field : ModConfig.class.getFields()) {
+            if (Modifier.isStatic(field.getModifiers()) && field.isAnnotationPresent(Sync.class)) {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 try {
                     new DataOutputStream(baos).writeUTF(field.getName());
@@ -72,7 +71,7 @@ public class PacketSyncConfigs implements IMessage, IMessageHandler<PacketSyncCo
         }
 
         buf.writeByte(fieldData.size());
-        for(byte[] data : fieldData) {
+        for (byte[] data : fieldData) {
             buf.writeShort(data.length);
             buf.writeBytes(data);
         }
@@ -81,7 +80,7 @@ public class PacketSyncConfigs implements IMessage, IMessageHandler<PacketSyncCo
     @Override
     public IMessage onMessage(PacketSyncConfigs message, MessageContext ctx) {
         try {
-            for(Tuple tuple : message.fieldData) {
+            for (Tuple tuple : message.fieldData) {
                 Field field = ModConfig.class.getField(tuple.field);
                 field.set(null, tuple.value);
             }

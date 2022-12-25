@@ -1,13 +1,12 @@
 package makeo.gadomancy.client.events;
 
+import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitect;
-
-import java.util.ArrayList;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -25,12 +24,18 @@ public class FakeArchitectItem extends Item implements IArchitect {
     }
 
     @Override
-    public ArrayList<BlockCoordinates> getArchitectBlocks(ItemStack stack, World world, int x, int y, int z, int side, EntityPlayer player) {
+    public ArrayList<BlockCoordinates> getArchitectBlocks(
+            ItemStack stack, World world, int x, int y, int z, int side, EntityPlayer player) {
         return this.coords;
     }
 
     @Override
-    public boolean showAxis(ItemStack paramItemStack, World paramWorld, EntityPlayer paramEntityPlayer, int paramInt, EnumAxis paramEnumAxis) {
+    public boolean showAxis(
+            ItemStack paramItemStack,
+            World paramWorld,
+            EntityPlayer paramEntityPlayer,
+            int paramInt,
+            EnumAxis paramEnumAxis) {
         return false;
     }
 }

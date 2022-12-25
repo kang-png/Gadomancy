@@ -31,7 +31,7 @@ public class AIUncheckedAttackOnCollide extends AIGolemAttackOnCollide {
         }
 
         PathEntity pathEntity = this.golem.getNavigator().getPathToEntityLiving(target);
-        if(pathEntity != null) {
+        if (pathEntity != null) {
             AIUncheckedAttackOnCollide.INJECTOR.setObject(this);
             AIUncheckedAttackOnCollide.INJECTOR.setField("entityPathEntity", pathEntity);
             AIUncheckedAttackOnCollide.INJECTOR.setField("entityTarget", target);

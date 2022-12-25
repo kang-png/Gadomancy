@@ -2,6 +2,7 @@ package makeo.gadomancy.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.awt.*;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
 import makeo.gadomancy.common.utils.ColorHelper;
@@ -14,8 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -38,13 +37,16 @@ public class InfusionClawGui extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
-        if(((TileInfusionClaw) this.container.clawInv).isInvalid()) {
+        if (((TileInfusionClaw) this.container.clawInv).isInvalid()) {
             Minecraft.getMinecraft().displayGuiScreen(null);
             return;
         }
 
         ItemStack cursorStack = this.container.playerInv.getItemStack();
-        if(((TileInfusionClaw) this.container.clawInv).isRunning() || (cursorStack != null && cursorStack.stackSize > 0 && !this.container.clawInv.isItemValidForSlot(0, cursorStack))) {
+        if (((TileInfusionClaw) this.container.clawInv).isRunning()
+                || (cursorStack != null
+                        && cursorStack.stackSize > 0
+                        && !this.container.clawInv.isItemValidForSlot(0, cursorStack))) {
             GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
 
             GL11.glEnable(GL11.GL_BLEND);
@@ -79,14 +81,18 @@ public class InfusionClawGui extends GuiContainer {
         this.drawTexturedModalRect(baseX + 114, baseY + 36, 244, 19, 8, 8);
 
         boolean isLocked = ((TileInfusionClaw) this.container.clawInv).isLocked();
-        if(isLocked) {
+        if (isLocked) {
             this.drawTexturedModalRect(baseX + 114, baseY + 36, 244, 27, 8, 8);
         }
 
         GL11.glPushMatrix();
         GL11.glTranslatef(baseX + 124, baseY + 38, 0);
         GL11.glScalef(0.5F, 0.5F, 0.0F);
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("gadomancy.info.InfusionClaw.lock"), 0, 0, ColorHelper.toHex(isLocked ? Color.WHITE : Color.GRAY));
+        this.fontRendererObj.drawString(
+                StatCollector.translateToLocal("gadomancy.info.InfusionClaw.lock"),
+                0,
+                0,
+                ColorHelper.toHex(isLocked ? Color.WHITE : Color.GRAY));
         GL11.glPopMatrix();
 
         GL11.glDisable(GL11.GL_BLEND);
@@ -102,7 +108,7 @@ public class InfusionClawGui extends GuiContainer {
         int checkX = x - baseX - 114;
         int checkY = y - baseY - 36;
 
-        if(checkX >= 0 && checkX < 8 && checkY >= 0 && checkY < 8) {
+        if (checkX >= 0 && checkX < 8 && checkY >= 0 && checkY < 8) {
             TileInfusionClaw tile = ((TileInfusionClaw) this.container.clawInv);
             this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, tile.isLocked() ? 0 : 1);
             tile.setIsLocked(!tile.isLocked());

@@ -33,8 +33,7 @@ public class ItemFakeModIcon extends Item {
 
     @Override
     public IIcon getIconFromDamage(int damage) {
-        if(damage < 0 || damage >= this.icons.length) return null;
+        if (damage < 0 || damage >= this.icons.length) return null;
         return this.icons[damage];
     }
-
 }

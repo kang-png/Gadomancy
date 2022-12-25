@@ -1,6 +1,8 @@
 package makeo.gadomancy.common.registration;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import java.util.ArrayList;
+import java.util.List;
 import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.common.blocks.*;
 import makeo.gadomancy.common.blocks.tiles.*;
@@ -14,9 +16,6 @@ import net.minecraft.world.World;
 import thaumcraft.common.blocks.BlockAiry;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileInfusionMatrix;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -55,20 +54,29 @@ public class RegisteredBlocks {
         RegisteredBlocks.registerDefaultClawBehaviors();
     }
 
-    //Blocks
+    // Blocks
     private static void registerBlocks() {
         RegisteredBlocks.blockStickyJar = RegisteredBlocks.registerBlock(new BlockStickyJar());
         RegisteredBlocks.blockArcaneDropper = RegisteredBlocks.registerBlock(new BlockArcaneDropper());
         RegisteredBlocks.blockInfusionClaw = RegisteredBlocks.registerBlock(new BlockInfusionClaw());
-        RegisteredBlocks.blockRemoteJar = RegisteredBlocks.registerBlock(new BlockRemoteJar(), ItemBlockRemoteJar.class);
-        RegisteredBlocks.blockNode = ModConfig.enableAdditionalNodeTypes ? (BlockAiry) new BlockNode().setBlockName("blockAiry") : (BlockAiry) ConfigBlocks.blockAiry;
+        RegisteredBlocks.blockRemoteJar =
+                RegisteredBlocks.registerBlock(new BlockRemoteJar(), ItemBlockRemoteJar.class);
+        RegisteredBlocks.blockNode = ModConfig.enableAdditionalNodeTypes
+                ? (BlockAiry) new BlockNode().setBlockName("blockAiry")
+                : (BlockAiry) ConfigBlocks.blockAiry;
         RegisteredBlocks.blockExtendedNodeJar = RegisteredBlocks.registerBlock(new BlockExtendedNodeJar());
-        RegisteredBlocks.blockNodeManipulator = RegisteredBlocks.registerBlock(new BlockNodeManipulator(), ItemNodeManipulator.class);
-        RegisteredBlocks.blockStoneMachine = RegisteredBlocks.registerBlock(new BlockStoneMachine(), ItemBlockStoneMachine.class);
-        RegisteredBlocks.blockAdditionalEldrichPortal = RegisteredBlocks.registerBlock(new BlockAdditionalEldritchPortal(), ItemBlockAdditionalEldritchPortal.class);
-        RegisteredBlocks.blockAuraPylon = RegisteredBlocks.registerBlock(new BlockAuraPylon(), ItemBlockAuraPylon.class);
-        RegisteredBlocks.blockKnowledgeBook = RegisteredBlocks.registerBlock(new BlockKnowledgeBook(), ItemBlockKnowledgeBook.class);
-        RegisteredBlocks.blockEssentiaCompressor = RegisteredBlocks.registerBlock(new BlockEssentiaCompressor(), ItemBlockEssentiaCompressor.class);
+        RegisteredBlocks.blockNodeManipulator =
+                RegisteredBlocks.registerBlock(new BlockNodeManipulator(), ItemNodeManipulator.class);
+        RegisteredBlocks.blockStoneMachine =
+                RegisteredBlocks.registerBlock(new BlockStoneMachine(), ItemBlockStoneMachine.class);
+        RegisteredBlocks.blockAdditionalEldrichPortal = RegisteredBlocks.registerBlock(
+                new BlockAdditionalEldritchPortal(), ItemBlockAdditionalEldritchPortal.class);
+        RegisteredBlocks.blockAuraPylon =
+                RegisteredBlocks.registerBlock(new BlockAuraPylon(), ItemBlockAuraPylon.class);
+        RegisteredBlocks.blockKnowledgeBook =
+                RegisteredBlocks.registerBlock(new BlockKnowledgeBook(), ItemBlockKnowledgeBook.class);
+        RegisteredBlocks.blockEssentiaCompressor =
+                RegisteredBlocks.registerBlock(new BlockEssentiaCompressor(), ItemBlockEssentiaCompressor.class);
     }
 
     private static <T extends Block> T registerBlock(String name, T block) {
@@ -93,7 +101,7 @@ public class RegisteredBlocks {
         return block;
     }
 
-    //Tiles
+    // Tiles
     private static void registerTileEntities() {
         RegisteredBlocks.registerTile(TileStickyJar.class);
         RegisteredBlocks.registerTile(TileArcaneDropper.class);
@@ -111,7 +119,7 @@ public class RegisteredBlocks {
         RegisteredBlocks.registerTile(TileArcanePackager.class);
         RegisteredBlocks.registerTile(TileKnowledgeBook.class);
         RegisteredBlocks.registerTile(TileEssentiaCompressor.class);
-        //registerTile(TileAIShutdown.class);
+        // registerTile(TileAIShutdown.class);
     }
 
     private static void registerTile(Class<? extends TileEntity> tile, String name) {
@@ -122,8 +130,7 @@ public class RegisteredBlocks {
         RegisteredBlocks.registerTile(tile, tile.getSimpleName());
     }
 
-
-    //Sticky Jars
+    // Sticky Jars
     private static void registerDefaultStickyJars() {
         RegisteredBlocks.registerStickyJar(ConfigBlocks.blockJar, 0, true, true);
         RegisteredBlocks.registerStickyJar(ConfigBlocks.blockJar, 3, true, true);
@@ -138,15 +145,15 @@ public class RegisteredBlocks {
     }
 
     public static StickyJarInfo getStickyJarInfo(Block block, int metadata) {
-        for(StickyJarInfo info : RegisteredBlocks.stickyJars) {
-            if(info.getBlock() == block && info.getMetadata() == metadata) {
+        for (StickyJarInfo info : RegisteredBlocks.stickyJars) {
+            if (info.getBlock() == block && info.getMetadata() == metadata) {
                 return info;
             }
         }
         return null;
     }
 
-    //Infusion Claw
+    // Infusion Claw
     private static void registerDefaultClawBehaviors() {
         RegisteredBlocks.registerClawClickBehavior(new ClickBehavior() {
             @Override
@@ -161,7 +168,7 @@ public class RegisteredBlocks {
 
             @Override
             public boolean isValidForBlock() {
-                if(this.block == ConfigBlocks.blockStoneDevice && this.metadata == 2) {
+                if (this.block == ConfigBlocks.blockStoneDevice && this.metadata == 2) {
                     this.matrix = (TileInfusionMatrix) this.world.getTileEntity(this.x, this.y, this.z);
                     return true;
                 }
@@ -202,9 +209,9 @@ public class RegisteredBlocks {
         Block block = world.getBlock(x, y, z);
         int metadata = world.getBlockMetadata(x, y, z);
 
-        for(ClickBehavior behavior : RegisteredBlocks.clawBehaviors) {
+        for (ClickBehavior behavior : RegisteredBlocks.clawBehaviors) {
             behavior.init(world, block, x, y, z, metadata);
-            if(behavior.isValidForBlock()) {
+            if (behavior.isValidForBlock()) {
                 return behavior;
             }
         }

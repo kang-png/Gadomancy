@@ -29,17 +29,17 @@ public class GolemUpgradeRunicShield extends GolemUpgrade {
     public float absorb(EntityGolemBase golem, float amount, DamageSource source) {
         float charge = this.getCharge(golem);
 
-        if(Math.floor(charge) > 0) {
+        if (Math.floor(charge) > 0) {
             this.sendShieldEffect(golem, source);
 
-            float rest = (float)(Math.floor(charge) - amount);
-            float chargeRest = charge - (float)Math.floor(charge);
+            float rest = (float) (Math.floor(charge) - amount);
+            float chargeRest = charge - (float) Math.floor(charge);
 
-            if(rest <= 0) {
+            if (rest <= 0) {
                 this.setCharge(golem, chargeRest);
                 return rest * -1;
             } else {
-                this.setCharge(golem, (float)Math.floor(rest) + chargeRest);
+                this.setCharge(golem, (float) Math.floor(rest) + chargeRest);
                 return 0;
             }
         }
@@ -56,8 +56,10 @@ public class GolemUpgradeRunicShield extends GolemUpgrade {
             target = -3;
         }
 
-        PacketHandler.INSTANCE.sendToAllAround(new PacketFXShield(golem.getEntityId(), target),
-                new NetworkRegistry.TargetPoint(golem.worldObj.provider.dimensionId, golem.posX, golem.posY, golem.posZ, 64.0D));
+        PacketHandler.INSTANCE.sendToAllAround(
+                new PacketFXShield(golem.getEntityId(), target),
+                new NetworkRegistry.TargetPoint(
+                        golem.worldObj.provider.dimensionId, golem.posX, golem.posY, golem.posZ, 64.0D));
     }
 
     public float getCharge(EntityGolemBase golem) {
@@ -78,7 +80,7 @@ public class GolemUpgradeRunicShield extends GolemUpgrade {
 
     private int getLastDischarge(EntityGolemBase golem) {
         NBTTagCompound compound = golem.getEntityData();
-        if(!compound.hasKey(GolemUpgradeRunicShield.LAST_DISCHARGE_TAG)) {
+        if (!compound.hasKey(GolemUpgradeRunicShield.LAST_DISCHARGE_TAG)) {
             compound.setInteger(GolemUpgradeRunicShield.LAST_DISCHARGE_TAG, golem.ticksExisted);
             return golem.ticksExisted;
         }
@@ -96,7 +98,8 @@ public class GolemUpgradeRunicShield extends GolemUpgrade {
     public int getChargeLimit(ItemStack stack) {
         EnumGolemType type = EnumGolemType.getType(stack.getItemDamage());
         float maxHealth = type.health;
-        if(stack.hasTagCompound() && stack.getTagCompound().hasKey("deco")
+        if (stack.hasTagCompound()
+                && stack.getTagCompound().hasKey("deco")
                 && stack.getTagCompound().getString("deco").contains("H")) {
             maxHealth += 5;
         }
@@ -104,9 +107,9 @@ public class GolemUpgradeRunicShield extends GolemUpgrade {
     }
 
     private int getChargeLimit(EnumGolemType type, float maxHealth) {
-        if(type == RegisteredGolemStuff.typeSilverwood.getEnumEntry()) {
-            return (int)maxHealth;
+        if (type == RegisteredGolemStuff.typeSilverwood.getEnumEntry()) {
+            return (int) maxHealth;
         }
-        return (int)(maxHealth / 2.6);
+        return (int) (maxHealth / 2.6);
     }
 }

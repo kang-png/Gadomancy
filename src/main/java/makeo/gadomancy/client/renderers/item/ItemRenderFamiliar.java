@@ -1,5 +1,7 @@
 package makeo.gadomancy.client.renderers.item;
 
+import java.awt.*;
+import java.util.Random;
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
 import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
 import makeo.gadomancy.common.utils.MiscUtils;
@@ -18,9 +20,6 @@ import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.monster.EntityWisp;
-
-import java.awt.*;
-import java.util.Random;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -47,23 +46,26 @@ public class ItemRenderFamiliar implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        if(item == null || !(item.getItem() instanceof ItemEtherealFamiliar)) return;
+        if (item == null || !(item.getItem() instanceof ItemEtherealFamiliar)) return;
         GL11.glPushMatrix();
-        if(type == ItemRenderType.EQUIPPED) {
+        if (type == ItemRenderType.EQUIPPED) {
             GL11.glTranslatef(0.5F, 0.5F, 0.7F);
-        } else if(type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
+        } else if (type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
             GL11.glTranslatef(0, 1F, 0.8F);
-        } else if(type == ItemRenderType.INVENTORY) {
+        } else if (type == ItemRenderType.INVENTORY) {
             GL11.glTranslatef(0, -0.45F, 0);
         }
 
         try {
             this.cleanActiveRenderInfo(type);
             GL11.glScalef(1.3F, 1.3F, 1.3F);
-            if(ItemEtherealFamiliar.hasFamiliarAspect(item)) {
-                if(ItemRenderFamiliar.ENTITY_WISP == null) ItemRenderFamiliar.ENTITY_WISP = new EntityWisp(new FakeWorld());
-                ItemRenderFamiliar.ENTITY_WISP.ticksExisted = FamiliarHandlerClient.PartialEntityFamiliar.DUMMY_FAMILIAR.ticksExisted;
-                ItemRenderFamiliar.ENTITY_WISP.setType(ItemEtherealFamiliar.getFamiliarAspect(item).getTag());
+            if (ItemEtherealFamiliar.hasFamiliarAspect(item)) {
+                if (ItemRenderFamiliar.ENTITY_WISP == null)
+                    ItemRenderFamiliar.ENTITY_WISP = new EntityWisp(new FakeWorld());
+                ItemRenderFamiliar.ENTITY_WISP.ticksExisted =
+                        FamiliarHandlerClient.PartialEntityFamiliar.DUMMY_FAMILIAR.ticksExisted;
+                ItemRenderFamiliar.ENTITY_WISP.setType(
+                        ItemEtherealFamiliar.getFamiliarAspect(item).getTag());
                 ItemRenderFamiliar.renderEntityWispFor(null, ItemRenderFamiliar.ENTITY_WISP, 0, 0, 0, 0, 0);
             }
         } finally {
@@ -108,18 +110,20 @@ public class ItemRenderFamiliar implements IItemRenderer {
     }
 
     private void restoreActiveRenderInfo() {
-        if(this.renderInfo[0] != -1) ActiveRenderInfo.rotationX = this.renderInfo[0];
-        if(this.renderInfo[1] != -1) ActiveRenderInfo.rotationXZ = this.renderInfo[1];
-        if(this.renderInfo[2] != -1) ActiveRenderInfo.rotationZ = this.renderInfo[2];
-        if(this.renderInfo[3] != -1) ActiveRenderInfo.rotationYZ = this.renderInfo[3];
-        if(this.renderInfo[4] != -1) ActiveRenderInfo.rotationXY = this.renderInfo[4];
+        if (this.renderInfo[0] != -1) ActiveRenderInfo.rotationX = this.renderInfo[0];
+        if (this.renderInfo[1] != -1) ActiveRenderInfo.rotationXZ = this.renderInfo[1];
+        if (this.renderInfo[2] != -1) ActiveRenderInfo.rotationZ = this.renderInfo[2];
+        if (this.renderInfo[3] != -1) ActiveRenderInfo.rotationYZ = this.renderInfo[3];
+        if (this.renderInfo[4] != -1) ActiveRenderInfo.rotationXY = this.renderInfo[4];
         for (int i = 0; i < this.renderInfo.length; i++) {
             this.renderInfo[i] = -1;
         }
     }
 
     private static int size1;
-    public static void renderEntityWispFor(EntityPlayer owner, EntityWisp wisp, double x, double y, double z, float fq, float pticks) {
+
+    public static void renderEntityWispFor(
+            EntityPlayer owner, EntityWisp wisp, double x, double y, double z, float fq, float pticks) {
         if (ItemRenderFamiliar.size1 == 0) {
             ItemRenderFamiliar.size1 = UtilsFX.getTextureSize("textures/misc/wisp.png", 64);
         }
@@ -130,24 +134,24 @@ public class ItemRenderFamiliar implements IItemRenderer {
         float f4 = ActiveRenderInfo.rotationYZ;
         float f5 = ActiveRenderInfo.rotationXY;
         float f10 = 1.0F;
-        float f11 = (float)x;
-        float f12 = (float)y + 0.45F;
-        float f13 = (float)z;
+        float f11 = (float) x;
+        float f12 = (float) y + 0.45F;
+        float f13 = (float) z;
 
         Tessellator tessellator = Tessellator.instance;
 
         boolean priv = owner != null && MiscUtils.isPrivilegedUser(owner);
 
         Color color = new Color(0);
-        if(priv) {
+        if (priv) {
             color = new Color(Color.HSBtoRGB((System.currentTimeMillis() % 3240) / 3240F, 1F, 1F));
-            if(owner.worldObj.rand.nextInt(3) == 0) {
+            if (owner.worldObj.rand.nextInt(3) == 0) {
                 EntityPlayer thisPlayer = Minecraft.getMinecraft().thePlayer;
                 boolean isThisOwner = thisPlayer.equals(owner);
                 World world = owner.worldObj;
                 Random rand = world.rand;
                 double oX, oY, oZ;
-                if(isThisOwner) {
+                if (isThisOwner) {
                     oX = owner.posX + f11;
                     oY = owner.posY + f12;
                     oZ = owner.posZ + f13;
@@ -156,10 +160,15 @@ public class ItemRenderFamiliar implements IItemRenderer {
                     oY = thisPlayer.posY + (f12);
                     oZ = thisPlayer.posZ + (f13);
                 }
-                Thaumcraft.proxy.wispFX(world, oX + (rand.nextFloat() - rand.nextFloat()) * 0.3F,
-                                               oY + (rand.nextFloat() - rand.nextFloat()) * 0.3F,
-                                               oZ + (rand.nextFloat() - rand.nextFloat()) * 0.3F,
-                        0.1F, color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F);
+                Thaumcraft.proxy.wispFX(
+                        world,
+                        oX + (rand.nextFloat() - rand.nextFloat()) * 0.3F,
+                        oY + (rand.nextFloat() - rand.nextFloat()) * 0.3F,
+                        oZ + (rand.nextFloat() - rand.nextFloat()) * 0.3F,
+                        0.1F,
+                        color.getRed() / 255.0F,
+                        color.getGreen() / 255.0F,
+                        color.getBlue() / 255.0F);
             }
         } else {
             if (Aspect.getAspect(wisp.getType()) != null) {
@@ -207,7 +216,6 @@ public class ItemRenderFamiliar implements IItemRenderer {
 
         int qq = wisp.ticksExisted % 16;
 
-
         float size8 = 16.0F;
         x0 = qq / size8;
         x1 = (qq + 1) / size8;
@@ -233,5 +241,4 @@ public class ItemRenderFamiliar implements IItemRenderer {
         GL11.glAlphaFunc(516, 0.1F);
         GL11.glPopMatrix();
     }
-
 }

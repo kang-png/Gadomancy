@@ -16,12 +16,11 @@ public class EventHandlerMystcraft {
 
     @SubscribeEvent
     public void onLink(LinkEvent.LinkEventAllow event) {
-        if(event.origin != null && event.origin.provider.dimensionId == ModConfig.dimOuterId) {
+        if (event.origin != null && event.origin.provider.dimensionId == ModConfig.dimOuterId) {
             event.setCanceled(true);
         }
-        if(event.destination != null && event.destination.provider.dimensionId == ModConfig.dimOuterId) {
+        if (event.destination != null && event.destination.provider.dimensionId == ModConfig.dimOuterId) {
             event.setCanceled(true);
         }
     }
-
 }

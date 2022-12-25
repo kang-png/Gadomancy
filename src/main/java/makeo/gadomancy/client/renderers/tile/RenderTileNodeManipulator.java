@@ -31,11 +31,11 @@ public class RenderTileNodeManipulator extends TileWandPedestalRenderer {
 
         Minecraft.getMinecraft().renderEngine.bindTexture(RenderTileNodeManipulator.TEXTURE);
 
-        for(int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             GL11.glPushMatrix();
 
             ForgeDirection dir = ForgeDirection.getOrientation(i + 2);
-            GL11.glTranslatef(dir.offsetX * (-6/16f), 0, dir.offsetZ * (-6/16f));
+            GL11.glTranslatef(dir.offsetX * (-6 / 16f), 0, dir.offsetZ * (-6 / 16f));
 
             RenderTileNodeManipulator.MODEL.render(null, 0, 0, 0, 0, 0, 0.0625f);
             GL11.glPopMatrix();

@@ -17,15 +17,20 @@ public class WorldUtil {
 
     public static void teleportToFakeOuter(EntityPlayerMP player) {
         MinecraftServer mServer = FMLCommonHandler.instance().getMinecraftServerInstance();
-        if(player.worldObj.provider.dimensionId != 0) {
-            mServer.getConfigurationManager().transferPlayerToDimension(player, 0, new TeleporterNothing(mServer.worldServerForDimension(0)));
+        if (player.worldObj.provider.dimensionId != 0) {
+            mServer.getConfigurationManager()
+                    .transferPlayerToDimension(player, 0, new TeleporterNothing(mServer.worldServerForDimension(0)));
         }
-        mServer.getConfigurationManager().transferPlayerToDimension(player, ModConfig.dimOuterId, new TeleporterNothing(mServer.worldServerForDimension(ModConfig.dimOuterId)));
+        mServer.getConfigurationManager()
+                .transferPlayerToDimension(
+                        player,
+                        ModConfig.dimOuterId,
+                        new TeleporterNothing(mServer.worldServerForDimension(ModConfig.dimOuterId)));
     }
 
     public static void tryTeleportBack(EntityPlayerMP player, int dim) {
         MinecraftServer mServer = FMLCommonHandler.instance().getMinecraftServerInstance();
-        mServer.getConfigurationManager().transferPlayerToDimension(player, dim, new TeleporterNothing(mServer.worldServerForDimension(dim)));
+        mServer.getConfigurationManager()
+                .transferPlayerToDimension(player, dim, new TeleporterNothing(mServer.worldServerForDimension(dim)));
     }
-
 }

@@ -40,10 +40,11 @@ public class IntegrationThaumicHorizions extends IntegrationMod {
 
     @Override
     protected void doInit() {
-        if(Gadomancy.proxy.getSide() == Side.CLIENT) {
+        if (Gadomancy.proxy.getSide() == Side.CLIENT) {
             RendererLivingEntity render = ClientProxy.unregisterRenderer(EntityGolemTH.class, RenderGolemTH.class);
-            if(render != null) {
-                RenderingRegistry.registerEntityRenderingHandler(EntityGolemTH.class, new RenderAdditionalGolemTH(render.mainModel));
+            if (render != null) {
+                RenderingRegistry.registerEntityRenderingHandler(
+                        EntityGolemTH.class, new RenderAdditionalGolemTH(render.mainModel));
             }
 
             IntegrationThaumicHorizions.modMatrix = Block.getBlockFromName("ThaumicHorizons:modMatrix");
@@ -78,13 +79,11 @@ public class IntegrationThaumicHorizions extends IntegrationMod {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void on(AttackEntityEvent e) {
         EntityPlayer player = e.entityPlayer;
-        if(!e.target.worldObj.isRemote && e.target instanceof EntityGolemTH
-                && player.isSneaking()) {
+        if (!e.target.worldObj.isRemote && e.target instanceof EntityGolemTH && player.isSneaking()) {
             e.setCanceled(true);
 
             ItemStack stack = player.getCurrentEquippedItem();
-            if (stack != null && stack.getItem().onLeftClickEntity(stack, player, e.target)
-                    && e.target.isDead) {
+            if (stack != null && stack.getItem().onLeftClickEntity(stack, player, e.target) && e.target.isDead) {
                 CommonProxy.EVENT_HANDLER_GOLEM.on(new PlaySoundAtEntityEvent(e.target, "thaumcraft:zap", 0.5f, 1.0f));
             }
         }

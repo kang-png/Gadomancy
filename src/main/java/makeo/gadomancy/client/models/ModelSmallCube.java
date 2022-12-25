@@ -13,7 +13,7 @@ import net.minecraft.entity.Entity;
  * Created by makeo @ 27.10.2015 23:40
  */
 public class ModelSmallCube extends ModelBase {
-    //fields
+    // fields
     ModelRenderer shape1;
 
     public ModelSmallCube() {

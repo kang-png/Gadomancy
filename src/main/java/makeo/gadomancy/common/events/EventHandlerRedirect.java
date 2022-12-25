@@ -2,6 +2,7 @@ package makeo.gadomancy.common.events;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
 import makeo.gadomancy.common.registration.RegisteredEnchantments;
 import makeo.gadomancy.common.registration.RegisteredPotions;
 import makeo.gadomancy.common.utils.MiscUtils;
@@ -19,8 +20,6 @@ import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.config.ConfigItems;
 
-import java.util.List;
-
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -34,9 +33,10 @@ public class EventHandlerRedirect {
 
     private static boolean hasChanged;
     private static ItemStack oldItem;
+
     public static void addGoggles(Entity entity) {
-        if(entity instanceof EntityPlayer && EventHandlerRedirect.hasGoggles((EntityPlayer) entity)) {
-            ItemStack[] armorInv = ((EntityPlayer)entity).inventory.armorInventory;
+        if (entity instanceof EntityPlayer && EventHandlerRedirect.hasGoggles((EntityPlayer) entity)) {
+            ItemStack[] armorInv = ((EntityPlayer) entity).inventory.armorInventory;
             EventHandlerRedirect.oldItem = armorInv[3];
             EventHandlerRedirect.hasChanged = true;
             armorInv[3] = EventHandlerRedirect.ITEM_GOGGLES;
@@ -44,8 +44,8 @@ public class EventHandlerRedirect {
     }
 
     public static void removeGoggles(Entity entity) {
-        if(EventHandlerRedirect.hasChanged && entity instanceof EntityPlayer) {
-            ((EntityPlayer)entity).inventory.armorInventory[3] = EventHandlerRedirect.oldItem;
+        if (EventHandlerRedirect.hasChanged && entity instanceof EntityPlayer) {
+            ((EntityPlayer) entity).inventory.armorInventory[3] = EventHandlerRedirect.oldItem;
             EventHandlerRedirect.oldItem = null;
             EventHandlerRedirect.hasChanged = false;
         }
@@ -53,8 +53,9 @@ public class EventHandlerRedirect {
 
     private static boolean hasGoggles(EntityPlayer player) {
         ItemStack stack = player.inventory.armorItemInSlot(3);
-        if(MiscUtils.isANotApprovedOrMisunderstoodPersonFromMoreDoor(player)) return true;
-        return stack != null && EnchantmentHelper.getEnchantmentLevel(RegisteredEnchantments.revealer.effectId, stack) > 0;
+        if (MiscUtils.isANotApprovedOrMisunderstoodPersonFromMoreDoor(player)) return true;
+        return stack != null
+                && EnchantmentHelper.getEnchantmentLevel(RegisteredEnchantments.revealer.effectId, stack) > 0;
     }
 
     @SideOnly(Side.CLIENT)
@@ -76,25 +77,34 @@ public class EventHandlerRedirect {
     }
 
     public static int getAdditionalVisDiscount(EntityPlayer player, Aspect aspect, int currentTotalDiscount) {
-        if(player.isPotionActive(RegisteredPotions.VIS_DISCOUNT)) {
-            currentTotalDiscount += (player.getActivePotionEffect(RegisteredPotions.VIS_DISCOUNT).getAmplifier() + 1) * 8;
+        if (player.isPotionActive(RegisteredPotions.VIS_DISCOUNT)) {
+            currentTotalDiscount += (player.getActivePotionEffect(RegisteredPotions.VIS_DISCOUNT)
+                                    .getAmplifier()
+                            + 1)
+                    * 8;
         }
         return currentTotalDiscount;
     }
 
     public static int getFortuneLevel(EntityLivingBase entity) {
-        int fortuneLevel = EventHandlerRedirect.getRealEnchantmentLevel(Enchantment.fortune.effectId, entity.getHeldItem());
-        if(entity.isPotionActive(RegisteredPotions.POTION_LUCK)) {
-            int lvl = entity.getActivePotionEffect(RegisteredPotions.POTION_LUCK).getAmplifier() + 1; //Amplifier 0-indexed
+        int fortuneLevel =
+                EventHandlerRedirect.getRealEnchantmentLevel(Enchantment.fortune.effectId, entity.getHeldItem());
+        if (entity.isPotionActive(RegisteredPotions.POTION_LUCK)) {
+            int lvl =
+                    entity.getActivePotionEffect(RegisteredPotions.POTION_LUCK).getAmplifier()
+                            + 1; // Amplifier 0-indexed
             fortuneLevel += lvl;
         }
         return fortuneLevel;
     }
 
     public static int getLootingLevel(EntityLivingBase entity) {
-        int lootingLevel = EventHandlerRedirect.getRealEnchantmentLevel(Enchantment.looting.effectId, entity.getHeldItem());
-        if(entity.isPotionActive(RegisteredPotions.POTION_LUCK)) {
-            int lvl = entity.getActivePotionEffect(RegisteredPotions.POTION_LUCK).getAmplifier() + 1; //Amplifier 0-indexed
+        int lootingLevel =
+                EventHandlerRedirect.getRealEnchantmentLevel(Enchantment.looting.effectId, entity.getHeldItem());
+        if (entity.isPotionActive(RegisteredPotions.POTION_LUCK)) {
+            int lvl =
+                    entity.getActivePotionEffect(RegisteredPotions.POTION_LUCK).getAmplifier()
+                            + 1; // Amplifier 0-indexed
             lootingLevel += lvl;
         }
         return lootingLevel;
@@ -102,11 +112,11 @@ public class EventHandlerRedirect {
 
     public static int onGetEnchantmentLevel(int enchantmentId, ItemStack stack) {
         EntityPlayer possiblePlayer = null;
-        if(stack != null) {
+        if (stack != null) {
             MinecraftServer server = MinecraftServer.getServer();
-            if(server != null && server.getConfigurationManager() != null) {
-                for(EntityPlayer player : (List<EntityPlayer>) server.getConfigurationManager().playerEntityList) {
-                    if(player != null && player.getHeldItem() == stack) {
+            if (server != null && server.getConfigurationManager() != null) {
+                for (EntityPlayer player : (List<EntityPlayer>) server.getConfigurationManager().playerEntityList) {
+                    if (player != null && player.getHeldItem() == stack) {
                         possiblePlayer = player;
                         break;
                     }
@@ -114,13 +124,12 @@ public class EventHandlerRedirect {
             }
         }
 
-        if(possiblePlayer != null) {
-            if(enchantmentId == Enchantment.fortune.effectId) {
+        if (possiblePlayer != null) {
+            if (enchantmentId == Enchantment.fortune.effectId) {
                 return EventHandlerRedirect.getFortuneLevel(possiblePlayer);
-            } else if(enchantmentId == Enchantment.looting.effectId) {
+            } else if (enchantmentId == Enchantment.looting.effectId) {
                 return EventHandlerRedirect.getLootingLevel(possiblePlayer);
             }
-
         }
 
         return EventHandlerRedirect.getRealEnchantmentLevel(enchantmentId, stack);
@@ -144,5 +153,4 @@ public class EventHandlerRedirect {
             }
         }
     }
-
 }

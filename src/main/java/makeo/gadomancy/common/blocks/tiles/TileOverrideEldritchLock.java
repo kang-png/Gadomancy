@@ -1,13 +1,12 @@
 package makeo.gadomancy.common.blocks.tiles;
 
+import java.util.concurrent.ConcurrentHashMap;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import makeo.gadomancy.common.utils.world.TCMazeSession;
 import net.minecraft.entity.Entity;
 import thaumcraft.common.lib.world.dim.CellLoc;
 import thaumcraft.common.lib.world.dim.MazeHandler;
 import thaumcraft.common.tiles.TileEldritchLock;
-
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -33,13 +32,15 @@ public class TileOverrideEldritchLock extends TileEldritchLock {
 
                     int count = Entity.nextEntityID - nextEntityId;
                     Entity[] bosses = new Entity[count];
-                    for(int i = 0; i < count; i++) {
+                    for (int i = 0; i < count; i++) {
                         bosses[i] = this.worldObj.getEntityByID(nextEntityId + i);
                     }
 
                     MazeHandler.labyrinth = old;
-                    for(TCMazeSession session : TCMazeHandler.getSessions().values()) {
-                        if(session.chunksAffected != null && session.chunksAffected.containsKey(new CellLoc(this.xCoord >> 4, this.zCoord >> 4))) {
+                    for (TCMazeSession session : TCMazeHandler.getSessions().values()) {
+                        if (session.chunksAffected != null
+                                && session.chunksAffected.containsKey(
+                                        new CellLoc(this.xCoord >> 4, this.zCoord >> 4))) {
                             TCMazeHandler.putBosses(session, bosses);
                             break;
                         }

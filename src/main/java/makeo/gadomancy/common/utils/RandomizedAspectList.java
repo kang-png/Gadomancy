@@ -1,11 +1,10 @@
 package makeo.gadomancy.common.utils;
 
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -33,18 +32,18 @@ public class RandomizedAspectList extends AspectList {
     }
 
     private void checkRandomization() {
-        if((System.currentTimeMillis() - this.lastRandomization) > 500) {
+        if ((System.currentTimeMillis() - this.lastRandomization) > 500) {
             super.aspects.clear();
-            for(Aspect a : this.aspectMap.keySet()) {
-                if(a == null) continue;
+            for (Aspect a : this.aspectMap.keySet()) {
+                if (a == null) continue;
                 int am;
-                if(this.halfCap) {
+                if (this.halfCap) {
                     int c = this.aspectMap.get(a);
                     am = (c / 2) + RandomizedAspectList.RANDOM.nextInt(c / 2);
                 } else {
                     am = RandomizedAspectList.RANDOM.nextInt(this.aspectMap.get(a));
                 }
-                if(am > 0) {
+                if (am > 0) {
                     super.add(a, am);
                 }
             }
@@ -81,5 +80,4 @@ public class RandomizedAspectList extends AspectList {
         this.checkRandomization();
         return super.getPrimalAspects();
     }
-
 }

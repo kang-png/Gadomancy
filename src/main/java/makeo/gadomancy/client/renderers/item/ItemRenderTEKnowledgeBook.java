@@ -20,16 +20,16 @@ public class ItemRenderTEKnowledgeBook extends ItemRenderTileEntity<TileKnowledg
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         GL11.glPushMatrix();
-        if(type.equals(ItemRenderType.INVENTORY)) {
+        if (type.equals(ItemRenderType.INVENTORY)) {
             GL11.glScalef(1.4F, 1.4F, 1.4F);
-        } else if(type.equals(ItemRenderType.ENTITY)) {
+        } else if (type.equals(ItemRenderType.ENTITY)) {
             GL11.glScalef(2F, 2F, 2F);
-        } else if(type.equals(ItemRenderType.EQUIPPED)) {
+        } else if (type.equals(ItemRenderType.EQUIPPED)) {
             GL11.glRotatef(15F, 1, 0, 0);
             GL11.glRotatef(-50F, 0, 1, 0);
             GL11.glTranslatef(-0.4F, 0F, -1.25F);
             GL11.glScalef(1.8F, 1.8F, 1.8F);
-        } else if(type.equals(ItemRenderType.EQUIPPED_FIRST_PERSON)) {
+        } else if (type.equals(ItemRenderType.EQUIPPED_FIRST_PERSON)) {
             GL11.glTranslatef(-0.2F, 0.4F, 0);
             GL11.glRotatef(30F, 0, 1, 0);
             GL11.glRotatef(55F, 0, 0, 1);

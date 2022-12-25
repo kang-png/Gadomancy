@@ -4,14 +4,13 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import java.awt.*;
 import makeo.gadomancy.common.utils.StringHelper;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.lib.PlayerNotifications;
-
-import java.awt.*;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -28,7 +27,7 @@ public class PacketTCNotificationText implements IMessage, IMessageHandler<Packe
 
     public PacketTCNotificationText() {}
 
-    //Color is not chat color! the color is supposedly the image color..
+    // Color is not chat color! the color is supposedly the image color..
     public PacketTCNotificationText(String text, Color color, String additionalInfo) {
         this(text, color.getRGB(), additionalInfo);
     }
@@ -62,24 +61,24 @@ public class PacketTCNotificationText implements IMessage, IMessageHandler<Packe
 
         StringHelper.writeToBuffer(buf, this.text);
 
-        if(this.additionalInfo == null) this.additionalInfo = "";
+        if (this.additionalInfo == null) this.additionalInfo = "";
 
         StringHelper.writeToBuffer(buf, this.additionalInfo);
     }
 
     @Override
     public IMessage onMessage(PacketTCNotificationText message, MessageContext ctx) {
-        if(message.text == null) return null;
+        if (message.text == null) return null;
         String translated = StatCollector.translateToLocal(message.text);
         ResourceLocation image = null;
         int color = message.color;
         Aspect a = Aspect.getAspect(message.additionalInfo);
-        if(a != null) {
+        if (a != null) {
             image = a.getImage();
             color = a.getColor();
         }
-        if(message.text.equals("gadomancy.aura.research.unlock")) {
-            if(a != null) {
+        if (message.text.equals("gadomancy.aura.research.unlock")) {
+            if (a != null) {
                 translated = EnumChatFormatting.GREEN + String.format(translated, a.getName());
             } else {
                 translated = EnumChatFormatting.GREEN + String.format(translated, message.additionalInfo);

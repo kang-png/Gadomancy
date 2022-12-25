@@ -1,5 +1,6 @@
 package makeo.gadomancy.api;
 
+import java.util.List;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.api.internal.IApiHandler;
@@ -7,8 +8,6 @@ import net.minecraft.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.EnumGolemType;
-
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -20,12 +19,13 @@ import java.util.List;
  */
 public abstract class GadomancyApi {
     private static IApiHandler handler;
+
     public static void setInstance(IApiHandler handler) {
         GadomancyApi.handler = handler;
     }
 
     @Deprecated
-    public static boolean registerAdditionalGolemType(String name, String modId, AdditionalGolemType newType){
+    public static boolean registerAdditionalGolemType(String name, String modId, AdditionalGolemType newType) {
         return GadomancyApi.handler.registerAdditionalGolemType(name, modId, newType);
     }
 

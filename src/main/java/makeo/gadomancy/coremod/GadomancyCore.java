@@ -4,7 +4,6 @@ import cpw.mods.fml.relauncher.IFMLCallHook;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
-
 import java.util.Map;
 
 /**
@@ -16,7 +15,7 @@ import java.util.Map;
  * Created by makeo @ 07.12.2015 21:17
  */
 @TransformerExclusions("makeo.gadomancy.coremod")
-@MCVersion( "1.7.10" )
+@MCVersion("1.7.10")
 public class GadomancyCore implements IFMLLoadingPlugin, IFMLCallHook {
     @Override
     public Void call() throws Exception {

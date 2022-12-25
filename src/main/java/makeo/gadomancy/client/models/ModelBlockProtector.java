@@ -13,7 +13,7 @@ import net.minecraft.entity.Entity;
  * Created by makeo @ 11.11.2015 17:15
  */
 public class ModelBlockProtector extends ModelBase {
-    //fields
+    // fields
     ModelRenderer Shape1;
     ModelRenderer Shape2;
     ModelRenderer Shape3;

@@ -25,13 +25,15 @@ public class RecipeStickyJar implements IArcaneRecipe {
 
     @Override
     public boolean matches(IInventory inv, World world, EntityPlayer player) {
-        return ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), SimpleResearchItem.getFullName("STICKYJAR")) && this.getJarItem(inv) != null;
+        return ThaumcraftApiHelper.isResearchComplete(
+                        player.getCommandSenderName(), SimpleResearchItem.getFullName("STICKYJAR"))
+                && this.getJarItem(inv) != null;
     }
 
     @Override
     public ItemStack getCraftingResult(IInventory inv) {
         ItemStack jarItem = this.getJarItem(inv);
-        if(jarItem != null) {
+        if (jarItem != null) {
             ItemStack result = jarItem.copy();
             result.stackSize = 1;
             NBTHelper.getData(result).setBoolean("isStickyJar", true);
@@ -48,35 +50,35 @@ public class RecipeStickyJar implements IArcaneRecipe {
 
         ItemStack jarItem = null;
 
-        for(int i = 0; i < invWidth*invWidth; i++) {
+        for (int i = 0; i < invWidth * invWidth; i++) {
             ItemStack current = inv.getStackInSlot(i);
-            if(current != null) {
+            if (current != null) {
                 itemCount++;
-                if(itemCount > 2) {
+                if (itemCount > 2) {
                     return null;
                 }
 
-                if(jarItem == null) {
-                    if(current.getItem() == Items.slime_ball) {
+                if (jarItem == null) {
+                    if (current.getItem() == Items.slime_ball) {
                         return null;
                     }
 
-                    boolean isSticky = RegisteredItems.isStickyableJar(current) && (!current.hasTagCompound()
-                            || !current.getTagCompound().getBoolean("isStickyJar"));
-                    if(current.getItem() != Items.slime_ball && !isSticky) {
+                    boolean isSticky = RegisteredItems.isStickyableJar(current)
+                            && (!current.hasTagCompound()
+                                    || !current.getTagCompound().getBoolean("isStickyJar"));
+                    if (current.getItem() != Items.slime_ball && !isSticky) {
                         return null;
                     }
 
-
-                    if(isSticky) {
+                    if (isSticky) {
                         int slimeSlot = i + invWidth;
 
-                        if(slimeSlot < 0 || slimeSlot > inv.getSizeInventory()) {
+                        if (slimeSlot < 0 || slimeSlot > inv.getSizeInventory()) {
                             return null;
                         }
 
                         ItemStack slime = inv.getStackInSlot(slimeSlot);
-                        if(slime == null || slime.getItem() != Items.slime_ball) {
+                        if (slime == null || slime.getItem() != Items.slime_ball) {
                             return null;
                         }
 

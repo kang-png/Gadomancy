@@ -2,6 +2,9 @@ package makeo.gadomancy.client.events;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.zip.GZIPInputStream;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.client.gui.GuiResearchRecipeAuraEffects;
@@ -46,11 +49,6 @@ import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.items.relics.ItemThaumometer;
 import thaumcraft.common.items.wands.ItemWandCasting;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.zip.GZIPInputStream;
-
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -68,16 +66,17 @@ public class RenderEventHandler {
 
     @SubscribeEvent
     public void on(GuiScreenEvent.DrawScreenEvent.Pre e) {
-        if(e.gui instanceof GuiGolem) {
+        if (e.gui instanceof GuiGolem) {
             GuiGolem gui = (GuiGolem) e.gui;
             EntityGolemBase golem = new Injector(gui, GuiGolem.class).getField("golem");
-            if(golem != null) {
+            if (golem != null) {
                 AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(golem);
-                if(core != null) {
+                if (core != null) {
                     this.blurbId = core.getBaseCore();
                     String key = "golemblurb." + this.blurbId + ".text";
                     this.oldGolemblurb = ResourceReloadListener.languageList.get(key);
-                    ResourceReloadListener.languageList.put(key, StatCollector.translateToLocal(core.getUnlocalizedGuiText()));
+                    ResourceReloadListener.languageList.put(
+                            key, StatCollector.translateToLocal(core.getUnlocalizedGuiText()));
                 }
             }
         }
@@ -85,7 +84,7 @@ public class RenderEventHandler {
 
     @SubscribeEvent
     public void on(GuiScreenEvent.DrawScreenEvent.Post e) {
-        if(this.oldGolemblurb != null) {
+        if (this.oldGolemblurb != null) {
             String key = "golemblurb." + this.blurbId + ".text";
             ResourceReloadListener.languageList.put(key, this.oldGolemblurb);
             this.oldGolemblurb = null;
@@ -94,46 +93,56 @@ public class RenderEventHandler {
 
     @SubscribeEvent
     public void on(DrawBlockHighlightEvent e) {
-        if(e.currentItem == null) return;
-        if(e.currentItem.getItem() instanceof ItemWandCasting) {
+        if (e.currentItem == null) return;
+        if (e.currentItem.getItem() instanceof ItemWandCasting) {
             ItemFocusBasic focus = ((ItemWandCasting) e.currentItem.getItem()).getFocus(e.currentItem);
-            if(focus == null || !(focus instanceof IArchitect)) {
+            if (focus == null || !(focus instanceof IArchitect)) {
                 Block block = e.player.worldObj.getBlock(e.target.blockX, e.target.blockY, e.target.blockZ);
-                if(block != null && block == RegisteredBlocks.blockArcaneDropper) {
-                    ForgeDirection dir = ForgeDirection.getOrientation(e.player.worldObj.getBlockMetadata(e.target.blockX, e.target.blockY, e.target.blockZ) & 7);
+                if (block != null && block == RegisteredBlocks.blockArcaneDropper) {
+                    ForgeDirection dir = ForgeDirection.getOrientation(
+                            e.player.worldObj.getBlockMetadata(e.target.blockX, e.target.blockY, e.target.blockZ) & 7);
 
                     ArrayList<BlockCoordinates> coords = new ArrayList<BlockCoordinates>();
-                    for(int x = -1; x < 2; x++) {
-                        for(int y = -1; y < 2; y++) {
-                            for(int z = -1; z < 2; z++) {
-                                coords.add(new BlockCoordinates(e.target.blockX + 2*dir.offsetX + x, e.target.blockY + 2*dir.offsetY + y, e.target.blockZ + 2*dir.offsetZ + z));
+                    for (int x = -1; x < 2; x++) {
+                        for (int y = -1; y < 2; y++) {
+                            for (int z = -1; z < 2; z++) {
+                                coords.add(new BlockCoordinates(
+                                        e.target.blockX + 2 * dir.offsetX + x,
+                                        e.target.blockY + 2 * dir.offsetY + y,
+                                        e.target.blockZ + 2 * dir.offsetZ + z));
                             }
                         }
                     }
-                    coords.add(new BlockCoordinates(e.target.blockX + dir.offsetX, e.target.blockY + dir.offsetY, e.target.blockZ + dir.offsetZ));
+                    coords.add(new BlockCoordinates(
+                            e.target.blockX + dir.offsetX,
+                            e.target.blockY + dir.offsetY,
+                            e.target.blockZ + dir.offsetZ));
 
                     RenderEventHandler.ARCHITECT_ITEM.setCoords(coords);
 
                     GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-                    RenderEventHandler.WAND_HANDLER.handleArchitectOverlay(new ItemStack(RenderEventHandler.ARCHITECT_ITEM), e, e.player.ticksExisted, e.target);
+                    RenderEventHandler.WAND_HANDLER.handleArchitectOverlay(
+                            new ItemStack(RenderEventHandler.ARCHITECT_ITEM), e, e.player.ticksExisted, e.target);
                     GL11.glPopAttrib();
                 }
             }
-        } else if(e.currentItem.getItem() instanceof ItemThaumometer) {
-            if(e.target.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) return;
+        } else if (e.currentItem.getItem() instanceof ItemThaumometer) {
+            if (e.target.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) return;
             int blockX = e.target.blockX;
             int blockY = e.target.blockY;
             int blockZ = e.target.blockZ;
-            if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
+            if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
                 TileEntity tile = e.player.worldObj.getTileEntity(blockX, blockY, blockZ);
-                if(tile instanceof TileExtendedNode) {
+                if (tile instanceof TileExtendedNode) {
                     TileExtendedNode node = (TileExtendedNode) tile;
-                    if(node.getExtendedNodeType() == null) return;
-                    ExtendedTypeDisplayManager.notifyDisplayTick(node.getId(), node.getNodeType(), node.getExtendedNodeType());
-                } else if(tile instanceof TileExtendedNodeJar) {
+                    if (node.getExtendedNodeType() == null) return;
+                    ExtendedTypeDisplayManager.notifyDisplayTick(
+                            node.getId(), node.getNodeType(), node.getExtendedNodeType());
+                } else if (tile instanceof TileExtendedNodeJar) {
                     TileExtendedNodeJar nodeJar = (TileExtendedNodeJar) tile;
-                    if(nodeJar.getExtendedNodeType() == null) return;
-                    ExtendedTypeDisplayManager.notifyDisplayTick(nodeJar.getId(), nodeJar.getNodeType(), nodeJar.getExtendedNodeType());
+                    if (nodeJar.getExtendedNodeType() == null) return;
+                    ExtendedTypeDisplayManager.notifyDisplayTick(
+                            nodeJar.getId(), nodeJar.getNodeType(), nodeJar.getExtendedNodeType());
                 }
             }
         }
@@ -141,10 +150,11 @@ public class RenderEventHandler {
 
     @SubscribeEvent
     public void guiOpen(GuiOpenEvent event) {
-        if(event.gui != null && event.gui instanceof GuiResearchRecipe) {
+        if (event.gui != null && event.gui instanceof GuiResearchRecipe) {
             GuiResearchRecipe gui = (GuiResearchRecipe) event.gui;
             ResearchItem research = new Injector(gui, GuiResearchRecipe.class).getField("research");
-            if(research.key.equals(Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS") && !(gui instanceof GuiResearchRecipeAuraEffects)) {
+            if (research.key.equals(Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS")
+                    && !(gui instanceof GuiResearchRecipeAuraEffects)) {
                 event.gui = GuiResearchRecipeAuraEffects.create(gui);
             }
         }
@@ -161,9 +171,10 @@ public class RenderEventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void renderEntityPre(RenderLivingEvent.Pre event) {
-        if(event.entity instanceof EntityPlayer) {
+        if (event.entity instanceof EntityPlayer) {
             EntityPlayer p = (EntityPlayer) event.entity;
-            if(((DataAchromatic)SyncDataHolder.getDataClient("AchromaticData")).isAchromatic((EntityPlayer) event.entity)) {
+            if (((DataAchromatic) SyncDataHolder.getDataClient("AchromaticData"))
+                    .isAchromatic((EntityPlayer) event.entity)) {
                 this.current = p;
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.15F);
                 GL11.glDepthMask(false);
@@ -177,12 +188,12 @@ public class RenderEventHandler {
             System.arraycopy(this.armor, 0, p.inventory.armorInventory, 0, this.armor.length);
 
             boolean changed = false;
-            for(int i = 0; i < this.armor.length; i++) {
-                if(this.armor[i] != null && NBTHelper.hasPersistentData(this.armor[i])) {
+            for (int i = 0; i < this.armor.length; i++) {
+                if (this.armor[i] != null && NBTHelper.hasPersistentData(this.armor[i])) {
                     NBTTagCompound compound = NBTHelper.getPersistentData(this.armor[i]);
-                    if(compound.hasKey("disguise")) {
+                    if (compound.hasKey("disguise")) {
                         NBTBase base = compound.getTag("disguise");
-                        if(base instanceof NBTTagCompound) {
+                        if (base instanceof NBTTagCompound) {
                             p.inventory.armorInventory[i] = ItemStack.loadItemStackFromNBT((NBTTagCompound) base);
                         } else {
                             p.inventory.armorInventory[i] = null;
@@ -192,7 +203,7 @@ public class RenderEventHandler {
                 }
             }
 
-            if(!changed) {
+            if (!changed) {
                 p.inventory.armorInventory = this.armor;
                 this.armor = null;
             }
@@ -201,9 +212,9 @@ public class RenderEventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
     public void renderPost(RenderLivingEvent.Post event) {
-        if(event.entity instanceof EntityPlayer) {
+        if (event.entity instanceof EntityPlayer) {
             EntityPlayer p = (EntityPlayer) event.entity;
-            if(this.armor != null) {
+            if (this.armor != null) {
                 p.inventory.armorInventory = this.armor;
             }
         }
@@ -211,7 +222,7 @@ public class RenderEventHandler {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
     public void onSetArmor(RenderPlayerEvent.SetArmorModel event) {
-        if(event.entityPlayer == this.current) {
+        if (event.entityPlayer == this.current) {
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
             GL11.glDepthMask(true);
@@ -219,26 +230,43 @@ public class RenderEventHandler {
     }
 
     static {
-        ResourceLocation mod = new ResourceLocation(Gadomancy.MODID.toLowerCase() + new String(new byte[] {58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 111, 100, 101, 108, 115, 47, 109, 111, 100, 101, 108, 65, 115, 115, 101, 99, 46, 111, 98, 106}, StandardCharsets.UTF_8));
+        ResourceLocation mod = new ResourceLocation(Gadomancy.MODID.toLowerCase()
+                + new String(
+                        new byte[] {
+                            58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 111, 100, 101, 108, 115, 47, 109, 111,
+                            100, 101, 108, 65, 115, 115, 101, 99, 46, 111, 98, 106
+                        },
+                        StandardCharsets.UTF_8));
         IModelCustom buf;
         try {
-            buf = new WavefrontObject("gadomancy:wRender", new GZIPInputStream(Minecraft.getMinecraft().getResourceManager().getResource(mod).getInputStream()));
+            buf = new WavefrontObject(
+                    "gadomancy:wRender",
+                    new GZIPInputStream(Minecraft.getMinecraft()
+                            .getResourceManager()
+                            .getResource(mod)
+                            .getInputStream()));
         } catch (Exception exc) {
-            //shush.
+            // shush.
             buf = null;
         }
         obj = buf;
     }
 
     private static final IModelCustom obj;
-    private static final ResourceLocation tex = new ResourceLocation(new String(new byte[] {103, 97, 100, 111, 109, 97, 110, 99, 121, 58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 105, 115, 99, 47, 116, 101, 120, 87, 46, 112, 110, 103}, StandardCharsets.UTF_8));
+    private static final ResourceLocation tex = new ResourceLocation(new String(
+            new byte[] {
+                103, 97, 100, 111, 109, 97, 110, 99, 121, 58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 105, 115,
+                99, 47, 116, 101, 120, 87, 46, 112, 110, 103
+            },
+            StandardCharsets.UTF_8));
     private static int dList = -1;
+
     @SubscribeEvent
     public void onRender(RenderPlayerEvent.Specials.Post event) {
-        if(event.entityPlayer == null) return;
-        if(RenderEventHandler.obj == null) return;
-        if(!CommonProxy.serverOnlineState) return;
-        if(!MiscUtils.isMisunderstood(event.entityPlayer)) return;
+        if (event.entityPlayer == null) return;
+        if (RenderEventHandler.obj == null) return;
+        if (!CommonProxy.serverOnlineState) return;
+        if (!MiscUtils.isMisunderstood(event.entityPlayer)) return;
 
         GL11.glColor4f(1f, 1f, 1f, 1f);
 
@@ -246,12 +274,18 @@ public class RenderEventHandler {
         Minecraft.getMinecraft().renderEngine.bindTexture(RenderEventHandler.tex);
         boolean f = event.entityPlayer.capabilities.isFlying;
         double ma = f ? 15 : 5;
-        double r = (ma * (Math.abs((ClientHandler.ticks % 80) - 40) / 40D)) +
-                ((65 - ma) * Math.max(0, Math.min(1, new Vector3(event.entityPlayer.motionX, 0, event.entityPlayer.motionZ).length())));
+        double r = (ma * (Math.abs((ClientHandler.ticks % 80) - 40) / 40D))
+                + ((65 - ma)
+                        * Math.max(
+                                0,
+                                Math.min(
+                                        1,
+                                        new Vector3(event.entityPlayer.motionX, 0, event.entityPlayer.motionZ)
+                                                .length())));
         GL11.glScaled(0.07, 0.07, 0.07);
         GL11.glRotatef(180, 0, 0, 1);
         GL11.glTranslated(0, -12.7, 0.7 - (((float) (r / ma)) * (f ? 0.5D : 0.2D)));
-        if(RenderEventHandler.dList == -1) {
+        if (RenderEventHandler.dList == -1) {
             RenderEventHandler.dList = GLAllocation.generateDisplayLists(2);
             GL11.glNewList(RenderEventHandler.dList, GL11.GL_COMPILE);
             RenderEventHandler.obj.renderOnly("wR");

@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.items;
 
+import java.util.List;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,8 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import thaumcraft.common.items.ItemLootBag;
-
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -31,8 +30,7 @@ public class ItemFakeLootbag extends ItemLootBag {
     }
 
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-    }
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {}
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {

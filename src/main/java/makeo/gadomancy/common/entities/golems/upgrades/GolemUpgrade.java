@@ -46,11 +46,12 @@ public abstract class GolemUpgrade<T extends NBTBase> {
     }
 
     protected T getUpgradeData(NBTTagCompound compound) {
-        if(compound.hasKey(GolemUpgrade.UPGRADE_COMPOUND)) {
+        if (compound.hasKey(GolemUpgrade.UPGRADE_COMPOUND)) {
             NBTTagCompound upgrades = compound.getCompoundTag(GolemUpgrade.UPGRADE_COMPOUND);
             try {
                 return (T) upgrades.getTag(this.getTagName());
-            } catch (ClassCastException ignored) {}
+            } catch (ClassCastException ignored) {
+            }
         }
         return null;
     }
@@ -77,12 +78,12 @@ public abstract class GolemUpgrade<T extends NBTBase> {
 
     protected void addUpgrade(NBTTagCompound compound) {
         NBTTagCompound upgrades = compound.getCompoundTag(GolemUpgrade.UPGRADE_COMPOUND);
-        if(!compound.hasKey(GolemUpgrade.UPGRADE_COMPOUND)) {
+        if (!compound.hasKey(GolemUpgrade.UPGRADE_COMPOUND)) {
             compound.setTag(GolemUpgrade.UPGRADE_COMPOUND, upgrades);
         }
 
         NBTBase data = this.createUpgradeData();
-        upgrades.setTag(this.getTagName(), data == null ? new NBTTagByte((byte)1) : data);
+        upgrades.setTag(this.getTagName(), data == null ? new NBTTagByte((byte) 1) : data);
     }
 
     public void removeUpgrade(ItemStack stack) {
@@ -94,7 +95,7 @@ public abstract class GolemUpgrade<T extends NBTBase> {
     }
 
     protected void removeUpgrade(NBTTagCompound compound) {
-        if(compound.hasKey(GolemUpgrade.UPGRADE_COMPOUND)) {
+        if (compound.hasKey(GolemUpgrade.UPGRADE_COMPOUND)) {
             compound.removeTag(this.getTagName());
         }
     }

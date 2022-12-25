@@ -1,5 +1,6 @@
 package makeo.gadomancy.client.renderers.tile;
 
+import java.util.Random;
 import makeo.gadomancy.client.models.ModelInfusionClawPart;
 import makeo.gadomancy.client.models.ModelWandPart;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
@@ -22,8 +23,6 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.projectile.EntityPrimalOrb;
 import thaumcraft.common.items.wands.ItemWandCasting;
-
-import java.util.Random;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -104,8 +103,8 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
                 tile.animationStates[9] = -tile.animationStates[9];
 
                 ItemStack wandStack = tile.getStackInSlot(0);
-                if(wandStack != null) {
-                    tile.animationStates[11] = ((ItemWandCasting)wandStack.getItem()).isStaff(wandStack) ? 0.5f : 0.1f;
+                if (wandStack != null) {
+                    tile.animationStates[11] = ((ItemWandCasting) wandStack.getItem()).isStaff(wandStack) ? 0.5f : 0.1f;
                 }
             }
         } else if (tile.animationStates[9] < 0) {
@@ -115,7 +114,6 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
                 tile.animationStates[9] = 0;
             }
         }
-
 
         for (int i = 0; i < 4; i++) {
             GL11.glPushMatrix();
@@ -140,7 +138,7 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
     }
 
     private void renderWand(ItemStack wandStack, float ticks) {
-        GL11.glRotatef(((ticks/3) / 20.0F) * (180F / (float)Math.PI), 0, 1f, 0);
+        GL11.glRotatef(((ticks / 3) / 20.0F) * (180F / (float) Math.PI), 0, 1f, 0);
 
         this.renderTopPart();
 
@@ -156,7 +154,7 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
             GL11.glTranslatef(0, MathHelper.sin((ticks / 3) / 10.0F) * 0.08F + 0.08F, 0);
 
             GL11.glTranslatef(0, -1.4924f, 0);
-            if(item.isStaff(wandFocusStack)) {
+            if (item.isStaff(wandFocusStack)) {
                 GL11.glTranslatef(0, -0.5f, 0);
 
                 RenderTileInfusionClaw.STAFF_RENDERER.renderItem(IItemRenderer.ItemRenderType.ENTITY, wandFocusStack);
@@ -178,7 +176,7 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
     }
 
     private void renderPrimalOrb(TileInfusionClaw tile, float elapsed) {
-        if(tile.animationStates[11] > 0) {
+        if (tile.animationStates[11] > 0) {
             tile.animationStates[11] += elapsed / 70f;
 
             GL11.glPushMatrix();
@@ -193,27 +191,50 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
 
             GL11.glPopMatrix();
 
-            if(0.75f - tile.animationStates[11] < -0.5f) {
+            if (0.75f - tile.animationStates[11] < -0.5f) {
                 tile.animationStates[11] = 0;
             }
         }
     }
 
     private void createSideZap(TileInfusionClaw tile) {
-        for(int i = 2; i < 6; i++) {
+        for (int i = 2; i < 6; i++) {
             ForgeDirection dir = ForgeDirection.getOrientation(i);
-            this.createZap(tile, 0.5f + 0.5f*(float)dir.offsetX, 0.6f, 0.5f + 0.5f*(float)dir.offsetZ, 0.5f + dir.offsetX*0.2f, 0.2f, 0.5f + dir.offsetZ*0.2f);
+            this.createZap(
+                    tile,
+                    0.5f + 0.5f * (float) dir.offsetX,
+                    0.6f,
+                    0.5f + 0.5f * (float) dir.offsetZ,
+                    0.5f + dir.offsetX * 0.2f,
+                    0.2f,
+                    0.5f + dir.offsetZ * 0.2f);
             this.playZapSound(tile.xCoord, tile.yCoord, tile.zCoord);
         }
     }
 
-    private void createZap(TileEntity tile, float startX, float startY, float startZ, float endX, float endY, float endZ) {
-        Thaumcraft.proxy.nodeBolt(Thaumcraft.proxy.getClientWorld(), tile.xCoord + startX, tile.yCoord + startY, tile.zCoord + startZ,
-                tile.xCoord + endX, tile.yCoord + endY, tile.zCoord + endZ);
+    private void createZap(
+            TileEntity tile, float startX, float startY, float startZ, float endX, float endY, float endZ) {
+        Thaumcraft.proxy.nodeBolt(
+                Thaumcraft.proxy.getClientWorld(),
+                tile.xCoord + startX,
+                tile.yCoord + startY,
+                tile.zCoord + startZ,
+                tile.xCoord + endX,
+                tile.yCoord + endY,
+                tile.zCoord + endZ);
     }
 
     private void playZapSound(float x, float y, float z) {
-        Thaumcraft.proxy.getClientWorld().playSound(x, y, z, "thaumcraft:zap", 0.1F, 1.0F + Thaumcraft.proxy.getClientWorld().rand.nextFloat() * 0.2F, false);
+        Thaumcraft.proxy
+                .getClientWorld()
+                .playSound(
+                        x,
+                        y,
+                        z,
+                        "thaumcraft:zap",
+                        0.1F,
+                        1.0F + Thaumcraft.proxy.getClientWorld().rand.nextFloat() * 0.2F,
+                        false);
     }
 
     private void renderSides(TileInfusionClaw tile, World world, int x, int y, int z, float elapsed) {
@@ -242,7 +263,8 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
             float widthMove = this.getNextMoveOffset(tile, i + 4, speed, elapsed);
 
             ForgeDirection dir = ForgeDirection.getOrientation(i + 2);
-            boolean powered = world != null && world.getIndirectPowerLevelTo(x + dir.offsetX, y, z + dir.offsetZ, dir.ordinal()) > 0;
+            boolean powered = world != null
+                    && world.getIndirectPowerLevelTo(x + dir.offsetX, y, z + dir.offsetZ, dir.ordinal()) > 0;
 
             GL11.glPushMatrix();
 

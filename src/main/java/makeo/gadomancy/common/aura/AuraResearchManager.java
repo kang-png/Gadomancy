@@ -1,5 +1,7 @@
 package makeo.gadomancy.common.aura;
 
+import java.util.ArrayList;
+import java.util.List;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.network.PacketHandler;
@@ -11,9 +13,6 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.research.ResearchManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -28,14 +27,15 @@ public class AuraResearchManager {
     public static final String TC_AURA_RESEARCH_STR = "GADOMANCY.AURA.%s";
 
     public static void tryUnlockAuraEffect(EntityPlayer player, Aspect aspect) {
-        if(!AuraEffectHandler.registeredEffects.containsKey(aspect)) return;
-        if(AuraResearchManager.isBlacklisted(aspect)) return;
+        if (!AuraEffectHandler.registeredEffects.containsKey(aspect)) return;
+        if (AuraResearchManager.isBlacklisted(aspect)) return;
 
-        if(!ResearchManager.isResearchComplete(player.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS")) return;
-        if(!Thaumcraft.proxy.getPlayerKnowledge().hasDiscoveredAspect(player.getCommandSenderName(), aspect)) return;
+        if (!ResearchManager.isResearchComplete(
+                player.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS")) return;
+        if (!Thaumcraft.proxy.getPlayerKnowledge().hasDiscoveredAspect(player.getCommandSenderName(), aspect)) return;
 
         String res = String.format(AuraResearchManager.TC_AURA_RESEARCH_STR, aspect.getTag());
-        if(ResearchManager.isResearchComplete(player.getCommandSenderName(), res)) return;
+        if (ResearchManager.isResearchComplete(player.getCommandSenderName(), res)) return;
         Thaumcraft.proxy.getResearchManager().completeResearch(player, res);
 
         PacketTCNotificationText text = new PacketTCNotificationText("gadomancy.aura.research.unlock", aspect.getTag());
@@ -45,12 +45,12 @@ public class AuraResearchManager {
     public static List<String> getLines(String aspectTag) {
         List<String> lines = new ArrayList<String>();
         String base = "gadomancy.aura.effect." + aspectTag;
-        if(StatCollector.canTranslate(base)) {
+        if (StatCollector.canTranslate(base)) {
             lines.add(StatCollector.translateToLocal(base));
             return lines;
         }
         int count = 0;
-        while(StatCollector.canTranslate(base + "_" + count)) {
+        while (StatCollector.canTranslate(base + "_" + count)) {
             lines.add(StatCollector.translateToLocal(base + "_" + count));
             count++;
         }
@@ -59,25 +59,28 @@ public class AuraResearchManager {
 
     public static List<String> getKnowledge(EntityPlayer player) {
         List<String> lines = new ArrayList<String>();
-        for(Aspect a : AuraEffectHandler.registeredEffects.keySet()) {
-            if(ResearchManager.isResearchComplete(player.getCommandSenderName(), String.format(AuraResearchManager.TC_AURA_RESEARCH_STR, a.getTag()))) {
-                if(!AuraResearchManager.isBlacklisted(a)) lines.add(a.getTag());
+        for (Aspect a : AuraEffectHandler.registeredEffects.keySet()) {
+            if (ResearchManager.isResearchComplete(
+                    player.getCommandSenderName(),
+                    String.format(AuraResearchManager.TC_AURA_RESEARCH_STR, a.getTag()))) {
+                if (!AuraResearchManager.isBlacklisted(a)) lines.add(a.getTag());
             }
         }
         return lines;
     }
 
     public static boolean isBlacklisted(Aspect a) {
-        for(String aspectTag : ModConfig.blacklistAuraEffects) {
-            if(aspectTag == null) continue;
-            if(aspectTag.equals(a.getTag())) return true;
+        for (String aspectTag : ModConfig.blacklistAuraEffects) {
+            if (aspectTag == null) continue;
+            if (aspectTag.equals(a.getTag())) return true;
         }
         return false;
     }
 
     public static void registerAuraResearches() {
-        for(Aspect a : AuraEffectHandler.registeredEffects.keySet()) {
-            new ResearchItem(String.format(AuraResearchManager.TC_AURA_RESEARCH_STR, a.getTag()), Gadomancy.MODID).registerResearchItem();
+        for (Aspect a : AuraEffectHandler.registeredEffects.keySet()) {
+            new ResearchItem(String.format(AuraResearchManager.TC_AURA_RESEARCH_STR, a.getTag()), Gadomancy.MODID)
+                    .registerResearchItem();
         }
     }
 }

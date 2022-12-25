@@ -2,6 +2,8 @@ package makeo.gadomancy.common.events;
 
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import java.util.ArrayList;
+import java.util.List;
 import makeo.gadomancy.common.aura.AuraEffects;
 import makeo.gadomancy.common.blocks.tiles.TileAIShutdown;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
@@ -26,9 +28,6 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import thaumcraft.common.items.armor.Hover;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -50,12 +49,12 @@ public class EventHandlerEntity {
 
     @SubscribeEvent
     public void on(LivingSpawnEvent.CheckSpawn event) {
-        if(event.entityLiving.isCreatureType(EnumCreatureType.monster, false)) {
+        if (event.entityLiving.isCreatureType(EnumCreatureType.monster, false)) {
             double rangeSq = AuraEffects.LUX.getRange() * AuraEffects.LUX.getRange();
             Vector3 entityPos = MiscUtils.getPositionVector(event.entity);
-            for(ChunkCoordinates luxPylons : EventHandlerEntity.registeredLuxPylons) {
+            for (ChunkCoordinates luxPylons : EventHandlerEntity.registeredLuxPylons) {
                 Vector3 pylon = Vector3.fromCC(luxPylons);
-                if(entityPos.distanceSquared(pylon) <= rangeSq) {
+                if (entityPos.distanceSquared(pylon) <= rangeSq) {
                     event.setResult(Event.Result.DENY);
                     return;
                 }
@@ -82,10 +81,10 @@ public class EventHandlerEntity {
     @SubscribeEvent
     public void on(LivingDeathEvent event) {
         if (!event.entity.worldObj.isRemote) {
-            if(event.entityLiving instanceof EntityPlayer) {
+            if (event.entityLiving instanceof EntityPlayer) {
                 TCMazeHandler.closeSession((EntityPlayer) event.entityLiving, false);
             }
-            if(event.entityLiving instanceof EntityLiving) {
+            if (event.entityLiving instanceof EntityLiving) {
                 TileAIShutdown.removeTrackedEntity((EntityLiving) event.entityLiving);
             }
         }
@@ -96,7 +95,9 @@ public class EventHandlerEntity {
         if (!event.entityPlayer.worldObj.isRemote) {
             if (event.item instanceof EntityPermNoClipItem) {
                 EntityPermNoClipItem item = (EntityPermNoClipItem) event.item;
-                ChunkCoordinates master = (ChunkCoordinates) item.getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId).getObject();
+                ChunkCoordinates master = (ChunkCoordinates) item.getDataWatcher()
+                        .getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId)
+                        .getObject();
                 TileEntity te = event.entityPlayer.worldObj.getTileEntity(master.posX, master.posY, master.posZ);
                 if (!(te instanceof EntityPermNoClipItem.IItemMasterTile)) return;
                 ((EntityPermNoClipItem.IItemMasterTile) te).informItemRemoval();
@@ -108,8 +109,11 @@ public class EventHandlerEntity {
     public void on(LivingEvent.LivingUpdateEvent event) {
         if (!(event.entityLiving instanceof EntityPlayer)) return;
         EntityPlayer player = (EntityPlayer) event.entity;
-        if ((event.entity.worldObj.provider.dimensionId == ModConfig.dimOuterId) && ((player.ticksExisted & 7) == 0) && ((player.capabilities.isFlying) || (Hover.getHover(player.getEntityId())))) {
-            if(player.capabilities.isCreativeMode && MiscUtils.isANotApprovedOrMisunderstoodPersonFromMoreDoor(player)) return;
+        if ((event.entity.worldObj.provider.dimensionId == ModConfig.dimOuterId)
+                && ((player.ticksExisted & 7) == 0)
+                && ((player.capabilities.isFlying) || (Hover.getHover(player.getEntityId())))) {
+            if (player.capabilities.isCreativeMode && MiscUtils.isANotApprovedOrMisunderstoodPersonFromMoreDoor(player))
+                return;
             player.capabilities.isFlying = false;
             Hover.setHover(player.getEntityId(), false);
             if (!((EntityPlayer) event.entityLiving).worldObj.isRemote) {
@@ -117,9 +121,9 @@ public class EventHandlerEntity {
                 if (player.capabilities.isCreativeMode) {
                     msg += " " + StatCollector.translateToLocal("gadomancy.eldritch.noflyCreative");
                 }
-                player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.GRAY + msg));
+                player.addChatMessage(
+                        new ChatComponentText(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.GRAY + msg));
             }
         }
     }
-
 }

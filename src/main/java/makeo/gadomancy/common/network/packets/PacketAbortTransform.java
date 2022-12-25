@@ -20,6 +20,7 @@ public class PacketAbortTransform implements IMessage, IMessageHandler<PacketAbo
     private byte reason;
 
     public PacketAbortTransform() {}
+
     public PacketAbortTransform(AbortReason reason) {
         this.reason = (byte) reason.ordinal();
     }
@@ -27,7 +28,6 @@ public class PacketAbortTransform implements IMessage, IMessageHandler<PacketAbo
     @Override
     public void fromBytes(ByteBuf buf) {
         this.reason = buf.readByte();
-
     }
 
     @Override
@@ -36,15 +36,19 @@ public class PacketAbortTransform implements IMessage, IMessageHandler<PacketAbo
     }
 
     public enum AbortReason {
-        PLAYER_EXIT, NO_VIS, FOREIGN_TRANSFORMATION, TRANSFORMATION_FAILED, DAMAGE, MOVE
+        PLAYER_EXIT,
+        NO_VIS,
+        FOREIGN_TRANSFORMATION,
+        TRANSFORMATION_FAILED,
+        DAMAGE,
+        MOVE
     }
 
     @Override
     public IMessage onMessage(PacketAbortTransform message, MessageContext ctx) {
-        if(ctx.side == Side.SERVER) {
-            if(ctx.getServerHandler().playerEntity.getEntityId() == this.entityId) {
+        if (ctx.side == Side.SERVER) {
+            if (ctx.getServerHandler().playerEntity.getEntityId() == this.entityId) {}
 
-            }
         } else {
             TransformationHelper.onAbortTransformation(this.entityId);
         }

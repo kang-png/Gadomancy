@@ -14,8 +14,7 @@ public class StringHelper {
     private StringHelper() {}
 
     public static String firstToUpper(String input) {
-        if(input.length() > 0)
-            return Character.toUpperCase(input.charAt(0)) + input.substring(1);
+        if (input.length() > 0) return Character.toUpperCase(input.charAt(0)) + input.substring(1);
         return input;
     }
 
@@ -31,5 +30,4 @@ public class StringHelper {
         buf.readBytes(strBytes, 0, length);
         return new String(strBytes);
     }
-
 }

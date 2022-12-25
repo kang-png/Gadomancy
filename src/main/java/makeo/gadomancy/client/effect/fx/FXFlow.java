@@ -1,5 +1,9 @@
 package makeo.gadomancy.client.effect.fx;
 
+import java.awt.*;
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.Random;
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.utils.MiscUtils;
@@ -11,11 +15,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
-import java.util.ArrayDeque;
-import java.util.Queue;
-import java.util.Random;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -135,7 +134,7 @@ public class FXFlow {
 
     private void calculateVelocity() {
         if (this.target == null) return;
-        if (this.livingTicks <= 0) return; //Never happens..
+        if (this.livingTicks <= 0) return; // Never happens..
 
         Vector3 pos = this.getPositionVector();
         double motDirX = this.target.getX() - pos.getX();
@@ -167,16 +166,19 @@ public class FXFlow {
             return;
         }
 
-        FXFlowBase flow = new FXFlowBase(this.origin, this.posX, this.posY, this.posZ, this.color, this.mainParticleSize, 9, 240);
-        Minecraft.getMinecraft().effectRenderer.addEffect(flow); //Initial position.
+        FXFlowBase flow =
+                new FXFlowBase(this.origin, this.posX, this.posY, this.posZ, this.color, this.mainParticleSize, 9, 240);
+        Minecraft.getMinecraft().effectRenderer.addEffect(flow); // Initial position.
         double lastPosX = this.posX - (this.posX - this.lastTickPosX) / 2.0D;
         double lastPosY = this.posY - (this.posY - this.lastTickPosY) / 2.0D;
         double lastPosZ = this.posZ - (this.posZ - this.lastTickPosZ) / 2.0D;
-        FXFlowBase flow2 = new FXFlowBase(this.origin, lastPosX, lastPosY, lastPosZ, this.color, (float) (this.mainParticleSize * 0.8), 8, 240);
-        Minecraft.getMinecraft().effectRenderer.addEffect(flow2); //Consistency to last position
+        FXFlowBase flow2 = new FXFlowBase(
+                this.origin, lastPosX, lastPosY, lastPosZ, this.color, (float) (this.mainParticleSize * 0.8), 8, 240);
+        Minecraft.getMinecraft().effectRenderer.addEffect(flow2); // Consistency to last position
 
         if (this.policy != null)
-            this.policy.doSubParticles(this, this.policyCounter, this.posX, this.posY, this.posZ, lastPosX, lastPosY, lastPosZ);
+            this.policy.doSubParticles(
+                    this, this.policyCounter, this.posX, this.posY, this.posZ, lastPosX, lastPosY, lastPosZ);
     }
 
     public Color getColor() {
@@ -242,12 +244,9 @@ public class FXFlow {
                     this.setColor(properties.fading);
                 }
             }
-            if (properties.livingTicks != -1)
-                this.setLivingTicks(properties.livingTicks);
-            if (properties.mainParticleSize != -1)
-                this.setMainParticleSize(properties.mainParticleSize);
-            if (properties.surroundingDistance != -1)
-                this.setSurroundingDistance(properties.surroundingDistance);
+            if (properties.livingTicks != -1) this.setLivingTicks(properties.livingTicks);
+            if (properties.mainParticleSize != -1) this.setMainParticleSize(properties.mainParticleSize);
+            if (properties.surroundingDistance != -1) this.setSurroundingDistance(properties.surroundingDistance);
             if (properties.surroundingParticleSize != -1)
                 this.setSurroundingParticleSize(properties.surroundingParticleSize);
             if (properties.motionMultiplier != Float.MAX_VALUE) {
@@ -279,8 +278,7 @@ public class FXFlow {
         protected int livingTicks = -1;
         protected float motionMultiplier = Float.MAX_VALUE;
 
-        public EntityFlowProperties() {
-        }
+        public EntityFlowProperties() {}
 
         public EntityFlowProperties setTarget(Vector3 target) {
             this.hasTarget = target != null;
@@ -332,7 +330,6 @@ public class FXFlow {
             this.livingTicks = livingTicks;
             return this;
         }
-
     }
 
     public static class FXFlowBase extends EntityFX {
@@ -341,7 +338,7 @@ public class FXFlow {
 
         private float partBlue, partGreen, partRed, partAlpha;
 
-        //Queue variables
+        // Queue variables
         private float partialTicks;
         private float rendArg1, rendArg2, rendArg3, rendArg4, rendArg5;
         private int rendBrightness;
@@ -349,7 +346,8 @@ public class FXFlow {
         private ResourceLocation texture = new SimpleResourceLocation("fx/flow_large.png");
         private float buffHalfLife, buffParticleScale;
 
-        public FXFlowBase(World world, double x, double y, double z, Color color, float size, int multiplier, int brightness) {
+        public FXFlowBase(
+                World world, double x, double y, double z, Color color, float size, int multiplier, int brightness) {
             super(world, x, y, z);
             if (color != null) {
                 this.partBlue = color.getBlue() / 255F;
@@ -381,8 +379,7 @@ public class FXFlow {
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
-            if (isLightingEnabled)
-                GL11.glDisable(GL11.GL_LIGHTING);
+            if (isLightingEnabled) GL11.glDisable(GL11.GL_LIGHTING);
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.75F);
 
@@ -394,8 +391,7 @@ public class FXFlow {
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.75F);
 
-            if (isLightingEnabled)
-                GL11.glEnable(GL11.GL_LIGHTING);
+            if (isLightingEnabled) GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glDepthMask(true);
@@ -416,16 +412,44 @@ public class FXFlow {
             float f12 = (float) (this.prevPosY + (this.posY - this.prevPosY) * this.partialTicks - EntityFX.interpPosY);
             float f13 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * this.partialTicks - EntityFX.interpPosZ);
 
-            tessellator.addVertexWithUV(f11 - this.rendArg1 * f10 - this.rendArg4 * f10, f12 - this.rendArg2 * f10, f13 - this.rendArg3 * f10 - this.rendArg5 * f10, 0, 1);
-            tessellator.addVertexWithUV(f11 - this.rendArg1 * f10 + this.rendArg4 * f10, f12 + this.rendArg2 * f10, f13 - this.rendArg3 * f10 + this.rendArg5 * f10, 1, 1);
-            tessellator.addVertexWithUV(f11 + this.rendArg1 * f10 + this.rendArg4 * f10, f12 + this.rendArg2 * f10, f13 + this.rendArg3 * f10 + this.rendArg5 * f10, 1, 0);
-            tessellator.addVertexWithUV(f11 + this.rendArg1 * f10 - this.rendArg4 * f10, f12 - this.rendArg2 * f10, f13 + this.rendArg3 * f10 - this.rendArg5 * f10, 0, 0);
+            tessellator.addVertexWithUV(
+                    f11 - this.rendArg1 * f10 - this.rendArg4 * f10,
+                    f12 - this.rendArg2 * f10,
+                    f13 - this.rendArg3 * f10 - this.rendArg5 * f10,
+                    0,
+                    1);
+            tessellator.addVertexWithUV(
+                    f11 - this.rendArg1 * f10 + this.rendArg4 * f10,
+                    f12 + this.rendArg2 * f10,
+                    f13 - this.rendArg3 * f10 + this.rendArg5 * f10,
+                    1,
+                    1);
+            tessellator.addVertexWithUV(
+                    f11 + this.rendArg1 * f10 + this.rendArg4 * f10,
+                    f12 + this.rendArg2 * f10,
+                    f13 + this.rendArg3 * f10 + this.rendArg5 * f10,
+                    1,
+                    0);
+            tessellator.addVertexWithUV(
+                    f11 + this.rendArg1 * f10 - this.rendArg4 * f10,
+                    f12 - this.rendArg2 * f10,
+                    f13 + this.rendArg3 * f10 - this.rendArg5 * f10,
+                    0,
+                    0);
         }
 
         @Override
-        public void renderParticle(Tessellator tessellator, float partialTicks, float par3, float par4, float par5, float par6, float par7) {
-            if (MiscUtils.getPositionVector(Minecraft.getMinecraft().renderViewEntity).distance(new Vector3(this.posX, this.posY, this.posZ)) > ModConfig.renderParticleDistance)
-                return;
+        public void renderParticle(
+                Tessellator tessellator,
+                float partialTicks,
+                float par3,
+                float par4,
+                float par5,
+                float par6,
+                float par7) {
+            if (MiscUtils.getPositionVector(Minecraft.getMinecraft().renderViewEntity)
+                            .distance(new Vector3(this.posX, this.posY, this.posZ))
+                    > ModConfig.renderParticleDistance) return;
 
             this.partialTicks = partialTicks;
             this.rendArg1 = par3;
@@ -436,7 +460,5 @@ public class FXFlow {
 
             FXFlowBase.fxQueue.add(this);
         }
-
     }
-
 }

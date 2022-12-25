@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.integration.waila;
 
+import java.util.List;
 import makeo.gadomancy.common.blocks.BlockRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
 import makeo.gadomancy.common.items.ItemBlockRemoteJar;
@@ -12,8 +13,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -30,26 +29,47 @@ public class RemoteJarProvider implements IWailaDataProvider {
     }
 
     @Override
-    public List<String> getWailaHead(ItemStack stack, List<String> strings, IWailaDataAccessor dataAccessor, IWailaConfigHandler iWailaConfigHandler) {
+    public List<String> getWailaHead(
+            ItemStack stack,
+            List<String> strings,
+            IWailaDataAccessor dataAccessor,
+            IWailaConfigHandler iWailaConfigHandler) {
         return null;
     }
 
     @Override
-    public List<String> getWailaBody(ItemStack stack, List<String> strings, IWailaDataAccessor dataAccessor, IWailaConfigHandler iWailaConfigHandler) {
+    public List<String> getWailaBody(
+            ItemStack stack,
+            List<String> strings,
+            IWailaDataAccessor dataAccessor,
+            IWailaConfigHandler iWailaConfigHandler) {
         TileRemoteJar tile = BlockRemoteJar.getJarTile(dataAccessor.getTileEntity());
-        if(tile.networkId != null) {
-            strings.add(String.format(StatCollector.translateToLocal("gadomancy.lore.remotejar"), ItemBlockRemoteJar.generateName(tile.networkId)));
+        if (tile.networkId != null) {
+            strings.add(String.format(
+                    StatCollector.translateToLocal("gadomancy.lore.remotejar"),
+                    ItemBlockRemoteJar.generateName(tile.networkId)));
         }
         return strings;
     }
 
     @Override
-    public List<String> getWailaTail(ItemStack stack, List<String> strings, IWailaDataAccessor dataAccessor, IWailaConfigHandler iWailaConfigHandler) {
+    public List<String> getWailaTail(
+            ItemStack stack,
+            List<String> strings,
+            IWailaDataAccessor dataAccessor,
+            IWailaConfigHandler iWailaConfigHandler) {
         return null;
     }
 
     @Override
-    public NBTTagCompound getNBTData(EntityPlayerMP entityPlayerMP, TileEntity tileEntity, NBTTagCompound compound, World world, int i, int i2, int i3) {
+    public NBTTagCompound getNBTData(
+            EntityPlayerMP entityPlayerMP,
+            TileEntity tileEntity,
+            NBTTagCompound compound,
+            World world,
+            int i,
+            int i2,
+            int i3) {
         return null;
     }
 }

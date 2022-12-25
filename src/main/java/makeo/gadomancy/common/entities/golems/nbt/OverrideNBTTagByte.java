@@ -14,7 +14,6 @@ public class OverrideNBTTagByte extends NBTTagByte {
     private boolean override = true;
     private byte overrideData;
 
-
     public OverrideNBTTagByte(byte data, byte overrideData) {
         super(data);
         this.overrideData = overrideData;
@@ -22,7 +21,7 @@ public class OverrideNBTTagByte extends NBTTagByte {
 
     @Override
     public byte func_150290_f() {
-        if(this.override) {
+        if (this.override) {
             this.override = false;
             return this.overrideData;
         }

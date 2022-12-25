@@ -2,6 +2,8 @@ package makeo.gadomancy.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.ArrayList;
+import java.util.List;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
 import makeo.gadomancy.common.items.ItemExtendedNodeJar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
@@ -21,9 +23,6 @@ import net.minecraft.world.World;
 import thaumcraft.common.blocks.BlockJar;
 import thaumcraft.common.blocks.CustomStepSound;
 import thaumcraft.common.config.ConfigBlocks;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -76,8 +75,8 @@ public class BlockExtendedNodeJar extends BlockContainer {
         return RegisteredBlocks.rendererExtendedNodeJarBlock;
     }
 
-
-    public void onBlockHarvested(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer) {
+    public void onBlockHarvested(
+            World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer) {
         this.dropBlockAsItem(par1World, par2, par3, par4, par5, 0);
         super.onBlockHarvested(par1World, par2, par3, par4, par5, par6EntityPlayer);
     }
@@ -85,12 +84,22 @@ public class BlockExtendedNodeJar extends BlockContainer {
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
         TileEntity te = world.getTileEntity(x, y, z);
-        if ((te != null) && ((te instanceof TileExtendedNodeJar)) && (((TileExtendedNodeJar) te).drop) &&
-                (((TileExtendedNodeJar) te).getAspects() != null)) {
+        if ((te != null)
+                && ((te instanceof TileExtendedNodeJar))
+                && (((TileExtendedNodeJar) te).drop)
+                && (((TileExtendedNodeJar) te).getAspects() != null)) {
             ItemStack drop = new ItemStack(RegisteredItems.itemExtendedNodeJar);
-            ((ItemExtendedNodeJar) drop.getItem()).setAspects(drop, ((TileExtendedNodeJar) te).getAspects().copy());
-            ((ItemExtendedNodeJar) drop.getItem()).setNodeAttributes(drop, ((TileExtendedNodeJar) te).getNodeType(), ((TileExtendedNodeJar) te).getNodeModifier(), ((TileExtendedNodeJar) te).getExtendedNodeType(), ((TileExtendedNodeJar) te).getId());
-            ((ItemExtendedNodeJar) drop.getItem()).setBehaviorSnapshot(drop, ((TileExtendedNodeJar) te).getBehaviorSnapshot());
+            ((ItemExtendedNodeJar) drop.getItem())
+                    .setAspects(drop, ((TileExtendedNodeJar) te).getAspects().copy());
+            ((ItemExtendedNodeJar) drop.getItem())
+                    .setNodeAttributes(
+                            drop,
+                            ((TileExtendedNodeJar) te).getNodeType(),
+                            ((TileExtendedNodeJar) te).getNodeModifier(),
+                            ((TileExtendedNodeJar) te).getExtendedNodeType(),
+                            ((TileExtendedNodeJar) te).getId());
+            ((ItemExtendedNodeJar) drop.getItem())
+                    .setBehaviorSnapshot(drop, ((TileExtendedNodeJar) te).getBehaviorSnapshot());
             drops.add(drop);
         }
         return drops;
@@ -106,7 +115,8 @@ public class BlockExtendedNodeJar extends BlockContainer {
         super.setBlockBoundsBasedOnState(world, i, j, k);
     }
 
-    public void addCollisionBoxesToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity) {
+    public void addCollisionBoxesToList(
+            World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity) {
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
     }
@@ -114,5 +124,4 @@ public class BlockExtendedNodeJar extends BlockContainer {
     public int getLightValue(IBlockAccess world, int x, int y, int z) {
         return 11;
     }
-
 }

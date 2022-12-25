@@ -2,14 +2,13 @@ package makeo.gadomancy.common.research;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigBlocks;
-
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -27,13 +26,12 @@ public class StickyJarResearchItem extends AlternatingResearchItem {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean isSpecial() {
-        if(Gadomancy.proxy.getSide() == Side.CLIENT) {
+        if (Gadomancy.proxy.getSide() == Side.CLIENT) {
             List<ItemStack> items = RegisteredItems.getStickyJarStacks(Minecraft.getMinecraft().thePlayer);
-            if(items.size() > 0) {
+            if (items.size() > 0) {
                 this.itemIcons = items;
             }
         }
         return super.isSpecial();
     }
-
 }

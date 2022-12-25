@@ -24,7 +24,8 @@ public class PacketFamiliarBolt implements IMessage, IMessageHandler<PacketFamil
 
     public PacketFamiliarBolt() {}
 
-    public PacketFamiliarBolt(String whoseFamiliar, float targetX, float targetY, float targetZ, int type, boolean mightGetLong) {
+    public PacketFamiliarBolt(
+            String whoseFamiliar, float targetX, float targetY, float targetZ, int type, boolean mightGetLong) {
         this.targetX = targetX;
         this.targetY = targetY;
         this.targetZ = targetZ;

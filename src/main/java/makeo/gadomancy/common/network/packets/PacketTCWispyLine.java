@@ -14,7 +14,7 @@ import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
  * <p/>
  * Created by HellFirePvP @ 28.10.2015 23:28
  */
-public class PacketTCWispyLine  implements IMessage, IMessageHandler<PacketTCWispyLine, IMessage> {
+public class PacketTCWispyLine implements IMessage, IMessageHandler<PacketTCWispyLine, IMessage> {
 
     private int dimId;
     private double pedestalX, pedestalY, pedestalZ;
@@ -24,7 +24,16 @@ public class PacketTCWispyLine  implements IMessage, IMessageHandler<PacketTCWis
 
     public PacketTCWispyLine() {}
 
-    public PacketTCWispyLine(int dimId, double pedestalX, double pedestalY, double pedestalZ, double originX, double originY, double originZ, int tickCap, int colorAsInt) {
+    public PacketTCWispyLine(
+            int dimId,
+            double pedestalX,
+            double pedestalY,
+            double pedestalZ,
+            double originX,
+            double originY,
+            double originZ,
+            int tickCap,
+            int colorAsInt) {
         this.dimId = dimId;
         this.pedestalX = pedestalX;
         this.pedestalY = pedestalY;
@@ -64,9 +73,16 @@ public class PacketTCWispyLine  implements IMessage, IMessageHandler<PacketTCWis
 
     @Override
     public IMessage onMessage(PacketTCWispyLine p, MessageContext ctx) {
-        MultiTickEffectDispatcher.FloatyLineInfo info =
-                new MultiTickEffectDispatcher.FloatyLineInfo(p.dimId, p.pedestalX, p.pedestalY, p.pedestalZ,
-                        p.originX, p.originY, p.originZ, p.tickCap, p.colorAsInt);
+        MultiTickEffectDispatcher.FloatyLineInfo info = new MultiTickEffectDispatcher.FloatyLineInfo(
+                p.dimId,
+                p.pedestalX,
+                p.pedestalY,
+                p.pedestalZ,
+                p.originX,
+                p.originY,
+                p.originZ,
+                p.tickCap,
+                p.colorAsInt);
         MultiTickEffectDispatcher.registerFloatyLine(info);
         return null;
     }

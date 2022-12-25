@@ -1,5 +1,8 @@
 package makeo.gadomancy.common.node;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.registration.RegisteredManipulations;
 import net.minecraft.util.WeightedRandom;
@@ -7,10 +10,6 @@ import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -30,28 +29,29 @@ public class NodeManipulatorResultHandler {
         return NodeManipulatorResultHandler.getRandomResult(world, world.rand, affectedNode, percChance);
     }
 
-    public static NodeManipulatorResult getRandomResult(World world, Random random, INode affectedNode, int percChance) {
+    public static NodeManipulatorResult getRandomResult(
+            World world, Random random, INode affectedNode, int percChance) {
         int resultPositiveChance = Math.round(((float) percChance) / 5F);
         List<NodeManipulatorResult> localResults = new ArrayList<NodeManipulatorResult>();
-        for(NodeManipulatorResult result : NodeManipulatorResultHandler.possibleResults) {
-            if(result.canAffect(world, affectedNode)) {
+        for (NodeManipulatorResult result : NodeManipulatorResultHandler.possibleResults) {
+            if (result.canAffect(world, affectedNode)) {
                 ResultType type = result.getResultType();
-                if(type == ResultType.NEGATIVE) {
-                    if(random.nextInt(100) < resultPositiveChance) continue;
+                if (type == ResultType.NEGATIVE) {
+                    if (random.nextInt(100) < resultPositiveChance) continue;
                 }
 
                 localResults.add(result);
             }
         }
-        if(localResults.isEmpty()) return null;
+        if (localResults.isEmpty()) return null;
         return (NodeManipulatorResult) WeightedRandom.getRandomItem(random, localResults);
     }
 
     public static void combine(AspectList containingList, Aspect a, Aspect b, int addition) {
-        if(!NodeManipulatorResultHandler.canCombine(a, b)) return;
+        if (!NodeManipulatorResultHandler.canCombine(a, b)) return;
         Aspect combination = NodeManipulatorResultHandler.getCombination(a, b);
         int lowerAmount;
-        if(containingList.getAmount(a) < containingList.getAmount(b)) {
+        if (containingList.getAmount(a) < containingList.getAmount(b)) {
             lowerAmount = containingList.getAmount(a);
         } else {
             lowerAmount = containingList.getAmount(b);
@@ -66,10 +66,9 @@ public class NodeManipulatorResultHandler {
     }
 
     public static Aspect getCombination(Aspect a, Aspect b) {
-        for(Aspect aspect : Aspect.getCompoundAspects()) {
+        for (Aspect aspect : Aspect.getCompoundAspects()) {
             Aspect[] components = aspect.getComponents();
-            if((components[0] == a && components[1] == b) ||
-                    components[0] == b && components[1] == a) {
+            if ((components[0] == a && components[1] == b) || components[0] == b && components[1] == a) {
                 return aspect;
             }
         }
@@ -77,32 +76,29 @@ public class NodeManipulatorResultHandler {
     }
 
     static {
-        //Aspect combination pair
+        // Aspect combination pair
         NodeManipulatorResultHandler.possibleResults.add(RegisteredManipulations.resultBreakCompounds);
         NodeManipulatorResultHandler.possibleResults.add(RegisteredManipulations.resultCombineAspects);
 
-        //Modifier pair
+        // Modifier pair
         NodeManipulatorResultHandler.possibleResults.add(RegisteredManipulations.resultIncreaseModifier);
         NodeManipulatorResultHandler.possibleResults.add(RegisteredManipulations.resultDecreaseModifier);
 
-        //Switch node Type
+        // Switch node Type
         NodeManipulatorResultHandler.possibleResults.add(RegisteredManipulations.resultSwitchType);
 
-        if(ModConfig.enableAdditionalNodeTypes) {
-            //Almighty Growing
+        if (ModConfig.enableAdditionalNodeTypes) {
+            // Almighty Growing
             NodeManipulatorResultHandler.possibleResults.add(RegisteredManipulations.resultApplyGrowing);
         }
 
-        //Let the node gain primals
+        // Let the node gain primals
         NodeManipulatorResultHandler.possibleResults.add(RegisteredManipulations.resultGainPrimal);
     }
 
     public enum ResultType {
-
         POSITIVE,
         NEGATIVE,
         NEUTRAL
-
     }
-
 }

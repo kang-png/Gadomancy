@@ -26,7 +26,7 @@ public class RenderTileStickyJar extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
-        if(tile != null && tile instanceof TileStickyJar && ((TileStickyJar) tile).isValid()) {
+        if (tile != null && tile instanceof TileStickyJar && ((TileStickyJar) tile).isValid()) {
             TileStickyJar stickyJar = (TileStickyJar) tile;
 
             TileJarFillable parent = stickyJar.getParent();
@@ -38,9 +38,9 @@ public class RenderTileStickyJar extends TileEntitySpecialRenderer {
             GL11.glTranslated(x, y, z);
             this.rotateJar(stickyJar.placedOn, ForgeDirection.getOrientation(stickyJar.facing));
 
-            //TESR
+            // TESR
             TileEntitySpecialRenderer renderer = TileEntityRendererDispatcher.instance.getSpecialRenderer(parent);
-            if(renderer != null) {
+            if (renderer != null) {
                 stickyJar.syncToParent();
 
                 renderer.renderTileEntityAt(parent, 0, 0, 0, partialTicks);
@@ -48,7 +48,7 @@ public class RenderTileStickyJar extends TileEntitySpecialRenderer {
                 stickyJar.syncFromParent();
             }
 
-            //ISimpleBlockHandler
+            // ISimpleBlockHandler
             GL11.glPushMatrix();
             GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
 
@@ -62,7 +62,8 @@ public class RenderTileStickyJar extends TileEntitySpecialRenderer {
             Tessellator tess = Tessellator.instance;
             tess.startDrawingQuads();
 
-            tess.setNormal(0, -stickyJar.placedOn.offsetY, -Math.abs(stickyJar.placedOn.offsetZ + stickyJar.placedOn.offsetX));
+            tess.setNormal(
+                    0, -stickyJar.placedOn.offsetY, -Math.abs(stickyJar.placedOn.offsetZ + stickyJar.placedOn.offsetX));
 
             tess.setTranslation(-tile.xCoord, -tile.yCoord, -tile.zCoord);
 
@@ -79,20 +80,28 @@ public class RenderTileStickyJar extends TileEntitySpecialRenderer {
     }
 
     private void rotateJar(ForgeDirection placedOn, ForgeDirection facing) {
-        if(placedOn == ForgeDirection.UP) {
+        if (placedOn == ForgeDirection.UP) {
             GL11.glTranslatef(Math.abs(facing.offsetZ), 1, Math.abs(facing.offsetX));
             GL11.glRotatef(180, facing.offsetX, 0, facing.offsetZ);
-        } else if(placedOn != ForgeDirection.DOWN) {
+        } else if (placedOn != ForgeDirection.DOWN) {
             GL11.glTranslatef(0.5f, 0.5f, 0.5f);
             GL11.glRotatef(90, placedOn.offsetZ * -1, 0, placedOn.offsetX);
 
             switch (placedOn) {
-                case NORTH: GL11.glRotatef(0, 0, 1, 0); break;
-                case EAST: GL11.glRotatef(-90, 0, 1, 0); break;
-                case SOUTH: GL11.glRotatef(180, 0, 1, 0); break;
-                case WEST: GL11.glRotatef(90, 0, 1, 0); break;
-			default:
-				break;
+                case NORTH:
+                    GL11.glRotatef(0, 0, 1, 0);
+                    break;
+                case EAST:
+                    GL11.glRotatef(-90, 0, 1, 0);
+                    break;
+                case SOUTH:
+                    GL11.glRotatef(180, 0, 1, 0);
+                    break;
+                case WEST:
+                    GL11.glRotatef(90, 0, 1, 0);
+                    break;
+                default:
+                    break;
             }
 
             GL11.glTranslatef(-0.5f, -0.5f, -0.5f);

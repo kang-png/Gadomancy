@@ -39,7 +39,7 @@ public class BlockInfusionClaw extends BlockTransparent {
 
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-        if(!world.isRemote) {
+        if (!world.isRemote) {
             TileInfusionClaw tile = (TileInfusionClaw) world.getTileEntity(x, y, z);
             tile.updateRedstone(world.isBlockIndirectlyGettingPowered(x, y, z));
         }
@@ -47,7 +47,7 @@ public class BlockInfusionClaw extends BlockTransparent {
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
-        if(entity instanceof EntityPlayer) {
+        if (entity instanceof EntityPlayer) {
             TileInfusionClaw tile = (TileInfusionClaw) world.getTileEntity(x, y, z);
             tile.setOwner((EntityPlayer) entity);
         }
@@ -69,12 +69,21 @@ public class BlockInfusionClaw extends BlockTransparent {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
-        if(!world.isRemote) {
+    public boolean onBlockActivated(
+            World world,
+            int x,
+            int y,
+            int z,
+            EntityPlayer player,
+            int p_149727_6_,
+            float p_149727_7_,
+            float p_149727_8_,
+            float p_149727_9_) {
+        if (!world.isRemote) {
             TileInfusionClaw tile = (TileInfusionClaw) world.getTileEntity(x, y, z);
-            if(tile.hasOwner()) {
+            if (tile.hasOwner()) {
                 player.openGui(Gadomancy.instance, 1, world, x, y, z);
-            } else if(tile.setOwner(player)) {
+            } else if (tile.setOwner(player)) {
                 player.addChatComponentMessage(new ChatComponentTranslation("gadomancy.info.InfusionClaw.owner"));
             }
         }
@@ -85,7 +94,7 @@ public class BlockInfusionClaw extends BlockTransparent {
     public void breakBlock(World world, int x, int y, int z, Block block, int metadata) {
         TileInfusionClaw tile = (TileInfusionClaw) world.getTileEntity(x, y, z);
         ItemStack wandStack = tile.getStackInSlot(0);
-        if(wandStack != null && wandStack.stackSize > 0) {
+        if (wandStack != null && wandStack.stackSize > 0) {
             float f = world.rand.nextFloat() * 0.8F + 0.1F;
             float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
             float f2 = world.rand.nextFloat() * 0.8F + 0.1F;
@@ -104,9 +113,9 @@ public class BlockInfusionClaw extends BlockTransparent {
 
     @Override
     public int getComparatorInputOverride(World world, int x, int y, int z, int side) {
-        if(y > 0) {
+        if (y > 0) {
             ClickBehavior behavior = RegisteredBlocks.getClawClickBehavior(world, x, y - 1, z);
-            if(behavior != null) {
+            if (behavior != null) {
                 return behavior.getComparatorOutput();
             }
         }

@@ -15,7 +15,11 @@ import thaumcraft.api.nodes.NodeType;
  * Created by makeo @ 04.11.2015 20:41
  */
 public class ItemCreativeNodeRenderer extends ItemExNodeRenderer {
-    private static final AspectList ASPECTS = new AspectList().add(Aspect.AIR, 50).add(Aspect.FIRE, 50).add(Aspect.EARTH, 50).add(Aspect.WATER, 50);
+    private static final AspectList ASPECTS = new AspectList()
+            .add(Aspect.AIR, 50)
+            .add(Aspect.FIRE, 50)
+            .add(Aspect.EARTH, 50)
+            .add(Aspect.WATER, 50);
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
@@ -24,6 +28,7 @@ public class ItemCreativeNodeRenderer extends ItemExNodeRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        makeo.gadomancy.client.renderers.item.ItemNodeRenderer.renderNodeItem(type, item, ItemCreativeNodeRenderer.ASPECTS, NodeType.values()[item.getItemDamage()], null, data);
+        makeo.gadomancy.client.renderers.item.ItemNodeRenderer.renderNodeItem(
+                type, item, ItemCreativeNodeRenderer.ASPECTS, NodeType.values()[item.getItemDamage()], null, data);
     }
 }

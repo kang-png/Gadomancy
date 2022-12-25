@@ -1,5 +1,7 @@
 package makeo.gadomancy.client.renderers.tile;
 
+import java.awt.*;
+import java.util.Random;
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.effect.fx.Orbital;
 import makeo.gadomancy.client.models.ModelAuraPylon;
@@ -19,9 +21,6 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.fx.particles.FXWisp;
 
-import java.awt.*;
-import java.util.Random;
-
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -35,9 +34,11 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
     public static final ModelBase MODEL_AURA_PYLON = new ModelAuraPylon();
     public static final ModelBase MODEL_AURA_PYLON_TOP = new ModelAuraPylonTop();
     public static final ModelBase MODEL_AURA_PYLON_BOTTOM = new ModelAuraPylonBottom();
-    public static final SimpleResourceLocation PYLON_TEXTURE_TOP = new SimpleResourceLocation("models/aura_pylon_peak.png");
+    public static final SimpleResourceLocation PYLON_TEXTURE_TOP =
+            new SimpleResourceLocation("models/aura_pylon_peak.png");
     public static final SimpleResourceLocation PYLON_TEXTURE = new SimpleResourceLocation("models/aura_pylon.png");
-    public static final SimpleResourceLocation PYLON_TEXTURE_BOTTOM = new SimpleResourceLocation("models/aura_pylon_base.png");
+    public static final SimpleResourceLocation PYLON_TEXTURE_BOTTOM =
+            new SimpleResourceLocation("models/aura_pylon_base.png");
 
     public void renderTileEntity(TileEntity tile, double x, double y, double z, float partTicks) {
         GL11.glPushMatrix();
@@ -45,32 +46,32 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
 
         GL11.glPushMatrix();
         ResourceLocation textureToBind;
-        if(tile instanceof TileAuraPylonTop) {
+        if (tile instanceof TileAuraPylonTop) {
             textureToBind = RenderTileAuraPylon.PYLON_TEXTURE_TOP;
-        } else if(((TileAuraPylon) tile).isInputTile() || ((TileAuraPylon) tile).isLowestTile()) {
+        } else if (((TileAuraPylon) tile).isInputTile() || ((TileAuraPylon) tile).isLowestTile()) {
             textureToBind = RenderTileAuraPylon.PYLON_TEXTURE_BOTTOM;
         } else {
             textureToBind = RenderTileAuraPylon.PYLON_TEXTURE;
         }
         this.bindTexture(textureToBind);
-        for(int i = 0; i < 4; i++) {
-            if(tile instanceof TileAuraPylonTop) {
+        for (int i = 0; i < 4; i++) {
+            if (tile instanceof TileAuraPylonTop) {
                 GL11.glPushMatrix();
                 GL11.glRotatef(180, 1, 0, 0);
                 GL11.glTranslatef(0, -2F, 0);
-                //bindTexture(PYLON_TEXTURE_TOP);
+                // bindTexture(PYLON_TEXTURE_TOP);
                 RenderTileAuraPylon.MODEL_AURA_PYLON_TOP.render(null, 0, 0, 0, 0, 0, 0.0625f);
                 GL11.glPopMatrix();
             } else {
-                if(((TileAuraPylon) tile).isInputTile() || ((TileAuraPylon) tile).isLowestTile()) {
+                if (((TileAuraPylon) tile).isInputTile() || ((TileAuraPylon) tile).isLowestTile()) {
                     GL11.glPushMatrix();
                     GL11.glRotatef(180, 1, 0, 0);
                     GL11.glTranslatef(0, -2F, 0);
-                    //bindTexture(PYLON_TEXTURE_BOTTOM);
+                    // bindTexture(PYLON_TEXTURE_BOTTOM);
                     RenderTileAuraPylon.MODEL_AURA_PYLON_BOTTOM.render(null, 0, 0, 0, 0, 0, 0.0625f);
                     GL11.glPopMatrix();
                 } else {
-                    //bindTexture(PYLON_TEXTURE);
+                    // bindTexture(PYLON_TEXTURE);
                     RenderTileAuraPylon.MODEL_AURA_PYLON.render(null, 0, 0, 0, 0, 0, 0.0625f);
                 }
             }
@@ -80,30 +81,31 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
         GL11.glPopMatrix();
         GL11.glPopMatrix();
 
-        if(tile instanceof TileAuraPylonTop) {
+        if (tile instanceof TileAuraPylonTop) {
             TileAuraPylonTop ta = (TileAuraPylonTop) tile;
-            if(ta.orbital == null && tile.getWorldObj() != null) {
-                ta.orbital = new Orbital(new Vector3(tile.xCoord + 0.5, tile.yCoord + 0.7, tile.zCoord + 0.5), tile.getWorldObj());
+            if (ta.orbital == null && tile.getWorldObj() != null) {
+                ta.orbital = new Orbital(
+                        new Vector3(tile.xCoord + 0.5, tile.yCoord + 0.7, tile.zCoord + 0.5), tile.getWorldObj());
             }
 
-            if(ta.orbital != null && !ta.orbital.registered) {
+            if (ta.orbital != null && !ta.orbital.registered) {
                 EffectHandler.getInstance().registerOrbital(ta.orbital);
             }
 
-            if(ta.shouldRenderEffect()) {
+            if (ta.shouldRenderEffect()) {
                 Aspect a = ta.getAspect();
-                if(a == null) a = Aspect.WEATHER;
+                if (a == null) a = Aspect.WEATHER;
                 Color c = new Color(a.getColor());
-                if(tile.getWorldObj().rand.nextInt(12) == 0) {
-                    if(a == Aspect.ENTROPY || a == Aspect.DARKNESS || a == Aspect.UNDEAD) {
+                if (tile.getWorldObj().rand.nextInt(12) == 0) {
+                    if (a == Aspect.ENTROPY || a == Aspect.DARKNESS || a == Aspect.UNDEAD) {
                         this.spawnWispParticles((TileAuraPylonTop) tile, 5, 0.5F, false);
                     } else {
                         this.spawnWispParticles((TileAuraPylonTop) tile, c, 0.5F, false);
                     }
                 }
                 c = c.darker().darker();
-                if(tile.getWorldObj().rand.nextInt(20) == 0) {
-                    if(a == Aspect.ENTROPY || a == Aspect.DARKNESS || a == Aspect.UNDEAD) {
+                if (tile.getWorldObj().rand.nextInt(20) == 0) {
+                    if (a == Aspect.ENTROPY || a == Aspect.DARKNESS || a == Aspect.UNDEAD) {
                         this.spawnWispParticles((TileAuraPylonTop) tile, 5, 0.25F, false);
                     } else {
                         this.spawnWispParticles((TileAuraPylonTop) tile, c, 0.25F, false);
@@ -111,12 +113,12 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
                 }
             }
 
-            if(ta.orbital != null) ta.orbital.lastRenderCall = System.currentTimeMillis();
+            if (ta.orbital != null) ta.orbital.lastRenderCall = System.currentTimeMillis();
 
-            if(ta.shouldRenderAuraEffect() && ta.getAspect() != null) {
-                if(ta.orbital != null && ta.orbital.orbitalsSize() == 0) {
+            if (ta.shouldRenderAuraEffect() && ta.getAspect() != null) {
+                if (ta.orbital != null && ta.orbital.orbitalsSize() == 0) {
                     Aspect a = ta.getAspect();
-                    if(a != null) {
+                    if (a != null) {
                         int col = a.getColor();
                         col |= (0x55 << 24);
                         Color c = new Color(col, true);
@@ -127,7 +129,7 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
                     }
                 }
             } else {
-                if(ta.orbital != null && ta.orbital.orbitalsSize() > 0) {
+                if (ta.orbital != null && ta.orbital.orbitalsSize() > 0) {
                     ta.orbital.clearOrbitals();
                 }
             }
@@ -135,7 +137,8 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
     }
 
     private void addNewOrbitalPoint(Orbital orbital, Random rand, Color color) {
-        Orbital.OrbitalRenderProperties properties = new Orbital.OrbitalRenderProperties(Orbital.Axis.persisentRandomAxis(), rand.nextDouble() + 2D);
+        Orbital.OrbitalRenderProperties properties =
+                new Orbital.OrbitalRenderProperties(Orbital.Axis.persisentRandomAxis(), rand.nextDouble() + 2D);
         properties.setColor(color).setTicksForFullCircle(60 + rand.nextInt(40)).setOffsetTicks(rand.nextInt(80));
         properties.setSubParticleColor(color.brighter().brighter());
         orbital.addOrbitalPoint(properties);
@@ -148,7 +151,16 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
         int zCoord = tile.zCoord;
         float offset1 = inner ? 0.4F : 0.3F;
         float offset2 = inner ? 0.2F : 0.4F;
-        FXWisp ef = new FXWisp(worldObj, xCoord + 0.55F, yCoord + 0.7F, zCoord + 0.55F, xCoord + offset1 + worldObj.rand.nextFloat() * offset2, yCoord + 0.7F, zCoord + offset1 + worldObj.rand.nextFloat() * offset2, size, type);
+        FXWisp ef = new FXWisp(
+                worldObj,
+                xCoord + 0.55F,
+                yCoord + 0.7F,
+                zCoord + 0.55F,
+                xCoord + offset1 + worldObj.rand.nextFloat() * offset2,
+                yCoord + 0.7F,
+                zCoord + offset1 + worldObj.rand.nextFloat() * offset2,
+                size,
+                type);
         ef.setGravity(-0.04F);
         ef.shrink = true;
         ParticleEngine.instance.addEffect(worldObj, ef);
@@ -164,7 +176,18 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
         float red = c.getRed() / 255F;
         float green = c.getGreen() / 255F;
         float blue = c.getBlue() / 255F;
-        FXWisp ef = new FXWisp(worldObj, xCoord + 0.55F, yCoord + 0.7F, zCoord + 0.55F, xCoord + offset1 + worldObj.rand.nextFloat() * offset2, yCoord + 0.7F, zCoord + offset1 + worldObj.rand.nextFloat() * offset2, size, red, green, blue);
+        FXWisp ef = new FXWisp(
+                worldObj,
+                xCoord + 0.55F,
+                yCoord + 0.7F,
+                zCoord + 0.55F,
+                xCoord + offset1 + worldObj.rand.nextFloat() * offset2,
+                yCoord + 0.7F,
+                zCoord + offset1 + worldObj.rand.nextFloat() * offset2,
+                size,
+                red,
+                green,
+                blue);
         ef.setGravity(-0.04F);
         ef.shrink = true;
         ParticleEngine.instance.addEffect(worldObj, ef);
@@ -174,5 +197,4 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partTicks) {
         this.renderTileEntity(tileEntity, x, y, z, partTicks);
     }
-
 }

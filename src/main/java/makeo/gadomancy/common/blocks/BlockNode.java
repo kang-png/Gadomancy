@@ -16,7 +16,7 @@ public class BlockNode extends thaumcraft.common.blocks.BlockAiry {
 
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
-        if(metadata == 0) {
+        if (metadata == 0) {
             return new TileExtendedNode();
         }
         return super.createTileEntity(world, metadata);

@@ -43,7 +43,6 @@ public abstract class FamiliarAIProcess_Old {
         if (o == null || this.getClass() != o.getClass()) return false;
         FamiliarAIProcess_Old that = (FamiliarAIProcess_Old) o;
         return this.id == that.id;
-
     }
 
     @Override

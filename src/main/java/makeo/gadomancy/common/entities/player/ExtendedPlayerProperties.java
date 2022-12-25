@@ -39,7 +39,8 @@ public class ExtendedPlayerProperties implements IExtendedEntityProperties {
     public void loadNBTData(NBTTagCompound compound) {
         NBTTagCompound modData = NBTHelper.getPersistentData(compound);
 
-        this.isTransformed = NBTHelper.getBoolean(modData, "isTransformed", ExtendedPlayerProperties.DEFAULTS.isTransformed);
+        this.isTransformed =
+                NBTHelper.getBoolean(modData, "isTransformed", ExtendedPlayerProperties.DEFAULTS.isTransformed);
         this.player.getDataWatcher().updateObject(ExtendedPlayerProperties.TRANSFORM_INDEX, this.isTransformed);
     }
 
@@ -50,7 +51,6 @@ public class ExtendedPlayerProperties implements IExtendedEntityProperties {
 
     public static boolean isTransformed(EntityPlayer player) {
         return false;
-
     }
 
     public void setTransformed(boolean isTransformed) {

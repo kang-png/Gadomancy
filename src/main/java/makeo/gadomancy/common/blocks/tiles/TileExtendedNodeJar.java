@@ -72,10 +72,12 @@ public class TileExtendedNodeJar extends TileJarNode {
         }
         this.setNodeType(NodeType.values()[nbttagcompound.getByte("type")]);
         byte mod = nbttagcompound.getByte("modifier");
-        if(mod >= 0) this.setNodeModifier(NodeModifier.values()[mod]); else this.setNodeModifier(null);
+        if (mod >= 0) this.setNodeModifier(NodeModifier.values()[mod]);
+        else this.setNodeModifier(null);
         byte exType = nbttagcompound.getByte("extendedNodeType");
-        if(exType >= 0) this.setExtendedNodeType(ExtendedNodeType.values()[exType]); else this.setExtendedNodeType(null);
-        if(nbttagcompound.hasKey("Behavior")) {
+        if (exType >= 0) this.setExtendedNodeType(ExtendedNodeType.values()[exType]);
+        else this.setExtendedNodeType(null);
+        if (nbttagcompound.hasKey("Behavior")) {
             this.behaviorSnapshot = nbttagcompound.getCompoundTag("Behavior");
         }
     }
@@ -94,9 +96,17 @@ public class TileExtendedNodeJar extends TileJarNode {
             }
         }
         nbttagcompound.setByte("type", (byte) this.getNodeType().ordinal());
-        nbttagcompound.setByte("modifier", this.getNodeModifier() == null ? -1 : (byte) this.getNodeModifier().ordinal());
-        nbttagcompound.setByte("extendedNodeType", this.getExtendedNodeType() == null ? -1 : (byte) this.getExtendedNodeType().ordinal());
-        if(this.behaviorSnapshot != null) {
+        nbttagcompound.setByte(
+                "modifier",
+                this.getNodeModifier() == null
+                        ? -1
+                        : (byte) this.getNodeModifier().ordinal());
+        nbttagcompound.setByte(
+                "extendedNodeType",
+                this.getExtendedNodeType() == null
+                        ? -1
+                        : (byte) this.getExtendedNodeType().ordinal());
+        if (this.behaviorSnapshot != null) {
             nbttagcompound.setTag("Behavior", this.behaviorSnapshot);
         }
     }
@@ -214,7 +224,8 @@ public class TileExtendedNodeJar extends TileJarNode {
                 for (int yy = -1; yy < 3; yy++) {
                     for (int xx = -1; xx < 2; xx++) {
                         for (int zz = -1; zz < 2; zz++) {
-                            Thaumcraft.proxy.blockSparkle(this.worldObj, this.xCoord + xx, this.yCoord + yy, this.zCoord + zz, -9999, 5);
+                            Thaumcraft.proxy.blockSparkle(
+                                    this.worldObj, this.xCoord + xx, this.yCoord + yy, this.zCoord + zz, -9999, 5);
                         }
                     }
                 }
@@ -227,7 +238,8 @@ public class TileExtendedNodeJar extends TileJarNode {
 
     public boolean drop = true;
 
-    public int onWandRightClick(World world, ItemStack wandstack, EntityPlayer player, int x, int y, int z, int side, int md) {
+    public int onWandRightClick(
+            World world, ItemStack wandstack, EntityPlayer player, int x, int y, int z, int side, int md) {
         if (!world.isRemote) {
             this.drop = false;
             world.setBlock(x, y, z, ConfigBlocks.blockAiry, 0, 3);
@@ -244,7 +256,14 @@ public class TileExtendedNodeJar extends TileJarNode {
             }
         }
         world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(ConfigBlocks.blockJar) + 61440);
-        player.worldObj.playSound(x + 0.5D, y + 0.5D, z + 0.5D, "random.glass", 1.0F, 0.9F + player.worldObj.rand.nextFloat() * 0.2F, false);
+        player.worldObj.playSound(
+                x + 0.5D,
+                y + 0.5D,
+                z + 0.5D,
+                "random.glass",
+                1.0F,
+                0.9F + player.worldObj.rand.nextFloat() * 0.2F,
+                false);
         player.swingItem();
         return 0;
     }
@@ -253,14 +272,11 @@ public class TileExtendedNodeJar extends TileJarNode {
         return null;
     }
 
-    public void onUsingWandTick(ItemStack wandstack, EntityPlayer player, int count) {
-    }
+    public void onUsingWandTick(ItemStack wandstack, EntityPlayer player, int count) {}
 
-    public void onWandStoppedUsing(ItemStack wandstack, World world, EntityPlayer player, int count) {
-    }
+    public void onWandStoppedUsing(ItemStack wandstack, World world, EntityPlayer player, int count) {}
 
     public boolean doesContainerAccept(Aspect tag) {
         return true;
     }
-
 }

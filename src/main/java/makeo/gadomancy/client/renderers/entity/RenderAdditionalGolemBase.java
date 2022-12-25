@@ -40,11 +40,11 @@ public class RenderAdditionalGolemBase extends RenderGolemBase {
 
         int ret = super.shouldRenderPass(entity, pass, par3);
 
-        //fix for render bug in tc
+        // fix for render bug in tc
         if (RenderGolemHelper.requiresRenderFix((EntityGolemBase) entity)) {
             RenderGolemHelper.renderCarriedItemsFix(golem);
 
-            if(this.toolItem != null) {
+            if (this.toolItem != null) {
                 RenderGolemHelper.renderToolItem(golem, this.toolItem, this.mainModel, this.renderManager);
             }
         }
@@ -60,7 +60,7 @@ public class RenderAdditionalGolemBase extends RenderGolemBase {
     @Override
     protected void renderCarriedItems(EntityGolemBase golem, float par2) {
         if (!RenderGolemHelper.requiresRenderFix(golem)) {
-            if(this.toolItem != null) {
+            if (this.toolItem != null) {
                 RenderGolemHelper.renderToolItem(golem, this.toolItem, this.mainModel, this.renderManager);
             }
             super.renderCarriedItems(golem, par2);
@@ -71,7 +71,7 @@ public class RenderAdditionalGolemBase extends RenderGolemBase {
     public void render(EntityGolemBase golem, double par2, double par4, double par6, float par8, float par9) {
         AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(golem);
         ItemStack carriedItem = null;
-        if(core != null) {
+        if (core != null) {
             this.toolItem = core.getToolItem(golem);
 
             carriedItem = golem.getCarriedForDisplay();
@@ -80,7 +80,7 @@ public class RenderAdditionalGolemBase extends RenderGolemBase {
 
         super.render(golem, par2, par4, par6, par8, par9);
 
-        if(carriedItem != null) {
+        if (carriedItem != null) {
             golem.getDataWatcher().getWatchedObject(16).setObject(carriedItem);
             this.toolItem = null;
         }

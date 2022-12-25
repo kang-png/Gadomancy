@@ -16,5 +16,4 @@ public class ItemNodeManipulator extends BlockStoneDeviceItem {
     public ItemNodeManipulator(Block par1) {
         super(par1);
     }
-
 }

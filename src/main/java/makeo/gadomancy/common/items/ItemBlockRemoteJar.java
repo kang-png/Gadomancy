@@ -2,6 +2,10 @@ package makeo.gadomancy.common.items;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import makeo.gadomancy.client.events.ResourceReloadListener;
 import makeo.gadomancy.common.blocks.BlockRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
@@ -20,11 +24,6 @@ import net.minecraft.world.World;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.blocks.ItemJarFilled;
 import thaumcraft.common.config.ConfigItems;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -45,13 +44,13 @@ public class ItemBlockRemoteJar extends ItemBlock {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if(!world.isRemote) {
-            if(player.isSneaking()) {
+        if (!world.isRemote) {
+            if (player.isSneaking()) {
                 NBTTagCompound compound = NBTHelper.getData(stack);
-                if(compound.hasKey("networkId")) {
+                if (compound.hasKey("networkId")) {
                     compound.removeTag("networkId");
 
-                    if(compound.hasNoTags()) {
+                    if (compound.hasNoTags()) {
                         stack.setTagCompound(null);
                     }
 
@@ -64,32 +63,63 @@ public class ItemBlockRemoteJar extends ItemBlock {
     }
 
     @Override
-    public boolean onItemUse(ItemStack p_77648_1_, EntityPlayer p_77648_2_, World p_77648_3_, int p_77648_4_, int p_77648_5_, int p_77648_6_, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
-        return super.onItemUse(p_77648_1_, p_77648_2_, p_77648_3_, p_77648_4_, p_77648_5_, p_77648_6_, p_77648_7_, p_77648_8_, p_77648_9_, p_77648_10_);
+    public boolean onItemUse(
+            ItemStack p_77648_1_,
+            EntityPlayer p_77648_2_,
+            World p_77648_3_,
+            int p_77648_4_,
+            int p_77648_5_,
+            int p_77648_6_,
+            int p_77648_7_,
+            float p_77648_8_,
+            float p_77648_9_,
+            float p_77648_10_) {
+        return super.onItemUse(
+                p_77648_1_,
+                p_77648_2_,
+                p_77648_3_,
+                p_77648_4_,
+                p_77648_5_,
+                p_77648_6_,
+                p_77648_7_,
+                p_77648_8_,
+                p_77648_9_,
+                p_77648_10_);
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+    public boolean onItemUseFirst(
+            ItemStack stack,
+            EntityPlayer player,
+            World world,
+            int x,
+            int y,
+            int z,
+            int side,
+            float hitX,
+            float hitY,
+            float hitZ) {
         TileRemoteJar tile = BlockRemoteJar.getJarTile(world, x, y, z);
         if (tile != null) {
-            if(!world.isRemote) {
+            if (!world.isRemote) {
                 NBTTagCompound compound = NBTHelper.getData(stack);
-                if(!player.isSneaking()) {
+                if (!player.isSneaking()) {
                     UUID networkId = null;
-                    if(tile.networkId == null) {
+                    if (tile.networkId == null) {
                         player.addChatComponentMessage(new ChatComponentTranslation("gadomancy.info.RemoteJar.new"));
                         networkId = UUID.randomUUID();
                         tile.networkId = networkId;
                         tile.markForUpdate();
                     } else {
                         UUID current = NBTHelper.getUUID(compound, "networkId");
-                        if(current == null || !current.equals(tile.networkId)) {
-                            player.addChatComponentMessage(new ChatComponentTranslation("gadomancy.info.RemoteJar.connected"));
+                        if (current == null || !current.equals(tile.networkId)) {
+                            player.addChatComponentMessage(
+                                    new ChatComponentTranslation("gadomancy.info.RemoteJar.connected"));
                             networkId = tile.networkId;
                         }
                     }
 
-                    if(networkId != null) {
+                    if (networkId != null) {
                         NBTHelper.setUUID(compound, "networkId", networkId);
                     }
                 }
@@ -101,21 +131,30 @@ public class ItemBlockRemoteJar extends ItemBlock {
         return false;
     }
 
-
-
     @Override
-    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
+    public boolean placeBlockAt(
+            ItemStack stack,
+            EntityPlayer player,
+            World world,
+            int x,
+            int y,
+            int z,
+            int side,
+            float hitX,
+            float hitY,
+            float hitZ,
+            int metadata) {
         boolean placed = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
         if (placed && stack.hasTagCompound()) {
             TileRemoteJar tile = (TileRemoteJar) world.getTileEntity(x, y, z);
 
             AspectList aspects = ((ItemJarFilled) ConfigItems.itemJarFilled).getAspects(stack);
-            if(aspects != null) {
+            if (aspects != null) {
                 tile.aspect = aspects.getAspects()[0];
                 tile.amount = aspects.getAmount(tile.aspect);
             }
 
-            if(!world.isRemote) {
+            if (!world.isRemote) {
                 tile.networkId = NBTHelper.getUUID(stack.getTagCompound(), "networkId");
                 tile.markForUpdate();
             }
@@ -132,8 +171,10 @@ public class ItemBlockRemoteJar extends ItemBlock {
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedItemTooltips) {
         if (stack.hasTagCompound()) {
             UUID networkId = NBTHelper.getUUID(stack.getTagCompound(), "networkId");
-            if(networkId != null) {
-                list.add(String.format(StatCollector.translateToLocal("gadomancy.lore.remotejar"), ItemBlockRemoteJar.generateName(networkId)));
+            if (networkId != null) {
+                list.add(String.format(
+                        StatCollector.translateToLocal("gadomancy.lore.remotejar"),
+                        ItemBlockRemoteJar.generateName(networkId)));
             }
         }
         ConfigItems.itemJarFilled.addInformation(stack, player, list, advancedItemTooltips);
@@ -146,12 +187,12 @@ public class ItemBlockRemoteJar extends ItemBlock {
 
         StringBuilder result = new StringBuilder();
 
-        for(int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             int entryIndex = random.nextInt(values.size());
             String[] split = values.get(entryIndex).split(" ");
             String part = split[random.nextInt(split.length)];
 
-            if(!ItemBlockRemoteJar.isValidName(part)) {
+            if (!ItemBlockRemoteJar.isValidName(part)) {
                 i--;
                 continue;
             }
@@ -161,9 +202,9 @@ public class ItemBlockRemoteJar extends ItemBlock {
     }
 
     private static boolean isValidName(String name) {
-        if(name.length() <= 8 && name.length() >= 4) {
-            for(char c : name.toCharArray()) {
-                if(!Character.isAlphabetic(c)) {
+        if (name.length() <= 8 && name.length() >= 4) {
+            for (char c : name.toCharArray()) {
+                if (!Character.isAlphabetic(c)) {
                     return false;
                 }
             }

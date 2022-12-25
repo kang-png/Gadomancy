@@ -2,14 +2,13 @@ package makeo.gadomancy.common.items;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
 import makeo.gadomancy.common.Gadomancy;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -55,7 +54,7 @@ public class ItemFakeGolemShield extends Item {
 
     @Override
     public IIcon getIcon(ItemStack stack, int pass) {
-        if(pass == this.getRenderPasses(stack.getItemDamage()) - 1) {
+        if (pass == this.getRenderPasses(stack.getItemDamage()) - 1) {
             return this.shieldIcon;
         } else {
             return this.golemItem.getIcon(stack, pass);

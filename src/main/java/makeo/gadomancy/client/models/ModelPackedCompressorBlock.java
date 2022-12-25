@@ -21,7 +21,7 @@ public class ModelPackedCompressorBlock extends ModelBase {
         this.block = new ModelRenderer(this, 0, 0);
         this.block.addBox(0F, 0F, 0F, 16, 16, 16);
         this.block.setRotationPoint(-8F, 22F, -8F);
-        //block.setTextureSize(16, 16);
+        // block.setTextureSize(16, 16);
         this.block.mirror = true;
     }
 
@@ -36,5 +36,4 @@ public class ModelPackedCompressorBlock extends ModelBase {
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
         super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
     }
-
 }

@@ -2,11 +2,10 @@ package makeo.gadomancy.common.integration;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.lang.reflect.Method;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-
-import java.lang.reflect.Method;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -28,18 +27,19 @@ public class IntegrationMorph extends IntegrationMod {
 
     @Override
     protected void doInit() {
-        //methodHasMorph = Injector.getMethod("hasMorph", "morph.common.core.ApiHandler", String.class, Boolean.class);
+        // methodHasMorph = Injector.getMethod("hasMorph", "morph.common.core.ApiHandler", String.class, Boolean.class);
 
-        //if(methodHasMorph == null) {
+        // if(methodHasMorph == null) {
         //    FMLLog.severe("Morph mod is loaded but failed to find method \"hasMorph\"!");
-        //}
+        // }
     }
 
     @SideOnly(Side.CLIENT)
     public boolean isMorphed() {
-        if(this.methodHasMorph != null) {
+        if (this.methodHasMorph != null) {
             EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-            Boolean result = IntegrationMorph.INJECTOR.invokeMethod(this.methodHasMorph, player.getCommandSenderName(), true);
+            Boolean result =
+                    IntegrationMorph.INJECTOR.invokeMethod(this.methodHasMorph, player.getCommandSenderName(), true);
             return result != null ? result : false;
         }
         return false;

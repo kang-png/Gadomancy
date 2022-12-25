@@ -36,20 +36,20 @@ public class RenderTileArcaneDropper extends TileEntitySpecialRenderer {
 
         ForgeDirection side = ForgeDirection.getOrientation(metadata & 7);
 
-        if(side == ForgeDirection.UP) {
+        if (side == ForgeDirection.UP) {
             GL11.glRotatef(180, 1, 0, 0);
             GL11.glTranslatef(0, -2, 0);
-        } else if(side != ForgeDirection.DOWN) {
-            GL11.glRotatef(-90, side.offsetZ, 0, -1*side.offsetX);
+        } else if (side != ForgeDirection.DOWN) {
+            GL11.glRotatef(-90, side.offsetZ, 0, -1 * side.offsetX);
             GL11.glTranslatef(side.offsetX, -1, side.offsetZ);
         }
 
         boolean flipped = (metadata & 8) == 8;
-        if(side == ForgeDirection.WEST || side == ForgeDirection.EAST) {
+        if (side == ForgeDirection.WEST || side == ForgeDirection.EAST) {
             flipped = !flipped;
         }
 
-        if(flipped) {
+        if (flipped) {
             GL11.glRotatef(90, 0, 1, 0);
         }
 

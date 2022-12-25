@@ -25,9 +25,15 @@ public class RegisteredEntities {
         RegisteredEntities.registerEntity(EntityItemElement.class, "EntityItemElement", 32, 40, true);
     }
 
-    private static void registerEntity(Class<? extends Entity> entityClass, String name, int trackingRange, int updateFreq, boolean sendVelUpdates) {
+    private static void registerEntity(
+            Class<? extends Entity> entityClass,
+            String name,
+            int trackingRange,
+            int updateFreq,
+            boolean sendVelUpdates) {
         int id = EntityRegistry.findGlobalUniqueEntityId();
         EntityRegistry.registerGlobalEntityID(entityClass, name, id);
-        EntityRegistry.registerModEntity(entityClass, name, id, Gadomancy.instance, trackingRange, updateFreq, sendVelUpdates);
+        EntityRegistry.registerModEntity(
+                entityClass, name, id, Gadomancy.instance, trackingRange, updateFreq, sendVelUpdates);
     }
 }

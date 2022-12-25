@@ -1,16 +1,15 @@
 package makeo.gadomancy.client.effect.fx;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.Vector3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -26,7 +25,7 @@ public final class Orbital {
     private final World world;
     private int orbitalCounter;
     public boolean registered;
-    //INFO: Needs to be updated when its "owner" gets rendered.
+    // INFO: Needs to be updated when its "owner" gets rendered.
     public long lastRenderCall = System.currentTimeMillis();
 
     private List<OrbitalRenderProperties> orbitals = new ArrayList<OrbitalRenderProperties>();
@@ -55,8 +54,9 @@ public final class Orbital {
     }
 
     public void doRender(float partialTicks) {
-        if (MiscUtils.getPositionVector(Minecraft.getMinecraft().renderViewEntity).distance(this.center) > ModConfig.renderParticleDistance)
-            return;
+        if (MiscUtils.getPositionVector(Minecraft.getMinecraft().renderViewEntity)
+                        .distance(this.center)
+                > ModConfig.renderParticleDistance) return;
         if (Minecraft.getMinecraft().isGamePaused()) return;
 
         for (OrbitalRenderProperties orbitalNode : this.orbitals) {
@@ -64,10 +64,17 @@ public final class Orbital {
             int counterOffset = orbitalNode.getOffsetTicks() % orbitalNode.getTicksForFullCircle();
 
             int currentDividedPolicyTick = (this.orbitalCounter + counterOffset) % orbitalNode.getTicksForFullCircle();
-            float currentDegree = 360F * (((float) currentDividedPolicyTick) / ((float) orbitalNode.getTicksForFullCircle()));
+            float currentDegree =
+                    360F * (((float) currentDividedPolicyTick) / ((float) orbitalNode.getTicksForFullCircle()));
             double currentRad = Math.toRadians(currentDegree);
 
-            Vector3 point = axis.getAxis().clone().perpendicular().normalize().multiply(orbitalNode.getOffset()).rotate(currentRad, axis.getAxis()).add(this.center);
+            Vector3 point = axis.getAxis()
+                    .clone()
+                    .perpendicular()
+                    .normalize()
+                    .multiply(orbitalNode.getOffset())
+                    .rotate(currentRad, axis.getAxis())
+                    .add(this.center);
 
             if (orbitalNode.getRunnable() != null) {
                 orbitalNode.getRunnable().onRender(this.world, point, orbitalNode, this.orbitalCounter, partialTicks);
@@ -75,15 +82,28 @@ public final class Orbital {
 
             if (orbitalNode.getParticleSize() <= 0) continue;
 
-            FXFlow.FXFlowBase flow = new FXFlow.FXFlowBase(this.world, point.getX(), point.getY(), point.getZ(),
-                    orbitalNode.getColor(), orbitalNode.getParticleSize(), orbitalNode.getMultiplier(), orbitalNode.getBrightness());
+            FXFlow.FXFlowBase flow = new FXFlow.FXFlowBase(
+                    this.world,
+                    point.getX(),
+                    point.getY(),
+                    point.getZ(),
+                    orbitalNode.getColor(),
+                    orbitalNode.getParticleSize(),
+                    orbitalNode.getMultiplier(),
+                    orbitalNode.getBrightness());
 
             if (orbitalNode.getSubParticleColor() != null && this.world.rand.nextInt(3) == 0) {
                 Vector3 subOffset = this.genSubOffset(this.world.rand, 0.8F);
                 Color c = (this.world.rand.nextBoolean()) ? orbitalNode.getSubParticleColor() : orbitalNode.getColor();
-                FXFlow.FXFlowBase flow2 = new FXFlow.FXFlowBase(this.world,
-                        point.getX() + subOffset.getX(), point.getY() + subOffset.getY(), point.getZ() + subOffset.getZ(),
-                        c, orbitalNode.getSubSizeRunnable().getSubParticleSize(this.world.rand, this.orbitalCounter), 6, 240);
+                FXFlow.FXFlowBase flow2 = new FXFlow.FXFlowBase(
+                        this.world,
+                        point.getX() + subOffset.getX(),
+                        point.getY() + subOffset.getY(),
+                        point.getZ() + subOffset.getZ(),
+                        c,
+                        orbitalNode.getSubSizeRunnable().getSubParticleSize(this.world.rand, this.orbitalCounter),
+                        6,
+                        240);
 
                 Minecraft.getMinecraft().effectRenderer.addEffect(flow2);
             }
@@ -118,10 +138,17 @@ public final class Orbital {
             int counterOffset = property.getOffsetTicks() % property.getTicksForFullCircle();
 
             int currentDividedPolicyTick = (this.orbitalCounter + counterOffset) % property.getTicksForFullCircle();
-            float currentDegree = 360F * (((float) currentDividedPolicyTick) / ((float) property.getTicksForFullCircle()));
+            float currentDegree =
+                    360F * (((float) currentDividedPolicyTick) / ((float) property.getTicksForFullCircle()));
             double currentRad = Math.toRadians(currentDegree);
 
-            arr[i] = axis.getAxis().clone().perpendicular().normalize().multiply(property.getOffset()).rotate(currentRad, axis.getAxis()).add(this.center);
+            arr[i] = axis.getAxis()
+                    .clone()
+                    .perpendicular()
+                    .normalize()
+                    .multiply(property.getOffset())
+                    .rotate(currentRad, axis.getAxis())
+                    .add(this.center);
         }
         return arr;
     }
@@ -217,7 +244,7 @@ public final class Orbital {
             return this;
         }
 
-        //Percent from 0.0F to 1.0F
+        // Percent from 0.0F to 1.0F
         public void reduceOffset(float percent) {
             this.offset = this.originalOffset * percent;
         }
@@ -272,7 +299,12 @@ public final class Orbital {
     }
 
     public abstract static class OrbitalRenderRunnable {
-        public abstract void onRender(World world, Vector3 selectedPosition, OrbitalRenderProperties properties, int orbitalExisted, float partialTicks);
+        public abstract void onRender(
+                World world,
+                Vector3 selectedPosition,
+                OrbitalRenderProperties properties,
+                int orbitalExisted,
+                float partialTicks);
     }
 
     public static class Axis {
@@ -288,10 +320,10 @@ public final class Orbital {
         }
 
         public static Axis persisentRandomAxis() {
-            //Actually quite important to use only Y-positive here since if we
-            //would use negative y, the axis may turn counter-
-            //clockwise, what's intended to be set in another variable, which
-            //may cause bugs if we want to use only clockwise axis'.
+            // Actually quite important to use only Y-positive here since if we
+            // would use negative y, the axis may turn counter-
+            // clockwise, what's intended to be set in another variable, which
+            // may cause bugs if we want to use only clockwise axis'.
             return new Axis(Vector3.positiveYRandom());
         }
 
@@ -299,5 +331,4 @@ public final class Orbital {
             return this.axis.clone();
         }
     }
-
 }

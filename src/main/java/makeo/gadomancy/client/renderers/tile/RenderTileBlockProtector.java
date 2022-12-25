@@ -23,7 +23,7 @@ public class RenderTileBlockProtector extends TileJarRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
-        this.renderTileEntityAt((TileBlockProtector)tile, x, y, z, partialTicks);
+        this.renderTileEntityAt((TileBlockProtector) tile, x, y, z, partialTicks);
     }
 
     public void renderTileEntityAt(TileBlockProtector tile, double x, double y, double z, float partialTicks) {
@@ -31,11 +31,11 @@ public class RenderTileBlockProtector extends TileJarRenderer {
         GL11.glTranslated(x, y, z);
 
         GL11.glTranslatef(0.5f, 0, 0.5f);
-        GL11.glRotatef(90*tile.facing, 0, 1, 0);
+        GL11.glRotatef(90 * tile.facing, 0, 1, 0);
         GL11.glTranslatef(-0.5f, 0, -0.5f);
 
         GL11.glPushMatrix();
-        GL11.glTranslatef(0, -2/16f - 0.03f, 0);
+        GL11.glTranslatef(0, -2 / 16f - 0.03f, 0);
         GL11.glScalef(0.4f, 0.4f, 0.4f);
         GL11.glTranslatef(0.75f, 0.75f, 0.75f);
 
@@ -46,17 +46,16 @@ public class RenderTileBlockProtector extends TileJarRenderer {
 
         GL11.glPopMatrix();
 
-
         GL11.glPushMatrix();
         GL11.glTranslatef(0.5f, 1.5f, 0.5f);
         GL11.glRotatef(180, 1, 0, 0);
 
-        this.bindTexture(tile.getPowerLevel() > 0 ? RenderTileBlockProtector.TEXTURE_ON : RenderTileBlockProtector.TEXTURE_OFF);
+        this.bindTexture(
+                tile.getPowerLevel() > 0 ? RenderTileBlockProtector.TEXTURE_ON : RenderTileBlockProtector.TEXTURE_OFF);
         new ModelBlockProtector().render(null, 0, 0, 0, 0, 0, 0.0625f);
         GL11.glPopMatrix();
 
-
-        GL11.glTranslatef(0, -2/16f - 0.03f, 0);
+        GL11.glTranslatef(0, -2 / 16f - 0.03f, 0);
         GL11.glScalef(0.4f, 0.4f, 0.4f);
         GL11.glTranslatef(0.75f, 0.75f, 0.75f);
 

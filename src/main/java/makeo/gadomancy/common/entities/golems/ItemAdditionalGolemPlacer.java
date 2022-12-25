@@ -2,6 +2,7 @@ package makeo.gadomancy.common.entities.golems;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -12,8 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import thaumcraft.common.entities.golems.ItemGolemPlacer;
-
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -46,12 +45,13 @@ public class ItemAdditionalGolemPlacer extends Item {
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
-        list.add(new ItemStack(this.type.getPlacerItem(), 1, this.type.getEnumEntry().ordinal()));
+        list.add(new ItemStack(
+                this.type.getPlacerItem(), 1, this.type.getEnumEntry().ordinal()));
     }
 
     public IIcon getIcon(ItemStack stack, int pass) {
         int typePasses = this.type.getRenderPasses();
-        if(pass < typePasses) {
+        if (pass < typePasses) {
             return this.type.getIcon(stack, pass);
         }
         return this.placer.getIcon(stack, pass - typePasses + 1);
@@ -95,7 +95,17 @@ public class ItemAdditionalGolemPlacer extends Item {
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+    public boolean onItemUseFirst(
+            ItemStack stack,
+            EntityPlayer player,
+            World world,
+            int x,
+            int y,
+            int z,
+            int side,
+            float hitX,
+            float hitY,
+            float hitZ) {
         return this.placer.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
     }
 }

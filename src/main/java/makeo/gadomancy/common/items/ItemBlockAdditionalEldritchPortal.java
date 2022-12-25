@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.items;
 
+import java.util.List;
 import makeo.gadomancy.common.Gadomancy;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -9,8 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -35,7 +34,8 @@ public class ItemBlockAdditionalEldritchPortal extends ItemBlock {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean flag) {
-        list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("gadomancy.eldritch.portalPlacerCreative"));
+        list.add(EnumChatFormatting.DARK_PURPLE
+                + StatCollector.translateToLocal("gadomancy.eldritch.portalPlacerCreative"));
         super.addInformation(stack, player, list, flag);
     }
 

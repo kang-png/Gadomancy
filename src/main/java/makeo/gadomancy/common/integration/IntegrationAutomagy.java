@@ -28,8 +28,14 @@ import thaumcraft.common.config.ConfigBlocks;
  */
 public class IntegrationAutomagy extends IntegrationMod {
 
-    //TODO sync with Automagy some time...
-    private static final AspectList visCostAdvNodeJar = new AspectList().add(Aspect.FIRE, 125).add(Aspect.EARTH, 125).add(Aspect.ORDER, 125).add(Aspect.AIR, 125).add(Aspect.ENTROPY, 125).add(Aspect.WATER, 125);
+    // TODO sync with Automagy some time...
+    private static final AspectList visCostAdvNodeJar = new AspectList()
+            .add(Aspect.FIRE, 125)
+            .add(Aspect.EARTH, 125)
+            .add(Aspect.ORDER, 125)
+            .add(Aspect.AIR, 125)
+            .add(Aspect.ENTROPY, 125)
+            .add(Aspect.WATER, 125);
 
     @Override
     public String getModId() {
@@ -39,25 +45,26 @@ public class IntegrationAutomagy extends IntegrationMod {
     @Override
     protected void doInit() {
         Block infinityJar = Block.getBlockFromName("Automagy:blockCreativeJar");
-        if(infinityJar != null) {
+        if (infinityJar != null) {
             RegisteredBlocks.registerStickyJar(infinityJar, 3, false, true);
             RegisteredItems.registerStickyJar(Item.getItemFromBlock(infinityJar), 3);
         }
 
-        if(ModConfig.enableAdditionalNodeTypes) {
+        if (ModConfig.enableAdditionalNodeTypes) {
             CommonProxy.unregisterWandHandler("Automagy", ConfigBlocks.blockWarded, -1);
         }
 
-        //Better bookshelves -> MOAR knowledge
+        // Better bookshelves -> MOAR knowledge
         Block betterBookshelf = Block.getBlockFromName("Automagy:blockBookshelfEnchanted");
-        if(betterBookshelf != null) {
+        if (betterBookshelf != null) {
             TileKnowledgeBook.knowledgeIncreaseMap.put(new TileKnowledgeBook.BlockSnapshot(betterBookshelf, 0), 2);
             TileKnowledgeBook.knowledgeIncreaseMap.put(new TileKnowledgeBook.BlockSnapshot(betterBookshelf, 1), 4);
         }
     }
 
     public boolean handleNodeJarVisCost(ItemStack wandStack, EntityPlayer player) {
-        return ThaumcraftApiHelper.consumeVisFromWandCrafting(wandStack, player, IntegrationAutomagy.visCostAdvNodeJar, true);
+        return ThaumcraftApiHelper.consumeVisFromWandCrafting(
+                wandStack, player, IntegrationAutomagy.visCostAdvNodeJar, true);
     }
 
     public void tryFillGolemCrafttable(ChunkCoordinates cc, World world) {
@@ -69,15 +76,16 @@ public class IntegrationAutomagy extends IntegrationMod {
         }
 
         TileEntity te = world.getTileEntity(cc.posX, cc.posY, cc.posZ);
-        if(te != null && workbenchTileClazz.isAssignableFrom(te.getClass())) { //method instanceof checking..
+        if (te != null && workbenchTileClazz.isAssignableFrom(te.getClass())) { // method instanceof checking..
             try {
                 Injector i = new Injector(te, workbenchTileClazz);
                 int heat = i.getField("craftingHeat");
                 int impact = i.getField("heatImpactsAt");
-                if(heat > impact) {
+                if (heat > impact) {
                     i.setField("craftingHeat", heat - 700);
                 }
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
         }
     }
 }

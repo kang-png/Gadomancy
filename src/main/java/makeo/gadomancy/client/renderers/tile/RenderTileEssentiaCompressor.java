@@ -1,5 +1,7 @@
 package makeo.gadomancy.client.renderers.tile;
 
+import java.util.HashMap;
+import java.util.Map;
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.effect.fx.FXVortex;
 import makeo.gadomancy.client.models.ModelEssentiaCompressor;
@@ -13,9 +15,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import org.lwjgl.opengl.GL11;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * HellFirePvP@Admin
  * Date: 22.04.2016 / 21:39
@@ -26,19 +25,21 @@ public class RenderTileEssentiaCompressor extends TileEntitySpecialRenderer {
 
     public static final ModelBase MODEL_ESSENTIA_COMPRESSOR = new ModelEssentiaCompressor();
     public static final ModelBase MODEL_PACKED_COMPRESSOR = new ModelPackedCompressorBlock();
-    public static final SimpleResourceLocation COMPRESSOR_TEXTURE = new SimpleResourceLocation("models/essentia_compressor.png");
-    public static final SimpleResourceLocation PACKED_COMPRESSOR_TEXTURE = new SimpleResourceLocation("blocks/block_packed_compressor.png");
+    public static final SimpleResourceLocation COMPRESSOR_TEXTURE =
+            new SimpleResourceLocation("models/essentia_compressor.png");
+    public static final SimpleResourceLocation PACKED_COMPRESSOR_TEXTURE =
+            new SimpleResourceLocation("blocks/block_packed_compressor.png");
 
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTicks) {
-        if(tileEntity == null || !(tileEntity instanceof TileEssentiaCompressor)) return;
+        if (tileEntity == null || !(tileEntity instanceof TileEssentiaCompressor)) return;
 
         boolean isRenderedAsItem = false;
-        if(tileEntity.getWorldObj() instanceof FakeWorld) { //LUL
+        if (tileEntity.getWorldObj() instanceof FakeWorld) { // LUL
             isRenderedAsItem = true;
         }
 
-        if(!isRenderedAsItem && ((TileEssentiaCompressor) tileEntity).isMultiblockFormed()) {
+        if (!isRenderedAsItem && ((TileEssentiaCompressor) tileEntity).isMultiblockFormed()) {
             int yOffset = ((TileEssentiaCompressor) tileEntity).getMultiblockYIndex();
             GL11.glPushMatrix();
             GL11.glTranslated(x + 0.5, y - yOffset - 0.5, z + 0.5);
@@ -51,16 +52,21 @@ public class RenderTileEssentiaCompressor extends TileEntitySpecialRenderer {
             GL11.glPopMatrix();
 
             GL11.glPushMatrix();
-            if(yOffset == 1) { //The middle one. - well. the one where the blackhole is.
-                this.renderBlackHoleEffect(tileEntity.xCoord + 0.5, tileEntity.yCoord + 0.5, tileEntity.zCoord + 0.5,
-                        (TileEssentiaCompressor) tileEntity.getWorldObj().getTileEntity(tileEntity.xCoord, tileEntity.yCoord - 1, tileEntity.zCoord));
+            if (yOffset == 1) { // The middle one. - well. the one where the blackhole is.
+                this.renderBlackHoleEffect(
+                        tileEntity.xCoord + 0.5,
+                        tileEntity.yCoord + 0.5,
+                        tileEntity.zCoord + 0.5,
+                        (TileEssentiaCompressor) tileEntity
+                                .getWorldObj()
+                                .getTileEntity(tileEntity.xCoord, tileEntity.yCoord - 1, tileEntity.zCoord));
             }
             GL11.glPopMatrix();
         } else {
             GL11.glPushMatrix();
             GL11.glTranslated(x + 0.5, y - 0.5, z + 0.5);
             GL11.glRotatef(180, 1, 0, 0);
-            if(isRenderedAsItem) {
+            if (isRenderedAsItem) {
                 GL11.glTranslatef(0, -2.9F, 0);
             } else {
                 GL11.glTranslatef(0, -2.877F, 0);
@@ -69,7 +75,6 @@ public class RenderTileEssentiaCompressor extends TileEntitySpecialRenderer {
             RenderTileEssentiaCompressor.MODEL_PACKED_COMPRESSOR.render(null, 0, 0, 0, 0, 0, 0.0625f);
             GL11.glPopMatrix();
         }
-
     }
 
     public static Map<ChunkCoordinates, FXVortex> ownedVortex = new HashMap<ChunkCoordinates, FXVortex>();
@@ -85,10 +90,9 @@ public class RenderTileEssentiaCompressor extends TileEntitySpecialRenderer {
             v.registered = true;
             EffectHandler.getInstance().registerVortex(v);
         }
-        if(!v.registered) {
+        if (!v.registered) {
             EffectHandler.getInstance().registerVortex(v);
         }
         v.notify(System.currentTimeMillis());
     }
-
 }

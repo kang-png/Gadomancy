@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.blocks.tiles;
 
+import java.util.ArrayList;
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.effect.fx.Orbital;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
@@ -10,8 +11,6 @@ import net.minecraft.tileentity.TileEntity;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
-
-import java.util.ArrayList;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -30,26 +29,28 @@ public class TileAuraPylonTop extends SynchronizedTileEntity implements IAspectC
     @Override
     public void updateEntity() {
         TileEntity te = this.worldObj.getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
-        if(!this.worldObj.isRemote) {
-            if(te == null || !(te instanceof TileAuraPylon)) {
+        if (!this.worldObj.isRemote) {
+            if (te == null || !(te instanceof TileAuraPylon)) {
                 this.breakTile();
                 return;
             }
-            if(this.worldObj.getBlock(this.xCoord, this.yCoord - 1, this.zCoord) != RegisteredBlocks.blockAuraPylon || this.worldObj.getBlockMetadata(this.xCoord, this.yCoord - 1, this.zCoord) != 0) {
+            if (this.worldObj.getBlock(this.xCoord, this.yCoord - 1, this.zCoord) != RegisteredBlocks.blockAuraPylon
+                    || this.worldObj.getBlockMetadata(this.xCoord, this.yCoord - 1, this.zCoord) != 0) {
                 this.breakTile();
                 return;
             }
             TileAuraPylon pylon = (TileAuraPylon) te;
-            if(pylon.isPartOfMultiblock() && !pylon.isMasterTile()) this.breakTile();
+            if (pylon.isPartOfMultiblock() && !pylon.isMasterTile()) this.breakTile();
         } else {
             this.shouldRender = te != null && te instanceof TileAuraPylon && ((TileAuraPylon) te).isPartOfMultiblock();
-            this.shouldRenderAura = te != null && te instanceof TileAuraPylon && ((TileAuraPylon) te).getEssentiaAmount() > 0;
+            this.shouldRenderAura =
+                    te != null && te instanceof TileAuraPylon && ((TileAuraPylon) te).getEssentiaAmount() > 0;
         }
     }
 
     public Aspect getAspect() {
         TileEntity te = this.worldObj.getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
-        if(te == null || !(te instanceof TileAuraPylon)) {
+        if (te == null || !(te instanceof TileAuraPylon)) {
             return null;
         }
         return ((TileAuraPylon) te).getAspectType();
@@ -58,9 +59,9 @@ public class TileAuraPylonTop extends SynchronizedTileEntity implements IAspectC
     private void breakTile() {
         int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
         Block pylon = this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord);
-        if(pylon != null) {
+        if (pylon != null) {
             ArrayList<ItemStack> stacks = pylon.getDrops(this.worldObj, this.xCoord, this.yCoord, this.zCoord, meta, 0);
-            for(ItemStack i : stacks) {
+            for (ItemStack i : stacks) {
                 EntityItem item = new EntityItem(this.worldObj, this.xCoord, this.yCoord, this.zCoord, i);
                 this.worldObj.spawnEntityInWorld(item);
             }
@@ -81,10 +82,9 @@ public class TileAuraPylonTop extends SynchronizedTileEntity implements IAspectC
     @Override
     public void invalidate() {
         super.invalidate();
-        if(this.orbital != null) {
+        if (this.orbital != null) {
             this.orbital.clearOrbitals();
-            if(this.orbital.registered)
-                EffectHandler.getInstance().unregisterOrbital(this.orbital);
+            if (this.orbital.registered) EffectHandler.getInstance().unregisterOrbital(this.orbital);
         }
     }
 
@@ -96,7 +96,7 @@ public class TileAuraPylonTop extends SynchronizedTileEntity implements IAspectC
     @Override
     public AspectList getAspects() {
         TileEntity master = this.worldObj.getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
-        if(master == null || !(master instanceof TileAuraPylon)) return null;
+        if (master == null || !(master instanceof TileAuraPylon)) return null;
         return ((TileAuraPylon) master).getAspects();
     }
 

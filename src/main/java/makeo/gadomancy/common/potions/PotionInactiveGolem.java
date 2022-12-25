@@ -1,11 +1,10 @@
 package makeo.gadomancy.common.potions;
 
+import java.awt.*;
 import makeo.gadomancy.common.utils.ColorHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import thaumcraft.common.entities.golems.EntityGolemBase;
-
-import java.awt.*;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -22,7 +21,7 @@ public class PotionInactiveGolem extends Potion {
 
     @Override
     public void performEffect(EntityLivingBase entity, int par2) {
-        if(entity instanceof EntityGolemBase) {
+        if (entity instanceof EntityGolemBase) {
             ((EntityGolemBase) entity).inactive = true;
         }
     }

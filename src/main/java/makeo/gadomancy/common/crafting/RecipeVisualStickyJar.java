@@ -2,6 +2,7 @@ package makeo.gadomancy.common.crafting;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.client.Minecraft;
@@ -11,8 +12,6 @@ import net.minecraft.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
-
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -24,7 +23,15 @@ import java.util.List;
  */
 public class RecipeVisualStickyJar extends ShapedArcaneRecipe {
     public RecipeVisualStickyJar() {
-        super("Mirror mirror on the wall, who is the fairest one of all?", new ItemStack(Blocks.dirt), new AspectList().add(Aspect.WATER, 10).add(Aspect.EARTH, 10), "   ", " A ", "   ", 'A', new ItemStack(Items.diamond));
+        super(
+                "Mirror mirror on the wall, who is the fairest one of all?",
+                new ItemStack(Blocks.dirt),
+                new AspectList().add(Aspect.WATER, 10).add(Aspect.EARTH, 10),
+                "   ",
+                " A ",
+                "   ",
+                'A',
+                new ItemStack(Items.diamond));
     }
 
     @Override
@@ -37,8 +44,8 @@ public class RecipeVisualStickyJar extends ShapedArcaneRecipe {
     @SideOnly(Side.CLIENT)
     private void updateVisualStickyJarRecipes() {
         List<ItemStack> stacks = RegisteredItems.getStickyJarStacks(Minecraft.getMinecraft().thePlayer);
-        if(stacks.size() > 0) {
-            ItemStack stack = stacks.get((int)(System.currentTimeMillis() / 1000L % stacks.size()));
+        if (stacks.size() > 0) {
+            ItemStack stack = stacks.get((int) (System.currentTimeMillis() / 1000L % stacks.size()));
             this.output = stack.copy();
             NBTHelper.getData(this.output).setBoolean("isStickyJar", true);
 

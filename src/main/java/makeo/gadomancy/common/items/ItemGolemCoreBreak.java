@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.items;
 
+import java.util.List;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -11,8 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
-import java.util.List;
-
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -21,7 +20,7 @@ import java.util.List;
  *
  * Created by makeo @ 02.10.2015 19:40
  */
-//TODO rename when updating to 1.8
+// TODO rename when updating to 1.8
 public class ItemGolemCoreBreak extends Item {
 
     public ItemGolemCoreBreak() {
@@ -40,9 +39,9 @@ public class ItemGolemCoreBreak extends Item {
 
     @Override
     public IIcon getIconFromDamage(int damage) {
-        if(damage == 0) {
+        if (damage == 0) {
             return this.breakIcon;
-        } else if(damage == 1) {
+        } else if (damage == 1) {
             return this.bodyguardIcon;
         }
 
@@ -68,9 +67,9 @@ public class ItemGolemCoreBreak extends Item {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean showAdvanced) {
         int damage = stack.getItemDamage();
-        if(damage == 0) {
+        if (damage == 0) {
             list.add(StatCollector.translateToLocal("gadomancy.golem.breakcore"));
-        } else if(damage == 1) {
+        } else if (damage == 1) {
             list.add(StatCollector.translateToLocal("gadomancy.golem.bodyguardcore"));
         }
     }

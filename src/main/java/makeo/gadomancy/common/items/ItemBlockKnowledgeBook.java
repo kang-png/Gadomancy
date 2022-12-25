@@ -30,12 +30,24 @@ public class ItemBlockKnowledgeBook extends ItemBlock {
     }
 
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+    public boolean onItemUse(
+            ItemStack stack,
+            EntityPlayer player,
+            World world,
+            int x,
+            int y,
+            int z,
+            int side,
+            float hitX,
+            float hitY,
+            float hitZ) {
         ForgeDirection placedAgainstDir = ForgeDirection.getOrientation(side);
         Block placedAgainst = world.getBlock(x, y, z);
         int againstMeta = world.getBlockMetadata(x, y, z);
-        if(placedAgainstDir.equals(ForgeDirection.UP) && placedAgainst.equals(ConfigBlocks.blockStoneDevice) && againstMeta == 1) {
-            if(world.isAirBlock(x, y + 2, z)) {
+        if (placedAgainstDir.equals(ForgeDirection.UP)
+                && placedAgainst.equals(ConfigBlocks.blockStoneDevice)
+                && againstMeta == 1) {
+            if (world.isAirBlock(x, y + 2, z)) {
                 return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
             } else {
                 return false;

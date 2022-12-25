@@ -35,7 +35,7 @@ public class OverrideRidingEntity extends Entity {
         this.compound.setByte("GolemType", (byte) OverrideRidingEntity.DEFAULT_TYPE.ordinal());
 
         boolean result = false;
-        if(this.ridingEntity != null) {
+        if (this.ridingEntity != null) {
             result = this.ridingEntity.writeMountToNBT(compound);
         }
 
@@ -44,17 +44,11 @@ public class OverrideRidingEntity extends Entity {
     }
 
     @Override
-    protected void entityInit() {
-
-    }
+    protected void entityInit() {}
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound p_70037_1_) {
-
-    }
+    protected void readEntityFromNBT(NBTTagCompound p_70037_1_) {}
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {
-
-    }
+    protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {}
 }

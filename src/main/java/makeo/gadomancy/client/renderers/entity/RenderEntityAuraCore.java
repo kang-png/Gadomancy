@@ -18,11 +18,11 @@ public class RenderEntityAuraCore extends RenderEntityItem {
     public void doRender(Entity entity, double x, double y, double z, float parf1, float parf2) {
         super.doRender(entity, x, y, z, parf1, parf2);
 
-        if(!(entity instanceof EntityAuraCore)) return;
+        if (!(entity instanceof EntityAuraCore)) return;
 
         EntityAuraCore ea = (EntityAuraCore) entity;
 
-        if(ea.auraOrbital != null) {
+        if (ea.auraOrbital != null) {
             ea.auraOrbital.lastRenderCall = System.currentTimeMillis();
             ea.auraOrbital.updateCenter(MiscUtils.getPositionVector(ea));
         }

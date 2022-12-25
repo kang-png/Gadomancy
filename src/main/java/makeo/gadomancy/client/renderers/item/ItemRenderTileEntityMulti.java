@@ -1,13 +1,12 @@
 package makeo.gadomancy.client.renderers.item;
 
+import java.util.HashMap;
+import java.util.Map;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -22,8 +21,8 @@ public class ItemRenderTileEntityMulti implements IItemRenderer {
     private Map<Integer, RenderSet> renderMap = new HashMap<Integer, RenderSet>();
 
     public ItemRenderTileEntityMulti(RenderSet... renderSets) {
-        for(RenderSet set : renderSets) {
-            if(set != null) {
+        for (RenderSet set : renderSets) {
+            if (set != null) {
                 this.renderMap.put(set.meta, set);
             }
         }
@@ -42,13 +41,11 @@ public class ItemRenderTileEntityMulti implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         GL11.glPushMatrix();
-        if(type == IItemRenderer.ItemRenderType.ENTITY)
-            GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        if (type == IItemRenderer.ItemRenderType.ENTITY) GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
-        if(type == ItemRenderType.INVENTORY)
-            GL11.glTranslatef(0, -0.1F, 0);
+        if (type == ItemRenderType.INVENTORY) GL11.glTranslatef(0, -0.1F, 0);
 
-        if(this.renderMap.containsKey(item.getItemDamage())) {
+        if (this.renderMap.containsKey(item.getItemDamage())) {
             RenderSet set = this.renderMap.get(item.getItemDamage());
             set.renderer.renderTileEntityAt(set.te, 0, 0, 0, 0);
         }
@@ -68,5 +65,4 @@ public class ItemRenderTileEntityMulti implements IItemRenderer {
             this.meta = meta;
         }
     }
-
 }

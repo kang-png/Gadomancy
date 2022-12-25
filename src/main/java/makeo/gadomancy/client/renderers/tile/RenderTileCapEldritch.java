@@ -21,7 +21,7 @@ public class RenderTileCapEldritch extends TileEldritchCapRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f) {
-        if(te.getWorldObj().provider.dimensionId == ModConfig.dimOuterId) {
+        if (te.getWorldObj().provider.dimensionId == ModConfig.dimOuterId) {
             int old = Config.dimensionOuterId;
             Config.dimensionOuterId = ModConfig.dimOuterId;
             super.renderTileEntityAt(te, x, y, z, f);

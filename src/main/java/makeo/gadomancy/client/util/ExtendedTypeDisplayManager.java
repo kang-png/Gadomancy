@@ -24,8 +24,8 @@ public class ExtendedTypeDisplayManager {
     private static String oldName;
 
     public static void notifyRenderTick() {
-        if(ExtendedTypeDisplayManager.currTime > ExtendedTypeDisplayManager.timeout) {
-            if(ExtendedTypeDisplayManager.changedLanguageFile) {
+        if (ExtendedTypeDisplayManager.currTime > ExtendedTypeDisplayManager.timeout) {
+            if (ExtendedTypeDisplayManager.changedLanguageFile) {
                 ExtendedTypeDisplayManager.resetLanguageFile();
             }
         } else {
@@ -35,19 +35,20 @@ public class ExtendedTypeDisplayManager {
 
     private static void resetLanguageFile() {
         ExtendedTypeDisplayManager.currentNodeId = null;
-        ResourceReloadListener.languageList.put(ExtendedTypeDisplayManager.changedEntry, ExtendedTypeDisplayManager.oldName);
+        ResourceReloadListener.languageList.put(
+                ExtendedTypeDisplayManager.changedEntry, ExtendedTypeDisplayManager.oldName);
         ExtendedTypeDisplayManager.changedLanguageFile = false;
     }
 
     public static void notifyDisplayTick(String id, NodeType nodeType, ExtendedNodeType extendedNodeType) {
         ExtendedTypeDisplayManager.currTime = 0;
 
-        if(ExtendedTypeDisplayManager.currentNodeId != null && !ExtendedTypeDisplayManager.currentNodeId.equals(id)) {
-            //New node.
+        if (ExtendedTypeDisplayManager.currentNodeId != null && !ExtendedTypeDisplayManager.currentNodeId.equals(id)) {
+            // New node.
             ExtendedTypeDisplayManager.resetLanguageFile();
         }
 
-        if(!ExtendedTypeDisplayManager.changedLanguageFile) {
+        if (!ExtendedTypeDisplayManager.changedLanguageFile) {
             String toChance = "nodetype." + nodeType + ".name";
             String name = StatCollector.translateToLocal(toChance);
             String growingStr = StatCollector.translateToLocal("gadomancy.nodes." + extendedNodeType.name());

@@ -4,12 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import cpw.mods.fml.common.FMLLog;
-import makeo.gadomancy.common.Gadomancy;
-import net.minecraft.server.MinecraftServer;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import makeo.gadomancy.common.Gadomancy;
+import net.minecraft.server.MinecraftServer;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -29,8 +28,7 @@ public class ModData {
     private Map<String, Object> data = new HashMap<String, Object>();
 
     public ModData(String name, File directory) {
-        if(directory == null)
-            throw new IllegalArgumentException("Directory is null!");
+        if (directory == null) throw new IllegalArgumentException("Directory is null!");
 
         this.name = name;
         this.file = new File(directory, name + ".dat");
@@ -42,9 +40,9 @@ public class ModData {
 
     private static File geDefaultDirectory() {
         MinecraftServer server = MinecraftServer.getServer();
-        if(server != null && server.getEntityWorld() != null) {
+        if (server != null && server.getEntityWorld() != null) {
             File file = server.getEntityWorld().getSaveHandler().getWorldDirectory();
-            if(file != null) {
+            if (file != null) {
                 return new File(file, Gadomancy.MODID);
             }
         }
@@ -52,7 +50,7 @@ public class ModData {
     }
 
     public <T> T get(String key, T defaultValue) {
-        if(this.data.containsKey(key)) {
+        if (this.data.containsKey(key)) {
             return (T) this.data.get(key);
         }
         this.data.put(key, defaultValue);
@@ -72,8 +70,8 @@ public class ModData {
     }
 
     public boolean load() {
-        if(this.file != null && this.file.exists()) {
-        	ObjectInputStream inOBJ = null;
+        if (this.file != null && this.file.exists()) {
+            ObjectInputStream inOBJ = null;
             FileInputStream in = null;
             try {
                 in = new FileInputStream(this.file);
@@ -82,29 +80,26 @@ public class ModData {
             } catch (IOException | ClassCastException | JsonSyntaxException | ClassNotFoundException e) { //
                 e.printStackTrace();
                 try {
-                    if (inOBJ != null)
-					    inOBJ.close();
-                    if (in != null)
-					    in.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+                    if (inOBJ != null) inOBJ.close();
+                    if (in != null) in.close();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
                 return false;
             } finally {
-                    try {
-                        if (inOBJ != null)
-                    	    inOBJ.close();
-                        if (in != null)
-                            in.close();
-                    } catch (IOException ignored) { }
+                try {
+                    if (inOBJ != null) inOBJ.close();
+                    if (in != null) in.close();
+                } catch (IOException ignored) {
+                }
             }
         }
         return true;
     }
 
     public boolean save() {
-        if(!this.file.getParentFile().exists() && !this.file.getParentFile().mkdirs()) {
+        if (!this.file.getParentFile().exists() && !this.file.getParentFile().mkdirs()) {
             FMLLog.warning("Failed to create directory: \"" + this.file.toString() + "\"!");
             return false;
         }
@@ -112,8 +107,7 @@ public class ModData {
         FileOutputStream out = null;
         ObjectOutputStream outOBJ = null;
         try {
-            if(!this.file.exists())
-                this.file.createNewFile();
+            if (!this.file.exists()) this.file.createNewFile();
 
             out = new FileOutputStream(this.file);
             outOBJ = new ObjectOutputStream(out);
@@ -121,21 +115,18 @@ public class ModData {
         } catch (JsonIOException | IOException e) {
             e.printStackTrace();
             try {
-                if (outOBJ != null)
-				    outOBJ.close();
-                if(out != null)
-				    out.close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+                if (outOBJ != null) outOBJ.close();
+                if (out != null) out.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
             return false;
         } finally {
-                try {
-                    if(outOBJ != null)
-                	    outOBJ.close();
-                    if(out != null)
-                        out.close();
-                } catch (IOException ignored) { }
+            try {
+                if (outOBJ != null) outOBJ.close();
+                if (out != null) out.close();
+            } catch (IOException ignored) {
+            }
         }
         return true;
     }

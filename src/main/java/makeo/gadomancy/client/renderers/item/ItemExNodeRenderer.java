@@ -17,7 +17,9 @@ public class ItemExNodeRenderer extends ItemNodeRenderer {
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return (item != null) && (item.getItem() == Item.getItemFromBlock(RegisteredBlocks.blockNode)) && ((item.getItemDamage() == 0) || item.getItemDamage() == 5);
+        return (item != null)
+                && (item.getItem() == Item.getItemFromBlock(RegisteredBlocks.blockNode))
+                && ((item.getItemDamage() == 0) || item.getItemDamage() == 5);
     }
 
     @Override

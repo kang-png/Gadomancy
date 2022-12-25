@@ -22,7 +22,7 @@ public class ItemBlockStoneMachine extends ItemBlock {
 
     @Override
     public IIcon getIconFromDamage(int metadata) {
-        if(metadata == 11 || metadata == 15) {
+        if (metadata == 11 || metadata == 15) {
             return this.field_150939_a.getIcon(0, metadata);
         }
         return super.getIconFromDamage(metadata);

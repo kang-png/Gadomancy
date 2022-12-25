@@ -1,11 +1,10 @@
 package makeo.gadomancy.common.utils;
 
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.Vec3;
-
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.Random;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.Vec3;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -228,7 +227,10 @@ public class Vector3 {
     }
 
     public static Vector3 random() {
-        return new Vector3(Vector3.RAND.nextDouble() * (Vector3.RAND.nextBoolean() ? 1 : -1), Vector3.RAND.nextDouble() * (Vector3.RAND.nextBoolean() ? 1 : -1), Vector3.RAND.nextDouble() * (Vector3.RAND.nextBoolean() ? 1 : -1));
+        return new Vector3(
+                Vector3.RAND.nextDouble() * (Vector3.RAND.nextBoolean() ? 1 : -1),
+                Vector3.RAND.nextDouble() * (Vector3.RAND.nextBoolean() ? 1 : -1),
+                Vector3.RAND.nextDouble() * (Vector3.RAND.nextBoolean() ? 1 : -1));
     }
 
     public static Vector3 positiveYRandom() {
@@ -240,7 +242,9 @@ public class Vector3 {
     }
 
     public ChunkCoordinates getAsFloatCC() {
-        return new ChunkCoordinates(Float.floatToIntBits((float) this.x), Float.floatToIntBits((float) this.y), Float.floatToIntBits((float) this.z));
+        return new ChunkCoordinates(
+                Float.floatToIntBits((float) this.x), Float.floatToIntBits((float) this.y), Float.floatToIntBits((float)
+                        this.z));
     }
 
     public static Vector3 getFromFloatCC(ChunkCoordinates cc) {
@@ -248,7 +252,12 @@ public class Vector3 {
     }
 
     public boolean isInAABB(Vector3 min, Vector3 max) {
-        return (this.x >= min.x) && (this.x <= max.x) && (this.y >= min.y) && (this.y <= max.y) && (this.z >= min.z) && (this.z <= max.z);
+        return (this.x >= min.x)
+                && (this.x <= max.x)
+                && (this.y >= min.y)
+                && (this.y <= max.y)
+                && (this.z >= min.z)
+                && (this.z <= max.z);
     }
 
     public boolean isInSphere(Vector3 origin, double radius) {
@@ -337,7 +346,10 @@ public class Vector3 {
         }
         Vector3 other = (Vector3) obj;
 
-        return (Math.abs(this.x - other.x) < 1.0E-006D) && (Math.abs(this.y - other.y) < 1.0E-006D) && (Math.abs(this.z - other.z) < 1.0E-006D) && (this.getClass().equals(obj.getClass()));
+        return (Math.abs(this.x - other.x) < 1.0E-006D)
+                && (Math.abs(this.y - other.y) < 1.0E-006D)
+                && (Math.abs(this.z - other.z) < 1.0E-006D)
+                && (this.getClass().equals(obj.getClass()));
     }
 
     public int hashCode() {
@@ -458,7 +470,5 @@ public class Vector3 {
         public static Quat aroundAxis(Vector3 axis, double angle) {
             return Quat.aroundAxis(axis.x, axis.y, axis.z, angle);
         }
-
     }
-
 }

@@ -1,5 +1,9 @@
 package makeo.gadomancy.common.crafting;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import makeo.gadomancy.common.research.SimpleResearchItem;
 import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.entity.EntityLiving;
@@ -17,11 +21,6 @@ import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.crafting.InfusionRunicAugmentRecipe;
 import thaumcraft.common.lib.research.ResearchManager;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -31,36 +30,44 @@ import java.util.Map;
  * Created by makeo @ 25.12.2015 15:35
  */
 public class InfusionDisguiseArmor extends InfusionRunicAugmentRecipe {
-    public static final ItemStack[] COMPONENTS = {new ItemStack(Items.slime_ball), new ItemStack(ConfigItems.itemResource, 1, 3), new ItemStack(Items.slime_ball), new ItemStack(ConfigItems.itemResource, 1, 3)};
-    public static final AspectList ASPECTS = new AspectList().add(Aspect.SLIME, 12).add(Aspect.ARMOR, 10).add(Aspect.MAGIC, 8);
+    public static final ItemStack[] COMPONENTS = {
+        new ItemStack(Items.slime_ball),
+        new ItemStack(ConfigItems.itemResource, 1, 3),
+        new ItemStack(Items.slime_ball),
+        new ItemStack(ConfigItems.itemResource, 1, 3)
+    };
+    public static final AspectList ASPECTS =
+            new AspectList().add(Aspect.SLIME, 12).add(Aspect.ARMOR, 10).add(Aspect.MAGIC, 8);
 
     private Map<ItemStack, List<ItemStack>> cachedItems = new HashMap<ItemStack, List<ItemStack>>();
 
     @Override
     public boolean matches(ArrayList<ItemStack> input, ItemStack central, World world, EntityPlayer player) {
-        if(input.size() != InfusionDisguiseArmor.COMPONENTS.length + 1 || !ResearchManager.isResearchComplete(player.getCommandSenderName(), SimpleResearchItem.getFullName("ARMORDISGUISE"))) {
+        if (input.size() != InfusionDisguiseArmor.COMPONENTS.length + 1
+                || !ResearchManager.isResearchComplete(
+                        player.getCommandSenderName(), SimpleResearchItem.getFullName("ARMORDISGUISE"))) {
             return false;
         }
 
         List<ItemStack> copy = (List<ItemStack>) input.clone();
         List<ItemStack> result = new ArrayList<ItemStack>(copy.size());
-        for(ItemStack required : InfusionDisguiseArmor.COMPONENTS) {
+        for (ItemStack required : InfusionDisguiseArmor.COMPONENTS) {
             boolean contains = false;
-            for(int i = 0; i < copy.size(); i++) {
-                if(InfusionRecipe.areItemStacksEqual(required, copy.get(i), true)) {
+            for (int i = 0; i < copy.size(); i++) {
+                if (InfusionRecipe.areItemStacksEqual(required, copy.get(i), true)) {
                     contains = true;
                     result.add(copy.get(i));
                     copy.remove(i);
                     break;
                 }
             }
-            if(!contains) {
+            if (!contains) {
                 return false;
             }
         }
 
         ItemStack disguise = copy.get(0);
-        if(!this.isValidDisguise(central, disguise)) {
+        if (!this.isValidDisguise(central, disguise)) {
             return false;
         }
 
@@ -72,7 +79,7 @@ public class InfusionDisguiseArmor extends InfusionRunicAugmentRecipe {
     @Override
     public ItemStack[] getComponents(ItemStack input) {
         List<ItemStack> components = this.cachedItems.get(input);
-        if(components != null) {
+        if (components != null) {
             return components.toArray(new ItemStack[components.size()]);
         }
         return new ItemStack[0];
@@ -92,7 +99,7 @@ public class InfusionDisguiseArmor extends InfusionRunicAugmentRecipe {
     @Override
     public Object getRecipeOutput(ItemStack input) {
         List<ItemStack> components = this.cachedItems.get(input);
-        if(components != null) {
+        if (components != null) {
             return InfusionDisguiseArmor.disguiseStack(input, components.get(0));
         }
         return input;
@@ -101,7 +108,7 @@ public class InfusionDisguiseArmor extends InfusionRunicAugmentRecipe {
     public static ItemStack disguiseStack(ItemStack stack, ItemStack disguise) {
         ItemStack out = stack.copy();
         NBTTagCompound compound = NBTHelper.getPersistentData(out);
-        if(disguise.getItem() == Items.potionitem) {
+        if (disguise.getItem() == Items.potionitem) {
             compound.setBoolean("disguise", true);
         } else {
             compound.setTag("disguise", disguise.writeToNBT(new NBTTagCompound()));
@@ -110,7 +117,7 @@ public class InfusionDisguiseArmor extends InfusionRunicAugmentRecipe {
     }
 
     private boolean isValidDisguise(ItemStack armor, ItemStack disguise) {
-        if(this.isDisguised(armor) || this.isDisguised(disguise)) {
+        if (this.isDisguised(armor) || this.isDisguised(disguise)) {
             return false;
         }
 
@@ -119,15 +126,16 @@ public class InfusionDisguiseArmor extends InfusionRunicAugmentRecipe {
     }
 
     private boolean isDisguised(ItemStack stack) {
-        return NBTHelper.hasPersistentData(stack) && NBTHelper.getPersistentData(stack).hasKey("disguise");
+        return NBTHelper.hasPersistentData(stack)
+                && NBTHelper.getPersistentData(stack).hasKey("disguise");
     }
 
     private boolean isInvisItem(ItemStack disguise) {
-        if(disguise.getItem() == Items.potionitem) {
+        if (disguise.getItem() == Items.potionitem) {
             List effects = Items.potionitem.getEffects(disguise);
-            for(Object obj : effects) {
-                if(obj instanceof PotionEffect) {
-                    if(((PotionEffect)obj).getPotionID() == Potion.invisibility.getId()) {
+            for (Object obj : effects) {
+                if (obj instanceof PotionEffect) {
+                    if (((PotionEffect) obj).getPotionID() == Potion.invisibility.getId()) {
                         return true;
                     }
                 }

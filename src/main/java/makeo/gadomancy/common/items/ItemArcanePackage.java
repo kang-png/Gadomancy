@@ -1,5 +1,10 @@
 package makeo.gadomancy.common.items;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.NBTHelper;
@@ -14,12 +19,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import thaumcraft.common.lib.utils.InventoryUtils;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -56,9 +55,9 @@ public class ItemArcanePackage extends ItemFakeLootbag {
 
         items = new ArrayList<ItemStack>(tempInv.getSizeInventory());
 
-        for(int i = 0; i < tempInv.getSizeInventory(); i++) {
+        for (int i = 0; i < tempInv.getSizeInventory(); i++) {
             ItemStack item = tempInv.getStackInSlot(i);
-            if(item != null) {
+            if (item != null) {
                 items.add(item);
             }
         }
@@ -66,18 +65,18 @@ public class ItemArcanePackage extends ItemFakeLootbag {
         Collections.sort(items, new Comparator<ItemStack>() {
             @Override
             public int compare(ItemStack i1, ItemStack i2) {
-                return i1.writeToNBT(new NBTTagCompound()).hashCode() - i2.writeToNBT(new NBTTagCompound()).hashCode();
+                return i1.writeToNBT(new NBTTagCompound()).hashCode()
+                        - i2.writeToNBT(new NBTTagCompound()).hashCode();
             }
         });
 
         NBTTagList stackList = new NBTTagList();
         for (ItemStack item : items) {
-            //Prevent depth of more then 2 packages
-            if(item.getItem() == RegisteredItems.itemPackage
-                    || item.getItem() == RegisteredItems.itemFakeLootbag) {
+            // Prevent depth of more then 2 packages
+            if (item.getItem() == RegisteredItems.itemPackage || item.getItem() == RegisteredItems.itemFakeLootbag) {
                 List<ItemStack> packedItems = this.getContents(item);
-                for(ItemStack packedItem : packedItems) {
-                    if(packedItem.getItem() == RegisteredItems.itemPackage) {
+                for (ItemStack packedItem : packedItems) {
+                    if (packedItem.getItem() == RegisteredItems.itemPackage) {
                         return false;
                     }
                 }
@@ -89,8 +88,8 @@ public class ItemArcanePackage extends ItemFakeLootbag {
         compound.setTag("data", stackList);
         try {
             byte[] data = CompressedStreamTools.compress(compound);
-            //If the compound is too long it will not work to prevent lag
-            if(data.length > ItemArcanePackage.MAX_PACKAGE_SIZE) {
+            // If the compound is too long it will not work to prevent lag
+            if (data.length > ItemArcanePackage.MAX_PACKAGE_SIZE) {
                 return false;
             }
             NBTHelper.getData(stack).setByteArray("items", data);
@@ -104,10 +103,12 @@ public class ItemArcanePackage extends ItemFakeLootbag {
         List<ItemStack> contents = new ArrayList<ItemStack>();
         if (stack.hasTagCompound()) {
             byte[] data = stack.getTagCompound().getByteArray("items");
-            if(data.length > 0) {
+            if (data.length > 0) {
                 NBTTagList stackList;
                 try {
-                    stackList = (NBTTagList) CompressedStreamTools.func_152457_a(data, new NBTSizeTracker(Long.MAX_VALUE)).getTag("data");
+                    stackList =
+                            (NBTTagList) CompressedStreamTools.func_152457_a(data, new NBTSizeTracker(Long.MAX_VALUE))
+                                    .getTag("data");
                 } catch (Exception e) {
                     return contents;
                 }

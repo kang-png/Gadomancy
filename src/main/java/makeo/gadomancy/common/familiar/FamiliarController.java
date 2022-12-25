@@ -2,6 +2,10 @@ package makeo.gadomancy.common.familiar;
 
 import baubles.api.BaublesApi;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketFamiliarBolt;
@@ -20,11 +24,6 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.items.baubles.ItemAmuletVis;
 import thaumcraft.common.items.wands.ItemWandCasting;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -77,8 +76,10 @@ public class FamiliarController {
             FamiliarAugment.FamiliarAugmentPair effectElement = null;
             for (FamiliarAugment.FamiliarAugmentPair pair : augments) {
                 FamiliarAugment augment = pair.augment;
-                if (augment.equals(FamiliarAugment.SHOCK) || augment.equals(FamiliarAugment.FIRE)
-                        || augment.equals(FamiliarAugment.POISON) || augment.equals(FamiliarAugment.WEAKNESS)) {
+                if (augment.equals(FamiliarAugment.SHOCK)
+                        || augment.equals(FamiliarAugment.FIRE)
+                        || augment.equals(FamiliarAugment.POISON)
+                        || augment.equals(FamiliarAugment.WEAKNESS)) {
                     effectElement = pair;
                     break;
                 }
@@ -108,30 +109,33 @@ public class FamiliarController {
             }
 
             double damage = FamiliarController.DMG_DEF + (dmgLevel != -1 ? FamiliarController.DMG_INC * dmgLevel : 0);
-            int ticksUntilNextAttack = FamiliarController.AS_DELAY_DEF - (attackSpeedLevel != -1 ? FamiliarController.AS_INC * attackSpeedLevel : 0);
-            double range = FamiliarController.RANGE_DEF + (rangeLevel != -1 ? FamiliarController.RANGE_INC * rangeLevel : 0);
-            
-            if(effectElement != null) {
+            int ticksUntilNextAttack = FamiliarController.AS_DELAY_DEF
+                    - (attackSpeedLevel != -1 ? FamiliarController.AS_INC * attackSpeedLevel : 0);
+            double range =
+                    FamiliarController.RANGE_DEF + (rangeLevel != -1 ? FamiliarController.RANGE_INC * rangeLevel : 0);
+
+            if (effectElement != null) {
                 for (int i = 0; i < effectElement.level; i++) {
                     costs.add(effectElement.augment.getCostsPerLevel());
                 }
             }
 
-            if (!this.owningPlayer.capabilities.isCreativeMode && !FamiliarController.consumeVisFromInventory(this.owningPlayer, costs, false)) {
+            if (!this.owningPlayer.capabilities.isCreativeMode
+                    && !FamiliarController.consumeVisFromInventory(this.owningPlayer, costs, false)) {
                 return;
             }
 
             if (effectElement == null) {
                 if (this.doEnhancedDefaultAttack(damage, range)) {
                     this.tickLastEffect = ticksUntilNextAttack;
-                    if(!this.owningPlayer.capabilities.isCreativeMode && FamiliarController.RAND.nextInt(3) == 0) {
+                    if (!this.owningPlayer.capabilities.isCreativeMode && FamiliarController.RAND.nextInt(3) == 0) {
                         FamiliarController.consumeVisFromInventory(this.owningPlayer, costs, true);
                     }
                 }
             } else {
                 if (this.doAttack(effectElement, damage, range)) {
                     this.tickLastEffect = ticksUntilNextAttack;
-                    if(!this.owningPlayer.capabilities.isCreativeMode && FamiliarController.RAND.nextInt(3) == 0) {
+                    if (!this.owningPlayer.capabilities.isCreativeMode && FamiliarController.RAND.nextInt(3) == 0) {
                         FamiliarController.consumeVisFromInventory(this.owningPlayer, costs, true);
                     }
                 }
@@ -167,8 +171,11 @@ public class FamiliarController {
         if (augment.equals(FamiliarAugment.SHOCK)) {
             for (EntityLivingBase entity : toAttack) {
                 if (FamiliarController.RAND.nextBoolean()) {
-                    Vector3 vel = MiscUtils.getPositionVector(entity).subtract(MiscUtils.getPositionVector(this.owningPlayer))
-                            .normalize().divide(2).multiply(0.8 * effectLevel);
+                    Vector3 vel = MiscUtils.getPositionVector(entity)
+                            .subtract(MiscUtils.getPositionVector(this.owningPlayer))
+                            .normalize()
+                            .divide(2)
+                            .multiply(0.8 * effectLevel);
                     if (vel.getY() < 0) vel.setY(-vel.getY());
                     entity.motionX += vel.getX();
                     entity.motionY += vel.getY();
@@ -183,14 +190,16 @@ public class FamiliarController {
             for (EntityLivingBase entity : toAttack) {
                 entity.setFire(fireDur);
                 if (effectLevel == 3) {
-                    entity.addPotionEffect(new PotionEffect(Config.potionSunScornedID, MiscUtils.ticksForMinutes(1), 2));
+                    entity.addPotionEffect(
+                            new PotionEffect(Config.potionSunScornedID, MiscUtils.ticksForMinutes(1), 2));
                 }
             }
         } else if (augment.equals(FamiliarAugment.POISON)) {
             int potionLvl = 0;
             if (effectLevel > 1) potionLvl += 1;
             for (EntityLivingBase entity : toAttack) {
-                entity.addPotionEffect(new PotionEffect(Potion.poison.getId(), MiscUtils.ticksForSeconds(30), potionLvl));
+                entity.addPotionEffect(
+                        new PotionEffect(Potion.poison.getId(), MiscUtils.ticksForSeconds(30), potionLvl));
                 if (effectLevel == 3) {
                     entity.addPotionEffect(new PotionEffect(Potion.hunger.getId(), MiscUtils.ticksForMinutes(2), 3));
                 }
@@ -210,8 +219,10 @@ public class FamiliarController {
     public static boolean consumeVisFromInventory(EntityPlayer player, AspectList cost, boolean doit) {
         IInventory baubles = BaublesApi.getBaubles(player);
         for (int a = 0; a < 4; a++) {
-            if ((baubles.getStackInSlot(a) != null) && ((baubles.getStackInSlot(a).getItem() instanceof ItemAmuletVis))) {
-                boolean done = ((ItemAmuletVis) baubles.getStackInSlot(a).getItem()).consumeAllVis(baubles.getStackInSlot(a), player, cost, doit, true);
+            if ((baubles.getStackInSlot(a) != null)
+                    && ((baubles.getStackInSlot(a).getItem() instanceof ItemAmuletVis))) {
+                boolean done = ((ItemAmuletVis) baubles.getStackInSlot(a).getItem())
+                        .consumeAllVis(baubles.getStackInSlot(a), player, cost, doit, true);
                 if (done) {
                     return true;
                 }
@@ -247,10 +258,23 @@ public class FamiliarController {
 
     private void attack(EntityLivingBase toAttack, double damage, int boltType) {
         toAttack.attackEntityFrom(DamageSource.magic, (float) damage);
-        toAttack.worldObj.playSoundEffect(toAttack.posX + 0.5, toAttack.posY + 0.5, toAttack.posZ + 0.5, "thaumcraft:zap", 0.8F, 1.0F);
-        PacketFamiliarBolt bolt = new PacketFamiliarBolt(this.owningPlayer.getCommandSenderName(), (float) toAttack.posX, (float) toAttack.posY, (float) toAttack.posZ, boltType, true);
-        PacketHandler.INSTANCE.sendToAllAround(bolt, new NetworkRegistry.TargetPoint(toAttack.worldObj.provider.dimensionId, this.owningPlayer.posX,
-                this.owningPlayer.posY, this.owningPlayer.posZ, 16));
+        toAttack.worldObj.playSoundEffect(
+                toAttack.posX + 0.5, toAttack.posY + 0.5, toAttack.posZ + 0.5, "thaumcraft:zap", 0.8F, 1.0F);
+        PacketFamiliarBolt bolt = new PacketFamiliarBolt(
+                this.owningPlayer.getCommandSenderName(),
+                (float) toAttack.posX,
+                (float) toAttack.posY,
+                (float) toAttack.posZ,
+                boltType,
+                true);
+        PacketHandler.INSTANCE.sendToAllAround(
+                bolt,
+                new NetworkRegistry.TargetPoint(
+                        toAttack.worldObj.provider.dimensionId,
+                        this.owningPlayer.posX,
+                        this.owningPlayer.posY,
+                        this.owningPlayer.posZ,
+                        16));
     }
 
     private List<EntityLivingBase> selectEntityToAttack(double rad, int amountToSelectMax) {
@@ -271,17 +295,18 @@ public class FamiliarController {
         double x = this.owningPlayer.posX;
         double y = this.owningPlayer.posY;
         double z = this.owningPlayer.posZ;
-        List<EntityLivingBase> entities = this.owningPlayer.worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
-                AxisAlignedBB.getBoundingBox(x - 0.5, y - 0.5, z - 0.5, x + 0.5, y + 0.5, z + 0.5).expand(rad, rad, rad));
+        List<EntityLivingBase> entities = this.owningPlayer.worldObj.getEntitiesWithinAABB(
+                EntityLivingBase.class,
+                AxisAlignedBB.getBoundingBox(x - 0.5, y - 0.5, z - 0.5, x + 0.5, y + 0.5, z + 0.5)
+                        .expand(rad, rad, rad));
 
         Iterator<EntityLivingBase> it = entities.iterator();
         while (it.hasNext()) {
             EntityLivingBase base = it.next();
             if (base == null || base.isDead || base instanceof EntityPlayer || !(base instanceof IMob)) it.remove();
-            //TODO remove entities we don't want to attack...
+            // TODO remove entities we don't want to attack...
         }
 
         return entities;
     }
-
 }

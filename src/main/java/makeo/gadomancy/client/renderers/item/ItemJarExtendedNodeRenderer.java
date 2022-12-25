@@ -26,13 +26,14 @@ import thaumcraft.common.tiles.TileJarNode;
  */
 public class ItemJarExtendedNodeRenderer implements IItemRenderer {
 
-    //Copied and modified to allow compatibility to the ExtendedNodes
+    // Copied and modified to allow compatibility to the ExtendedNodes
 
     public boolean handleRenderType(ItemStack item, IItemRenderer.ItemRenderType type) {
         return (item != null) && (item.getItem() == RegisteredItems.itemExtendedNodeJar);
     }
 
-    public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType type, ItemStack item, IItemRenderer.ItemRendererHelper helper) {
+    public boolean shouldUseRenderHelper(
+            IItemRenderer.ItemRenderType type, ItemStack item, IItemRenderer.ItemRendererHelper helper) {
         return helper != ItemRendererHelper.EQUIPPED_BLOCK;
     }
 
@@ -68,7 +69,6 @@ public class ItemJarExtendedNodeRenderer implements IItemRenderer {
             ItemNodeRenderer.renderItemNode(tjf);
             GL11.glPopMatrix();
 
-
             GL11.glPushMatrix();
             GL11.glTranslatef(0.5F, 0.5F, 0.5F);
             GL11.glEnable(3042);
@@ -78,7 +78,6 @@ public class ItemJarExtendedNodeRenderer implements IItemRenderer {
             this.rb.useInventoryTint = true;
             this.rb.renderBlockAsItem(RegisteredBlocks.blockExtendedNodeJar, item.getItemDamage(), 1.0F);
             GL11.glPopMatrix();
-
 
             GL11.glEnable(32826);
         }

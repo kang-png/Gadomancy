@@ -1,13 +1,12 @@
 package makeo.gadomancy.common.familiar;
 
-import net.minecraft.util.StatCollector;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.minecraft.util.StatCollector;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -21,17 +20,34 @@ public class FamiliarAugment {
 
     private static final String FORMAT_NAME = "familiar.augment.%s.name";
 
-    //Main effects
-    public static final FamiliarAugment SHOCK = new FamiliarAugment("shock", new AspectList().add(Aspect.AIR, 3).add(Aspect.ENTROPY, 2));
-    public static final FamiliarAugment POISON = new FamiliarAugment("poison", new AspectList().add(Aspect.WATER, 3).add(Aspect.ENTROPY, 4)).addConflict(FamiliarAugment.SHOCK);
-    public static final FamiliarAugment FIRE = new FamiliarAugment("fire", new AspectList().add(Aspect.FIRE, 4).add(Aspect.ORDER, 2)).addConflict(FamiliarAugment.SHOCK, FamiliarAugment.POISON);
-    public static final FamiliarAugment WEAKNESS = new FamiliarAugment("weakness", new AspectList().add(Aspect.ENTROPY, 3).add(Aspect.EARTH, 3)).addConflict(FamiliarAugment.SHOCK, FamiliarAugment.POISON, FamiliarAugment.FIRE);
+    // Main effects
+    public static final FamiliarAugment SHOCK =
+            new FamiliarAugment("shock", new AspectList().add(Aspect.AIR, 3).add(Aspect.ENTROPY, 2));
+    public static final FamiliarAugment POISON = new FamiliarAugment(
+                    "poison", new AspectList().add(Aspect.WATER, 3).add(Aspect.ENTROPY, 4))
+            .addConflict(FamiliarAugment.SHOCK);
+    public static final FamiliarAugment FIRE = new FamiliarAugment(
+                    "fire", new AspectList().add(Aspect.FIRE, 4).add(Aspect.ORDER, 2))
+            .addConflict(FamiliarAugment.SHOCK, FamiliarAugment.POISON);
+    public static final FamiliarAugment WEAKNESS = new FamiliarAugment(
+                    "weakness", new AspectList().add(Aspect.ENTROPY, 3).add(Aspect.EARTH, 3))
+            .addConflict(FamiliarAugment.SHOCK, FamiliarAugment.POISON, FamiliarAugment.FIRE);
 
-    //Side effects
-    public static final FamiliarAugment DAMAGE_INCREASE = new FamiliarAugment("damage", new AspectList().add(Aspect.FIRE, 3)).addCondition(new PreconditionAny(FamiliarAugment.SHOCK, FamiliarAugment.POISON, FamiliarAugment.FIRE, FamiliarAugment.WEAKNESS));
-    public static final FamiliarAugment RANGE_INCREASE = new FamiliarAugment("range", new AspectList().add(Aspect.AIR, 2).add(Aspect.ORDER, 1)).addConflict(FamiliarAugment.DAMAGE_INCREASE).addCondition(new PreconditionAny(FamiliarAugment.SHOCK, FamiliarAugment.POISON, FamiliarAugment.FIRE, FamiliarAugment.WEAKNESS));
-    public static final FamiliarAugment ATTACK_SPEED = new FamiliarAugment("speed", new AspectList().add(Aspect.ORDER, 2).add(Aspect.FIRE, 1)).addConflict(FamiliarAugment.DAMAGE_INCREASE, FamiliarAugment.RANGE_INCREASE).addCondition(new PreconditionAny(FamiliarAugment.SHOCK, FamiliarAugment.POISON, FamiliarAugment.FIRE, FamiliarAugment.WEAKNESS));
-
+    // Side effects
+    public static final FamiliarAugment DAMAGE_INCREASE = new FamiliarAugment(
+                    "damage", new AspectList().add(Aspect.FIRE, 3))
+            .addCondition(new PreconditionAny(
+                    FamiliarAugment.SHOCK, FamiliarAugment.POISON, FamiliarAugment.FIRE, FamiliarAugment.WEAKNESS));
+    public static final FamiliarAugment RANGE_INCREASE = new FamiliarAugment(
+                    "range", new AspectList().add(Aspect.AIR, 2).add(Aspect.ORDER, 1))
+            .addConflict(FamiliarAugment.DAMAGE_INCREASE)
+            .addCondition(new PreconditionAny(
+                    FamiliarAugment.SHOCK, FamiliarAugment.POISON, FamiliarAugment.FIRE, FamiliarAugment.WEAKNESS));
+    public static final FamiliarAugment ATTACK_SPEED = new FamiliarAugment(
+                    "speed", new AspectList().add(Aspect.ORDER, 2).add(Aspect.FIRE, 1))
+            .addConflict(FamiliarAugment.DAMAGE_INCREASE, FamiliarAugment.RANGE_INCREASE)
+            .addCondition(new PreconditionAny(
+                    FamiliarAugment.SHOCK, FamiliarAugment.POISON, FamiliarAugment.FIRE, FamiliarAugment.WEAKNESS));
 
     private final String unlocalizedName;
     private List<FamiliarAugmentPrecondition> preconditions = new ArrayList<FamiliarAugmentPrecondition>();
@@ -57,16 +73,16 @@ public class FamiliarAugment {
     }
 
     private FamiliarAugment addConflict(FamiliarAugment... others) {
-        for(FamiliarAugment augment : others) {
-            if(augment == null) continue;
+        for (FamiliarAugment augment : others) {
+            if (augment == null) continue;
             this.addConflict(augment);
         }
         return this;
     }
 
     private FamiliarAugment addConflict(FamiliarAugment other) {
-        if(!this.conflicts.contains(other)) this.conflicts.add(other);
-        if(!other.conflicts.contains(this)) other.conflicts.add(this);
+        if (!this.conflicts.contains(other)) this.conflicts.add(other);
+        if (!other.conflicts.contains(this)) other.conflicts.add(this);
         return this;
     }
 
@@ -86,30 +102,30 @@ public class FamiliarAugment {
         return FamiliarAugment.BY_NAME.get(name.toLowerCase());
     }
 
-    //Returns true, if the current conditions for application are fulfilled for a familiar with given augments.
+    // Returns true, if the current conditions for application are fulfilled for a familiar with given augments.
     public boolean checkConditions(FamiliarAugmentList currentAugments, int levelToSet) {
-        if(levelToSet <= 0) return false;
-        for(FamiliarAugmentPair current : currentAugments) {
-            if(this.conflicts.contains(current.augment)) return false;
+        if (levelToSet <= 0) return false;
+        for (FamiliarAugmentPair current : currentAugments) {
+            if (this.conflicts.contains(current.augment)) return false;
         }
-        if(this.requiresPrevLevel) {
+        if (this.requiresPrevLevel) {
             boolean containsAtAll = false;
             int foundLevel = -1;
-            for(FamiliarAugmentPair pair : currentAugments) {
-                if(pair.augment.equals(FamiliarAugment.this)) {
+            for (FamiliarAugmentPair pair : currentAugments) {
+                if (pair.augment.equals(FamiliarAugment.this)) {
                     containsAtAll = true;
                     foundLevel = pair.level;
                 }
             }
-            if(!containsAtAll) {
-                if(levelToSet != 1) return false;
+            if (!containsAtAll) {
+                if (levelToSet != 1) return false;
             } else {
-                if(foundLevel != (levelToSet - 1)) return false;
+                if (foundLevel != (levelToSet - 1)) return false;
             }
         }
-        for(FamiliarAugmentPrecondition precondition : this.preconditions) {
-            if(precondition == null) continue;
-            if(!precondition.isFulfilled(currentAugments, levelToSet)) return false;
+        for (FamiliarAugmentPrecondition precondition : this.preconditions) {
+            if (precondition == null) continue;
+            if (!precondition.isFulfilled(currentAugments, levelToSet)) return false;
         }
         return true;
     }
@@ -132,7 +148,6 @@ public class FamiliarAugment {
     private abstract static class FamiliarAugmentPrecondition {
 
         public abstract boolean isFulfilled(FamiliarAugmentList currentAugments, int levelToSet);
-
     }
 
     public static class PreconditionAny extends FamiliarAugmentPrecondition {
@@ -145,10 +160,10 @@ public class FamiliarAugment {
 
         @Override
         public boolean isFulfilled(FamiliarAugmentList currentAugments, int levelToSet) {
-            if(this.anyPrevAugment == null) return true;
-            for(FamiliarAugment augment : this.anyPrevAugment) {
-                if(augment == null) continue;
-                if(currentAugments.contains(augment)) return true;
+            if (this.anyPrevAugment == null) return true;
+            for (FamiliarAugment augment : this.anyPrevAugment) {
+                if (augment == null) continue;
+                if (currentAugments.contains(augment)) return true;
             }
             return false;
         }
@@ -164,10 +179,10 @@ public class FamiliarAugment {
 
         @Override
         public boolean isFulfilled(FamiliarAugmentList currentAugments, int levelToSet) {
-            if(this.prevAugments == null) return true;
-            for(FamiliarAugment augment : this.prevAugments) {
-                if(augment == null) continue;
-                if(!currentAugments.contains(augment)) return false;
+            if (this.prevAugments == null) return true;
+            for (FamiliarAugment augment : this.prevAugments) {
+                if (augment == null) continue;
+                if (!currentAugments.contains(augment)) return false;
             }
             return true;
         }
@@ -181,16 +196,15 @@ public class FamiliarAugment {
 
         public FamiliarAugmentPair getAugmentPair(FamiliarAugment augment) {
             for (FamiliarAugmentPair pair : this) {
-                if(pair.augment.equals(augment)) return pair;
+                if (pair.augment.equals(augment)) return pair;
             }
             return null;
         }
 
         public int getLevel(FamiliarAugment augment) {
-            if(!this.contains(augment)) return -1;
+            if (!this.contains(augment)) return -1;
             return this.getAugmentPair(augment).level;
         }
-
     }
 
     public static class FamiliarAugmentPair {
@@ -210,7 +224,8 @@ public class FamiliarAugment {
 
             FamiliarAugmentPair that = (FamiliarAugmentPair) o;
 
-            return this.level == that.level && (this.augment != null ? this.augment.equals(that.augment) : that.augment == null);
+            return this.level == that.level
+                    && (this.augment != null ? this.augment.equals(that.augment) : that.augment == null);
         }
 
         @Override
@@ -220,5 +235,4 @@ public class FamiliarAugment {
             return result;
         }
     }
-
 }

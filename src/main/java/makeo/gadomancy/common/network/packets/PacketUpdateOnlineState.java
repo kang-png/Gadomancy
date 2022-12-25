@@ -23,7 +23,7 @@ public class PacketUpdateOnlineState implements IMessage, IMessageHandler<Packet
     public PacketUpdateOnlineState(boolean state) {
         this.state = state;
     }
-    
+
     @Override
     public void fromBytes(ByteBuf buf) {
         this.state = buf.readBoolean();
@@ -39,5 +39,4 @@ public class PacketUpdateOnlineState implements IMessage, IMessageHandler<Packet
         CommonProxy.serverOnlineState = message.state;
         return null;
     }
-
 }

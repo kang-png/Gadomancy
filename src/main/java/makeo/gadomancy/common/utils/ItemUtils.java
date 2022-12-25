@@ -1,8 +1,7 @@
 package makeo.gadomancy.common.utils;
 
-import net.minecraft.entity.item.EntityItem;
-
 import java.util.Random;
+import net.minecraft.entity.item.EntityItem;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -19,5 +18,4 @@ public class ItemUtils {
         item.motionY = rand.nextFloat() * 0.7F - 0.35D;
         item.motionZ = rand.nextFloat() * 0.7F - 0.35D;
     }
-
 }

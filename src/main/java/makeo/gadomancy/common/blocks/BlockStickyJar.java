@@ -1,5 +1,7 @@
 package makeo.gadomancy.common.blocks;
 
+import java.util.ArrayList;
+import java.util.Map;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
@@ -27,9 +29,6 @@ import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.ItemEssence;
 import thaumcraft.common.tiles.TileJarFillable;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -49,9 +48,9 @@ public class BlockStickyJar extends BlockJar implements IBlockTransparent {
     @Override
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
         TileEntity tile = world.getTileEntity(x, y, z);
-        if(tile instanceof TileStickyJar) {
+        if (tile instanceof TileStickyJar) {
             TileStickyJar stickyJar = (TileStickyJar) tile;
-            if(stickyJar.isValid()) {
+            if (stickyJar.isValid()) {
                 return stickyJar.getParentBlock().getIcon(world, x, y, z, side);
             }
         }
@@ -176,8 +175,8 @@ public class BlockStickyJar extends BlockJar implements IBlockTransparent {
                 case EAST:
                     yaw += 90;
                     break;
-			default:
-				break;
+                default:
+                    break;
             }
 
             if (Math.abs(yaw) < Math.abs(pitch)) {
@@ -212,14 +211,15 @@ public class BlockStickyJar extends BlockJar implements IBlockTransparent {
         TileEntity tile = world.getTileEntity(x, y, z);
         if (tile != null && tile instanceof TileStickyJar && ((TileStickyJar) tile).isValid()) {
 
-            ((TileStickyJar) tile).getParent().validate(); //Ugh...
-            world.setTileEntity(x, y, z, ((TileStickyJar) tile).getParent()); //Ugh. that fix...
+            ((TileStickyJar) tile).getParent().validate(); // Ugh...
+            world.setTileEntity(x, y, z, ((TileStickyJar) tile).getParent()); // Ugh. that fix...
 
-            ArrayList<ItemStack> drops = ((TileStickyJar) tile).getParentBlock()
+            ArrayList<ItemStack> drops = ((TileStickyJar) tile)
+                    .getParentBlock()
                     .getDrops(world, x, y, z, ((TileStickyJar) tile).getParentMetadata(), fortune);
 
-            ((TileStickyJar) tile).getParent().invalidate(); //Uhm...
-            world.setTileEntity(x, y, z, tile); //Revert. xD
+            ((TileStickyJar) tile).getParent().invalidate(); // Uhm...
+            world.setTileEntity(x, y, z, tile); // Revert. xD
 
             boolean found = false;
             for (ItemStack drop : drops) {
@@ -240,28 +240,36 @@ public class BlockStickyJar extends BlockJar implements IBlockTransparent {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float these, float are, float variables) {
+    public boolean onBlockActivated(
+            World world, int x, int y, int z, EntityPlayer player, int side, float these, float are, float variables) {
         TileEntity tile = world.getTileEntity(x, y, z);
         if (tile instanceof TileStickyJar) {
             TileStickyJar tileStickyJar = (TileStickyJar) tile;
 
-            StickyJarInfo info = RegisteredBlocks.getStickyJarInfo(tileStickyJar.getParentBlock(), world.getBlockMetadata(x, y, z));
+            StickyJarInfo info =
+                    RegisteredBlocks.getStickyJarInfo(tileStickyJar.getParentBlock(), world.getBlockMetadata(x, y, z));
 
             ItemStack heldItem = player.getHeldItem();
 
             if (info.needsPhialHandling() && heldItem != null && heldItem.getItem() == ConfigItems.itemEssence) {
-                if(!world.isRemote) {
+                if (!world.isRemote) {
                     BlockStickyJar.handlePhial(world, x, y, z, player, heldItem, tileStickyJar);
                 }
                 return true;
             }
 
-            boolean handleAspectFilter = info.needsLabelHandling() && heldItem != null && heldItem.getItem() == ConfigItems.itemResource
-                    && heldItem.getItemDamage() == 13 && tileStickyJar.aspectFilter == null
-                    && (((IEssentiaContainerItem) heldItem.getItem()).getAspects(heldItem) != null || tileStickyJar.amount != 0);
+            boolean handleAspectFilter = info.needsLabelHandling()
+                    && heldItem != null
+                    && heldItem.getItem() == ConfigItems.itemResource
+                    && heldItem.getItemDamage() == 13
+                    && tileStickyJar.aspectFilter == null
+                    && (((IEssentiaContainerItem) heldItem.getItem()).getAspects(heldItem) != null
+                            || tileStickyJar.amount != 0);
 
             ForgeDirection newDir = tileStickyJar.changeDirection(ForgeDirection.getOrientation(side));
-            boolean result = ((TileStickyJar) tile).getParentBlock().onBlockActivated(world, x, y, z, player, newDir.ordinal(), these, are, variables);
+            boolean result = ((TileStickyJar) tile)
+                    .getParentBlock()
+                    .onBlockActivated(world, x, y, z, player, newDir.ordinal(), these, are, variables);
 
             if (handleAspectFilter) {
                 tileStickyJar.facing = newDir.ordinal();
@@ -273,16 +281,19 @@ public class BlockStickyJar extends BlockJar implements IBlockTransparent {
         return false;
     }
 
-    public static void handlePhial(World world, int x, int y, int z, EntityPlayer player, ItemStack stack, TileJarFillable tile) {
+    public static void handlePhial(
+            World world, int x, int y, int z, EntityPlayer player, ItemStack stack, TileJarFillable tile) {
         ItemEssence itemEssence = (ItemEssence) ConfigItems.itemEssence;
 
         AspectList aspects = itemEssence.getAspects(stack);
-        if(aspects != null) {
-            Map.Entry<Aspect, Integer> entry = aspects.aspects.entrySet().iterator().next();
+        if (aspects != null) {
+            Map.Entry<Aspect, Integer> entry =
+                    aspects.aspects.entrySet().iterator().next();
 
             Aspect jarAspect = tile.aspectFilter == null ? tile.aspect : tile.aspectFilter;
 
-            if((jarAspect == null || entry.getKey() == jarAspect) && tile.amount + entry.getValue() <= tile.maxAmount) {
+            if ((jarAspect == null || entry.getKey() == jarAspect)
+                    && tile.amount + entry.getValue() <= tile.maxAmount) {
                 tile.addToContainer(entry.getKey(), entry.getValue());
                 stack.stackSize--;
 
@@ -294,7 +305,7 @@ public class BlockStickyJar extends BlockJar implements IBlockTransparent {
             }
         } else {
             Aspect aspect = tile.aspect;
-            if(aspect != null && tile.takeFromContainer(aspect, 8)) {
+            if (aspect != null && tile.takeFromContainer(aspect, 8)) {
                 stack.stackSize--;
 
                 ItemStack essenceStack = new ItemStack(itemEssence, 1, 1);

@@ -3,14 +3,13 @@ package makeo.gadomancy.client.events;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
+import java.util.Queue;
 import makeo.gadomancy.client.ClientProxy;
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.renderers.tile.RenderTileEssentiaCompressor;
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
 import makeo.gadomancy.common.Gadomancy;
 import net.minecraft.client.Minecraft;
-
-import java.util.Queue;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -26,15 +25,15 @@ public class ClientHandler {
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
-        if(event.phase.equals(TickEvent.Phase.END) && !Minecraft.getMinecraft().isGamePaused()) {
+        if (event.phase.equals(TickEvent.Phase.END) && !Minecraft.getMinecraft().isGamePaused()) {
             FamiliarHandlerClient.playerTickEvent();
             ClientHandler.ticks++;
 
             EffectHandler.getInstance().tick();
         }
 
-        Queue<Runnable> actions = ((ClientProxy)Gadomancy.proxy).clientActions;
-        while(actions.peek() != null) {
+        Queue<Runnable> actions = ((ClientProxy) Gadomancy.proxy).clientActions;
+        while (actions.peek() != null) {
             actions.poll().run();
         }
     }
@@ -44,5 +43,4 @@ public class ClientHandler {
         EffectHandler.getInstance().clear();
         RenderTileEssentiaCompressor.ownedVortex.clear();
     }
-
 }

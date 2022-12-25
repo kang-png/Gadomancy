@@ -19,7 +19,11 @@ import thaumcraft.common.Thaumcraft;
  *
  * Created by makeo @ 29.11.2014 14:07
  */
-@Mod(modid = Gadomancy.MODID, name = Gadomancy.NAME, version = Gadomancy.VERSION, dependencies="required-after:Thaumcraft@[4.1.1.11,);after:Waila;after:Automagy")
+@Mod(
+        modid = Gadomancy.MODID,
+        name = Gadomancy.NAME,
+        version = Gadomancy.VERSION,
+        dependencies = "required-after:Thaumcraft@[4.1.1.11,);after:Waila;after:Automagy")
 public class Gadomancy {
     public static final String MODID = "gadomancy";
     public static final String NAME = "Gadomancy";
@@ -48,7 +52,7 @@ public class Gadomancy {
     }
 
     public static void unloadModData() {
-        if(Gadomancy.modData != null) {
+        if (Gadomancy.modData != null) {
             Gadomancy.modData.save();
             Gadomancy.modData = null;
         }

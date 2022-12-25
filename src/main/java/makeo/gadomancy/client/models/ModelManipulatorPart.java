@@ -13,7 +13,7 @@ import net.minecraft.entity.Entity;
  * Created by makeo @ 28.10.2015 12:31
  */
 public class ModelManipulatorPart extends ModelBase {
-    //fields
+    // fields
     ModelRenderer shape2;
     ModelRenderer shape3;
     ModelRenderer shape4;

@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.crafting;
 
+import java.util.ArrayList;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.common.entities.golems.upgrades.GolemUpgrade;
@@ -12,8 +13,6 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.golems.EnumGolemType;
-
-import java.util.ArrayList;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -28,7 +27,8 @@ public class InfusionUpgradeRecipe extends InfusionRecipe {
 
     private final GolemUpgrade upgrade;
 
-    private InfusionUpgradeRecipe(String research, GolemUpgrade upgrade, int inst, AspectList aspects2, ItemStack input, ItemStack[] recipe) {
+    private InfusionUpgradeRecipe(
+            String research, GolemUpgrade upgrade, int inst, AspectList aspects2, ItemStack input, ItemStack[] recipe) {
         super(research, InfusionUpgradeRecipe.DEFAULT_OUTPUT, inst, aspects2, input, recipe);
 
         this.upgrade = upgrade;
@@ -46,15 +46,17 @@ public class InfusionUpgradeRecipe extends InfusionRecipe {
         return output;
     }
 
-    public static InfusionUpgradeRecipe[] createRecipes(String research, GolemUpgrade upgrade, int inst, AspectList aspects, ItemStack[] recipe) {
+    public static InfusionUpgradeRecipe[] createRecipes(
+            String research, GolemUpgrade upgrade, int inst, AspectList aspects, ItemStack[] recipe) {
         InfusionUpgradeRecipe[] recipes = new InfusionUpgradeRecipe[EnumGolemType.values().length];
 
-        for(int i = 0; i < EnumGolemType.values().length ; i++) {
+        for (int i = 0; i < EnumGolemType.values().length; i++) {
             EnumGolemType type = EnumGolemType.values()[i];
-            if(type.health > 0) {
+            if (type.health > 0) {
                 AdditionalGolemType addType = GadomancyApi.getAdditionalGolemType(type);
                 Item input = addType == null ? ConfigItems.itemGolemPlacer : addType.getPlacerItem();
-                recipes[i] = new InfusionUpgradeRecipe(research, upgrade, inst, aspects, new ItemStack(input, 1, type.ordinal()), recipe);
+                recipes[i] = new InfusionUpgradeRecipe(
+                        research, upgrade, inst, aspects, new ItemStack(input, 1, type.ordinal()), recipe);
             }
         }
         return recipes;

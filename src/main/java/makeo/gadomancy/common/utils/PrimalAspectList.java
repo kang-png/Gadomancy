@@ -29,7 +29,7 @@ public class PrimalAspectList extends AspectList {
         AspectList al = new AspectList();
         al.add(aspect, amount);
         al = ResearchManager.reduceToPrimals(al);
-        for(Aspect a : al.getAspects()) {
+        for (Aspect a : al.getAspects()) {
             super.add(a, al.getAmount(a));
         }
         return this;

@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.items;
 
+import java.util.List;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -14,8 +15,6 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.blocks.BlockCustomOreItem;
-
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -43,7 +42,7 @@ public class ItemAuraCore extends Item {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean flag) {
         AuraCoreType type = this.getCoreType(stack);
-        if(type != null) {
+        if (type != null) {
             list.add(EnumChatFormatting.GRAY + type.getLocalizedName());
         }
     }
@@ -70,11 +69,11 @@ public class ItemAuraCore extends Item {
 
     @Override
     public IIcon getIcon(ItemStack stack, int pass) {
-        //shhhhh don't tell anyone!
+        // shhhhh don't tell anyone!
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        if(this.getCoreType(stack) == AuraCoreType.BLANK && pass == 0) {
+        if (this.getCoreType(stack) == AuraCoreType.BLANK && pass == 0) {
             return this.coreBlankIcon;
         }
         return pass == 0 ? this.coreIcon : this.borderIcon;
@@ -87,10 +86,10 @@ public class ItemAuraCore extends Item {
 
     @Override
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        if(pass == 0) {
+        if (pass == 0) {
             AuraCoreType type = this.getCoreType(stack);
-            if(type.isAspect()) {
-                if(type.ordinal() < 7) {
+            if (type.isAspect()) {
+                if (type.ordinal() < 7) {
                     return BlockCustomOreItem.colors[type.ordinal()];
                 }
                 return type.getAspect().getColor();
@@ -156,8 +155,10 @@ public class ItemAuraCore extends Item {
         }
 
         public String getLocalizedName() {
-            String name = this.isAspect() ? this.aspect.getName() : StatCollector.translateToLocal("gadomancy.auracore." + this.unlocName);
-            if(this.unused) {
+            String name = this.isAspect()
+                    ? this.aspect.getName()
+                    : StatCollector.translateToLocal("gadomancy.auracore." + this.unlocName);
+            if (this.unused) {
                 name += " " + StatCollector.translateToLocal("gadomancy.auracore.unused");
             }
             return name;

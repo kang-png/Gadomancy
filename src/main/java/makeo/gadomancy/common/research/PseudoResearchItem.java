@@ -2,6 +2,7 @@ package makeo.gadomancy.common.research;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.Arrays;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -11,8 +12,6 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
-
-import java.util.Arrays;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -27,14 +26,28 @@ public class PseudoResearchItem extends SimpleResearchItem {
 
     private final ResearchItem original;
 
-    private PseudoResearchItem(ResearchItem original, String key, int col, int row, ResourceLocation icon, boolean doubleThisPage) {
-        super(PseudoResearchItem.PSEUDO_PREFIX + key + (doubleThisPage ? ".2" : ""), col, row, original.getComplexity(), icon, new AspectList());
+    private PseudoResearchItem(
+            ResearchItem original, String key, int col, int row, ResourceLocation icon, boolean doubleThisPage) {
+        super(
+                PseudoResearchItem.PSEUDO_PREFIX + key + (doubleThisPage ? ".2" : ""),
+                col,
+                row,
+                original.getComplexity(),
+                icon,
+                new AspectList());
         this.original = original;
         this.setStub().setHidden();
     }
 
-    private PseudoResearchItem(ResearchItem original, String key, int col, int row, ItemStack icon, boolean doubleThisPage) {
-        super(PseudoResearchItem.PSEUDO_PREFIX + key + (doubleThisPage ? ".2" : ""), col, row, original.getComplexity(), icon, new AspectList());
+    private PseudoResearchItem(
+            ResearchItem original, String key, int col, int row, ItemStack icon, boolean doubleThisPage) {
+        super(
+                PseudoResearchItem.PSEUDO_PREFIX + key + (doubleThisPage ? ".2" : ""),
+                col,
+                row,
+                original.getComplexity(),
+                icon,
+                new AspectList());
         this.original = original;
         this.setStub().setHidden();
     }
@@ -58,8 +71,8 @@ public class PseudoResearchItem extends SimpleResearchItem {
     @SideOnly(Side.CLIENT)
     public boolean isHidden() {
         EntityPlayer p = Minecraft.getMinecraft().thePlayer;
-        if(p != null) {
-            if(!ThaumcraftApiHelper.isResearchComplete(p.getCommandSenderName(), this.key)) {
+        if (p != null) {
+            if (!ThaumcraftApiHelper.isResearchComplete(p.getCommandSenderName(), this.key)) {
                 return false;
             }
         }
@@ -73,18 +86,18 @@ public class PseudoResearchItem extends SimpleResearchItem {
     public static ResearchItem create(String original, int col, int row, boolean doubleInThisPage) {
         ResearchItem item = ResearchCategories.getResearch(original);
 
-        if(item != null) {
+        if (item != null) {
             ResearchItem pseudo;
 
-            if(item.icon_resource == null) {
+            if (item.icon_resource == null) {
                 pseudo = new PseudoResearchItem(item, item.key, col, row, item.icon_item, doubleInThisPage);
             } else {
                 pseudo = new PseudoResearchItem(item, item.key, col, row, item.icon_resource, doubleInThisPage);
             }
 
             String[] siblings = item.siblings;
-            if(siblings == null) {
-                siblings = new String[]{ pseudo.key };
+            if (siblings == null) {
+                siblings = new String[] {pseudo.key};
             } else {
                 siblings = Arrays.copyOf(siblings, siblings.length + 1);
                 siblings[siblings.length - 1] = pseudo.key;
@@ -92,7 +105,7 @@ public class PseudoResearchItem extends SimpleResearchItem {
 
             item.setSiblings(siblings);
 
-            if(item.isSecondary()) {
+            if (item.isSecondary()) {
                 pseudo.setSecondary();
             }
 

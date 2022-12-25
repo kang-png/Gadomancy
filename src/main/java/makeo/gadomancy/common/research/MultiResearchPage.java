@@ -1,9 +1,8 @@
 package makeo.gadomancy.common.research;
 
-import thaumcraft.api.research.ResearchPage;
-
 import java.util.ArrayList;
 import java.util.List;
+import thaumcraft.api.research.ResearchPage;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -31,9 +30,9 @@ public class MultiResearchPage extends ResearchPage {
         @Override
         public Object get(int index) {
             int calcIndex;
-            if(index == 0 && (calcIndex = this.calcIndex()) != this.recipeIndex) {
+            if (index == 0 && (calcIndex = this.calcIndex()) != this.recipeIndex) {
                 this.clear();
-                for(Object o : this.recipes[calcIndex]) {
+                for (Object o : this.recipes[calcIndex]) {
                     this.add(o);
                 }
                 this.recipeIndex = calcIndex;
@@ -42,7 +41,7 @@ public class MultiResearchPage extends ResearchPage {
         }
 
         private int calcIndex() {
-            return (int)(System.currentTimeMillis() / 1000L % this.recipes.length);
+            return (int) (System.currentTimeMillis() / 1000L % this.recipes.length);
         }
     }
 }

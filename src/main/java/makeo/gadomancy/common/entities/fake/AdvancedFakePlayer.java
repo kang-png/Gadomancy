@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.entities.fake;
 
 import com.mojang.authlib.GameProfile;
+import java.util.UUID;
 import makeo.gadomancy.common.Gadomancy;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -8,8 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
-
-import java.util.UUID;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -42,15 +41,19 @@ public class AdvancedFakePlayer extends FakePlayer {
     }
 
     public static boolean isFakePlayer(EntityPlayer player) {
-        if(!player.worldObj.isRemote) {
-            if(player.getClass() != EntityPlayerMP.class) {
+        if (!player.worldObj.isRemote) {
+            if (player.getClass() != EntityPlayerMP.class) {
                 return true;
             }
             EntityPlayerMP mp = (EntityPlayerMP) player;
 
-            if(mp.playerNetServerHandler == null
-                    || !MinecraftServer.getServer().getConfigurationManager().playerEntityList.contains(player)
-                    || mp.getPlayerIP() == null || mp.getPlayerIP().trim().isEmpty()) {
+            if (mp.playerNetServerHandler == null
+                    || !MinecraftServer.getServer()
+                            .getConfigurationManager()
+                            .playerEntityList
+                            .contains(player)
+                    || mp.getPlayerIP() == null
+                    || mp.getPlayerIP().trim().isEmpty()) {
                 return true;
             }
 
