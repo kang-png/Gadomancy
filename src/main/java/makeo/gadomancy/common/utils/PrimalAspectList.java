@@ -5,10 +5,8 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.lib.research.ResearchManager;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 03.12.2015 17:22
  */

@@ -1,23 +1,25 @@
 package makeo.gadomancy.api;
 
 import java.util.List;
+
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.api.internal.IApiHandler;
+
 import net.minecraft.item.ItemStack;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.EnumGolemType;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 26.07.2015 19:00
  */
 public abstract class GadomancyApi {
+
     private static IApiHandler handler;
 
     public static void setInstance(IApiHandler handler) {

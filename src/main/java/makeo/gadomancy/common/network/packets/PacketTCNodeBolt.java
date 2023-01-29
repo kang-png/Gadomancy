@@ -1,19 +1,18 @@
 package makeo.gadomancy.common.network.packets;
 
+import net.minecraft.client.Minecraft;
+
+import thaumcraft.client.fx.bolt.FXLightningBolt;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
-import thaumcraft.client.fx.bolt.FXLightningBolt;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by HellFirePvP @ 25.10.2015 19:42
  */
@@ -23,13 +22,7 @@ public class PacketTCNodeBolt implements IMessage, IMessageHandler<PacketTCNodeB
     private float targetX, targetY, targetZ;
 
     /**
-     * 0: purple
-     * 1: yellow
-     * 2: dark blue
-     * 3: green
-     * 4: red
-     * 5: dark purple
-     * 6: blue
+     * 0: purple 1: yellow 2: dark blue 3: green 4: red 5: dark purple 6: blue
      */
     private int type;
 
@@ -37,8 +30,8 @@ public class PacketTCNodeBolt implements IMessage, IMessageHandler<PacketTCNodeB
 
     public PacketTCNodeBolt() {}
 
-    public PacketTCNodeBolt(
-            float x, float y, float z, float targetX, float targetY, float targetZ, int type, boolean mightGetLong) {
+    public PacketTCNodeBolt(float x, float y, float z, float targetX, float targetY, float targetZ, int type,
+            boolean mightGetLong) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -49,15 +42,8 @@ public class PacketTCNodeBolt implements IMessage, IMessageHandler<PacketTCNodeB
         this.mightGetLong = mightGetLong;
     }
 
-    public PacketTCNodeBolt(
-            double posX,
-            double posY,
-            double posZ,
-            double targetX,
-            double targetY,
-            double targetZ,
-            int type,
-            boolean mightGetLong) {
+    public PacketTCNodeBolt(double posX, double posY, double posZ, double targetX, double targetY, double targetZ,
+            int type, boolean mightGetLong) {
         this.x = (float) posX;
         this.y = (float) posY;
         this.z = (float) posZ;

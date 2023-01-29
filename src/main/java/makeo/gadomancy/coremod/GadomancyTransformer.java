@@ -1,18 +1,18 @@
 package makeo.gadomancy.coremod;
 
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.asm.transformers.AccessTransformer;
 import java.io.IOException;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.asm.transformers.AccessTransformer;
+
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 07.12.2015 21:48
  */
@@ -49,12 +49,13 @@ public class GadomancyTransformer extends AccessTransformer {
                     mn.instructions = new InsnList();
 
                     mn.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
-                    mn.instructions.add(new MethodInsnNode(
-                            Opcodes.INVOKESTATIC,
-                            "makeo/gadomancy/common/events/EventHandlerRedirect",
-                            "getFortuneLevel",
-                            "(Lnet/minecraft/entity/EntityLivingBase;)I",
-                            false));
+                    mn.instructions.add(
+                            new MethodInsnNode(
+                                    Opcodes.INVOKESTATIC,
+                                    "makeo/gadomancy/common/events/EventHandlerRedirect",
+                                    "getFortuneLevel",
+                                    "(Lnet/minecraft/entity/EntityLivingBase;)I",
+                                    false));
                     mn.instructions.add(new InsnNode(Opcodes.IRETURN));
 
                 } else if (mn.name.equals("getEnchantmentLevel") || mn.name.equals("func_77506_a")) {
@@ -62,12 +63,13 @@ public class GadomancyTransformer extends AccessTransformer {
 
                     mn.instructions.add(new VarInsnNode(Opcodes.ILOAD, 0));
                     mn.instructions.add(new VarInsnNode(Opcodes.ALOAD, 1));
-                    mn.instructions.add(new MethodInsnNode(
-                            Opcodes.INVOKESTATIC,
-                            "makeo/gadomancy/common/events/EventHandlerRedirect",
-                            "onGetEnchantmentLevel",
-                            "(ILnet/minecraft/item/ItemStack;)I",
-                            false));
+                    mn.instructions.add(
+                            new MethodInsnNode(
+                                    Opcodes.INVOKESTATIC,
+                                    "makeo/gadomancy/common/events/EventHandlerRedirect",
+                                    "onGetEnchantmentLevel",
+                                    "(ILnet/minecraft/item/ItemStack;)I",
+                                    false));
                     mn.instructions.add(new InsnNode(Opcodes.IRETURN));
                 }
             }
@@ -79,12 +81,13 @@ public class GadomancyTransformer extends AccessTransformer {
                     updateTotal.add(new VarInsnNode(Opcodes.ALOAD, 0));
                     updateTotal.add(new VarInsnNode(Opcodes.ALOAD, 1));
                     updateTotal.add(new VarInsnNode(Opcodes.ILOAD, 2));
-                    updateTotal.add(new MethodInsnNode(
-                            Opcodes.INVOKESTATIC,
-                            "makeo/gadomancy/common/events/EventHandlerRedirect",
-                            "getAdditionalVisDiscount",
-                            "(Lnet/minecraft/entity/player/EntityPlayer;Lthaumcraft/api/aspects/Aspect;I)I",
-                            false));
+                    updateTotal.add(
+                            new MethodInsnNode(
+                                    Opcodes.INVOKESTATIC,
+                                    "makeo/gadomancy/common/events/EventHandlerRedirect",
+                                    "getAdditionalVisDiscount",
+                                    "(Lnet/minecraft/entity/player/EntityPlayer;Lthaumcraft/api/aspects/Aspect;I)I",
+                                    false));
 
                     mn.instructions.insertBefore(mn.instructions.get(mn.instructions.size() - 5), updateTotal);
                 }
@@ -94,12 +97,13 @@ public class GadomancyTransformer extends AccessTransformer {
                 if (mn.name.equals("renderTileEntityAt")) {
                     InsnList setBefore = new InsnList();
                     setBefore.add(new VarInsnNode(Opcodes.ALOAD, 1));
-                    setBefore.add(new MethodInsnNode(
-                            Opcodes.INVOKESTATIC,
-                            "makeo/gadomancy/common/events/EventHandlerRedirect",
-                            "preNodeRender",
-                            "(Lnet/minecraft/tileentity/TileEntity;)V",
-                            false));
+                    setBefore.add(
+                            new MethodInsnNode(
+                                    Opcodes.INVOKESTATIC,
+                                    "makeo/gadomancy/common/events/EventHandlerRedirect",
+                                    "preNodeRender",
+                                    "(Lnet/minecraft/tileentity/TileEntity;)V",
+                                    false));
 
                     mn.instructions.insertBefore(mn.instructions.get(0), setBefore);
 
@@ -111,12 +115,13 @@ public class GadomancyTransformer extends AccessTransformer {
                         if (insnNode.getOpcode() == Opcodes.RETURN) {
                             InsnList setAfter = new InsnList();
                             setAfter.add(new VarInsnNode(Opcodes.ALOAD, 1));
-                            setAfter.add(new MethodInsnNode(
-                                    Opcodes.INVOKESTATIC,
-                                    "makeo/gadomancy/common/events/EventHandlerRedirect",
-                                    "postNodeRender",
-                                    "(Lnet/minecraft/tileentity/TileEntity;)V",
-                                    false));
+                            setAfter.add(
+                                    new MethodInsnNode(
+                                            Opcodes.INVOKESTATIC,
+                                            "makeo/gadomancy/common/events/EventHandlerRedirect",
+                                            "postNodeRender",
+                                            "(Lnet/minecraft/tileentity/TileEntity;)V",
+                                            false));
                             mn.instructions.insertBefore(insnNode, setAfter);
                         }
                     }
@@ -127,12 +132,13 @@ public class GadomancyTransformer extends AccessTransformer {
                 if (mn.name.equals("blockHighlight")) {
                     InsnList setBefore = new InsnList();
                     setBefore.add(new VarInsnNode(Opcodes.ALOAD, 1));
-                    setBefore.add(new MethodInsnNode(
-                            Opcodes.INVOKESTATIC,
-                            "makeo/gadomancy/common/events/EventHandlerRedirect",
-                            "preBlockHighlight",
-                            "(Lnet/minecraftforge/client/event/DrawBlockHighlightEvent;)V",
-                            false));
+                    setBefore.add(
+                            new MethodInsnNode(
+                                    Opcodes.INVOKESTATIC,
+                                    "makeo/gadomancy/common/events/EventHandlerRedirect",
+                                    "preBlockHighlight",
+                                    "(Lnet/minecraftforge/client/event/DrawBlockHighlightEvent;)V",
+                                    false));
 
                     mn.instructions.insertBefore(mn.instructions.get(0), setBefore);
 
@@ -144,12 +150,13 @@ public class GadomancyTransformer extends AccessTransformer {
                         if (insnNode.getOpcode() == Opcodes.RETURN) {
                             InsnList setAfter = new InsnList();
                             setAfter.add(new VarInsnNode(Opcodes.ALOAD, 1));
-                            setAfter.add(new MethodInsnNode(
-                                    Opcodes.INVOKESTATIC,
-                                    "makeo/gadomancy/common/events/EventHandlerRedirect",
-                                    "postBlockHighlight",
-                                    "(Lnet/minecraftforge/client/event/DrawBlockHighlightEvent;)V",
-                                    false));
+                            setAfter.add(
+                                    new MethodInsnNode(
+                                            Opcodes.INVOKESTATIC,
+                                            "makeo/gadomancy/common/events/EventHandlerRedirect",
+                                            "postBlockHighlight",
+                                            "(Lnet/minecraftforge/client/event/DrawBlockHighlightEvent;)V",
+                                            false));
                             mn.instructions.insertBefore(insnNode, setAfter);
                         }
                     }
@@ -160,12 +167,13 @@ public class GadomancyTransformer extends AccessTransformer {
                 if (mn.name.equals("updateItemList")) {
                     InsnList newInstructions = new InsnList();
                     newInstructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
-                    newInstructions.add(new MethodInsnNode(
-                            Opcodes.INVOKESTATIC,
-                            "makeo/gadomancy/common/integration/IntegrationNEI",
-                            "checkItems",
-                            "(Ljava/util/ArrayList;)V",
-                            false));
+                    newInstructions.add(
+                            new MethodInsnNode(
+                                    Opcodes.INVOKESTATIC,
+                                    "makeo/gadomancy/common/integration/IntegrationNEI",
+                                    "checkItems",
+                                    "(Ljava/util/ArrayList;)V",
+                                    false));
                     newInstructions.add(mn.instructions);
                     mn.instructions = newInstructions;
                 }

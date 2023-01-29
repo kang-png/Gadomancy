@@ -1,11 +1,9 @@
 package makeo.gadomancy.common.events;
 
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileAIShutdown;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
@@ -19,6 +17,7 @@ import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.*;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,19 +39,22 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.event.world.WorldEvent;
+
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.tiles.TileJarFillable;
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 05.07.2015 13:20
  */
 public class EventHandlerWorld {
+
     public Map<EntityItem, Long> trackedItems = new HashMap<EntityItem, Long>();
 
     @SubscribeEvent(priority = EventPriority.LOW)
@@ -82,12 +84,10 @@ public class EventHandlerWorld {
 
     @SubscribeEvent
     public void on(TickEvent.WorldTickEvent event) {
-        if (event.phase == TickEvent.Phase.START
-                && !event.world.isRemote
+        if (event.phase == TickEvent.Phase.START && !event.world.isRemote
                 && event.world.getTotalWorldTime() % 10 == 0) {
 
-            Iterator<Map.Entry<EntityItem, Long>> iterator =
-                    this.trackedItems.entrySet().iterator();
+            Iterator<Map.Entry<EntityItem, Long>> iterator = this.trackedItems.entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry<EntityItem, Long> entry = iterator.next();
                 EntityItem entity = entry.getKey();
@@ -110,8 +110,12 @@ public class EventHandlerWorld {
                             NBTBase base = compound.getTag("disguise");
                             if (base instanceof NBTTagCompound) {
                                 ItemStack stack = ItemStack.loadItemStackFromNBT((NBTTagCompound) base);
-                                EntityItem newEntity =
-                                        new EntityItem(event.world, entity.posX, entity.posY, entity.posZ, stack);
+                                EntityItem newEntity = new EntityItem(
+                                        event.world,
+                                        entity.posX,
+                                        entity.posY,
+                                        entity.posZ,
+                                        stack);
                                 ItemUtils.applyRandomDropOffset(newEntity, event.world.rand);
                                 event.world.spawnEntityInWorld(newEntity);
                             }
@@ -126,7 +130,11 @@ public class EventHandlerWorld {
                         }
                     } else {
                         Gadomancy.proxy.spawnBubbles(
-                                event.world, (float) entity.posX, (float) entity.posY, (float) entity.posZ, 0.2f);
+                                event.world,
+                                (float) entity.posX,
+                                (float) entity.posY,
+                                (float) entity.posZ,
+                                0.2f);
                     }
                 }
             }
@@ -134,8 +142,7 @@ public class EventHandlerWorld {
     }
 
     private boolean isDisguised(ItemStack stack) {
-        return NBTHelper.hasPersistentData(stack)
-                && NBTHelper.getPersistentData(stack).hasKey("disguise");
+        return NBTHelper.hasPersistentData(stack) && NBTHelper.getPersistentData(stack).hasKey("disguise");
     }
 
     private int serverTick;
@@ -161,17 +168,15 @@ public class EventHandlerWorld {
 
         GameRules rules = e.world.getGameRules();
         rules.theGameRules.put(
-                "mobGriefing", new ValueOverride(this, String.valueOf(rules.getGameRuleBooleanValue("mobGriefing"))));
+                "mobGriefing",
+                new ValueOverride(this, String.valueOf(rules.getGameRuleBooleanValue("mobGriefing"))));
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void on(ExplosionEvent.Start e) {
         Explosion expl = e.explosion;
-        if (expl.isSmoking
-                && (expl.exploder != null
-                        ? TileBlockProtector.isSpotProtected(e.world, expl.exploder)
-                        : TileBlockProtector.isSpotProtected(
-                                e.world, expl.explosionX, expl.explosionY, expl.explosionZ))) {
+        if (expl.isSmoking && (expl.exploder != null ? TileBlockProtector.isSpotProtected(e.world, expl.exploder)
+                : TileBlockProtector.isSpotProtected(e.world, expl.explosionX, expl.explosionY, expl.explosionZ))) {
             // why?
             // expl.isSmoking = false;
             e.setCanceled(true);
@@ -223,13 +228,11 @@ public class EventHandlerWorld {
                     TileEntity tile = e.world.getTileEntity(e.x, e.y, e.z);
                     if (tile instanceof TileStickyJar) {
                         Integer sideHit = this.interacts.get(e.player);
-                        ((TileStickyJar) tile)
-                                .init(
-                                        (TileJarFillable) parent,
-                                        e.placedBlock,
-                                        metadata,
-                                        ForgeDirection.getOrientation(sideHit == null ? 1 : sideHit)
-                                                .getOpposite());
+                        ((TileStickyJar) tile).init(
+                                (TileJarFillable) parent,
+                                e.placedBlock,
+                                metadata,
+                                ForgeDirection.getOrientation(sideHit == null ? 1 : sideHit).getOpposite());
                         RegisteredBlocks.blockStickyJar.onBlockPlacedBy(e.world, e.x, e.y, e.z, e.player, e.itemInHand);
                     }
                 }
@@ -252,12 +255,15 @@ public class EventHandlerWorld {
             if (event.world.provider.dimensionId == ModConfig.dimOuterId) {
                 if (event.block == ConfigBlocks.blockEldritchNothing) {
                     if (event.getPlayer().capabilities.isCreativeMode
-                            && MiscUtils.isANotApprovedOrMisunderstoodPersonFromMoreDoor(event.getPlayer())) return;
+                            && MiscUtils.isANotApprovedOrMisunderstoodPersonFromMoreDoor(event.getPlayer()))
+                        return;
                     event.setCanceled(true);
-                    event.getPlayer()
-                            .addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC + ""
-                                    + EnumChatFormatting.GRAY
-                                    + StatCollector.translateToLocal("gadomancy.eldritch.nobreakPortalNothing")));
+                    event.getPlayer().addChatMessage(
+                            new ChatComponentText(
+                                    EnumChatFormatting.ITALIC + ""
+                                            + EnumChatFormatting.GRAY
+                                            + StatCollector
+                                                    .translateToLocal("gadomancy.eldritch.nobreakPortalNothing")));
                 }
             }
         }
@@ -265,8 +271,7 @@ public class EventHandlerWorld {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void on(PlayerInteractEvent e) {
-        if (!e.world.isRemote
-                && e.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK
+        if (!e.world.isRemote && e.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK
                 && this.isStickyJar(e.entityPlayer.getHeldItem())) {
             if (this.interacts == null) {
                 this.interacts = new HashMap<EntityPlayer, Integer>();
@@ -283,8 +288,7 @@ public class EventHandlerWorld {
     }
 
     private boolean isStickyJar(ItemStack stack) {
-        return stack != null
-                && RegisteredItems.isStickyableJar(stack)
+        return stack != null && RegisteredItems.isStickyableJar(stack)
                 && stack.hasTagCompound()
                 && stack.stackTagCompound.getBoolean("isStickyJar");
     }
@@ -316,6 +320,7 @@ public class EventHandlerWorld {
     }
 
     private static class ValueOverride extends GameRules.Value {
+
         private final EventHandlerWorld handler;
 
         public ValueOverride(EventHandlerWorld handler, String value) {
@@ -326,18 +331,13 @@ public class EventHandlerWorld {
         @Override
         public boolean getGameRuleBooleanValue() {
             boolean mobGriefing = super.getGameRuleBooleanValue();
-            /*if(mobGriefing) {
-                Entity lastUpdated = this.handler.lastUpdated;
-                if(lastUpdated != null) {
-                    StackTraceElement[] elements = Thread.currentThread().getStackTrace();
-                    for(StackTraceElement element : elements) {
-                        if(element.getClassName().equals(EntityLivingBase.class.getName())
-                                && (element.getMethodName().equals("func_70071_h") || element.getMethodName().equals("onUpdate"))) {
-                            return !TileBlockProtector.isSpotProtected(lastUpdated.worldObj, lastUpdated);
-                        }
-                    }
-                }
-            }*/
+            /*
+             * if(mobGriefing) { Entity lastUpdated = this.handler.lastUpdated; if(lastUpdated != null) {
+             * StackTraceElement[] elements = Thread.currentThread().getStackTrace(); for(StackTraceElement element :
+             * elements) { if(element.getClassName().equals(EntityLivingBase.class.getName()) &&
+             * (element.getMethodName().equals("func_70071_h") || element.getMethodName().equals("onUpdate"))) { return
+             * !TileBlockProtector.isSpotProtected(lastUpdated.worldObj, lastUpdated); } } } }
+             */
             return mobGriefing;
         }
     }

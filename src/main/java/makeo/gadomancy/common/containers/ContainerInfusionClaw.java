@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.containers;
 
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -9,14 +10,13 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 09.10.2015 20:34
  */
 public class ContainerInfusionClaw extends Container {
+
     public final InventoryPlayer playerInv;
     public final IInventory clawInv;
 
@@ -81,25 +81,13 @@ public class ContainerInfusionClaw extends Container {
         return false;
     }
 
-    /*public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slot) {
-        ItemStack stack = null;
-        Slot slotObject = (Slot) this.inventorySlots.get(slot);
-
-        if(slotObject != null && slotObject.getHasStack()) {
-            ItemStack stackInSlot = slotObject.getStack();
-
-            if (!mergeItemStack(stackInSlot, 0, 1, false)) {
-                return null;
-            }
-
-            if (stackInSlot.stackSize == 0) {
-                slotObject.putStack(null);
-            } else {
-                slotObject.onSlotChanged();
-            }
-        }
-        return stack;
-    }*/
+    /*
+     * public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slot) { ItemStack stack = null; Slot
+     * slotObject = (Slot) this.inventorySlots.get(slot); if(slotObject != null && slotObject.getHasStack()) { ItemStack
+     * stackInSlot = slotObject.getStack(); if (!mergeItemStack(stackInSlot, 0, 1, false)) { return null; } if
+     * (stackInSlot.stackSize == 0) { slotObject.putStack(null); } else { slotObject.onSlotChanged(); } } return stack;
+     * }
+     */
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {

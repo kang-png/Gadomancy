@@ -1,15 +1,15 @@
 package makeo.gadomancy.client.renderers.tile;
 
 import makeo.gadomancy.common.data.config.ModConfig;
+
 import net.minecraft.tileentity.TileEntity;
+
 import thaumcraft.client.renderers.tile.TileEldritchCapRenderer;
 import thaumcraft.common.config.Config;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by HellFirePvP @ 10.11.2015 22:20
  */

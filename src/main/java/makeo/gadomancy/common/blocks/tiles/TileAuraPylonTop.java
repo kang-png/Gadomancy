@@ -1,22 +1,23 @@
 package makeo.gadomancy.common.blocks.tiles;
 
 import java.util.ArrayList;
+
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.effect.fx.Orbital;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 13.11.2015 00:01
  */
@@ -43,8 +44,8 @@ public class TileAuraPylonTop extends SynchronizedTileEntity implements IAspectC
             if (pylon.isPartOfMultiblock() && !pylon.isMasterTile()) this.breakTile();
         } else {
             this.shouldRender = te != null && te instanceof TileAuraPylon && ((TileAuraPylon) te).isPartOfMultiblock();
-            this.shouldRenderAura =
-                    te != null && te instanceof TileAuraPylon && ((TileAuraPylon) te).getEssentiaAmount() > 0;
+            this.shouldRenderAura = te != null && te instanceof TileAuraPylon
+                    && ((TileAuraPylon) te).getEssentiaAmount() > 0;
         }
     }
 

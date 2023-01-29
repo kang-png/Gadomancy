@@ -1,10 +1,9 @@
 package makeo.gadomancy.client.events;
 
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
+
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.client.gui.GuiResearchRecipeAuraEffects;
@@ -22,6 +21,7 @@ import makeo.gadomancy.common.utils.Injector;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.NBTHelper;
 import makeo.gadomancy.common.utils.Vector3;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
@@ -37,7 +37,9 @@ import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.client.model.obj.WavefrontObject;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitect;
 import thaumcraft.api.research.ResearchItem;
@@ -48,16 +50,17 @@ import thaumcraft.client.lib.REHWandHandler;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.items.relics.ItemThaumometer;
 import thaumcraft.common.items.wands.ItemWandCasting;
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 13.10.2015 16:11
  */
 public class RenderEventHandler {
+
     private static final REHWandHandler WAND_HANDLER = new REHWandHandler();
     private static final FakeArchitectItem ARCHITECT_ITEM = new FakeArchitectItem();
 
@@ -75,8 +78,8 @@ public class RenderEventHandler {
                     this.blurbId = core.getBaseCore();
                     String key = "golemblurb." + this.blurbId + ".text";
                     this.oldGolemblurb = ResourceReloadListener.languageList.get(key);
-                    ResourceReloadListener.languageList.put(
-                            key, StatCollector.translateToLocal(core.getUnlocalizedGuiText()));
+                    ResourceReloadListener.languageList
+                            .put(key, StatCollector.translateToLocal(core.getUnlocalizedGuiText()));
                 }
             }
         }
@@ -106,23 +109,28 @@ public class RenderEventHandler {
                     for (int x = -1; x < 2; x++) {
                         for (int y = -1; y < 2; y++) {
                             for (int z = -1; z < 2; z++) {
-                                coords.add(new BlockCoordinates(
-                                        e.target.blockX + 2 * dir.offsetX + x,
-                                        e.target.blockY + 2 * dir.offsetY + y,
-                                        e.target.blockZ + 2 * dir.offsetZ + z));
+                                coords.add(
+                                        new BlockCoordinates(
+                                                e.target.blockX + 2 * dir.offsetX + x,
+                                                e.target.blockY + 2 * dir.offsetY + y,
+                                                e.target.blockZ + 2 * dir.offsetZ + z));
                             }
                         }
                     }
-                    coords.add(new BlockCoordinates(
-                            e.target.blockX + dir.offsetX,
-                            e.target.blockY + dir.offsetY,
-                            e.target.blockZ + dir.offsetZ));
+                    coords.add(
+                            new BlockCoordinates(
+                                    e.target.blockX + dir.offsetX,
+                                    e.target.blockY + dir.offsetY,
+                                    e.target.blockZ + dir.offsetZ));
 
                     RenderEventHandler.ARCHITECT_ITEM.setCoords(coords);
 
                     GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
                     RenderEventHandler.WAND_HANDLER.handleArchitectOverlay(
-                            new ItemStack(RenderEventHandler.ARCHITECT_ITEM), e, e.player.ticksExisted, e.target);
+                            new ItemStack(RenderEventHandler.ARCHITECT_ITEM),
+                            e,
+                            e.player.ticksExisted,
+                            e.target);
                     GL11.glPopAttrib();
                 }
             }
@@ -136,13 +144,13 @@ public class RenderEventHandler {
                 if (tile instanceof TileExtendedNode) {
                     TileExtendedNode node = (TileExtendedNode) tile;
                     if (node.getExtendedNodeType() == null) return;
-                    ExtendedTypeDisplayManager.notifyDisplayTick(
-                            node.getId(), node.getNodeType(), node.getExtendedNodeType());
+                    ExtendedTypeDisplayManager
+                            .notifyDisplayTick(node.getId(), node.getNodeType(), node.getExtendedNodeType());
                 } else if (tile instanceof TileExtendedNodeJar) {
                     TileExtendedNodeJar nodeJar = (TileExtendedNodeJar) tile;
                     if (nodeJar.getExtendedNodeType() == null) return;
-                    ExtendedTypeDisplayManager.notifyDisplayTick(
-                            nodeJar.getId(), nodeJar.getNodeType(), nodeJar.getExtendedNodeType());
+                    ExtendedTypeDisplayManager
+                            .notifyDisplayTick(nodeJar.getId(), nodeJar.getNodeType(), nodeJar.getExtendedNodeType());
                 }
             }
         }
@@ -230,21 +238,17 @@ public class RenderEventHandler {
     }
 
     static {
-        ResourceLocation mod = new ResourceLocation(Gadomancy.MODID.toLowerCase()
-                + new String(
-                        new byte[] {
-                            58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 111, 100, 101, 108, 115, 47, 109, 111,
-                            100, 101, 108, 65, 115, 115, 101, 99, 46, 111, 98, 106
-                        },
+        ResourceLocation mod = new ResourceLocation(
+                Gadomancy.MODID.toLowerCase() + new String(
+                        new byte[] { 58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 111, 100, 101, 108, 115, 47,
+                                109, 111, 100, 101, 108, 65, 115, 115, 101, 99, 46, 111, 98, 106 },
                         StandardCharsets.UTF_8));
         IModelCustom buf;
         try {
             buf = new WavefrontObject(
                     "gadomancy:wRender",
-                    new GZIPInputStream(Minecraft.getMinecraft()
-                            .getResourceManager()
-                            .getResource(mod)
-                            .getInputStream()));
+                    new GZIPInputStream(
+                            Minecraft.getMinecraft().getResourceManager().getResource(mod).getInputStream()));
         } catch (Exception exc) {
             // shush.
             buf = null;
@@ -253,12 +257,11 @@ public class RenderEventHandler {
     }
 
     private static final IModelCustom obj;
-    private static final ResourceLocation tex = new ResourceLocation(new String(
-            new byte[] {
-                103, 97, 100, 111, 109, 97, 110, 99, 121, 58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 105, 115,
-                99, 47, 116, 101, 120, 87, 46, 112, 110, 103
-            },
-            StandardCharsets.UTF_8));
+    private static final ResourceLocation tex = new ResourceLocation(
+            new String(
+                    new byte[] { 103, 97, 100, 111, 109, 97, 110, 99, 121, 58, 116, 101, 120, 116, 117, 114, 101, 115,
+                            47, 109, 105, 115, 99, 47, 116, 101, 120, 87, 46, 112, 110, 103 },
+                    StandardCharsets.UTF_8));
     private static int dList = -1;
 
     @SubscribeEvent
@@ -274,14 +277,8 @@ public class RenderEventHandler {
         Minecraft.getMinecraft().renderEngine.bindTexture(RenderEventHandler.tex);
         boolean f = event.entityPlayer.capabilities.isFlying;
         double ma = f ? 15 : 5;
-        double r = (ma * (Math.abs((ClientHandler.ticks % 80) - 40) / 40D))
-                + ((65 - ma)
-                        * Math.max(
-                                0,
-                                Math.min(
-                                        1,
-                                        new Vector3(event.entityPlayer.motionX, 0, event.entityPlayer.motionZ)
-                                                .length())));
+        double r = (ma * (Math.abs((ClientHandler.ticks % 80) - 40) / 40D)) + ((65 - ma) * Math
+                .max(0, Math.min(1, new Vector3(event.entityPlayer.motionX, 0, event.entityPlayer.motionZ).length())));
         GL11.glScaled(0.07, 0.07, 0.07);
         GL11.glRotatef(180, 0, 0, 1);
         GL11.glTranslated(0, -12.7, 0.7 - (((float) (r / ma)) * (f ? 0.5D : 0.2D)));

@@ -1,34 +1,37 @@
 package makeo.gadomancy.client.transformation;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import makeo.gadomancy.client.renderers.entity.PlayerCameraRenderer;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketAbortTransform;
 import makeo.gadomancy.common.registration.RegisteredIntegrations;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+
 import thaumcraft.common.entities.golems.EntityGolemBase;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 04.07.2015 02:38
  */
 @SideOnly(Side.CLIENT)
 public class TransformationHelper {
+
     private static final FakeEntityGolemBase DEFAULT_GOLEM;
 
     static {
         EntityGolemBase golem = new EntityGolemBase(null) {
+
             @Override
             public byte getCore() {
                 return (byte) 4;
@@ -47,16 +50,14 @@ public class TransformationHelper {
 
     public static boolean isTransformable() {
         Minecraft mc = Minecraft.getMinecraft();
-        return mc.thePlayer.equals(mc.renderViewEntity)
-                && !RegisteredIntegrations.morph.isMorphed()
+        return mc.thePlayer.equals(mc.renderViewEntity) && !RegisteredIntegrations.morph.isMorphed()
                 && mc.entityRenderer.getClass().equals(EntityRenderer.class)
                 && (TransformationHelper.renderer == null || TransformationHelper.renderer.isRemoved());
     }
 
     public static boolean isForeignTransformed() {
         Minecraft mc = Minecraft.getMinecraft();
-        return !mc.renderViewEntity.equals(mc.thePlayer)
-                || RegisteredIntegrations.morph.isMorphed()
+        return !mc.renderViewEntity.equals(mc.thePlayer) || RegisteredIntegrations.morph.isMorphed()
                 || (!mc.entityRenderer.getClass().equals(EntityRenderer.class)
                         && !(mc.entityRenderer instanceof PlayerCameraRenderer));
     }
@@ -116,8 +117,7 @@ public class TransformationHelper {
     public static void cancelTransformation(PacketAbortTransform.AbortReason reason) {
         if (TransformationHelper.isTransformed()) {
             PacketHandler.INSTANCE.sendToServer(new PacketAbortTransform(reason));
-            TransformationHelper.onAbortTransformation(
-                    Minecraft.getMinecraft().thePlayer.getEntityId());
+            TransformationHelper.onAbortTransformation(Minecraft.getMinecraft().thePlayer.getEntityId());
         }
     }
 

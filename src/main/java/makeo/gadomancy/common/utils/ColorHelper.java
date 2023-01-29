@@ -3,14 +3,13 @@ package makeo.gadomancy.common.utils;
 import java.awt.*;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 13.07.2015 03:50
  */
 public class ColorHelper {
+
     public static final char COLOR_CHAR = '\u00a7';
 
     private ColorHelper() {}

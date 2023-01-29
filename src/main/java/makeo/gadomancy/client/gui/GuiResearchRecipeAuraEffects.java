@@ -4,16 +4,20 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.aura.AuraResearchManager;
 import makeo.gadomancy.common.aura.ResearchPageAuraAspects;
 import makeo.gadomancy.common.utils.Injector;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchItem;
@@ -26,10 +30,8 @@ import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 30.11.2015 12:24
  */
@@ -42,8 +44,8 @@ public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
 
         Injector inj = new Injector(this, GuiResearchRecipe.class);
 
-        ResearchPage[] additionalPages =
-                ResearchPageAuraAspects.createAllAuraPagesFor(Minecraft.getMinecraft().thePlayer);
+        ResearchPage[] additionalPages = ResearchPageAuraAspects
+                .createAllAuraPagesFor(Minecraft.getMinecraft().thePlayer);
         ResearchPage[] pages = inj.getField("pages");
         ResearchPage[] newPages = new ResearchPage[pages.length + additionalPages.length];
         System.arraycopy(pages, 0, newPages, 0, pages.length);
@@ -51,8 +53,7 @@ public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
         inj.setField("pages", newPages);
         inj.setField("maxPages", newPages.length);
 
-        List<String> list = Thaumcraft.proxy
-                .getScannedObjects()
+        List<String> list = Thaumcraft.proxy.getScannedObjects()
                 .get(Minecraft.getMinecraft().thePlayer.getCommandSenderName());
         if ((list != null) && (list.size() > 0)) {
             for (String s : list) {
@@ -75,8 +76,7 @@ public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
                             }
                         }
                     }
-                } catch (NumberFormatException e) {
-                }
+                } catch (NumberFormatException e) {}
             }
         }
     }
@@ -216,7 +216,12 @@ public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
                     }
                     GL11.glScalef(2.0F, 2.0F, 2.0F);
                     UtilsFX.drawTag(
-                            (x + start) / 2, (y + count * 50) / 2, aspect, aspects.getAmount(aspect), 0, this.zLevel);
+                            (x + start) / 2,
+                            (y + count * 50) / 2,
+                            aspect,
+                            aspects.getAmount(aspect),
+                            0,
+                            this.zLevel);
                     GL11.glPopMatrix();
                     String text = aspect.getName();
                     int offset = fr.getStringWidth(text) / 2;

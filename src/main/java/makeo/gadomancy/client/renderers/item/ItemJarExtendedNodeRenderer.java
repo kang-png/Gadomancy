@@ -3,6 +3,7 @@ package makeo.gadomancy.client.renderers.item;
 import makeo.gadomancy.common.items.ItemExtendedNodeJar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -10,19 +11,20 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileJar;
 import thaumcraft.common.tiles.TileJarNode;
 
 /**
- * This class is NOT part of the Gadomancy Mod
- * This file is copied from Azanors thaumcraft.client.renderers.tile.ItemJarNodeRenderer.java and contains small modifications
- * Thaumcraft: http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1292130
+ * This class is NOT part of the Gadomancy Mod This file is copied from Azanors
+ * thaumcraft.client.renderers.tile.ItemJarNodeRenderer.java and contains small modifications Thaumcraft:
+ * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1292130
  *
- * Created by Azanor
- * Modified by HellFirePvP @ 26.10.2015 00:06
+ * Created by Azanor Modified by HellFirePvP @ 26.10.2015 00:06
  */
 public class ItemJarExtendedNodeRenderer implements IItemRenderer {
 
@@ -32,8 +34,8 @@ public class ItemJarExtendedNodeRenderer implements IItemRenderer {
         return (item != null) && (item.getItem() == RegisteredItems.itemExtendedNodeJar);
     }
 
-    public boolean shouldUseRenderHelper(
-            IItemRenderer.ItemRenderType type, ItemStack item, IItemRenderer.ItemRendererHelper helper) {
+    public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType type, ItemStack item,
+            IItemRenderer.ItemRendererHelper helper) {
         return helper != ItemRendererHelper.EQUIPPED_BLOCK;
     }
 

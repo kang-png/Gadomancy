@@ -1,25 +1,27 @@
 package makeo.gadomancy.common.entities.fake;
 
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.concurrent.GenericFutureListener;
 import java.net.SocketAddress;
+
 import javax.crypto.SecretKey;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.*;
 import net.minecraft.network.play.client.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.IChatComponent;
 
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.util.concurrent.GenericFutureListener;
+
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 19.09.2015 17:26
  */
 public class FakeNetServerHandler extends NetHandlerPlayServer {
+
     public FakeNetServerHandler(MinecraftServer server, EntityPlayerMP player) {
         super(server, new NetworkManagerFake(), player);
     }
@@ -28,8 +30,8 @@ public class FakeNetServerHandler extends NetHandlerPlayServer {
     public void onNetworkTick() {}
 
     @Override
-    public void setPlayerLocation(
-            double p_147364_1_, double p_147364_3_, double p_147364_5_, float p_147364_7_, float p_147364_8_) {}
+    public void setPlayerLocation(double p_147364_1_, double p_147364_3_, double p_147364_5_, float p_147364_7_,
+            float p_147364_8_) {}
 
     @Override
     public void onDisconnect(IChatComponent p_147231_1_) {}
@@ -107,6 +109,7 @@ public class FakeNetServerHandler extends NetHandlerPlayServer {
     public void processHeldItemChange(C09PacketHeldItemChange p_147355_1_) {}
 
     private static class NetworkManagerFake extends NetworkManager {
+
         public NetworkManagerFake() {
             super(false);
         }

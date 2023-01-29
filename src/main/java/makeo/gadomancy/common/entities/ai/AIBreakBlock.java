@@ -4,8 +4,10 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import makeo.gadomancy.common.entities.fake.AdvancedFakePlayer;
 import makeo.gadomancy.common.entities.fake.GolemFakePlayer;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Blocks;
@@ -17,20 +19,20 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.Marker;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 17.09.2015 20:22
  */
 public class AIBreakBlock extends EntityAIBase {
+
     private static final int BLACKLIST_TICKS = 20 * 40;
 
     private EntityGolemBase golem;
@@ -89,14 +91,12 @@ public class AIBreakBlock extends EntityAIBase {
                 }
                 this.clickCount++;
 
-                this.golem
-                        .getLookHelper()
-                        .setLookPosition(
-                                this.currentMarker.x + 0.5D,
-                                this.currentMarker.y + 0.5D,
-                                this.currentMarker.z + 0.5D,
-                                30.0F,
-                                30.0F);
+                this.golem.getLookHelper().setLookPosition(
+                        this.currentMarker.x + 0.5D,
+                        this.currentMarker.y + 0.5D,
+                        this.currentMarker.z + 0.5D,
+                        30.0F,
+                        30.0F);
 
                 this.count = 0;
             } else {
@@ -104,13 +104,11 @@ public class AIBreakBlock extends EntityAIBase {
                     this.count = 0;
 
                     ForgeDirection dir = ForgeDirection.getOrientation(this.currentMarker.side);
-                    boolean path = this.golem
-                            .getNavigator()
-                            .tryMoveToXYZ(
-                                    this.currentMarker.x + 0.5D + dir.offsetX,
-                                    this.currentMarker.y + 0.5D + dir.offsetY,
-                                    this.currentMarker.z + 0.5D + dir.offsetZ,
-                                    this.golem.getAIMoveSpeed());
+                    boolean path = this.golem.getNavigator().tryMoveToXYZ(
+                            this.currentMarker.x + 0.5D + dir.offsetX,
+                            this.currentMarker.y + 0.5D + dir.offsetY,
+                            this.currentMarker.z + 0.5D + dir.offsetZ,
+                            this.golem.getAIMoveSpeed());
                     if (!path) {
                         if (this.blacklistCount > 10) {
                             this.blacklist.put(this.currentMarker, this.golem.ticksExisted);
@@ -154,24 +152,26 @@ public class AIBreakBlock extends EntityAIBase {
         if (this.player.theItemInWorldManager.durabilityRemainingOnBlock == -1
                 || !this.player.theItemInWorldManager.isDestroyingBlock) {
             this.player.theItemInWorldManager.onBlockClicked(
-                    this.currentMarker.x, this.currentMarker.y, this.currentMarker.z, this.currentMarker.side);
+                    this.currentMarker.x,
+                    this.currentMarker.y,
+                    this.currentMarker.z,
+                    this.currentMarker.side);
         } else if (this.player.theItemInWorldManager.durabilityRemainingOnBlock >= 9) {
-            this.player.theItemInWorldManager.uncheckedTryHarvestBlock(
-                    this.currentMarker.x, this.currentMarker.y, this.currentMarker.z);
+            this.player.theItemInWorldManager
+                    .uncheckedTryHarvestBlock(this.currentMarker.x, this.currentMarker.y, this.currentMarker.z);
             this.player.theItemInWorldManager.durabilityRemainingOnBlock = -1;
 
             if (tool != null) {
-                Block block =
-                        this.golem.worldObj.getBlock(this.currentMarker.x, this.currentMarker.y, this.currentMarker.z);
-                tool.getItem()
-                        .onBlockDestroyed(
-                                tool,
-                                this.golem.worldObj,
-                                block,
-                                this.currentMarker.x,
-                                this.currentMarker.y,
-                                this.currentMarker.z,
-                                this.player);
+                Block block = this.golem.worldObj
+                        .getBlock(this.currentMarker.x, this.currentMarker.y, this.currentMarker.z);
+                tool.getItem().onBlockDestroyed(
+                        tool,
+                        this.golem.worldObj,
+                        block,
+                        this.currentMarker.x,
+                        this.currentMarker.y,
+                        this.currentMarker.z,
+                        this.player);
             }
         }
         this.hasValidTool();
@@ -180,11 +180,10 @@ public class AIBreakBlock extends EntityAIBase {
 
     private void cancelLeftClick() {
         ItemInWorldManager manager = this.player.theItemInWorldManager;
-        if (manager.isDestroyingBlock)
-            this.player.theItemInWorldManager.cancelDestroyingBlock(
-                    manager.partiallyDestroyedBlockX,
-                    manager.partiallyDestroyedBlockY,
-                    manager.partiallyDestroyedBlockZ);
+        if (manager.isDestroyingBlock) this.player.theItemInWorldManager.cancelDestroyingBlock(
+                manager.partiallyDestroyedBlockX,
+                manager.partiallyDestroyedBlockY,
+                manager.partiallyDestroyedBlockZ);
     }
 
     private Marker getNextMarker() {
@@ -207,7 +206,9 @@ public class AIBreakBlock extends EntityAIBase {
     private double distanceSquaredToGolem(double x, double y, double z, int facing) {
         ForgeDirection dir = ForgeDirection.getOrientation(facing);
         return this.golem.getDistanceSq(
-                x + 0.5 + (0.5 * dir.offsetX), y + 0.5 + (0.5 * dir.offsetY), z + 0.5 + (0.5 * dir.offsetZ));
+                x + 0.5 + (0.5 * dir.offsetX),
+                y + 0.5 + (0.5 * dir.offsetY),
+                z + 0.5 + (0.5 * dir.offsetZ));
     }
 
     private boolean isInHomeRange() {
@@ -265,7 +266,9 @@ public class AIBreakBlock extends EntityAIBase {
         ChunkCoordinates coords = this.golem.getHomePosition();
         ForgeDirection facing = ForgeDirection.getOrientation(this.golem.homeFacing);
         TileEntity tile = this.golem.worldObj.getTileEntity(
-                coords.posX - facing.offsetX, coords.posY - facing.offsetY, coords.posZ - facing.offsetZ);
+                coords.posX - facing.offsetX,
+                coords.posY - facing.offsetY,
+                coords.posZ - facing.offsetZ);
         if (tile instanceof IInventory) {
             return (IInventory) tile;
         }
@@ -318,10 +321,8 @@ public class AIBreakBlock extends EntityAIBase {
             boolean empty = true;
             for (int slot = 0; slot < this.golem.inventory.slotCount; slot++) {
                 ItemStack stack = this.golem.inventory.inventory[slot];
-                if (stack != null
-                        && Block.getBlockFromItem(stack.getItem()) == Blocks.air
-                        && (this.currentMarker == null
-                                || this.golem.colors[slot] == -1
+                if (stack != null && Block.getBlockFromItem(stack.getItem()) == Blocks.air
+                        && (this.currentMarker == null || this.golem.colors[slot] == -1
                                 || this.currentMarker.color == -1
                                 || this.golem.colors[slot] == this.currentMarker.color)) {
                     empty = false;

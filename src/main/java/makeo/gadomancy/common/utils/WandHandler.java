@@ -1,8 +1,8 @@
 package makeo.gadomancy.common.utils;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
 import java.util.Iterator;
 import java.util.List;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
@@ -15,6 +15,7 @@ import makeo.gadomancy.common.node.ExtendedNodeType;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredIntegrations;
 import makeo.gadomancy.common.registration.RegisteredRecipes;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +27,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
+
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -38,12 +40,11 @@ import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.TileJarNode;
 import thaumcraft.common.tiles.TileOwned;
 import thaumcraft.common.tiles.TileWarded;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 24.10.2015 18:09
  */
@@ -69,7 +70,8 @@ public class WandHandler {
 
         if (target.equals(ConfigBlocks.blockCrystal)) {
             if (ResearchManager.isResearchComplete(
-                    entityPlayer.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".AURA_CORE"))
+                    entityPlayer.getCommandSenderName(),
+                    Gadomancy.MODID.toUpperCase() + ".AURA_CORE"))
                 WandHandler.tryAuraCoreCreation(i, entityPlayer, world, x, y, z);
         }
     }
@@ -79,19 +81,17 @@ public class WandHandler {
 
         List items = world.getEntitiesWithinAABB(
                 EntityItem.class,
-                AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1)
-                        .expand(
-                                EntityAuraCore.CLUSTER_RANGE,
-                                EntityAuraCore.CLUSTER_RANGE,
-                                EntityAuraCore.CLUSTER_RANGE));
+                AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(
+                        EntityAuraCore.CLUSTER_RANGE,
+                        EntityAuraCore.CLUSTER_RANGE,
+                        EntityAuraCore.CLUSTER_RANGE));
         Iterator it = items.iterator();
         EntityItem itemAuraCore = null;
         while (itemAuraCore == null && it.hasNext()) {
             Object item = it.next();
             if (item != null && item instanceof EntityItem && !((EntityItem) item).isDead) {
                 EntityItem entityItem = (EntityItem) item;
-                if (entityItem.getEntityItem() != null
-                        && entityItem.getEntityItem().getItem() != null
+                if (entityItem.getEntityItem() != null && entityItem.getEntityItem().getItem() != null
                         && entityItem.getEntityItem().getItem() instanceof ItemAuraCore
                         && !(item instanceof EntityAuraCore)) {
                     if (((ItemAuraCore) entityItem.getEntityItem().getItem()).isBlank(entityItem.getEntityItem()))
@@ -107,38 +107,42 @@ public class WandHandler {
             Aspect[] aspects;
             switch (meta) {
                 case 0:
-                    aspects = new Aspect[] {Aspect.AIR};
+                    aspects = new Aspect[] { Aspect.AIR };
                     break;
                 case 1:
-                    aspects = new Aspect[] {Aspect.FIRE};
+                    aspects = new Aspect[] { Aspect.FIRE };
                     break;
                 case 2:
-                    aspects = new Aspect[] {Aspect.WATER};
+                    aspects = new Aspect[] { Aspect.WATER };
                     break;
                 case 3:
-                    aspects = new Aspect[] {Aspect.EARTH};
+                    aspects = new Aspect[] { Aspect.EARTH };
                     break;
                 case 4:
-                    aspects = new Aspect[] {Aspect.ORDER};
+                    aspects = new Aspect[] { Aspect.ORDER };
                     break;
                 case 5:
-                    aspects = new Aspect[] {Aspect.ENTROPY};
+                    aspects = new Aspect[] { Aspect.ENTROPY };
                     break;
                 case 6:
-                    aspects = new Aspect[] {
-                        Aspect.AIR, Aspect.FIRE, Aspect.EARTH, Aspect.WATER, Aspect.ORDER, Aspect.ENTROPY
-                    };
+                    aspects = new Aspect[] { Aspect.AIR, Aspect.FIRE, Aspect.EARTH, Aspect.WATER, Aspect.ORDER,
+                            Aspect.ENTROPY };
                     break;
                 default:
                     return;
             }
 
             if (!ThaumcraftApiHelper.consumeVisFromWandCrafting(
-                    i, entityPlayer, (AspectList) RegisteredRecipes.auraCoreRecipes[meta].get(0), true)) return;
+                    i,
+                    entityPlayer,
+                    (AspectList) RegisteredRecipes.auraCoreRecipes[meta].get(0),
+                    true))
+                return;
 
             PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_BURST, x, y, z);
             PacketHandler.INSTANCE.sendToAllAround(
-                    packet, new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32.0D));
+                    packet,
+                    new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32.0D));
             world.createExplosion(null, x + 0.5D, y + 0.5D, z + 0.5D, 1.5F, false);
             world.setBlockToAir(x, y, z);
 
@@ -160,9 +164,10 @@ public class WandHandler {
         }
     }
 
-    private static void tryTCJarNodeCreation(
-            ItemStack wandStack, EntityPlayer player, World world, int x, int y, int z) {
+    private static void tryTCJarNodeCreation(ItemStack wandStack, EntityPlayer player, World world, int x, int y,
+            int z) {
         WandHandler.JarPieceEvaluationRunnable slabRunnable = new WandHandler.JarPieceEvaluationRunnable() {
+
             @Override
             public boolean isValidPieceAt(World world, int absX, int absY, int absZ, EntityPlayer player) {
                 Block block = world.getBlock(absX, absY, absZ);
@@ -171,20 +176,22 @@ public class WandHandler {
             }
         };
         WandHandler.JarPieceEvaluationRunnable glassRunnable = new WandHandler.JarPieceEvaluationRunnable() {
+
             @Override
             public boolean isValidPieceAt(World world, int absX, int absY, int absZ, EntityPlayer player) {
                 return world.getBlock(absX, absY, absZ) == Blocks.glass;
             }
         };
         WandHandler.JarPieceEvaluationRunnable nodeRunnable = new WandHandler.JarPieceEvaluationRunnable() {
+
             @Override
             public boolean isValidPieceAt(World world, int absX, int absY, int absZ, EntityPlayer player) {
                 TileEntity tile = world.getTileEntity(absX, absY, absZ);
                 return (tile != null) && (tile instanceof INode) && ((!(tile instanceof TileJarNode)));
             }
         };
-        int[] result = WandHandler.evaluateIfValidJarIsPresent(
-                world, x, y, z, player, slabRunnable, glassRunnable, nodeRunnable);
+        int[] result = WandHandler
+                .evaluateIfValidJarIsPresent(world, x, y, z, player, slabRunnable, glassRunnable, nodeRunnable);
 
         if (result == null) {
             return;
@@ -193,22 +200,19 @@ public class WandHandler {
         if (!ThaumcraftApiHelper.consumeVisFromWandCrafting(
                 wandStack,
                 player,
-                new AspectList()
-                        .add(Aspect.FIRE, 70)
-                        .add(Aspect.EARTH, 70)
-                        .add(Aspect.ORDER, 70)
-                        .add(Aspect.AIR, 70)
-                        .add(Aspect.ENTROPY, 70)
-                        .add(Aspect.WATER, 70),
-                true)) return;
+                new AspectList().add(Aspect.FIRE, 70).add(Aspect.EARTH, 70).add(Aspect.ORDER, 70).add(Aspect.AIR, 70)
+                        .add(Aspect.ENTROPY, 70).add(Aspect.WATER, 70),
+                true))
+            return;
 
         if (world.isRemote) return;
         WandHandler.replaceJar(world, result[0], result[1], result[2], true);
     }
 
-    private static void tryAutomagyJarNodeCreation(
-            ItemStack wandStack, EntityPlayer player, World world, int x, int y, int z) {
+    private static void tryAutomagyJarNodeCreation(ItemStack wandStack, EntityPlayer player, World world, int x, int y,
+            int z) {
         WandHandler.JarPieceEvaluationRunnable silverWoodRunnable = new WandHandler.JarPieceEvaluationRunnable() {
+
             @Override
             public boolean isValidPieceAt(World world, int absX, int absY, int absZ, EntityPlayer player) {
                 TileEntity te = world.getTileEntity(absX, absY, absZ);
@@ -223,6 +227,7 @@ public class WandHandler {
             }
         };
         WandHandler.JarPieceEvaluationRunnable glassRunnable = new WandHandler.JarPieceEvaluationRunnable() {
+
             @Override
             public boolean isValidPieceAt(World world, int absX, int absY, int absZ, EntityPlayer player) {
                 if ((world.getBlock(absX, absY, absZ) == ConfigBlocks.blockCosmeticOpaque)
@@ -236,14 +241,15 @@ public class WandHandler {
             }
         };
         WandHandler.JarPieceEvaluationRunnable nodeRunnable = new WandHandler.JarPieceEvaluationRunnable() {
+
             @Override
             public boolean isValidPieceAt(World world, int absX, int absY, int absZ, EntityPlayer player) {
                 TileEntity tile = world.getTileEntity(absX, absY, absZ);
                 return (tile != null) && (tile instanceof INode) && ((!(tile instanceof TileJarNode)));
             }
         };
-        int[] result = WandHandler.evaluateIfValidJarIsPresent(
-                world, x, y, z, player, silverWoodRunnable, glassRunnable, nodeRunnable);
+        int[] result = WandHandler
+                .evaluateIfValidJarIsPresent(world, x, y, z, player, silverWoodRunnable, glassRunnable, nodeRunnable);
 
         if (result == null) {
             return;
@@ -267,21 +273,15 @@ public class WandHandler {
         return false;
     }
 
-    private static int[] evaluateIfValidJarIsPresent(
-            World world,
-            int x,
-            int y,
-            int z,
-            EntityPlayer player,
-            JarPieceEvaluationRunnable topRunnable,
-            JarPieceEvaluationRunnable glassRunnable,
+    private static int[] evaluateIfValidJarIsPresent(World world, int x, int y, int z, EntityPlayer player,
+            JarPieceEvaluationRunnable topRunnable, JarPieceEvaluationRunnable glassRunnable,
             JarPieceEvaluationRunnable centerRunnable) {
         for (int xx = x - 2; xx <= x; xx++) {
             for (int yy = y - 3; yy <= y; yy++) {
                 for (int zz = z - 2; zz <= z; zz++) {
-                    if (WandHandler.isValidJarAt(
-                            world, xx, yy, zz, player, topRunnable, glassRunnable, centerRunnable)) {
-                        return new int[] {xx, yy, zz};
+                    if (WandHandler
+                            .isValidJarAt(world, xx, yy, zz, player, topRunnable, glassRunnable, centerRunnable)) {
+                        return new int[] { xx, yy, zz };
                     }
                 }
             }
@@ -289,21 +289,11 @@ public class WandHandler {
         return null;
     }
 
-    private static boolean isValidJarAt(
-            World world,
-            int x,
-            int y,
-            int z,
-            EntityPlayer player,
-            JarPieceEvaluationRunnable topRunnable,
-            JarPieceEvaluationRunnable glassRunnable,
+    private static boolean isValidJarAt(World world, int x, int y, int z, EntityPlayer player,
+            JarPieceEvaluationRunnable topRunnable, JarPieceEvaluationRunnable glassRunnable,
             JarPieceEvaluationRunnable centerRunnable) {
-        int[][][] blueprint = {
-            {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}},
-            {{2, 2, 2}, {2, 2, 2}, {2, 2, 2}},
-            {{2, 2, 2}, {2, 3, 2}, {2, 2, 2}},
-            {{2, 2, 2}, {2, 2, 2}, {2, 2, 2}}
-        };
+        int[][][] blueprint = { { { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 } }, { { 2, 2, 2 }, { 2, 2, 2 }, { 2, 2, 2 } },
+                { { 2, 2, 2 }, { 2, 3, 2 }, { 2, 2, 2 } }, { { 2, 2, 2 }, { 2, 2, 2 }, { 2, 2, 2 } } };
         for (int yy = 0; yy < 4; yy++) {
             for (int xx = 0; xx < 3; xx++) {
                 for (int zz = 0; zz < 3; zz++) {
@@ -324,12 +314,8 @@ public class WandHandler {
     }
 
     private static void replaceJar(World world, int x, int y, int z, boolean isThaumcraft) {
-        int[][][] blueprint = {
-            {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}},
-            {{2, 2, 2}, {2, 2, 2}, {2, 2, 2}},
-            {{2, 2, 2}, {2, 3, 2}, {2, 2, 2}},
-            {{2, 2, 2}, {2, 2, 2}, {2, 2, 2}}
-        };
+        int[][][] blueprint = { { { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 } }, { { 2, 2, 2 }, { 2, 2, 2 }, { 2, 2, 2 } },
+                { { 2, 2, 2 }, { 2, 3, 2 }, { 2, 2, 2 } }, { { 2, 2, 2 }, { 2, 2, 2 }, { 2, 2, 2 } } };
         for (int yy = 0; yy < 4; yy++) {
             for (int xx = 0; xx < 3; xx++) {
                 for (int zz = 0; zz < 3; zz++) {

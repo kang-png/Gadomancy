@@ -2,13 +2,12 @@ package makeo.gadomancy.common.data;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 13.12.2015 16:06
  */
@@ -43,8 +42,7 @@ public abstract class AbstractData {
 
     public static class Registry {
 
-        private static Map<Byte, AbstractDataProvider<? extends AbstractData>> registry =
-                new HashMap<Byte, AbstractDataProvider<? extends AbstractData>>();
+        private static Map<Byte, AbstractDataProvider<? extends AbstractData>> registry = new HashMap<Byte, AbstractDataProvider<? extends AbstractData>>();
 
         public static void register(AbstractDataProvider<? extends AbstractData> provider) {
             Registry.registry.put(provider.getProviderId(), provider);

@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.containers;
 
 import makeo.gadomancy.common.blocks.tiles.TileArcanePackager;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -10,14 +11,13 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 14.11.2015 18:08
  */
 public class ContainerArcanePackager extends Container {
+
     public final InventoryPlayer playerInv;
     public final IInventory packagerInv;
 
@@ -64,11 +64,10 @@ public class ContainerArcanePackager extends Container {
                     return null;
                 }
             } else {
-                int specialSlot =
-                        itemstack1.getItem() == Items.leather ? 9 : itemstack1.getItem() == Items.string ? 10 : -1;
-                if (specialSlot != -1
-                        && (this.packagerInv.getStackInSlot(specialSlot) == null
-                                || this.packagerInv.getStackInSlot(specialSlot).stackSize < 64)) {
+                int specialSlot = itemstack1.getItem() == Items.leather ? 9
+                        : itemstack1.getItem() == Items.string ? 10 : -1;
+                if (specialSlot != -1 && (this.packagerInv.getStackInSlot(specialSlot) == null
+                        || this.packagerInv.getStackInSlot(specialSlot).stackSize < 64)) {
                     this.mergeItemStack(itemstack1, specialSlot, specialSlot + 1, false);
 
                     if (itemstack1.stackSize == 0) {

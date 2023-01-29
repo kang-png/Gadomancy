@@ -1,21 +1,22 @@
 package makeo.gadomancy.common.registration;
 
 import java.lang.reflect.Field;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.enchantments.EnchantmentRevealer;
 import makeo.gadomancy.common.utils.Injector;
+
 import net.minecraft.enchantment.Enchantment;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 28.12.2015 15:52
  */
 public class RegisteredEnchantments {
+
     public static EnchantmentRevealer revealer;
 
     public static void init() {
@@ -44,7 +45,10 @@ public class RegisteredEnchantments {
                 return i;
             }
         }
-        throw new RuntimeException("Failed to find free id for " + Gadomancy.NAME + " enchantment ("
-                + enchClass.getName() + ")! Please consider using the config option to change the enchantment id.");
+        throw new RuntimeException(
+                "Failed to find free id for " + Gadomancy.NAME
+                        + " enchantment ("
+                        + enchClass.getName()
+                        + ")! Please consider using the config option to change the enchantment id.");
     }
 }

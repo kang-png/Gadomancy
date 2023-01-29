@@ -1,7 +1,7 @@
 package makeo.gadomancy.client.renderers.block;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
@@ -10,19 +10,19 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.common.blocks.BlockJar;
 import thaumcraft.common.config.ConfigBlocks;
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
- * This class is NOT part of the Gadomancy Mod
- * This file is copied from Azanors thaumcraft.client.renderers.block.BlockRenderer.java and
- * thaumcraft.client.renderers.block.BlockJarRenderer.java
+ * This class is NOT part of the Gadomancy Mod This file is copied from Azanors
+ * thaumcraft.client.renderers.block.BlockRenderer.java and thaumcraft.client.renderers.block.BlockJarRenderer.java
  * Thaumcraft: http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1292130
  *
- * Created by Azanor
- * Modified to create compatibility with ExtendedNodes
- * Modified by HellFirePvP @ 26.10.2015 00:29
+ * Created by Azanor Modified to create compatibility with ExtendedNodes Modified by HellFirePvP @ 26.10.2015 00:29
  */
 public class BlockExtendedNodeJarRenderer implements ISimpleBlockRenderingHandler {
 
@@ -58,8 +58,8 @@ public class BlockExtendedNodeJarRenderer implements ISimpleBlockRenderingHandle
                 BlockExtendedNodeJarRenderer.W12,
                 BlockExtendedNodeJarRenderer.W13);
         renderer.setRenderBoundsFromBlock(block);
-        BlockExtendedNodeJarRenderer.drawFaces(
-                renderer, block, ((BlockJar) ConfigBlocks.blockJar).iconJarBottom, i1, i2, i2, i2, i2, true);
+        BlockExtendedNodeJarRenderer
+                .drawFaces(renderer, block, ((BlockJar) ConfigBlocks.blockJar).iconJarBottom, i1, i2, i2, i2, i2, true);
         block.setBlockBounds(
                 BlockExtendedNodeJarRenderer.W5,
                 BlockExtendedNodeJarRenderer.W12,
@@ -68,14 +68,14 @@ public class BlockExtendedNodeJarRenderer implements ISimpleBlockRenderingHandle
                 BlockExtendedNodeJarRenderer.W14,
                 BlockExtendedNodeJarRenderer.W11);
         renderer.setRenderBoundsFromBlock(block);
-        BlockExtendedNodeJarRenderer.drawFaces(
-                renderer, block, ((BlockJar) ConfigBlocks.blockJar).iconJarBottom, i1, i2, i2, i2, i2, true);
+        BlockExtendedNodeJarRenderer
+                .drawFaces(renderer, block, ((BlockJar) ConfigBlocks.blockJar).iconJarBottom, i1, i2, i2, i2, i2, true);
         GL11.glPopMatrix();
     }
 
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+            RenderBlocks renderer) {
         int bb = this.setBrightness(world, x, y, z, block);
         int metadata = world.getBlockMetadata(x, y, z);
         block.setBlockBounds(
@@ -103,16 +103,8 @@ public class BlockExtendedNodeJarRenderer implements ISimpleBlockRenderingHandle
         return true;
     }
 
-    public static void drawFaces(
-            RenderBlocks renderblocks,
-            Block block,
-            IIcon i1,
-            IIcon i2,
-            IIcon i3,
-            IIcon i4,
-            IIcon i5,
-            IIcon i6,
-            boolean solidtop) {
+    public static void drawFaces(RenderBlocks renderblocks, Block block, IIcon i1, IIcon i2, IIcon i3, IIcon i4,
+            IIcon i5, IIcon i6, boolean solidtop) {
         Tessellator tessellator = Tessellator.instance;
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         tessellator.startDrawingQuads();

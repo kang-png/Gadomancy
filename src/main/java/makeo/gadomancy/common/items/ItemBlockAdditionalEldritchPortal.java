@@ -1,7 +1,9 @@
 package makeo.gadomancy.common.items;
 
 import java.util.List;
+
 import makeo.gadomancy.common.Gadomancy;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,14 +14,13 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 07.11.2015 00:35
  */
 public class ItemBlockAdditionalEldritchPortal extends ItemBlock {
+
     public ItemBlockAdditionalEldritchPortal(Block block) {
         super(block);
     }
@@ -34,8 +35,9 @@ public class ItemBlockAdditionalEldritchPortal extends ItemBlock {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean flag) {
-        list.add(EnumChatFormatting.DARK_PURPLE
-                + StatCollector.translateToLocal("gadomancy.eldritch.portalPlacerCreative"));
+        list.add(
+                EnumChatFormatting.DARK_PURPLE
+                        + StatCollector.translateToLocal("gadomancy.eldritch.portalPlacerCreative"));
         super.addInformation(stack, player, list, flag);
     }
 

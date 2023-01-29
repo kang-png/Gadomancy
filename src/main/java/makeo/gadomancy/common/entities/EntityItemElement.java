@@ -1,22 +1,22 @@
 package makeo.gadomancy.common.entities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
+
 import makeo.gadomancy.common.items.ItemElement;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+
 import thaumcraft.client.fx.bolt.FXLightningBolt;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * HellFirePvP@Admin
- * Date: 23.04.2016 / 13:45
- * on Gadomancy
- * EntityItemElement
+ * HellFirePvP@Admin Date: 23.04.2016 / 13:45 on Gadomancy EntityItemElement
  */
 public class EntityItemElement extends EntityItem {
 
@@ -38,8 +38,8 @@ public class EntityItemElement extends EntityItem {
         ItemStack stack = this.getEntityItem();
         if (stack == null || !(stack.getItem() instanceof ItemElement)) return;
         int meta = stack.getItemDamage();
-        ItemElement.EnumElementType element =
-                ItemElement.EnumElementType.values()[meta % ItemElement.EnumElementType.values().length];
+        ItemElement.EnumElementType element = ItemElement.EnumElementType.values()[meta
+                % ItemElement.EnumElementType.values().length];
 
         if (!this.worldObj.isRemote && (this.ticksExisted & 15) == 0) {
             EntityItemElement.doElementServerEffects(element, this.worldObj, this.posX, this.posY, this.posZ);
@@ -54,8 +54,8 @@ public class EntityItemElement extends EntityItem {
         }
     }
 
-    public static void doElementServerEffects(
-            ItemElement.EnumElementType type, World world, double posX, double posY, double posZ) {
+    public static void doElementServerEffects(ItemElement.EnumElementType type, World world, double posX, double posY,
+            double posZ) {
         List entities = world.getEntitiesWithinAABB(
                 EntityLivingBase.class,
                 AxisAlignedBB.getBoundingBox(posX - 0.5, posY - 0.5, posZ - 0.5, posX + 0.5, posY + 0.5, posZ + 0.5)
@@ -67,8 +67,8 @@ public class EntityItemElement extends EntityItem {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void playClientElementEffect(
-            ItemElement.EnumElementType element, World worldObj, double posX, double posY, double posZ) {
+    public static void playClientElementEffect(ItemElement.EnumElementType element, World worldObj, double posX,
+            double posY, double posZ) {
         float randOffsetX = worldObj.rand.nextFloat() * (worldObj.rand.nextBoolean() ? 1 : -1);
         float randOffsetY = worldObj.rand.nextFloat() * (worldObj.rand.nextBoolean() ? 1 : -1);
         float randOffsetZ = worldObj.rand.nextFloat() * (worldObj.rand.nextBoolean() ? 1 : -1);
@@ -90,13 +90,12 @@ public class EntityItemElement extends EntityItem {
                 bolt.setType(5);
                 bolt.finalizeBolt();
                 break;
-                /*case ORDER:
-                    Thaumcraft.proxy.wispFX(worldObj, posX + randOffsetX / 4, posY + 0.2F + randOffsetY / 4, posZ + randOffsetZ / 4, 0.1F, 0xFF, 0xFF, 0xFF);
-                    break;
-                case FIRE:
-                    Minecraft.getMinecraft().effectRenderer.addEffect(
-                            new EntityFlameFX(worldObj, posX + randOffsetX / 4, posY + 0.2F + randOffsetY / 4, posZ + randOffsetZ / 4, 0, 0, 0));
-                    break;*/
+            /*
+             * case ORDER: Thaumcraft.proxy.wispFX(worldObj, posX + randOffsetX / 4, posY + 0.2F + randOffsetY / 4, posZ
+             * + randOffsetZ / 4, 0.1F, 0xFF, 0xFF, 0xFF); break; case FIRE:
+             * Minecraft.getMinecraft().effectRenderer.addEffect( new EntityFlameFX(worldObj, posX + randOffsetX / 4,
+             * posY + 0.2F + randOffsetY / 4, posZ + randOffsetZ / 4, 0, 0, 0)); break;
+             */
         }
     }
 }

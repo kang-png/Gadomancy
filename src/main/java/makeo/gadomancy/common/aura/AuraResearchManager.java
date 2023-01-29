@@ -2,23 +2,24 @@ package makeo.gadomancy.common.aura;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketTCNotificationText;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.StatCollector;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.research.ResearchManager;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 29.11.2015 18:14
  */
@@ -30,8 +31,9 @@ public class AuraResearchManager {
         if (!AuraEffectHandler.registeredEffects.containsKey(aspect)) return;
         if (AuraResearchManager.isBlacklisted(aspect)) return;
 
-        if (!ResearchManager.isResearchComplete(
-                player.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS")) return;
+        if (!ResearchManager
+                .isResearchComplete(player.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS"))
+            return;
         if (!Thaumcraft.proxy.getPlayerKnowledge().hasDiscoveredAspect(player.getCommandSenderName(), aspect)) return;
 
         String res = String.format(AuraResearchManager.TC_AURA_RESEARCH_STR, aspect.getTag());

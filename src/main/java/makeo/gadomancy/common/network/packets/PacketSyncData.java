@@ -1,25 +1,26 @@
 package makeo.gadomancy.common.network.packets;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import io.netty.buffer.ByteBuf;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.AbstractData;
 import makeo.gadomancy.common.data.SyncDataHolder;
 import makeo.gadomancy.common.utils.StringHelper;
+
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.nbt.NBTTagCompound;
 
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import io.netty.buffer.ByteBuf;
+
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 13.12.2015 15:54
  */
@@ -43,8 +44,8 @@ public class PacketSyncData implements IMessage, IMessageHandler<PacketSyncData,
             String key = StringHelper.readFromBuffer(buf);
 
             byte providerId = buf.readByte();
-            AbstractData.AbstractDataProvider<? extends AbstractData> provider =
-                    AbstractData.Registry.getProvider(providerId);
+            AbstractData.AbstractDataProvider<? extends AbstractData> provider = AbstractData.Registry
+                    .getProvider(providerId);
             if (provider == null) {
                 Gadomancy.log.warn("Provider for ID " + providerId + " doesn't exist! Skipping...");
                 continue;
@@ -91,8 +92,8 @@ public class PacketSyncData implements IMessage, IMessageHandler<PacketSyncData,
             try {
                 abyte = CompressedStreamTools.compress(cmp);
             } catch (IOException e) {
-                Gadomancy.log.warn(
-                        "Compressing the NBTTagCompound of " + providerId + " threw an IOException! Skipping...");
+                Gadomancy.log
+                        .warn("Compressing the NBTTagCompound of " + providerId + " threw an IOException! Skipping...");
                 Gadomancy.log.warn("Exception message: " + e.getMessage());
                 continue;
             }

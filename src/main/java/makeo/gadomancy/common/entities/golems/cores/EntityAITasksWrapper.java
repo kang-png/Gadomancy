@@ -2,22 +2,24 @@ package makeo.gadomancy.common.entities.golems.cores;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
+
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
+
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 25.08.2015 22:24
  */
 public class EntityAITasksWrapper extends EntityAITasks {
+
     private final EntityGolemBase golem;
     private final EntityAITasks original;
     private boolean locked = true;
@@ -37,6 +39,7 @@ public class EntityAITasksWrapper extends EntityAITasks {
     }
 
     private class WrapperList extends ArrayList {
+
         private WrapperList(Collection c) {
             super(c);
         }

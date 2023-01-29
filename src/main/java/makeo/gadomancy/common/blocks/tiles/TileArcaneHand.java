@@ -1,12 +1,11 @@
 package makeo.gadomancy.common.blocks.tiles;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.ModContainer;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import makeo.gadomancy.common.entities.fake.AdvancedFakePlayer;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
@@ -19,15 +18,18 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.common.network.NetworkRegistry;
+
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 16.12.2015 11:50
  */
 public class TileArcaneHand extends SynchronizedTileEntity implements ISidedInventory {
+
     private GuiFakePlayer fakePlayer;
 
     private ItemInWorldManager im;
@@ -99,6 +101,7 @@ public class TileArcaneHand extends SynchronizedTileEntity implements ISidedInve
     }
 
     private static class GuiFakePlayer extends AdvancedFakePlayer {
+
         private TileArcaneHand tile;
 
         public GuiFakePlayer(TileArcaneHand tile) {

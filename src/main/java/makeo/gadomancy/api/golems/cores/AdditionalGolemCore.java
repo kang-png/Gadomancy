@@ -2,27 +2,28 @@ package makeo.gadomancy.api.golems.cores;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 11.08.2015 14:10
  */
 public abstract class AdditionalGolemCore {
+
     private String name;
 
     /**
      * Init your AI stuff here
+     * 
      * @param golem the golem entity
      */
     public abstract void setupGolem(EntityGolemBase golem);
 
     /**
-     * @return If the  golem has a gui
+     * @return If the golem has a gui
      */
     public abstract boolean hasGui();
 
@@ -34,10 +35,10 @@ public abstract class AdditionalGolemCore {
     }
 
     /**
-     * Open custom a gui here
-     * Only called if hasGui is true
+     * Open custom a gui here Only called if hasGui is true
+     * 
      * @param player player entity
-     * @param golem golem entity
+     * @param golem  golem entity
      * @return false -> open default gui true -> no gui
      */
     public boolean openGui(EntityPlayer player, EntityGolemBase golem) {

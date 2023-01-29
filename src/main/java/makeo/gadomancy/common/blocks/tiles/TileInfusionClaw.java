@@ -1,13 +1,10 @@
 package makeo.gadomancy.common.blocks.tiles;
 
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
+
 import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.entities.fake.AdvancedFakePlayer;
@@ -15,6 +12,7 @@ import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketStartAnimation;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.utils.NBTHelper;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,6 +26,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.IPlayerFileData;
 import net.minecraft.world.storage.SaveHandler;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.Thaumcraft;
@@ -35,28 +34,26 @@ import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.items.wands.foci.ItemFocusPrimal;
 import thaumcraft.common.lib.research.ResearchManager;
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 05.10.2015 22:32
  */
 public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedInventory {
+
     private static final UUID FAKE_UUID = UUID.fromString("b23c8c3f-d7bd-49b3-970a-8e86728bab82");
     private static final Random RANDOM = new Random();
 
     private static final ItemWandCasting WAND_ITEM = (ItemWandCasting) ConfigItems.itemWandCasting;
     private static final ItemFocusPrimal WAND_FOCUS = (ItemFocusPrimal) ConfigItems.itemFocusPrimal;
-    private static final AspectList MAX_WAND_COST = new AspectList()
-            .add(Aspect.WATER, 250)
-            .add(Aspect.AIR, 250)
-            .add(Aspect.EARTH, 250)
-            .add(Aspect.FIRE, 250)
-            .add(Aspect.ORDER, 250)
-            .add(Aspect.ENTROPY, 250);
+    private static final AspectList MAX_WAND_COST = new AspectList().add(Aspect.WATER, 250).add(Aspect.AIR, 250)
+            .add(Aspect.EARTH, 250).add(Aspect.FIRE, 250).add(Aspect.ORDER, 250).add(Aspect.ENTROPY, 250);
 
     private ItemInWorldManager im;
     private Boolean redstoneState;
@@ -73,12 +70,8 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedIn
     public float lastRenderTick;
 
     /**
-     * 0-3: heightMov sides
-     * 4-7: widthMov sides
-     * 8: sides exp. speed
-     * 9: center exp. speed
-     * 10: rotation center
-     * 11: primal orb offset
+     * 0-3: heightMov sides 4-7: widthMov sides 8: sides exp. speed 9: center exp. speed 10: rotation center 11: primal
+     * orb offset
      */
     @SideOnly(Side.CLIENT)
     public float[] animationStates;
@@ -194,13 +187,11 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedIn
             if (this.research == null) {
                 Thaumcraft.proxy.getCompletedResearch().put(fakePlayer.getCommandSenderName(), new ArrayList<String>());
 
-                IPlayerFileData playerNBTManagerObj = MinecraftServer.getServer()
-                        .worldServerForDimension(0)
-                        .getSaveHandler()
-                        .getSaveHandler();
+                IPlayerFileData playerNBTManagerObj = MinecraftServer.getServer().worldServerForDimension(0)
+                        .getSaveHandler().getSaveHandler();
                 SaveHandler sh = (SaveHandler) playerNBTManagerObj;
-                File dir = ObfuscationReflectionHelper.getPrivateValue(
-                        SaveHandler.class, sh, "playersDirectory", "field_75771_c");
+                File dir = ObfuscationReflectionHelper
+                        .getPrivateValue(SaveHandler.class, sh, "playersDirectory", "field_75771_c");
                 File file1 = new File(dir, this.player + ".thaum");
                 File file2 = new File(dir, this.player + ".thaumbak");
                 ResearchManager.loadPlayerData(fakePlayer, file1, file2, false);
@@ -209,11 +200,9 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedIn
             }
         }
 
-        Thaumcraft.proxy
-                .getCompletedResearch()
-                .put(
-                        fakePlayer.getCommandSenderName(),
-                        this.research == null ? new ArrayList<String>() : this.research);
+        Thaumcraft.proxy.getCompletedResearch().put(
+                fakePlayer.getCommandSenderName(),
+                this.research == null ? new ArrayList<String>() : this.research);
     }
 
     public String getOwner() {
@@ -226,8 +215,8 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedIn
 
     private void startClickBlock() {
         if (!this.isRunning()) {
-            ClickBehavior behavior =
-                    this.getClickBehavior(this.getWorldObj(), this.xCoord, this.yCoord - 1, this.zCoord);
+            ClickBehavior behavior = this
+                    .getClickBehavior(this.getWorldObj(), this.xCoord, this.yCoord - 1, this.zCoord);
             if (behavior != null && (!behavior.hasVisCost() || this.hasSufficientVis())) {
                 this.startRunning();
             }
@@ -278,14 +267,22 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedIn
 
             fakePlayer.setHeldItem(this.wandStack);
             this.im.activateBlockOrUseItem(
-                    fakePlayer, world, this.wandStack, x, y, z, ForgeDirection.UP.ordinal(), 0.5F, 0.5F, 0.5F);
+                    fakePlayer,
+                    world,
+                    this.wandStack,
+                    x,
+                    y,
+                    z,
+                    ForgeDirection.UP.ordinal(),
+                    0.5F,
+                    0.5F,
+                    0.5F);
             this.addInstability(behavior);
         }
     }
 
     private ClickBehavior getClickBehavior(World world, int x, int y, int z) {
-        if (y >= 0
-                && !world.isRemote
+        if (y >= 0 && !world.isRemote
                 && world instanceof WorldServer
                 && this.hasOwner()
                 && !world.isAirBlock(x, y, z)
@@ -324,8 +321,7 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedIn
         instability -= Math.floor((maxVis > 300 ? 300 : maxVis) / 300f * 10f);
         instability -= TileInfusionClaw.WAND_ITEM.isStaff(this.wandStack) ? 6 : -1;
 
-        instability +=
-                Math.floor((TileInfusionClaw.WAND_ITEM.getCap(this.wandStack).getBaseCostModifier() - 0.4) * 3);
+        instability += Math.floor((TileInfusionClaw.WAND_ITEM.getCap(this.wandStack).getBaseCostModifier() - 0.4) * 3);
 
         instability -= TileInfusionClaw.WAND_ITEM.getCap(this.wandStack) == ConfigItems.WAND_CAP_VOID ? 3 : 0;
         instability -= TileInfusionClaw.WAND_ITEM.getRod(this.wandStack) == ConfigItems.STAFF_ROD_PRIMAL ? 6 : 0;
@@ -334,15 +330,18 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedIn
     }
 
     private boolean hasSufficientVis() {
-        return this.wandStack != null
-                && this.wandStack.stackSize > 0
-                && TileInfusionClaw.WAND_ITEM.consumeAllVis(
-                        this.wandStack, null, TileInfusionClaw.MAX_WAND_COST, false, false);
+        return this.wandStack != null && this.wandStack.stackSize > 0
+                && TileInfusionClaw.WAND_ITEM
+                        .consumeAllVis(this.wandStack, null, TileInfusionClaw.MAX_WAND_COST, false, false);
     }
 
     private void consumeVis(EntityPlayer player) {
         TileInfusionClaw.WAND_ITEM.consumeAllVis(
-                this.wandStack, player, TileInfusionClaw.WAND_FOCUS.getVisCost(this.wandStack), true, false);
+                this.wandStack,
+                player,
+                TileInfusionClaw.WAND_FOCUS.getVisCost(this.wandStack),
+                true,
+                false);
         this.markForUpdate();
     }
 
@@ -422,7 +421,7 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedIn
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        return new int[] {0};
+        return new int[] { 0 };
     }
 
     @Override

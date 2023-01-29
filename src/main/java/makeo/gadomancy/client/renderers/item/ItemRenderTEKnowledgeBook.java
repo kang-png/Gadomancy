@@ -2,14 +2,13 @@ package makeo.gadomancy.client.renderers.item;
 
 import makeo.gadomancy.client.renderers.tile.RenderTileKnowledgeBook;
 import makeo.gadomancy.common.blocks.tiles.TileKnowledgeBook;
+
 import net.minecraft.item.ItemStack;
+
 import org.lwjgl.opengl.GL11;
 
 /**
- * HellFirePvP@Admin
- * Date: 19.04.2016 / 16:02
- * on Gadomancy
- * ItemRenderTEKnowledgeBook
+ * HellFirePvP@Admin Date: 19.04.2016 / 16:02 on Gadomancy ItemRenderTEKnowledgeBook
  */
 public class ItemRenderTEKnowledgeBook extends ItemRenderTileEntity<TileKnowledgeBook> {
 

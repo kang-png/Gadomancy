@@ -1,26 +1,26 @@
 package makeo.gadomancy.common.network.packets;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import io.netty.buffer.ByteBuf;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.data.config.Sync;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import io.netty.buffer.ByteBuf;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 15.11.2015 21:10
  */
 public class PacketSyncConfigs implements IMessage, IMessageHandler<PacketSyncConfigs, IMessage> {
+
     private Tuple[] fieldData;
 
     @Override
@@ -38,8 +38,7 @@ public class PacketSyncConfigs implements IMessage, IMessageHandler<PacketSyncCo
                 tuple = new Tuple();
                 tuple.field = new DataInputStream(bain).readUTF();
                 tuple.value = new ObjectInputStream(bain).readObject();
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
 
             if (tuple == null) {
                 this.fieldData = null;
@@ -59,14 +58,12 @@ public class PacketSyncConfigs implements IMessage, IMessageHandler<PacketSyncCo
                 try {
                     new DataOutputStream(baos).writeUTF(field.getName());
                     new ObjectOutputStream(baos).writeObject(field.get(null));
-                } catch (Exception ignored) {
-                }
+                } catch (Exception ignored) {}
                 fieldData.add(baos.toByteArray());
 
                 try {
                     baos.close();
-                } catch (IOException ignored) {
-                }
+                } catch (IOException ignored) {}
             }
         }
 
@@ -92,6 +89,7 @@ public class PacketSyncConfigs implements IMessage, IMessageHandler<PacketSyncCo
     }
 
     private static class Tuple {
+
         private String field;
         private Object value;
     }

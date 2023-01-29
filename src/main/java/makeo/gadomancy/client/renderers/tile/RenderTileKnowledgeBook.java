@@ -1,23 +1,23 @@
 package makeo.gadomancy.client.renderers.tile;
 
 import makeo.gadomancy.common.blocks.tiles.TileKnowledgeBook;
+
 import net.minecraft.client.model.ModelBook;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
 /**
- * HellFirePvP@Admin
- * Date: 19.04.2016 / 14:57
- * on Gadomancy
- * RenderTileKnowledgeBook
+ * HellFirePvP@Admin Date: 19.04.2016 / 14:57 on Gadomancy RenderTileKnowledgeBook
  */
 public class RenderTileKnowledgeBook extends TileEntitySpecialRenderer {
 
-    private static final ResourceLocation bookTexture =
-            new ResourceLocation("minecraft", "textures/entity/enchanting_table_book.png");
+    private static final ResourceLocation bookTexture = new ResourceLocation(
+            "minecraft",
+            "textures/entity/enchanting_table_book.png");
     private static final ModelBook modelBook = new ModelBook();
 
     @Override
@@ -36,9 +36,8 @@ public class RenderTileKnowledgeBook extends TileEntitySpecialRenderer {
         GL11.glTranslatef(0.0F, 0.1F + MathHelper.sin(f1 * 0.1F) * 0.03F, 0.0F);
         float f2;
 
-        for (f2 = attributes.field_145928_o - attributes.field_145925_p;
-                f2 >= (float) Math.PI;
-                f2 -= ((float) Math.PI * 2F)) {}
+        for (f2 = attributes.field_145928_o - attributes.field_145925_p; f2
+                >= (float) Math.PI; f2 -= ((float) Math.PI * 2F)) {}
 
         while (f2 < -(float) Math.PI) {
             f2 += ((float) Math.PI * 2F);
@@ -48,11 +47,9 @@ public class RenderTileKnowledgeBook extends TileEntitySpecialRenderer {
         GL11.glRotatef(-f3 * 180.0F / (float) Math.PI, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(80.0F, 0.0F, 0.0F, 1.0F);
         this.bindTexture(RenderTileKnowledgeBook.bookTexture);
-        float f4 = attributes.field_145931_j
-                + (attributes.field_145933_i - attributes.field_145931_j) * partialTicks
+        float f4 = attributes.field_145931_j + (attributes.field_145933_i - attributes.field_145931_j) * partialTicks
                 + 0.25F;
-        float f5 = attributes.field_145931_j
-                + (attributes.field_145933_i - attributes.field_145931_j) * partialTicks
+        float f5 = attributes.field_145931_j + (attributes.field_145933_i - attributes.field_145931_j) * partialTicks
                 + 0.75F;
         f4 = (f4 - (float) MathHelper.truncateDoubleToInt(f4)) * 1.6F - 0.3F;
         f5 = (f5 - (float) MathHelper.truncateDoubleToInt(f5)) * 1.6F - 0.3F;

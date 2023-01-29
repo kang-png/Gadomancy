@@ -3,19 +3,20 @@ package makeo.gadomancy.common.aura;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 29.11.2015 23:57
  */
@@ -50,9 +51,9 @@ public class ResearchPageAuraAspects extends ResearchPage {
         if (knowledge.size() <= 0) return new ArrayList<String>();
         Collections.sort(knowledge);
         int startIndex = pageIndex << 2;
-        if (knowledge.size() <= startIndex)
-            return new ArrayList<
-                    String>(); // Should not happen, because getAdditionalPages should only return indexes within range
+        if (knowledge.size() <= startIndex) return new ArrayList<String>(); // Should not happen, because
+                                                                            // getAdditionalPages should only return
+                                                                            // indexes within range
         return knowledge.subList(startIndex, (startIndex + 4 > knowledge.size()) ? knowledge.size() : startIndex + 4);
     }
 
@@ -70,8 +71,13 @@ public class ResearchPageAuraAspects extends ResearchPage {
         if (original == null) return null;
         String fakeTemp = "GADOMANCY_TEMP_" + tag;
 
-        Aspect fake =
-                new FakeAspect(fakeTemp, original.getColor(), null, original.getImage(), original.getBlend(), true);
+        Aspect fake = new FakeAspect(
+                fakeTemp,
+                original.getColor(),
+                null,
+                original.getImage(),
+                original.getBlend(),
+                true);
         fake.setTag(original.getTag());
         return fake;
     }
@@ -80,8 +86,8 @@ public class ResearchPageAuraAspects extends ResearchPage {
 
         private boolean headAspect;
 
-        public FakeAspect(
-                String tag, int color, Aspect[] components, ResourceLocation image, int blend, boolean isHead) {
+        public FakeAspect(String tag, int color, Aspect[] components, ResourceLocation image, int blend,
+                boolean isHead) {
             super(tag, color, components, image, blend);
             Aspect.aspects.remove(tag);
             this.headAspect = isHead;

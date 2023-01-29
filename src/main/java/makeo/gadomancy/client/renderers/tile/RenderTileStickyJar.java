@@ -1,6 +1,7 @@
 package makeo.gadomancy.client.renderers.tile;
 
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -10,18 +11,19 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.common.tiles.TileJarFillable;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 14.07.2015 21:05
  */
 public class RenderTileStickyJar extends TileEntitySpecialRenderer {
+
     private static final RenderBlocks RENDER_BLOCKS = new RenderBlocks();
 
     @Override
@@ -63,7 +65,9 @@ public class RenderTileStickyJar extends TileEntitySpecialRenderer {
             tess.startDrawingQuads();
 
             tess.setNormal(
-                    0, -stickyJar.placedOn.offsetY, -Math.abs(stickyJar.placedOn.offsetZ + stickyJar.placedOn.offsetX));
+                    0,
+                    -stickyJar.placedOn.offsetY,
+                    -Math.abs(stickyJar.placedOn.offsetZ + stickyJar.placedOn.offsetX));
 
             tess.setTranslation(-tile.xCoord, -tile.yCoord, -tile.zCoord);
 

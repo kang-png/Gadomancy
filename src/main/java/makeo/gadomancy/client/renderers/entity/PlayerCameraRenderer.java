@@ -5,14 +5,13 @@ import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 09.07.2015 02:34
  */
 public class PlayerCameraRenderer extends EntityRenderer {
+
     private final Minecraft minecraft;
 
     private boolean isMarkedForRemoval;
@@ -49,8 +48,7 @@ public class PlayerCameraRenderer extends EntityRenderer {
     }
 
     private boolean canChangeView() {
-        return !this.isMarkedForRemoval
-                && this.minecraft.thePlayer != null
+        return !this.isMarkedForRemoval && this.minecraft.thePlayer != null
                 && !this.minecraft.thePlayer.isRiding()
                 && !this.minecraft.thePlayer.isPlayerSleeping();
     }

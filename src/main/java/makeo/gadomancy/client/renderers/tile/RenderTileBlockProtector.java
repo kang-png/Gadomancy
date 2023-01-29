@@ -3,21 +3,23 @@ package makeo.gadomancy.client.renderers.tile;
 import makeo.gadomancy.client.models.ModelBlockProtector;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.client.renderers.models.ModelJar;
 import thaumcraft.client.renderers.tile.TileJarRenderer;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 11.11.2015 16:28
  */
 public class RenderTileBlockProtector extends TileJarRenderer {
+
     private static final ResourceLocation TEXTURE_OFF = new SimpleResourceLocation("models/block_protector_off.png");
     private static final ResourceLocation TEXTURE_ON = new SimpleResourceLocation("models/block_protector_on.png");
 

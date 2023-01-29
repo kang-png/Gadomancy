@@ -1,27 +1,29 @@
 package makeo.gadomancy.client.gui;
 
 import java.awt.*;
+
 import makeo.gadomancy.common.blocks.tiles.TileArcanePackager;
 import makeo.gadomancy.common.containers.ContainerArcanePackager;
 import makeo.gadomancy.common.utils.ColorHelper;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+
 import org.lwjgl.opengl.GL11;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 14.11.2015 01:17
  */
 public class ArcanePackagerGui extends GuiContainer {
+
     private static final ResourceLocation TEXTURE = new SimpleResourceLocation("gui/gui_packager.png");
 
     private final TileArcanePackager tile;
@@ -78,10 +80,16 @@ public class ArcanePackagerGui extends GuiContainer {
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
 
         this.drawString(
-                100, 98, "gadomancy.info.ArcanePackager.useEssentia", this.tile.useEssentia ? Color.WHITE : Color.GRAY);
+                100,
+                98,
+                "gadomancy.info.ArcanePackager.useEssentia",
+                this.tile.useEssentia ? Color.WHITE : Color.GRAY);
 
         this.drawString(
-                100, 111, "gadomancy.info.ArcanePackager.autoStart", this.tile.autoStart ? Color.WHITE : Color.GRAY);
+                100,
+                111,
+                "gadomancy.info.ArcanePackager.autoStart",
+                this.tile.autoStart ? Color.WHITE : Color.GRAY);
 
         this.drawString(
                 100,

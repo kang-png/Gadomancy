@@ -1,21 +1,22 @@
 package makeo.gadomancy.client.renderers.tile;
 
 import java.util.Random;
+
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.effect.fx.Orbital;
 import makeo.gadomancy.common.blocks.tiles.TileAIShutdown;
 import makeo.gadomancy.common.utils.Vector3;
+
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
 import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.fx.particles.FXWisp;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by HellFirePvP @ 09.06.2016 / 12:56
  */
@@ -60,13 +61,10 @@ public class RenderTileAIShutdown extends TileEntitySpecialRenderer {
         prop.setTicksForFullCircle(50).setOffsetTicks(0);
         prop.setParticleSize(0F);
         prop.setRenderRunnable(new Orbital.OrbitalRenderRunnable() {
+
             @Override
-            public void onRender(
-                    World world,
-                    Vector3 pos,
-                    Orbital.OrbitalRenderProperties properties,
-                    int orbitalExisted,
-                    float partialTicks) {
+            public void onRender(World world, Vector3 pos, Orbital.OrbitalRenderProperties properties,
+                    int orbitalExisted, float partialTicks) {
                 if (RenderTileAIShutdown.rand.nextInt(3) == 0) {
                     FXWisp ef = new FXWisp(
                             world,
@@ -86,13 +84,10 @@ public class RenderTileAIShutdown extends TileEntitySpecialRenderer {
         prop.setTicksForFullCircle(50).setOffsetTicks(25);
         prop.setParticleSize(0F);
         prop.setRenderRunnable(new Orbital.OrbitalRenderRunnable() {
+
             @Override
-            public void onRender(
-                    World world,
-                    Vector3 pos,
-                    Orbital.OrbitalRenderProperties properties,
-                    int orbitalExisted,
-                    float partialTicks) {
+            public void onRender(World world, Vector3 pos, Orbital.OrbitalRenderProperties properties,
+                    int orbitalExisted, float partialTicks) {
                 if (RenderTileAIShutdown.rand.nextInt(3) == 0) {
                     FXWisp ef = new FXWisp(
                             world,
@@ -112,13 +107,10 @@ public class RenderTileAIShutdown extends TileEntitySpecialRenderer {
         prop.setTicksForFullCircle(90).setOffsetTicks(0);
         prop.setParticleSize(0F);
         prop.setRenderRunnable(new Orbital.OrbitalRenderRunnable() {
+
             @Override
-            public void onRender(
-                    World world,
-                    Vector3 pos,
-                    Orbital.OrbitalRenderProperties properties,
-                    int orbitalExisted,
-                    float partialTicks) {
+            public void onRender(World world, Vector3 pos, Orbital.OrbitalRenderProperties properties,
+                    int orbitalExisted, float partialTicks) {
                 if (RenderTileAIShutdown.rand.nextBoolean()) {
                     FXWisp ef = new FXWisp(
                             world,
@@ -138,13 +130,10 @@ public class RenderTileAIShutdown extends TileEntitySpecialRenderer {
         prop.setTicksForFullCircle(90).setOffsetTicks(30);
         prop.setParticleSize(0F);
         prop.setRenderRunnable(new Orbital.OrbitalRenderRunnable() {
+
             @Override
-            public void onRender(
-                    World world,
-                    Vector3 pos,
-                    Orbital.OrbitalRenderProperties properties,
-                    int orbitalExisted,
-                    float partialTicks) {
+            public void onRender(World world, Vector3 pos, Orbital.OrbitalRenderProperties properties,
+                    int orbitalExisted, float partialTicks) {
                 if (RenderTileAIShutdown.rand.nextBoolean()) {
                     FXWisp ef = new FXWisp(
                             world,
@@ -164,13 +153,10 @@ public class RenderTileAIShutdown extends TileEntitySpecialRenderer {
         prop.setTicksForFullCircle(90).setOffsetTicks(60);
         prop.setParticleSize(0F);
         prop.setRenderRunnable(new Orbital.OrbitalRenderRunnable() {
+
             @Override
-            public void onRender(
-                    World world,
-                    Vector3 pos,
-                    Orbital.OrbitalRenderProperties properties,
-                    int orbitalExisted,
-                    float partialTicks) {
+            public void onRender(World world, Vector3 pos, Orbital.OrbitalRenderProperties properties,
+                    int orbitalExisted, float partialTicks) {
                 if (RenderTileAIShutdown.rand.nextBoolean()) {
                     FXWisp ef = new FXWisp(
                             world,

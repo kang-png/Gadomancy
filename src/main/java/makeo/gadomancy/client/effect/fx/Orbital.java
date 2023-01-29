@@ -4,18 +4,18 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.Vector3;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 17.11.2015 18:41
  */
@@ -54,9 +54,9 @@ public final class Orbital {
     }
 
     public void doRender(float partialTicks) {
-        if (MiscUtils.getPositionVector(Minecraft.getMinecraft().renderViewEntity)
-                        .distance(this.center)
-                > ModConfig.renderParticleDistance) return;
+        if (MiscUtils.getPositionVector(Minecraft.getMinecraft().renderViewEntity).distance(this.center)
+                > ModConfig.renderParticleDistance)
+            return;
         if (Minecraft.getMinecraft().isGamePaused()) return;
 
         for (OrbitalRenderProperties orbitalNode : this.orbitals) {
@@ -64,17 +64,12 @@ public final class Orbital {
             int counterOffset = orbitalNode.getOffsetTicks() % orbitalNode.getTicksForFullCircle();
 
             int currentDividedPolicyTick = (this.orbitalCounter + counterOffset) % orbitalNode.getTicksForFullCircle();
-            float currentDegree =
-                    360F * (((float) currentDividedPolicyTick) / ((float) orbitalNode.getTicksForFullCircle()));
+            float currentDegree = 360F
+                    * (((float) currentDividedPolicyTick) / ((float) orbitalNode.getTicksForFullCircle()));
             double currentRad = Math.toRadians(currentDegree);
 
-            Vector3 point = axis.getAxis()
-                    .clone()
-                    .perpendicular()
-                    .normalize()
-                    .multiply(orbitalNode.getOffset())
-                    .rotate(currentRad, axis.getAxis())
-                    .add(this.center);
+            Vector3 point = axis.getAxis().clone().perpendicular().normalize().multiply(orbitalNode.getOffset())
+                    .rotate(currentRad, axis.getAxis()).add(this.center);
 
             if (orbitalNode.getRunnable() != null) {
                 orbitalNode.getRunnable().onRender(this.world, point, orbitalNode, this.orbitalCounter, partialTicks);
@@ -138,17 +133,12 @@ public final class Orbital {
             int counterOffset = property.getOffsetTicks() % property.getTicksForFullCircle();
 
             int currentDividedPolicyTick = (this.orbitalCounter + counterOffset) % property.getTicksForFullCircle();
-            float currentDegree =
-                    360F * (((float) currentDividedPolicyTick) / ((float) property.getTicksForFullCircle()));
+            float currentDegree = 360F
+                    * (((float) currentDividedPolicyTick) / ((float) property.getTicksForFullCircle()));
             double currentRad = Math.toRadians(currentDegree);
 
-            arr[i] = axis.getAxis()
-                    .clone()
-                    .perpendicular()
-                    .normalize()
-                    .multiply(property.getOffset())
-                    .rotate(currentRad, axis.getAxis())
-                    .add(this.center);
+            arr[i] = axis.getAxis().clone().perpendicular().normalize().multiply(property.getOffset())
+                    .rotate(currentRad, axis.getAxis()).add(this.center);
         }
         return arr;
     }
@@ -173,6 +163,7 @@ public final class Orbital {
     public static class OrbitalRenderProperties {
 
         private static final OrbitalSubSizeRunnable subSizeRunnableStatic = new OrbitalSubSizeRunnable() {
+
             @Override
             public float getSubParticleSize(Random rand, int orbitalExisted) {
                 return 0.1F + (rand.nextBoolean() ? 0.0F : 0.1F);
@@ -295,16 +286,14 @@ public final class Orbital {
     }
 
     public abstract static class OrbitalSubSizeRunnable {
+
         public abstract float getSubParticleSize(Random rand, int orbitalExisted);
     }
 
     public abstract static class OrbitalRenderRunnable {
-        public abstract void onRender(
-                World world,
-                Vector3 selectedPosition,
-                OrbitalRenderProperties properties,
-                int orbitalExisted,
-                float partialTicks);
+
+        public abstract void onRender(World world, Vector3 selectedPosition, OrbitalRenderProperties properties,
+                int orbitalExisted, float partialTicks);
     }
 
     public static class Axis {

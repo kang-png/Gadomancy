@@ -1,22 +1,24 @@
 package makeo.gadomancy.common.registration;
 
-import cpw.mods.fml.common.FMLLog;
 import java.lang.reflect.Field;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.potions.*;
 import makeo.gadomancy.common.utils.Injector;
+
 import net.minecraft.potion.Potion;
 
+import cpw.mods.fml.common.FMLLog;
+
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 31.10.2015 23:09
  */
 public class RegisteredPotions {
+
     public static PotionMiningLuck POTION_LUCK;
     public static PotionBuffGolem BUFF_GOLEM;
     public static PotionAchromatic ACHROMATIC;
@@ -57,8 +59,13 @@ public class RegisteredPotions {
         }
 
         if (id > 127) {
-            FMLLog.warning("The potion id '" + id + "' of potion '" + Gadomancy.NAME + ":" + potionClass.getSimpleName()
-                    + "' is bigger then 127 this might cause errors as well. Please consider changing the config.");
+            FMLLog.warning(
+                    "The potion id '" + id
+                            + "' of potion '"
+                            + Gadomancy.NAME
+                            + ":"
+                            + potionClass.getSimpleName()
+                            + "' is bigger then 127 this might cause errors as well. Please consider changing the config.");
         }
 
         if (id >= Potion.potionTypes.length) {
@@ -69,9 +76,16 @@ public class RegisteredPotions {
             Potion conflict = Potion.potionTypes[id];
             throw new RuntimeException(
                     "Potion id conflict! Do not report this bug you just have to change the configuration files. Failed to register potion '"
-                            + Gadomancy.NAME + ":" + potionClass.getSimpleName() + "' with id '" + id
-                            + "'. Another potion with this id already exists: " + conflict.getName() + " (as "
-                            + conflict.getClass().getName() + ")");
+                            + Gadomancy.NAME
+                            + ":"
+                            + potionClass.getSimpleName()
+                            + "' with id '"
+                            + id
+                            + "'. Another potion with this id already exists: "
+                            + conflict.getName()
+                            + " (as "
+                            + conflict.getClass().getName()
+                            + ")");
         }
 
         return new Injector(potionClass).invokeConstructor(int.class, id);

@@ -2,14 +2,14 @@ package makeo.gadomancy.client.util;
 
 import makeo.gadomancy.client.events.ResourceReloadListener;
 import makeo.gadomancy.common.node.ExtendedNodeType;
+
 import net.minecraft.util.StatCollector;
+
 import thaumcraft.api.nodes.NodeType;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 23.10.2015 22:53
  */
@@ -35,8 +35,8 @@ public class ExtendedTypeDisplayManager {
 
     private static void resetLanguageFile() {
         ExtendedTypeDisplayManager.currentNodeId = null;
-        ResourceReloadListener.languageList.put(
-                ExtendedTypeDisplayManager.changedEntry, ExtendedTypeDisplayManager.oldName);
+        ResourceReloadListener.languageList
+                .put(ExtendedTypeDisplayManager.changedEntry, ExtendedTypeDisplayManager.oldName);
         ExtendedTypeDisplayManager.changedLanguageFile = false;
     }
 

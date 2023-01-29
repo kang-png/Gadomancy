@@ -1,8 +1,10 @@
 package makeo.gadomancy.common.items;
 
 import java.util.List;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.registration.RegisteredItems;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -10,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.NodeModifier;
@@ -19,14 +22,13 @@ import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 import thaumcraft.common.tiles.TileNode;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 04.11.2015 09:57
  */
 public class ItemCreativeNode extends Item {
+
     public ItemCreativeNode() {
         this.setCreativeTab(RegisteredItems.creativeTab);
         this.setUnlocalizedName("nodePlacer");
@@ -47,17 +49,8 @@ public class ItemCreativeNode extends Item {
     }
 
     @Override
-    public boolean onItemUse(
-            ItemStack stack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float hitX, float hitY, float hitZ) {
         ForgeDirection dir = ForgeDirection.getOrientation(side);
         x += dir.offsetX;
         y += dir.offsetY;
@@ -101,8 +94,7 @@ public class ItemCreativeNode extends Item {
         if (metadata == 0) {
             list.add("\u00a75Place a huge and bright aura node");
         } else {
-            list.add("\u00a75Place a node of type "
-                    + NodeType.values()[metadata].name().toLowerCase());
+            list.add("\u00a75Place a node of type " + NodeType.values()[metadata].name().toLowerCase());
         }
         list.add("\u00a7oCreative Mode Only");
     }

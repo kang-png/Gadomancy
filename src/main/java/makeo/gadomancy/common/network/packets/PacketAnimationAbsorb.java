@@ -1,20 +1,20 @@
 package makeo.gadomancy.common.network.packets;
 
+import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by HellFirePvP @ 25.10.2015 18:04
  */
@@ -37,8 +37,8 @@ public class PacketAnimationAbsorb implements IMessage, IMessageHandler<PacketAn
         this.tickCap = tickCap;
     }
 
-    public PacketAnimationAbsorb(
-            int x, int y, int z, int targetX, int targetY, int targetZ, int tickCap, int bid, int bmd) {
+    public PacketAnimationAbsorb(int x, int y, int z, int targetX, int targetY, int targetZ, int tickCap, int bid,
+            int bmd) {
         this.x = x;
         this.y = y;
         this.z = z;

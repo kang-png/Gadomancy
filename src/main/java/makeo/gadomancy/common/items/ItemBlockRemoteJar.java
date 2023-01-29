@@ -1,17 +1,17 @@
 package makeo.gadomancy.common.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
 import makeo.gadomancy.client.events.ResourceReloadListener;
 import makeo.gadomancy.common.blocks.BlockRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.utils.NBTHelper;
 import makeo.gadomancy.common.utils.StringHelper;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -21,19 +21,21 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.blocks.ItemJarFilled;
 import thaumcraft.common.config.ConfigItems;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 14.10.2015 17:51
  */
 public class ItemBlockRemoteJar extends ItemBlock {
+
     public ItemBlockRemoteJar() {
         super(RegisteredBlocks.blockRemoteJar);
     }
@@ -63,17 +65,8 @@ public class ItemBlockRemoteJar extends ItemBlock {
     }
 
     @Override
-    public boolean onItemUse(
-            ItemStack p_77648_1_,
-            EntityPlayer p_77648_2_,
-            World p_77648_3_,
-            int p_77648_4_,
-            int p_77648_5_,
-            int p_77648_6_,
-            int p_77648_7_,
-            float p_77648_8_,
-            float p_77648_9_,
-            float p_77648_10_) {
+    public boolean onItemUse(ItemStack p_77648_1_, EntityPlayer p_77648_2_, World p_77648_3_, int p_77648_4_,
+            int p_77648_5_, int p_77648_6_, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
         return super.onItemUse(
                 p_77648_1_,
                 p_77648_2_,
@@ -88,17 +81,8 @@ public class ItemBlockRemoteJar extends ItemBlock {
     }
 
     @Override
-    public boolean onItemUseFirst(
-            ItemStack stack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float hitX, float hitY, float hitZ) {
         TileRemoteJar tile = BlockRemoteJar.getJarTile(world, x, y, z);
         if (tile != null) {
             if (!world.isRemote) {
@@ -132,18 +116,8 @@ public class ItemBlockRemoteJar extends ItemBlock {
     }
 
     @Override
-    public boolean placeBlockAt(
-            ItemStack stack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float hitX,
-            float hitY,
-            float hitZ,
-            int metadata) {
+    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float hitX, float hitY, float hitZ, int metadata) {
         boolean placed = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
         if (placed && stack.hasTagCompound()) {
             TileRemoteJar tile = (TileRemoteJar) world.getTileEntity(x, y, z);
@@ -172,9 +146,10 @@ public class ItemBlockRemoteJar extends ItemBlock {
         if (stack.hasTagCompound()) {
             UUID networkId = NBTHelper.getUUID(stack.getTagCompound(), "networkId");
             if (networkId != null) {
-                list.add(String.format(
-                        StatCollector.translateToLocal("gadomancy.lore.remotejar"),
-                        ItemBlockRemoteJar.generateName(networkId)));
+                list.add(
+                        String.format(
+                                StatCollector.translateToLocal("gadomancy.lore.remotejar"),
+                                ItemBlockRemoteJar.generateName(networkId)));
             }
         }
         ConfigItems.itemJarFilled.addInformation(stack, player, list, advancedItemTooltips);

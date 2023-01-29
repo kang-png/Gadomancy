@@ -6,6 +6,7 @@ import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.ItemUtils;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,14 +18,13 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 05.10.2015 21:38
  */
 public class BlockInfusionClaw extends BlockTransparent {
+
     public BlockInfusionClaw() {
         super(Material.rock);
         this.setHardness(3.5f);
@@ -69,16 +69,8 @@ public class BlockInfusionClaw extends BlockTransparent {
     }
 
     @Override
-    public boolean onBlockActivated(
-            World world,
-            int x,
-            int y,
-            int z,
-            EntityPlayer player,
-            int p_149727_6_,
-            float p_149727_7_,
-            float p_149727_8_,
-            float p_149727_9_) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_,
+            float p_149727_7_, float p_149727_8_, float p_149727_9_) {
         if (!world.isRemote) {
             TileInfusionClaw tile = (TileInfusionClaw) world.getTileEntity(x, y, z);
             if (tile.hasOwner()) {

@@ -1,9 +1,11 @@
 package makeo.gadomancy.common.items;
 
 import java.util.List;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.entities.EntityItemElement;
 import makeo.gadomancy.common.registration.RegisteredItems;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,10 +17,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
 /**
- * HellFirePvP@Admin
- * Date: 23.04.2016 / 01:52
- * on Gadomancy
- * ItemElementVoid
+ * HellFirePvP@Admin Date: 23.04.2016 / 01:52 on Gadomancy ItemElementVoid
  */
 public class ItemElement extends Item {
 
@@ -44,8 +43,8 @@ public class ItemElement extends Item {
     public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isHolding) {
         if (stack == null || !(stack.getItem() instanceof ItemElement)) return;
         int meta = stack.getItemDamage();
-        ItemElement.EnumElementType element =
-                ItemElement.EnumElementType.values()[meta % ItemElement.EnumElementType.values().length];
+        ItemElement.EnumElementType element = ItemElement.EnumElementType.values()[meta
+                % ItemElement.EnumElementType.values().length];
 
         if (!world.isRemote) {
             if ((world.getTotalWorldTime() & 15) == 0) {
@@ -81,24 +80,20 @@ public class ItemElement extends Item {
     }
 
     public enum EnumElementType {
+
         DARKNESS(0x000000, new ElementRunnable() {
+
             @Override
             public void affectEntity(EntityLivingBase livingBase) {
                 livingBase.addPotionEffect(new PotionEffect(Potion.blindness.getId(), 100, 0, true));
             }
         });
-        /*ORDER(0xFFFFFF, new ElementRunnable() {
-            @Override
-            public void affectEntity(EntityLivingBase livingBase) {
-                livingBase.addPotionEffect(new PotionEffect(Potion.nightVision.getId(), 300, 0, true));
-            }
-        }),
-        FIRE(0x970000, new ElementRunnable() {
-            @Override
-            public void affectEntity(EntityLivingBase livingBase) {
-                livingBase.setFire(10);
-            }
-        });*/
+        /*
+         * ORDER(0xFFFFFF, new ElementRunnable() {
+         * @Override public void affectEntity(EntityLivingBase livingBase) { livingBase.addPotionEffect(new
+         * PotionEffect(Potion.nightVision.getId(), 300, 0, true)); } }), FIRE(0x970000, new ElementRunnable() {
+         * @Override public void affectEntity(EntityLivingBase livingBase) { livingBase.setFire(10); } });
+         */
 
         private final int renderColor;
         private final ElementRunnable runnable;

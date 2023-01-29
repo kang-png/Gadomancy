@@ -2,31 +2,25 @@ package makeo.gadomancy.client.effect.fx;
 
 import java.awt.*;
 import java.util.Random;
+
 import makeo.gadomancy.common.utils.Vector3;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by HellFirePvP @ 17.11.2015 18:42
  */
 public abstract class EntityFXFlowPolicy {
 
-    public abstract void doSubParticles(
-            FXFlow fxFlow,
-            int policyCounter,
-            double posX,
-            double posY,
-            double posZ,
-            double lastPosX,
-            double lastPosY,
-            double lastPosZ);
+    public abstract void doSubParticles(FXFlow fxFlow, int policyCounter, double posX, double posY, double posZ,
+            double lastPosX, double lastPosY, double lastPosZ);
 
     public enum Policies {
+
         NO_OP(null),
         CIRCLE_MIX(new CircularMixPolicy()),
         CIRCLE(new CircularPolicy()),
@@ -46,25 +40,16 @@ public abstract class EntityFXFlowPolicy {
     static class DefaultPolicy extends EntityFXFlowPolicy {
 
         @Override
-        public void doSubParticles(
-                FXFlow fxFlow,
-                int policyCounter,
-                double posX,
-                double posY,
-                double posZ,
-                double lastPosX,
-                double lastPosY,
-                double lastPosZ) {
-            this.doParticles(
-                    fxFlow, policyCounter, posX, posY, posZ, fxFlow.getRand().nextInt(3) + 1);
+        public void doSubParticles(FXFlow fxFlow, int policyCounter, double posX, double posY, double posZ,
+                double lastPosX, double lastPosY, double lastPosZ) {
+            this.doParticles(fxFlow, policyCounter, posX, posY, posZ, fxFlow.getRand().nextInt(3) + 1);
         }
 
         public void doParticles(FXFlow fxFlow, int policyCounter, double posX, double posY, double posZ, int count) {
             Random rand = fxFlow.getOriginWorld().rand;
             for (int i = 0; i < count; i++) {
                 Vector3 subOffset = this.genSubOffset(rand, fxFlow.getSurroundingDistance());
-                Color c = (fxFlow.getFadingColor() != null && rand.nextBoolean())
-                        ? fxFlow.getFadingColor()
+                Color c = (fxFlow.getFadingColor() != null && rand.nextBoolean()) ? fxFlow.getFadingColor()
                         : fxFlow.getColor();
                 FXFlow.FXFlowBase flow = new FXFlow.FXFlowBase(
                         fxFlow.getOriginWorld(),
@@ -92,24 +77,17 @@ public abstract class EntityFXFlowPolicy {
         public static final int TICKS_PER_FULL_TURN = 40;
 
         @Override
-        public void doSubParticles(
-                FXFlow fxFlow,
-                int policyCounter,
-                double posX,
-                double posY,
-                double posZ,
-                double lastPosX,
-                double lastPosY,
-                double lastPosZ) {
+        public void doSubParticles(FXFlow fxFlow, int policyCounter, double posX, double posY, double posZ,
+                double lastPosX, double lastPosY, double lastPosZ) {
             Vector3 rotationAxis = fxFlow.getMovementVector();
 
-            Vector3 perpendicular =
-                    rotationAxis.clone().perpendicular().normalize().multiply(fxFlow.getSurroundingDistance());
+            Vector3 perpendicular = rotationAxis.clone().perpendicular().normalize()
+                    .multiply(fxFlow.getSurroundingDistance());
             Vector3 counterSide = perpendicular.clone().rotate(Math.toRadians(180), rotationAxis);
 
             int currentDividedPolicyTick = policyCounter % CircularPolicy.TICKS_PER_FULL_TURN;
-            float currentDegree =
-                    360F * (((float) currentDividedPolicyTick) / ((float) CircularPolicy.TICKS_PER_FULL_TURN));
+            float currentDegree = 360F
+                    * (((float) currentDividedPolicyTick) / ((float) CircularPolicy.TICKS_PER_FULL_TURN));
             double currentRad = Math.toRadians(currentDegree);
 
             perpendicular = perpendicular.rotate(currentRad, rotationAxis);
@@ -143,25 +121,12 @@ public abstract class EntityFXFlowPolicy {
     static class CircularMixPolicy extends CircularPolicy {
 
         @Override
-        public void doSubParticles(
-                FXFlow fxFlow,
-                int policyCounter,
-                double posX,
-                double posY,
-                double posZ,
-                double lastPosX,
-                double lastPosY,
-                double lastPosZ) {
+        public void doSubParticles(FXFlow fxFlow, int policyCounter, double posX, double posY, double posZ,
+                double lastPosX, double lastPosY, double lastPosZ) {
             super.doSubParticles(fxFlow, policyCounter, posX, posY, posZ, lastPosX, lastPosY, lastPosZ);
 
             ((DefaultPolicy) Policies.DEFAULT.getPolicy())
-                    .doParticles(
-                            fxFlow,
-                            policyCounter,
-                            posX,
-                            posY,
-                            posZ,
-                            fxFlow.getRand().nextInt(2));
+                    .doParticles(fxFlow, policyCounter, posX, posY, posZ, fxFlow.getRand().nextInt(2));
         }
     }
 }

@@ -1,26 +1,27 @@
 package makeo.gadomancy.common.data;
 
-import baubles.api.BaublesApi;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
 import makeo.gadomancy.common.familiar.FamiliarController;
 import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
+import baubles.api.BaublesApi;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 14.12.2015 22:06
  */

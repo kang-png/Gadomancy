@@ -1,14 +1,13 @@
 package makeo.gadomancy.common.blocks.tiles;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.*;
+
 import makeo.gadomancy.client.util.UtilsFX;
 import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketStartAnimation;
 import makeo.gadomancy.common.utils.NBTHelper;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.IEntitySelector;
@@ -22,6 +21,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
@@ -33,12 +33,12 @@ import thaumcraft.common.items.ItemResearchNotes;
 import thaumcraft.common.lib.events.EssentiaHandler;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ResearchNoteData;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * HellFirePvP@Admin
- * Date: 19.04.2016 / 14:53
- * on Gadomancy
- * TileKnowledgeBook
+ * HellFirePvP@Admin Date: 19.04.2016 / 14:53 on Gadomancy TileKnowledgeBook
  */
 public class TileKnowledgeBook extends SynchronizedTileEntity
         implements EntityPermNoClipItem.IItemMasterTile, IAspectContainer {
@@ -157,14 +157,11 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         this.ticksEnvironmentCheck = 200;
         this.surroundingKnowledge = 0;
         for (int xx = -TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; xx <= TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; xx++) {
-            for (int zz = -TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ;
-                    zz <= TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ;
-                    zz++) {
+            for (int zz = -TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; zz
+                    <= TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; zz++) {
 
-                lblYLoop:
-                for (int yy = -TileKnowledgeBook.SURROUNDINGS_SEARCH_Y;
-                        yy <= TileKnowledgeBook.SURROUNDINGS_SEARCH_Y;
-                        yy++) {
+                lblYLoop: for (int yy = -TileKnowledgeBook.SURROUNDINGS_SEARCH_Y; yy
+                        <= TileKnowledgeBook.SURROUNDINGS_SEARCH_Y; yy++) {
                     int absX = xx + this.xCoord;
                     int absY = yy + this.yCoord;
                     int absZ = zz + this.zCoord;
@@ -174,11 +171,11 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                     if (at.equals(Blocks.bookshelf)) {
                         this.surroundingKnowledge += 1;
                     } else if (te != null && te instanceof IKnowledgeProvider) {
-                        this.surroundingKnowledge +=
-                                ((IKnowledgeProvider) te).getProvidedKnowledge(this.worldObj, absX, absY, absZ);
+                        this.surroundingKnowledge += ((IKnowledgeProvider) te)
+                                .getProvidedKnowledge(this.worldObj, absX, absY, absZ);
                     } else if (at instanceof IKnowledgeProvider) {
-                        this.surroundingKnowledge +=
-                                ((IKnowledgeProvider) at).getProvidedKnowledge(this.worldObj, absX, absY, absZ);
+                        this.surroundingKnowledge += ((IKnowledgeProvider) at)
+                                .getProvidedKnowledge(this.worldObj, absX, absY, absZ);
                     } else {
                         for (BlockSnapshot sn : TileKnowledgeBook.knowledgeIncreaseMap.keySet()) {
                             if (sn.block.equals(at) && sn.metadata == meta) {
@@ -263,8 +260,11 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     private void finishResearch() {
         this.stopResearch();
         this.scheduleFinishItemChange();
-        PacketStartAnimation packet =
-                new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, this.xCoord, this.yCoord, this.zCoord);
+        PacketStartAnimation packet = new PacketStartAnimation(
+                PacketStartAnimation.ID_SPARKLE_SPREAD,
+                this.xCoord,
+                this.yCoord,
+                this.zCoord);
         PacketHandler.INSTANCE.sendToAllAround(packet, this.getTargetPoint(32));
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         this.markDirty();
@@ -272,11 +272,16 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
 
     private NetworkRegistry.TargetPoint getTargetPoint(double radius) {
         return new NetworkRegistry.TargetPoint(
-                this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, radius);
+                this.worldObj.provider.dimensionId,
+                this.xCoord,
+                this.yCoord,
+                this.zCoord,
+                radius);
     }
 
     private void scheduleFinishItemChange() {
         this.scheduledTask = new EntityPermNoClipItem.ItemChangeTask() {
+
             @Override
             public void changeItem(EntityPermNoClipItem item) {
                 ItemStack stack = item.getEntityItem();
@@ -318,8 +323,8 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         AspectList workResearchList = new AspectList();
         for (Aspect a : researchTags.aspects.keySet()) {
             int value = researchTags.aspects.get(a);
-            int newVal =
-                    (int) Math.max(TileKnowledgeBook.LOWEST_AMOUNT, ((double) value) * TileKnowledgeBook.MULTIPLIER);
+            int newVal = (int) Math
+                    .max(TileKnowledgeBook.LOWEST_AMOUNT, ((double) value) * TileKnowledgeBook.MULTIPLIER);
             workResearchList.add(a, newVal);
         }
         this.workResearchAspects = workResearchList;
@@ -374,18 +379,17 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         List entityItems = this.worldObj.selectEntitiesWithinAABB(
                 EntityItem.class,
                 AxisAlignedBB.getBoundingBox(
-                                this.xCoord - 0.5,
-                                centerY - 0.5,
-                                this.zCoord - 0.5,
-                                this.xCoord + 0.5,
-                                centerY + 0.5,
-                                this.zCoord + 0.5)
-                        .expand(8, 8, 8),
+                        this.xCoord - 0.5,
+                        centerY - 0.5,
+                        this.zCoord - 0.5,
+                        this.xCoord + 0.5,
+                        centerY + 0.5,
+                        this.zCoord + 0.5).expand(8, 8, 8),
                 new IEntitySelector() {
+
                     @Override
                     public boolean isEntityApplicable(Entity e) {
-                        return !(e instanceof EntityPermanentItem)
-                                && !(e instanceof EntitySpecialItem)
+                        return !(e instanceof EntityPermanentItem) && !(e instanceof EntitySpecialItem)
                                 && e instanceof EntityItem
                                 && ((EntityItem) e).getEntityItem() != null
                                 && ((EntityItem) e).getEntityItem().getItem() instanceof ItemResearchNotes
@@ -589,8 +593,8 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                     float f1 = this.field_145932_k;
 
                     do {
-                        this.field_145932_k +=
-                                (float) (TileKnowledgeBook.rand.nextInt(4) - TileKnowledgeBook.rand.nextInt(4));
+                        this.field_145932_k += (float) (TileKnowledgeBook.rand.nextInt(4)
+                                - TileKnowledgeBook.rand.nextInt(4));
                     } while (f1 == this.field_145932_k);
                 }
             } else {

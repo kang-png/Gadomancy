@@ -2,25 +2,27 @@ package makeo.gadomancy.client.renderers.item;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+
 import org.lwjgl.opengl.GL11;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 28.10.2015 23:27
  */
 public class ItemRenderStoneMachine extends ItemRenderTileEntity<TileEntity> {
+
     private final Map<Integer, RenderInfo> renderers = new HashMap<Integer, RenderInfo>();
 
     public ItemRenderStoneMachine() {}
 
     private static class RenderInfo {
+
         private TileEntity tile;
         private TileEntitySpecialRenderer renderer;
     }

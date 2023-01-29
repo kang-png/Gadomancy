@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.utils.world.fake;
 
 import java.io.File;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -14,10 +15,8 @@ import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.WorldInfo;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 16.10.2015 22:15
  */
@@ -65,10 +64,12 @@ public class FakeWorld extends World {
     }
 
     private static class FakeWorldInfo extends WorldInfo {
+
         private static FakeWorldInfo instance = new FakeWorldInfo();
     }
 
     private static class FakeWorldProvider extends WorldProvider {
+
         private static FakeWorldProvider instance = new FakeWorldProvider();
 
         @Override
@@ -78,6 +79,7 @@ public class FakeWorld extends World {
     }
 
     private static class FakeSaveHandler implements ISaveHandler {
+
         private static FakeSaveHandler instance = new FakeSaveHandler();
 
         @Override

@@ -1,27 +1,28 @@
 package makeo.gadomancy.common.network.packets;
 
+import makeo.gadomancy.common.utils.world.fake.FakeWorld;
+
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+
+import thaumcraft.common.entities.golems.EntityGolemBase;
+import thaumcraft.common.entities.golems.EnumGolemType;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import makeo.gadomancy.common.utils.world.fake.FakeWorld;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import thaumcraft.common.entities.golems.EntityGolemBase;
-import thaumcraft.common.entities.golems.EnumGolemType;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 25.10.2015 15:03
  */
 public class PacketTransformationInfo implements IMessage, IMessageHandler<PacketTransformationInfo, IMessage> {
+
     private static final World WORLD = new FakeWorld();
 
     private EntityGolemBase golem;
@@ -34,8 +35,8 @@ public class PacketTransformationInfo implements IMessage, IMessageHandler<Packe
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        this.golem = (EntityGolemBase)
-                EntityList.createEntityFromNBT(ByteBufUtils.readTag(buf), PacketTransformationInfo.WORLD);
+        this.golem = (EntityGolemBase) EntityList
+                .createEntityFromNBT(ByteBufUtils.readTag(buf), PacketTransformationInfo.WORLD);
     }
 
     @Override
@@ -46,6 +47,7 @@ public class PacketTransformationInfo implements IMessage, IMessageHandler<Packe
     }
 
     public static class Request implements IMessage, IMessageHandler<Request, PacketTransformationInfo> {
+
         private int player;
 
         public Request(EntityPlayer player) {
@@ -69,9 +71,9 @@ public class PacketTransformationInfo implements IMessage, IMessageHandler<Packe
             EntityPlayer player = (EntityPlayer) sender.worldObj.getEntityByID(this.player);
 
             // get from custom data
-            /*if(player != null) {
-
-            }*/
+            /*
+             * if(player != null) { }
+             */
 
             return new PacketTransformationInfo(
                     new EntityGolemBase(PacketTransformationInfo.WORLD, EnumGolemType.CLAY, true));

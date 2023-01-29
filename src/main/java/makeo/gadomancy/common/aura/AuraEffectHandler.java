@@ -1,19 +1,20 @@
 package makeo.gadomancy.common.aura;
 
 import java.util.*;
+
 import makeo.gadomancy.api.AuraEffect;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 17.11.2015 14:06
  */
@@ -22,9 +23,9 @@ public class AuraEffectHandler {
     public static Map<Aspect, AuraEffect> registeredEffects = new HashMap<Aspect, AuraEffect>();
 
     public static void distributeEffects(Aspect aspect, World worldObj, double x, double y, double z, int tick) {
-        if (!AuraEffectHandler.registeredEffects.containsKey(aspect)
-                || worldObj.isRemote
-                || AuraResearchManager.isBlacklisted(aspect)) return;
+        if (!AuraEffectHandler.registeredEffects.containsKey(aspect) || worldObj.isRemote
+                || AuraResearchManager.isBlacklisted(aspect))
+            return;
         AuraEffect effect = AuraEffectHandler.registeredEffects.get(aspect);
         if ((tick % effect.getTickInterval()) != 0) return;
 

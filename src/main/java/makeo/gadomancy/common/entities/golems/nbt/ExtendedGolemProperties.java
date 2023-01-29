@@ -7,21 +7,22 @@ import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.entities.golems.cores.EntityAITasksWrapper;
 import makeo.gadomancy.common.utils.NBTHelper;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
+
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 28.07.2015 17:25
  */
 public class ExtendedGolemProperties implements IExtendedEntityProperties {
+
     private static final String TYPE_TAG = "golemTypeOverride";
     private static final String FORGE_TAG = "ForgeData";
 
@@ -95,8 +96,7 @@ public class ExtendedGolemProperties implements IExtendedEntityProperties {
             AdditionalGolemType type = ExtendedGolemProperties.readAdvancedGolemType(this.golem.getEntityData());
             if (type != null) {
                 byte lastType = compound.getByte("GolemType");
-                compound.setTag("GolemType", new OverrideNBTTagByte(lastType, (byte)
-                        type.getEnumEntry().ordinal()));
+                compound.setTag("GolemType", new OverrideNBTTagByte(lastType, (byte) type.getEnumEntry().ordinal()));
 
                 this.health = compound.getFloat("HealF") * -1;
                 this.updateHealth = true;

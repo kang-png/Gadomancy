@@ -1,13 +1,9 @@
 package makeo.gadomancy.client;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Queue;
+
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.events.ClientHandler;
 import makeo.gadomancy.client.events.RenderEventHandler;
@@ -29,6 +25,7 @@ import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.Injector;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.resources.IResourceManager;
@@ -41,6 +38,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.client.gui.GuiGolem;
 import thaumcraft.client.renderers.entity.RenderGolemBase;
 import thaumcraft.client.renderers.entity.RenderSpecialItem;
@@ -50,16 +48,20 @@ import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.tiles.TileEldritchAltar;
 import thaumcraft.common.tiles.TileEldritchCap;
 import thaumcraft.common.tiles.TileEldritchObelisk;
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 29.11.2014 14:15
  */
 public class ClientProxy extends CommonProxy {
+
     @Override
     public void preInitalize() {
         super.preInitalize();
@@ -95,14 +97,16 @@ public class ClientProxy extends CommonProxy {
         RenderTileManipulationFocus renderTileManipulationFocus = new RenderTileManipulationFocus();
         ClientRegistry.bindTileEntitySpecialRenderer(TileManipulationFocus.class, renderTileManipulationFocus);
 
-        ClientRegistry.bindTileEntitySpecialRenderer(
-                TileAdditionalEldritchPortal.class, new TileEldritchPortalRenderer());
+        ClientRegistry
+                .bindTileEntitySpecialRenderer(TileAdditionalEldritchPortal.class, new TileEldritchPortalRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEldritchObelisk.class, new RenderTileObelisk());
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEldritchAltar.class, new RenderTileCapEldritch("textures/models/obelisk_cap_altar.png"));
+                TileEldritchAltar.class,
+                new RenderTileCapEldritch("textures/models/obelisk_cap_altar.png"));
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEldritchCap.class, new RenderTileCapEldritch("textures/models/obelisk_cap.png"));
+                TileEldritchCap.class,
+                new RenderTileCapEldritch("textures/models/obelisk_cap.png"));
         RenderTileEssentiaCompressor renderTileEssentiaCompressor = new RenderTileEssentiaCompressor();
         ClientRegistry.bindTileEntitySpecialRenderer(TileEssentiaCompressor.class, renderTileEssentiaCompressor);
 
@@ -135,27 +139,31 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient.registerItemRenderer(
                 Item.getItemFromBlock(RegisteredBlocks.blockEssentiaCompressor),
                 new ItemRenderTileEntity<TileEssentiaCompressor>(
-                        renderTileEssentiaCompressor, new TileEssentiaCompressor()));
+                        renderTileEssentiaCompressor,
+                        new TileEssentiaCompressor()));
+
+        MinecraftForgeClient
+                .registerItemRenderer(Item.getItemFromBlock(ConfigBlocks.blockAiry), new ItemExNodeRenderer());
 
         MinecraftForgeClient.registerItemRenderer(
-                Item.getItemFromBlock(ConfigBlocks.blockAiry), new ItemExNodeRenderer());
-
-        MinecraftForgeClient.registerItemRenderer(
-                Item.getItemFromBlock(RegisteredBlocks.blockKnowledgeBook), new ItemRenderTEKnowledgeBook(bookRender));
+                Item.getItemFromBlock(RegisteredBlocks.blockKnowledgeBook),
+                new ItemRenderTEKnowledgeBook(bookRender));
 
         ItemRenderTileEntityMulti multi = new ItemRenderTileEntityMulti(
                 new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylon(), 0),
                 new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylonTop(), 1));
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockAuraPylon), multi);
 
+        MinecraftForgeClient
+                .registerItemRenderer(RegisteredItems.itemExtendedNodeJar, new ItemJarExtendedNodeRenderer());
         MinecraftForgeClient.registerItemRenderer(
-                RegisteredItems.itemExtendedNodeJar, new ItemJarExtendedNodeRenderer());
-        MinecraftForgeClient.registerItemRenderer(
-                Item.getItemFromBlock(RegisteredBlocks.blockRemoteJar), new ItemRenderRemoteJar(renderTileRemoteJar));
+                Item.getItemFromBlock(RegisteredBlocks.blockRemoteJar),
+                new ItemRenderRemoteJar(renderTileRemoteJar));
 
         ItemRenderStoneMachine itemRenderStoneMachine = new ItemRenderStoneMachine();
         MinecraftForgeClient.registerItemRenderer(
-                Item.getItemFromBlock(RegisteredBlocks.blockStoneMachine), itemRenderStoneMachine);
+                Item.getItemFromBlock(RegisteredBlocks.blockStoneMachine),
+                itemRenderStoneMachine);
         itemRenderStoneMachine.registerRenderer(0, new TileManipulationFocus(), renderTileManipulationFocus);
         TileManipulationFocus tileManipulationFocus = new TileManipulationFocus();
         tileManipulationFocus.blockMetadata = 3;
@@ -204,7 +212,12 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void spawnBubbles(World world, float posX, float posY, float posZ, float rangeAroundItem) {
         MultiTickEffectDispatcher.BubbleFXInfo bubbles = new MultiTickEffectDispatcher.BubbleFXInfo(
-                Minecraft.getMinecraft().theWorld.provider.dimensionId, posX, posY, posZ, 10, rangeAroundItem);
+                Minecraft.getMinecraft().theWorld.provider.dimensionId,
+                posX,
+                posY,
+                posZ,
+                10,
+                rangeAroundItem);
         MultiTickEffectDispatcher.registerBubbles(bubbles);
     }
 
@@ -213,7 +226,7 @@ public class ClientProxy extends CommonProxy {
         switch (ID) {
             case 0:
                 return new GuiGolem(player, (EntityGolemBase) world.getEntityByID(x));
-                // return new AdditionalGolemGui(player, (EntityGolemBase)world.getEntityByID(x));
+            // return new AdditionalGolemGui(player, (EntityGolemBase)world.getEntityByID(x));
             case 1:
                 return new InfusionClawGui(player.inventory, (IInventory) world.getTileEntity(x, y, z));
             case 2:

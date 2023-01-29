@@ -1,15 +1,15 @@
 package makeo.gadomancy.client.util;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import makeo.gadomancy.client.renderers.item.ItemRenderFamiliar;
 import makeo.gadomancy.common.data.DataFamiliar;
 import makeo.gadomancy.common.network.packets.PacketFamiliarBolt;
 import makeo.gadomancy.common.utils.world.fake.FakeWorld;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
@@ -17,17 +17,19 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
 import thaumcraft.client.renderers.entity.RenderWisp;
 import thaumcraft.common.entities.monster.EntityWisp;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 31.10.2015 12:13
  */
@@ -103,7 +105,13 @@ public class FamiliarHandlerClient {
         }
 
         ItemRenderFamiliar.renderEntityWispFor(
-                fam.owner.get(), FamiliarHandlerClient.ENTITY_WISP, diffX, diffY, diffZ, 0, partialTicks);
+                fam.owner.get(),
+                FamiliarHandlerClient.ENTITY_WISP,
+                diffX,
+                diffY,
+                diffZ,
+                0,
+                partialTicks);
         GL11.glPopMatrix();
     }
 
@@ -124,7 +132,8 @@ public class FamiliarHandlerClient {
     public static void handleAdditions(List<DataFamiliar.FamiliarData> toAdd) {
         for (DataFamiliar.FamiliarData data : toAdd) {
             PartialEntityFamiliar familiar = new PartialEntityFamiliar(
-                    Minecraft.getMinecraft().theWorld.getPlayerEntityByName(data.owner), data.owner);
+                    Minecraft.getMinecraft().theWorld.getPlayerEntityByName(data.owner),
+                    data.owner);
             ExFamiliarData exData = new ExFamiliarData(data, familiar);
             FamiliarHandlerClient.clientFamiliars.put(data.owner, exData);
         }
@@ -208,8 +217,8 @@ public class FamiliarHandlerClient {
 
             if (this.owner.get() == null) {
                 if (this.potentialOwnerName != null) {
-                    EntityPlayer player =
-                            Minecraft.getMinecraft().theWorld.getPlayerEntityByName(this.potentialOwnerName);
+                    EntityPlayer player = Minecraft.getMinecraft().theWorld
+                            .getPlayerEntityByName(this.potentialOwnerName);
                     if (player != null) {
                         this.owner = new WeakReference<EntityPlayer>(player);
                     } else {

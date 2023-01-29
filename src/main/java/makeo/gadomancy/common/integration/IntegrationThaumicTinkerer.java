@@ -1,14 +1,12 @@
 package makeo.gadomancy.common.integration;
 
 import makeo.gadomancy.common.Gadomancy;
+
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 
 /**
- * HellFirePvP@Admin
- * Date: 20.04.2016 / 00:43
- * on Gadomancy
- * IntegrationThaumicTinkerer
+ * HellFirePvP@Admin Date: 20.04.2016 / 00:43 on Gadomancy IntegrationThaumicTinkerer
  */
 public class IntegrationThaumicTinkerer extends IntegrationMod {
 
@@ -22,16 +20,15 @@ public class IntegrationThaumicTinkerer extends IntegrationMod {
     @Override
     public void doInit() {
         try {
-            IntegrationThaumicTinkerer.infusedCropBlockClass =
-                    Class.forName("thaumic.tinkerer.common.block.BlockInfusedGrain");
-            IntegrationThaumicTinkerer.infusedCropTile =
-                    Class.forName("thaumic.tinkerer.common.block.tile.TileInfusedGrain");
+            IntegrationThaumicTinkerer.infusedCropBlockClass = Class
+                    .forName("thaumic.tinkerer.common.block.BlockInfusedGrain");
+            IntegrationThaumicTinkerer.infusedCropTile = Class
+                    .forName("thaumic.tinkerer.common.block.tile.TileInfusedGrain");
             if (IntegrationThaumicTinkerer.infusedCropBlockClass != null
                     && IntegrationThaumicTinkerer.infusedCropTile != null) {
                 Gadomancy.log.info("Hooked TTinkerer magic-crops");
             }
-        } catch (Throwable tr) {
-        }
+        } catch (Throwable tr) {}
     }
 
     public static boolean isCropBlock(Block block) {

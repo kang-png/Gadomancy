@@ -5,27 +5,31 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
 import javax.imageio.ImageIO;
+
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
+
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.data.TextureMetadataSection;
 import net.minecraft.util.ResourceLocation;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import thaumcraft.common.entities.golems.EnumGolemType;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 07.09.2015 18:11
  */
 public class GolemGuiTexture extends BaseTexture {
+
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
@@ -52,16 +56,16 @@ public class GolemGuiTexture extends BaseTexture {
 
             if (iresource.hasMetadata()) {
                 try {
-                    TextureMetadataSection texturemetadatasection =
-                            (TextureMetadataSection) iresource.getMetadata("texture");
+                    TextureMetadataSection texturemetadatasection = (TextureMetadataSection) iresource
+                            .getMetadata("texture");
 
                     if (texturemetadatasection != null) {
                         flag = texturemetadatasection.getTextureBlur();
                         flag1 = texturemetadatasection.getTextureClamp();
                     }
                 } catch (RuntimeException runtimeexception) {
-                    GolemGuiTexture.LOGGER.warn(
-                            "Failed reading metadata of: " + this.textureLocation, runtimeexception);
+                    GolemGuiTexture.LOGGER
+                            .warn("Failed reading metadata of: " + this.textureLocation, runtimeexception);
                 }
             }
 
@@ -80,7 +84,9 @@ public class GolemGuiTexture extends BaseTexture {
 
         int newHeight = (24 * scale) * (this.getMaxOrdinal() + 1);
         BufferedImage newImg = new BufferedImage(
-                image.getWidth(), newHeight < image.getHeight() ? image.getHeight() : newHeight, image.getType());
+                image.getWidth(),
+                newHeight < image.getHeight() ? image.getHeight() : newHeight,
+                image.getType());
 
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {

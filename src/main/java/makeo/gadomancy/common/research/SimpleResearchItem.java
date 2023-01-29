@@ -1,16 +1,16 @@
 package makeo.gadomancy.common.research;
 
 import makeo.gadomancy.common.Gadomancy;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchItem;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 15.06.2015 19:05
  */

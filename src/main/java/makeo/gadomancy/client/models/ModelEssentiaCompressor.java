@@ -5,10 +5,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 /**
- * HellFirePvP@Admin
- * Date: 22.04.2016 / 21:36
- * on Gadomancy
- * ModelEssentiaCompressor
+ * HellFirePvP@Admin Date: 22.04.2016 / 21:36 on Gadomancy ModelEssentiaCompressor
  */
 public class ModelEssentiaCompressor extends ModelBase {
 

@@ -1,20 +1,20 @@
 package makeo.gadomancy.client.renderers.block;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 29.09.2015 21:18
  */
 public abstract class BlockRenderingHandler implements ISimpleBlockRenderingHandler {
+
     protected void renderAllFaces(RenderBlocks renderer, Block block, int x, int y, int z, IIcon icon) {
         renderer.renderFaceYNeg(block, x, y, z, icon);
         renderer.renderFaceYPos(block, x, y, z, icon);
@@ -47,18 +47,15 @@ public abstract class BlockRenderingHandler implements ISimpleBlockRenderingHand
         }
     }
 
-    protected void renderFace(
-            ForgeDirection side, RenderBlocks renderer, Block block, int x, int y, int z, IIcon icon) {
+    protected void renderFace(ForgeDirection side, RenderBlocks renderer, Block block, int x, int y, int z,
+            IIcon icon) {
         this.renderFace(side.ordinal(), renderer, block, x, y, z, icon);
     }
 
-    /*protected void renderFaceHollow(int side, RenderBlocks renderer, Block block, int x, int y, int z, IIcon icon,
-                                    int startX, int startY, int startZ, int endX, int endY, int endZ) {
-
-    }
-
-    protected void renderFacePartially(int side, RenderBlocks renderer, Block block, int x, int y, int z, IIcon icon,
-                                       int startX, int startY, int startZ, int endX, int endY, int endZ) {
-
-    }*/
+    /*
+     * protected void renderFaceHollow(int side, RenderBlocks renderer, Block block, int x, int y, int z, IIcon icon,
+     * int startX, int startY, int startZ, int endX, int endY, int endZ) { } protected void renderFacePartially(int
+     * side, RenderBlocks renderer, Block block, int x, int y, int z, IIcon icon, int startX, int startY, int startZ,
+     * int endX, int endY, int endZ) { }
+     */
 }

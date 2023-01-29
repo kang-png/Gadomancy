@@ -1,33 +1,34 @@
 package makeo.gadomancy.common.research;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.Arrays;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 14.06.2015 14:57
  */
 public class PseudoResearchItem extends SimpleResearchItem {
+
     private static final String PSEUDO_PREFIX = "PSEUDO.";
 
     private final ResearchItem original;
 
-    private PseudoResearchItem(
-            ResearchItem original, String key, int col, int row, ResourceLocation icon, boolean doubleThisPage) {
+    private PseudoResearchItem(ResearchItem original, String key, int col, int row, ResourceLocation icon,
+            boolean doubleThisPage) {
         super(
                 PseudoResearchItem.PSEUDO_PREFIX + key + (doubleThisPage ? ".2" : ""),
                 col,
@@ -39,8 +40,8 @@ public class PseudoResearchItem extends SimpleResearchItem {
         this.setStub().setHidden();
     }
 
-    private PseudoResearchItem(
-            ResearchItem original, String key, int col, int row, ItemStack icon, boolean doubleThisPage) {
+    private PseudoResearchItem(ResearchItem original, String key, int col, int row, ItemStack icon,
+            boolean doubleThisPage) {
         super(
                 PseudoResearchItem.PSEUDO_PREFIX + key + (doubleThisPage ? ".2" : ""),
                 col,
@@ -97,7 +98,7 @@ public class PseudoResearchItem extends SimpleResearchItem {
 
             String[] siblings = item.siblings;
             if (siblings == null) {
-                siblings = new String[] {pseudo.key};
+                siblings = new String[] { pseudo.key };
             } else {
                 siblings = Arrays.copyOf(siblings, siblings.length + 1);
                 siblings[siblings.length - 1] = pseudo.key;

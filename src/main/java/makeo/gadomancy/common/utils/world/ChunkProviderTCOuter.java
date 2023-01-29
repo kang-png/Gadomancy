@@ -2,8 +2,10 @@ package makeo.gadomancy.common.utils.world;
 
 import java.util.Iterator;
 import java.util.List;
+
 import makeo.gadomancy.common.blocks.tiles.TileOverrideEldritchLock;
 import makeo.gadomancy.common.utils.world.fake.FakeWorldTCGeneration;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +21,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
+
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.EntityPermanentItem;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
@@ -29,10 +32,8 @@ import thaumcraft.common.tiles.TileEldritchLock;
 import thaumcraft.common.tiles.TileEldritchNothing;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by HellFirePvP @ 06.11.2015 23:39
  */
@@ -96,28 +97,48 @@ public class ChunkProviderTCOuter implements IChunkProvider {
                 if (te.xCoord >> 4 != x || te.zCoord >> 4 != z) continue;
                 ChunkPosition pos = new ChunkPosition(te.xCoord & 15, te.yCoord, te.zCoord & 15);
                 if (!chunk.chunkTileEntityMap.containsKey(pos)) {
-                    System.out.println("INVALID TE at: " + te.xCoord + ", " + te.yCoord + ", " + te.zCoord
-                            + " --- Not found in its parent chunk " + chunk.xPosition + ", " + chunk.zPosition);
+                    System.out.println(
+                            "INVALID TE at: " + te.xCoord
+                                    + ", "
+                                    + te.yCoord
+                                    + ", "
+                                    + te.zCoord
+                                    + " --- Not found in its parent chunk "
+                                    + chunk.xPosition
+                                    + ", "
+                                    + chunk.zPosition);
                     throw new IllegalStateException("INVALID TE");
                 }
                 TileEntity correspondingTE = (TileEntity) chunk.chunkTileEntityMap.get(pos);
                 if (te instanceof TileEntityMobSpawner) {
                     if (!(correspondingTE instanceof TileEntityMobSpawner)) {
-                        System.out.println("DATA INCONSISTENCY - TE at " + te.xCoord + ", " + te.yCoord + ", "
-                                + te.zCoord + " EXPECTED: " + te.getClass().getSimpleName() + " GIVEN "
-                                + correspondingTE.getClass().getSimpleName());
+                        System.out.println(
+                                "DATA INCONSISTENCY - TE at " + te.xCoord
+                                        + ", "
+                                        + te.yCoord
+                                        + ", "
+                                        + te.zCoord
+                                        + " EXPECTED: "
+                                        + te.getClass().getSimpleName()
+                                        + " GIVEN "
+                                        + correspondingTE.getClass().getSimpleName());
                         throw new IllegalStateException();
                     }
 
-                    ((TileEntityMobSpawner) correspondingTE)
-                            .func_145881_a()
-                            .setEntityName(
-                                    ((TileEntityMobSpawner) te).func_145881_a().getEntityNameToSpawn());
+                    ((TileEntityMobSpawner) correspondingTE).func_145881_a()
+                            .setEntityName(((TileEntityMobSpawner) te).func_145881_a().getEntityNameToSpawn());
                 } else if (te instanceof TileEldritchLock) {
                     if (!(correspondingTE instanceof TileEldritchLock)) {
-                        System.out.println("DATA INCONSISTENCY - TE at " + te.xCoord + ", " + te.yCoord + ", "
-                                + te.zCoord + " EXPECTED: " + te.getClass().getSimpleName() + " GIVEN "
-                                + correspondingTE.getClass().getSimpleName());
+                        System.out.println(
+                                "DATA INCONSISTENCY - TE at " + te.xCoord
+                                        + ", "
+                                        + te.yCoord
+                                        + ", "
+                                        + te.zCoord
+                                        + " EXPECTED: "
+                                        + te.getClass().getSimpleName()
+                                        + " GIVEN "
+                                        + correspondingTE.getClass().getSimpleName());
                         throw new IllegalStateException();
                     }
 
@@ -127,18 +148,32 @@ public class ChunkProviderTCOuter implements IChunkProvider {
                     ((TileEldritchLock) correspondingTE).readCustomNBT(compound);
                 } else if (te instanceof TileCrystal) {
                     if (!(correspondingTE instanceof TileCrystal)) {
-                        System.out.println("DATA INCONSISTENCY - TE at " + te.xCoord + ", " + te.yCoord + ", "
-                                + te.zCoord + " EXPECTED: " + te.getClass().getSimpleName() + " GIVEN "
-                                + correspondingTE.getClass().getSimpleName());
+                        System.out.println(
+                                "DATA INCONSISTENCY - TE at " + te.xCoord
+                                        + ", "
+                                        + te.yCoord
+                                        + ", "
+                                        + te.zCoord
+                                        + " EXPECTED: "
+                                        + te.getClass().getSimpleName()
+                                        + " GIVEN "
+                                        + correspondingTE.getClass().getSimpleName());
                         throw new IllegalStateException();
                     }
 
                     ((TileCrystal) correspondingTE).orientation = ((TileCrystal) te).orientation;
                 } else if (te instanceof TileEldritchCrabSpawner) {
                     if (!(correspondingTE instanceof TileEldritchCrabSpawner)) {
-                        System.out.println("DATA INCONSISTENCY - TE at " + te.xCoord + ", " + te.yCoord + ", "
-                                + te.zCoord + " EXPECTED: " + te.getClass().getSimpleName() + " GIVEN "
-                                + correspondingTE.getClass().getSimpleName());
+                        System.out.println(
+                                "DATA INCONSISTENCY - TE at " + te.xCoord
+                                        + ", "
+                                        + te.yCoord
+                                        + ", "
+                                        + te.zCoord
+                                        + " EXPECTED: "
+                                        + te.getClass().getSimpleName()
+                                        + " GIVEN "
+                                        + correspondingTE.getClass().getSimpleName());
                         throw new IllegalStateException();
                     }
 
@@ -147,9 +182,16 @@ public class ChunkProviderTCOuter implements IChunkProvider {
                     ((TileEldritchCrabSpawner) correspondingTE).readCustomNBT(compound);
                 } else if (te instanceof TileEldritchNothing) {
                     if (!(correspondingTE instanceof TileEldritchNothing)) {
-                        System.out.println("DATA INCONSISTENCY - TE at " + te.xCoord + ", " + te.yCoord + ", "
-                                + te.zCoord + " EXPECTED: " + te.getClass().getSimpleName() + " GIVEN "
-                                + correspondingTE.getClass().getSimpleName());
+                        System.out.println(
+                                "DATA INCONSISTENCY - TE at " + te.xCoord
+                                        + ", "
+                                        + te.yCoord
+                                        + ", "
+                                        + te.zCoord
+                                        + " EXPECTED: "
+                                        + te.getClass().getSimpleName()
+                                        + " GIVEN "
+                                        + correspondingTE.getClass().getSimpleName());
                         throw new IllegalStateException();
                     }
                 } else {
@@ -218,16 +260,28 @@ public class ChunkProviderTCOuter implements IChunkProvider {
 
     public void populate(IChunkProvider p_73153_1_, int p_73153_2_, int p_73153_3_) {
         net.minecraft.block.BlockFalling.fallInstantly = true;
-        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(
-                p_73153_1_, this.worldObj, this.worldObj.rand, p_73153_2_, p_73153_3_, false));
+        MinecraftForge.EVENT_BUS.post(
+                new PopulateChunkEvent.Pre(
+                        p_73153_1_,
+                        this.worldObj,
+                        this.worldObj.rand,
+                        p_73153_2_,
+                        p_73153_3_,
+                        false));
 
         int k = p_73153_2_ * 16;
         int l = p_73153_3_ * 16;
         BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(k + 16, l + 16);
         biomegenbase.decorate(this.worldObj, this.worldObj.rand, k, l);
 
-        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(
-                p_73153_1_, this.worldObj, this.worldObj.rand, p_73153_2_, p_73153_3_, false));
+        MinecraftForge.EVENT_BUS.post(
+                new PopulateChunkEvent.Post(
+                        p_73153_1_,
+                        this.worldObj,
+                        this.worldObj.rand,
+                        p_73153_2_,
+                        p_73153_3_,
+                        false));
         net.minecraft.block.BlockFalling.fallInstantly = false;
     }
 
@@ -254,8 +308,8 @@ public class ChunkProviderTCOuter implements IChunkProvider {
         return biomegenbase.getSpawnableList(p_73155_1_);
     }
 
-    public ChunkPosition func_147416_a(
-            World p_147416_1_, String p_147416_2_, int p_147416_3_, int p_147416_4_, int p_147416_5_) {
+    public ChunkPosition func_147416_a(World p_147416_1_, String p_147416_2_, int p_147416_3_, int p_147416_4_,
+            int p_147416_5_) {
         return null;
     }
 

@@ -1,6 +1,7 @@
 package makeo.gadomancy.client.renderers.tile;
 
 import makeo.gadomancy.common.events.EventHandlerRedirect;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -10,7 +11,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;
@@ -23,41 +26,26 @@ import thaumcraft.common.tiles.TileJarNode;
 import thaumcraft.common.tiles.TileNode;
 
 /**
- * This class is NOT part of the Gadomancy Mod
- * This file is copied from Azanors thaumcraft.client.renderers.tile.TileNodeRenderer.java and contains small modifications
- * Thaumcraft: http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1292130
+ * This class is NOT part of the Gadomancy Mod This file is copied from Azanors
+ * thaumcraft.client.renderers.tile.TileNodeRenderer.java and contains small modifications Thaumcraft:
+ * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1292130
  *
- * Created by Azanor
- * Modified by HellFirePvP @ 23.10.2015 20:04
+ * Created by Azanor Modified by HellFirePvP @ 23.10.2015 20:04
  */
 public class RenderTileNodeBasic {
 
     /*
-    Changes overview:
-    (Note: Changes are visible by "Gadomancy START" to "Gadomancy END" or by a comment in the end of the line!)
-
-    - Where a node is rendered is now defined of the parameters of renderTileEntityAt() and no longer of the node-tile itself
-    - Node rendering takes doubles as params and no longer int values.
-    - Redirected renderTileEntityAt to a renderTileEntityAt where a size of the node can be specified
-
-    Changes made by HellFirePvP
+     * Changes overview: (Note: Changes are visible by "Gadomancy START" to "Gadomancy END" or by a comment in the end
+     * of the line!) - Where a node is rendered is now defined of the parameters of renderTileEntityAt() and no longer
+     * of the node-tile itself - Node rendering takes doubles as params and no longer int values. - Redirected
+     * renderTileEntityAt to a renderTileEntityAt where a size of the node can be specified Changes made by HellFirePvP
      */
 
     public static final ResourceLocation nodetex = new ResourceLocation("thaumcraft", "textures/misc/nodes.png");
 
     // Gadomancy: changed params x, y, z from int to double
-    public static void renderNode(
-            EntityLivingBase viewer,
-            double viewDistance,
-            boolean visible,
-            boolean depthIgnore,
-            float size,
-            double x,
-            double y,
-            double z,
-            float partialTicks,
-            AspectList aspects,
-            NodeType type,
+    public static void renderNode(EntityLivingBase viewer, double viewDistance, boolean visible, boolean depthIgnore,
+            float size, double x, double y, double z, float partialTicks, AspectList aspects, NodeType type,
             NodeModifier mod) {
         long nt = System.nanoTime();
 
@@ -208,8 +196,8 @@ public class RenderTileNodeBasic {
     // Gadomancy END
 
     // Gadomancy: Added dynamic size
-    public static void renderTileEntityAt(
-            TileEntity tile, double x, double y, double z, float partialTicks, float size) {
+    public static void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks,
+            float size) {
         // Gadomancy Added event hook
         EventHandlerRedirect.preNodeRender(tile);
 
@@ -226,27 +214,25 @@ public class RenderTileNodeBasic {
         if ((viewer instanceof EntityPlayer)) {
             if ((tile != null) && ((tile instanceof TileJarNode))) {
                 condition = true;
-                size = (float) ((size * 7D)
-                        / 10D); // Gadomancy: Node size is 70% of the default size in standart TC. calculating the same
+                size = (float) ((size * 7D) / 10D); // Gadomancy: Node size is 70% of the default size in standart TC.
+                                                    // calculating the same
                 // here.
             } else if ((((EntityPlayer) viewer).inventory.armorItemInSlot(3) != null)
                     && ((((EntityPlayer) viewer).inventory.armorItemInSlot(3).getItem() instanceof IRevealer))
-                    && (((IRevealer) ((EntityPlayer) viewer)
-                                    .inventory
-                                    .armorItemInSlot(3)
-                                    .getItem())
+                    && (((IRevealer) ((EntityPlayer) viewer).inventory.armorItemInSlot(3).getItem())
                             .showNodes(((EntityPlayer) viewer).inventory.armorItemInSlot(3), viewer))) {
-                condition = true;
-                depthIgnore = true;
-            } else if ((((EntityPlayer) viewer).inventory.getCurrentItem() != null)
-                    && ((((EntityPlayer) viewer).inventory.getCurrentItem().getItem() instanceof ItemThaumometer))) {
-                // Gadomancy: Changed from tile.xCoord, ... to x, y, z to make it dependent from params
-                if (UtilsFX.isVisibleTo(0.44F, viewer, x, y, z)) {
-                    condition = true;
-                    depthIgnore = true;
-                    viewDistance = 48.0D;
-                }
-            }
+                                condition = true;
+                                depthIgnore = true;
+                            } else
+                if ((((EntityPlayer) viewer).inventory.getCurrentItem() != null) && ((((EntityPlayer) viewer).inventory
+                        .getCurrentItem().getItem() instanceof ItemThaumometer))) {
+                            // Gadomancy: Changed from tile.xCoord, ... to x, y, z to make it dependent from params
+                            if (UtilsFX.isVisibleTo(0.44F, viewer, x, y, z)) {
+                                condition = true;
+                                depthIgnore = true;
+                                viewDistance = 48.0D;
+                            }
+                        }
         }
         // Gadomancy: Changed from tile.xCoord, ... to x, y, z to make it dependent from params
         RenderTileNodeBasic.renderNode(
@@ -262,8 +248,7 @@ public class RenderTileNodeBasic {
                 ((INode) tile).getAspects(),
                 ((INode) tile).getNodeType(),
                 ((INode) tile).getNodeModifier());
-        if (((tile instanceof TileNode))
-                && (((TileNode) tile).drainEntity != null)
+        if (((tile instanceof TileNode)) && (((TileNode) tile).drainEntity != null)
                 && (((TileNode) tile).drainCollision != null)) {
             Entity drainEntity = ((TileNode) tile).drainEntity;
             if (((drainEntity instanceof EntityPlayer)) && (!((EntityPlayer) drainEntity).isUsingItem())) {
@@ -283,14 +268,14 @@ public class RenderTileNodeBasic {
                 f10 = MathHelper.sin(iiud / 10.0F) * 10.0F;
             }
             Vec3 vec3 = Vec3.createVectorHelper(-0.1D, -0.1D, 0.5D);
-            vec3.rotateAroundX(-(drainEntity.prevRotationPitch
-                            + (drainEntity.rotationPitch - drainEntity.prevRotationPitch) * partialTicks)
-                    * 3.141593F
-                    / 180.0F);
-            vec3.rotateAroundY(-(drainEntity.prevRotationYaw
-                            + (drainEntity.rotationYaw - drainEntity.prevRotationYaw) * partialTicks)
-                    * 3.141593F
-                    / 180.0F);
+            vec3.rotateAroundX(
+                    -(drainEntity.prevRotationPitch
+                            + (drainEntity.rotationPitch - drainEntity.prevRotationPitch) * partialTicks) * 3.141593F
+                            / 180.0F);
+            vec3.rotateAroundY(
+                    -(drainEntity.prevRotationYaw
+                            + (drainEntity.rotationYaw - drainEntity.prevRotationYaw) * partialTicks) * 3.141593F
+                            / 180.0F);
             vec3.rotateAroundY(-f10 * 0.01F);
             vec3.rotateAroundX(-f10 * 0.015F);
             double d3 = drainEntity.prevPosX + (drainEntity.posX - drainEntity.prevPosX) * partialTicks + vec3.xCoord;

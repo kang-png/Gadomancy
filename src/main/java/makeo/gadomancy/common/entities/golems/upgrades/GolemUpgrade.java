@@ -2,21 +2,22 @@ package makeo.gadomancy.common.entities.golems.upgrades;
 
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.utils.NBTHelper;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
+
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 16.06.2015 14:38
  */
 public abstract class GolemUpgrade<T extends NBTBase> {
+
     private static final String UPGRADE_COMPOUND = "upgrades";
 
     public abstract String getName();
@@ -50,8 +51,7 @@ public abstract class GolemUpgrade<T extends NBTBase> {
             NBTTagCompound upgrades = compound.getCompoundTag(GolemUpgrade.UPGRADE_COMPOUND);
             try {
                 return (T) upgrades.getTag(this.getTagName());
-            } catch (ClassCastException ignored) {
-            }
+            } catch (ClassCastException ignored) {}
         }
         return null;
     }

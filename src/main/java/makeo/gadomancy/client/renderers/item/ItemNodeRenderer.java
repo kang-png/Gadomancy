@@ -7,7 +7,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;
@@ -19,23 +21,21 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileNode;
 
 /**
- * This class is NOT part of the Gadomancy Mod
- * This file is copied from Azanors thaumcraft.client.renderers.tile.ItemNodeRenderer.java and contains small modifications
- * Thaumcraft: http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1292130
+ * This class is NOT part of the Gadomancy Mod This file is copied from Azanors
+ * thaumcraft.client.renderers.tile.ItemNodeRenderer.java and contains small modifications Thaumcraft:
+ * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1292130
  *
- * Created by Azanor
- * Modified by HellFirePvP @ 24.10.2015 17:19
+ * Created by Azanor Modified by HellFirePvP @ 24.10.2015 17:19
  */
 public class ItemNodeRenderer implements IItemRenderer {
 
     public boolean handleRenderType(ItemStack item, IItemRenderer.ItemRenderType type) {
-        return (item != null)
-                && (item.getItem() == Item.getItemFromBlock(ConfigBlocks.blockAiry))
+        return (item != null) && (item.getItem() == Item.getItemFromBlock(ConfigBlocks.blockAiry))
                 && ((item.getItemDamage() == 0) || (item.getItemDamage() == 5));
     }
 
-    public boolean shouldUseRenderHelper(
-            IItemRenderer.ItemRenderType type, ItemStack item, IItemRenderer.ItemRendererHelper helper) {
+    public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType type, ItemStack item,
+            IItemRenderer.ItemRendererHelper helper) {
         return helper != ItemRendererHelper.EQUIPPED_BLOCK;
     }
 
@@ -46,13 +46,8 @@ public class ItemNodeRenderer implements IItemRenderer {
     }
 
     // Gadomancy: Renamed to access it static from another class and added aspects, nodeType and nodeModifier as params
-    public static void renderNodeItem(
-            IItemRenderer.ItemRenderType type,
-            ItemStack item,
-            AspectList aspects,
-            NodeType nodeType,
-            NodeModifier nodeModifier,
-            Object... data) {
+    public static void renderNodeItem(IItemRenderer.ItemRenderType type, ItemStack item, AspectList aspects,
+            NodeType nodeType, NodeModifier nodeModifier, Object... data) {
         if (type == IItemRenderer.ItemRenderType.ENTITY) {
             GL11.glTranslatef(-0.5F, -0.25F, -0.5F);
         } else if ((type == IItemRenderer.ItemRenderType.EQUIPPED) && ((data[1] instanceof EntityPlayer))) {
@@ -79,10 +74,7 @@ public class ItemNodeRenderer implements IItemRenderer {
         ItemNodeRenderer.renderNodeItem(type, item, ItemNodeRenderer.aspects, NodeType.NORMAL, null, data);
     }
 
-    private static AspectList aspects = new AspectList()
-            .add(Aspect.AIR, 40)
-            .add(Aspect.FIRE, 40)
-            .add(Aspect.EARTH, 40)
+    private static AspectList aspects = new AspectList().add(Aspect.AIR, 40).add(Aspect.FIRE, 40).add(Aspect.EARTH, 40)
             .add(Aspect.WATER, 40);
 
     public static void renderItemNode(INode node) {
@@ -131,7 +123,13 @@ public class ItemNodeRenderer implements IItemRenderer {
                 scale = MathHelper.sin(viewer.ticksExisted / (14.0F - count)) * bscale + bscale * 2.0F;
                 scale = 0.2F + scale * (node.getAspects().getAmount(aspect) / 50.0F);
                 UtilsFX.renderAnimatedQuadStrip(
-                        scale, alpha / node.getAspects().size(), frames, 0, i, 0.0F, aspect.getColor());
+                        scale,
+                        alpha / node.getAspects().size(),
+                        frames,
+                        0,
+                        i,
+                        0.0F,
+                        aspect.getColor());
                 GL11.glDisable(3042);
                 GL11.glPopMatrix();
                 count++;

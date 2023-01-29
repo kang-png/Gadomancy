@@ -1,25 +1,25 @@
 package makeo.gadomancy.common.network.packets;
 
+import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
+import makeo.gadomancy.client.util.UtilsFX;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
+import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
+import makeo.gadomancy.common.utils.ExplosionHelper;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.tileentity.TileEntity;
+
+import thaumcraft.common.Thaumcraft;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
-import makeo.gadomancy.client.util.UtilsFX;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
-import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
-import makeo.gadomancy.common.utils.ExplosionHelper;
-import net.minecraft.client.Minecraft;
-import net.minecraft.tileentity.TileEntity;
-import thaumcraft.common.Thaumcraft;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 11.10.2015 15:19
  */
@@ -78,8 +78,8 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
     public IMessage onMessage(PacketStartAnimation message, MessageContext ctx) {
         switch (message.annimationId) {
             case PacketStartAnimation.ID_INFUSIONCLAW:
-                TileInfusionClaw tile = (TileInfusionClaw)
-                        Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z);
+                TileInfusionClaw tile = (TileInfusionClaw) Minecraft.getMinecraft().theWorld
+                        .getTileEntity(message.x, message.y, message.z);
                 if (tile != null) {
                     tile.animationStates[8] = 1;
                 }
@@ -99,7 +99,11 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
                 break;
             case PacketStartAnimation.ID_RUNES:
                 UtilsFX.doRuneEffects(
-                        Minecraft.getMinecraft().theWorld, message.x, message.y, message.z, message.additionalData);
+                        Minecraft.getMinecraft().theWorld,
+                        message.x,
+                        message.y,
+                        message.z,
+                        message.additionalData);
                 break;
             case PacketStartAnimation.ID_SPARKLE_SPREAD:
                 UtilsFX.doSparkleEffectsAround(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z);

@@ -1,19 +1,20 @@
 package makeo.gadomancy.common.crafting;
 
 import java.util.ArrayList;
+
 import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.InfusionRecipe;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 02.11.2015 17:39
  */
@@ -21,21 +22,17 @@ public class Familiar_Old_AugmentInfusion extends InfusionRecipe {
 
     private ItemFamiliar_Old.FamiliarUpgrade upgradeToAdd;
 
-    public Familiar_Old_AugmentInfusion(
-            String research,
-            int inst,
-            AspectList aspects2,
-            ItemStack input,
-            ItemFamiliar_Old.FamiliarUpgrade upgradeToAdd,
-            ItemStack[] recipe) {
+    public Familiar_Old_AugmentInfusion(String research, int inst, AspectList aspects2, ItemStack input,
+            ItemFamiliar_Old.FamiliarUpgrade upgradeToAdd, ItemStack[] recipe) {
         super(research, null, inst, aspects2, input, recipe);
         this.upgradeToAdd = upgradeToAdd;
     }
 
     @Override
     public boolean matches(ArrayList<ItemStack> input, ItemStack central, World world, EntityPlayer player) {
-        if (central == null || !(central.getItem() instanceof ItemFamiliar_Old))
-            return false; // We call it "FamiliarAugment" Recipe for a reason..
+        if (central == null || !(central.getItem() instanceof ItemFamiliar_Old)) return false; // We call it
+                                                                                               // "FamiliarAugment"
+                                                                                               // Recipe for a reason..
         if (this.getRecipeInput() == null || !(this.getRecipeInput().getItem() instanceof ItemFamiliar_Old))
             return false; // A bit late but still working..
 
@@ -46,7 +43,8 @@ public class Familiar_Old_AugmentInfusion extends InfusionRecipe {
 
         ItemStack centralCopy = central.copy();
         if (!((ItemFamiliar_Old) centralCopy.getItem())
-                .hasUpgrade(centralCopy, this.getUpgradeToAdd().getNeededPreviousUpgrade())) return false;
+                .hasUpgrade(centralCopy, this.getUpgradeToAdd().getNeededPreviousUpgrade()))
+            return false;
 
         ArrayList<ItemStack> ii = new ArrayList<ItemStack>();
         for (ItemStack is : input) {

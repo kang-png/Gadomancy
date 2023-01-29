@@ -1,31 +1,33 @@
 package makeo.gadomancy.common.registration;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.ArrayList;
 import java.util.List;
+
 import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.common.blocks.*;
 import makeo.gadomancy.common.blocks.tiles.*;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.items.*;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
 import thaumcraft.common.blocks.BlockAiry;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileInfusionMatrix;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 13.07.2015 18:38
  */
 public class RegisteredBlocks {
+
     private RegisteredBlocks() {}
 
     public static int rendererTransparentBlock;
@@ -59,24 +61,24 @@ public class RegisteredBlocks {
         RegisteredBlocks.blockStickyJar = RegisteredBlocks.registerBlock(new BlockStickyJar());
         RegisteredBlocks.blockArcaneDropper = RegisteredBlocks.registerBlock(new BlockArcaneDropper());
         RegisteredBlocks.blockInfusionClaw = RegisteredBlocks.registerBlock(new BlockInfusionClaw());
-        RegisteredBlocks.blockRemoteJar =
-                RegisteredBlocks.registerBlock(new BlockRemoteJar(), ItemBlockRemoteJar.class);
+        RegisteredBlocks.blockRemoteJar = RegisteredBlocks
+                .registerBlock(new BlockRemoteJar(), ItemBlockRemoteJar.class);
         RegisteredBlocks.blockNode = ModConfig.enableAdditionalNodeTypes
                 ? (BlockAiry) new BlockNode().setBlockName("blockAiry")
                 : (BlockAiry) ConfigBlocks.blockAiry;
         RegisteredBlocks.blockExtendedNodeJar = RegisteredBlocks.registerBlock(new BlockExtendedNodeJar());
-        RegisteredBlocks.blockNodeManipulator =
-                RegisteredBlocks.registerBlock(new BlockNodeManipulator(), ItemNodeManipulator.class);
-        RegisteredBlocks.blockStoneMachine =
-                RegisteredBlocks.registerBlock(new BlockStoneMachine(), ItemBlockStoneMachine.class);
-        RegisteredBlocks.blockAdditionalEldrichPortal = RegisteredBlocks.registerBlock(
-                new BlockAdditionalEldritchPortal(), ItemBlockAdditionalEldritchPortal.class);
-        RegisteredBlocks.blockAuraPylon =
-                RegisteredBlocks.registerBlock(new BlockAuraPylon(), ItemBlockAuraPylon.class);
-        RegisteredBlocks.blockKnowledgeBook =
-                RegisteredBlocks.registerBlock(new BlockKnowledgeBook(), ItemBlockKnowledgeBook.class);
-        RegisteredBlocks.blockEssentiaCompressor =
-                RegisteredBlocks.registerBlock(new BlockEssentiaCompressor(), ItemBlockEssentiaCompressor.class);
+        RegisteredBlocks.blockNodeManipulator = RegisteredBlocks
+                .registerBlock(new BlockNodeManipulator(), ItemNodeManipulator.class);
+        RegisteredBlocks.blockStoneMachine = RegisteredBlocks
+                .registerBlock(new BlockStoneMachine(), ItemBlockStoneMachine.class);
+        RegisteredBlocks.blockAdditionalEldrichPortal = RegisteredBlocks
+                .registerBlock(new BlockAdditionalEldritchPortal(), ItemBlockAdditionalEldritchPortal.class);
+        RegisteredBlocks.blockAuraPylon = RegisteredBlocks
+                .registerBlock(new BlockAuraPylon(), ItemBlockAuraPylon.class);
+        RegisteredBlocks.blockKnowledgeBook = RegisteredBlocks
+                .registerBlock(new BlockKnowledgeBook(), ItemBlockKnowledgeBook.class);
+        RegisteredBlocks.blockEssentiaCompressor = RegisteredBlocks
+                .registerBlock(new BlockEssentiaCompressor(), ItemBlockEssentiaCompressor.class);
     }
 
     private static <T extends Block> T registerBlock(String name, T block) {
@@ -156,6 +158,7 @@ public class RegisteredBlocks {
     // Infusion Claw
     private static void registerDefaultClawBehaviors() {
         RegisteredBlocks.registerClawClickBehavior(new ClickBehavior() {
+
             @Override
             public boolean isValidForBlock() {
                 return (this.block == Blocks.bookshelf && this.metadata == 0)
@@ -164,6 +167,7 @@ public class RegisteredBlocks {
         });
 
         RegisteredBlocks.registerClawClickBehavior(new ClickBehavior(true) {
+
             private TileInfusionMatrix matrix;
 
             @Override
@@ -186,17 +190,12 @@ public class RegisteredBlocks {
             }
         });
 
-        /*registerClawClickBehavior(new ClickBehavior(true) {
-            @Override
-            public boolean isValidForBlock() {
-                return block.equals(ConfigBlocks.blockCrystal) && metadata <= 6;
-            }
-
-            @Override
-            public AspectList getVisCost() {
-                return RegisteredRecipes.costsAuraCoreStart;
-            }
-        });*/
+        /*
+         * registerClawClickBehavior(new ClickBehavior(true) {
+         * @Override public boolean isValidForBlock() { return block.equals(ConfigBlocks.blockCrystal) && metadata <= 6;
+         * }
+         * @Override public AspectList getVisCost() { return RegisteredRecipes.costsAuraCoreStart; } });
+         */
     }
 
     private static List<ClickBehavior> clawBehaviors = new ArrayList<ClickBehavior>();

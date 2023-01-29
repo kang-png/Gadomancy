@@ -2,21 +2,20 @@ package makeo.gadomancy.common.utils;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 27.10.2015 13:56
  */
 public class MultiblockHelper {
 
-    public static boolean isAnyMultiblockPresent(
-            World world, int x, int y, int z, List<MultiblockPattern> patternList) {
+    public static boolean isAnyMultiblockPresent(World world, int x, int y, int z,
+            List<MultiblockPattern> patternList) {
         for (MultiblockPattern pattern : patternList) {
             if (MultiblockHelper.isMultiblockPresent(world, x, y, z, pattern)) return true;
         }
@@ -39,8 +38,8 @@ public class MultiblockHelper {
             this.put(this.createIntVec3(0, 0, 0), new BlockInfo(originBlock, originMeta));
         }
 
-        public MultiblockPattern addBlock(
-                int relativeX, int relativeY, int relativeZ, Block expectedBlock, int expectedMeta) {
+        public MultiblockPattern addBlock(int relativeX, int relativeY, int relativeZ, Block expectedBlock,
+                int expectedMeta) {
             this.put(this.createIntVec3(relativeX, relativeY, relativeZ), new BlockInfo(expectedBlock, expectedMeta));
             return this;
         }
@@ -51,6 +50,7 @@ public class MultiblockHelper {
     }
 
     public static class IntVec3 {
+
         public int x, y, z;
 
         public IntVec3(int x, int y, int z) {
@@ -77,6 +77,7 @@ public class MultiblockHelper {
     }
 
     public static class BlockInfo {
+
         public Block block;
         public int meta;
 

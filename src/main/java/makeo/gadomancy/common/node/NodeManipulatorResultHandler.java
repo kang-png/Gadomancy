@@ -3,19 +3,20 @@ package makeo.gadomancy.common.node;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.registration.RegisteredManipulations;
+
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 28.10.2015 11:43
  */
@@ -29,8 +30,8 @@ public class NodeManipulatorResultHandler {
         return NodeManipulatorResultHandler.getRandomResult(world, world.rand, affectedNode, percChance);
     }
 
-    public static NodeManipulatorResult getRandomResult(
-            World world, Random random, INode affectedNode, int percChance) {
+    public static NodeManipulatorResult getRandomResult(World world, Random random, INode affectedNode,
+            int percChance) {
         int resultPositiveChance = Math.round(((float) percChance) / 5F);
         List<NodeManipulatorResult> localResults = new ArrayList<NodeManipulatorResult>();
         for (NodeManipulatorResult result : NodeManipulatorResultHandler.possibleResults) {

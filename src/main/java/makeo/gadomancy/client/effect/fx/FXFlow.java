@@ -4,23 +4,24 @@ import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.Random;
+
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import makeo.gadomancy.common.utils.Vector3;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+
 import org.lwjgl.opengl.GL11;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by HellFirePvP @ 17.11.2015 18:45
  */
@@ -166,19 +167,39 @@ public class FXFlow {
             return;
         }
 
-        FXFlowBase flow =
-                new FXFlowBase(this.origin, this.posX, this.posY, this.posZ, this.color, this.mainParticleSize, 9, 240);
+        FXFlowBase flow = new FXFlowBase(
+                this.origin,
+                this.posX,
+                this.posY,
+                this.posZ,
+                this.color,
+                this.mainParticleSize,
+                9,
+                240);
         Minecraft.getMinecraft().effectRenderer.addEffect(flow); // Initial position.
         double lastPosX = this.posX - (this.posX - this.lastTickPosX) / 2.0D;
         double lastPosY = this.posY - (this.posY - this.lastTickPosY) / 2.0D;
         double lastPosZ = this.posZ - (this.posZ - this.lastTickPosZ) / 2.0D;
         FXFlowBase flow2 = new FXFlowBase(
-                this.origin, lastPosX, lastPosY, lastPosZ, this.color, (float) (this.mainParticleSize * 0.8), 8, 240);
+                this.origin,
+                lastPosX,
+                lastPosY,
+                lastPosZ,
+                this.color,
+                (float) (this.mainParticleSize * 0.8),
+                8,
+                240);
         Minecraft.getMinecraft().effectRenderer.addEffect(flow2); // Consistency to last position
 
-        if (this.policy != null)
-            this.policy.doSubParticles(
-                    this, this.policyCounter, this.posX, this.posY, this.posZ, lastPosX, lastPosY, lastPosZ);
+        if (this.policy != null) this.policy.doSubParticles(
+                this,
+                this.policyCounter,
+                this.posX,
+                this.posY,
+                this.posZ,
+                lastPosX,
+                lastPosY,
+                lastPosZ);
     }
 
     public Color getColor() {
@@ -346,8 +367,8 @@ public class FXFlow {
         private ResourceLocation texture = new SimpleResourceLocation("fx/flow_large.png");
         private float buffHalfLife, buffParticleScale;
 
-        public FXFlowBase(
-                World world, double x, double y, double z, Color color, float size, int multiplier, int brightness) {
+        public FXFlowBase(World world, double x, double y, double z, Color color, float size, int multiplier,
+                int brightness) {
             super(world, x, y, z);
             if (color != null) {
                 this.partBlue = color.getBlue() / 255F;
@@ -439,17 +460,11 @@ public class FXFlow {
         }
 
         @Override
-        public void renderParticle(
-                Tessellator tessellator,
-                float partialTicks,
-                float par3,
-                float par4,
-                float par5,
-                float par6,
-                float par7) {
+        public void renderParticle(Tessellator tessellator, float partialTicks, float par3, float par4, float par5,
+                float par6, float par7) {
             if (MiscUtils.getPositionVector(Minecraft.getMinecraft().renderViewEntity)
-                            .distance(new Vector3(this.posX, this.posY, this.posZ))
-                    > ModConfig.renderParticleDistance) return;
+                    .distance(new Vector3(this.posX, this.posY, this.posZ)) > ModConfig.renderParticleDistance)
+                return;
 
             this.partialTicks = partialTicks;
             this.rendArg1 = par3;

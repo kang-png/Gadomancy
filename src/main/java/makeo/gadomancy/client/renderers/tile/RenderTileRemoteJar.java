@@ -4,24 +4,26 @@ import makeo.gadomancy.client.models.ModelJarPot;
 import makeo.gadomancy.common.blocks.BlockRemoteJar;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import makeo.gadomancy.common.utils.world.fake.FakeWorld;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.client.renderers.tile.TileJarRenderer;
 import thaumcraft.client.renderers.tile.TileMirrorRenderer;
 import thaumcraft.common.tiles.TileMirrorEssentia;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 14.10.2015 16:01
  */
 public class RenderTileRemoteJar extends TileJarRenderer {
+
     private static final ModelJarPot MODEL_JAR_POT = new ModelJarPot();
     private static final ResourceLocation OVERLAY_TEXTURE = new SimpleResourceLocation("models/jar_pot.png");
 

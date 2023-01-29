@@ -1,22 +1,22 @@
 package makeo.gadomancy.common.network.packets;
 
+import java.io.*;
+import java.util.Map;
+
+import makeo.gadomancy.common.utils.GolemEnumHelper;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import java.io.*;
-import java.util.Map;
-import makeo.gadomancy.common.utils.GolemEnumHelper;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 30.07.2015 18:07
  */
 public class PacketUpdateGolemTypeOrder implements IMessage, IMessageHandler<PacketUpdateGolemTypeOrder, IMessage> {
+
     private Map<String, Integer> mapping;
 
     public PacketUpdateGolemTypeOrder() {}
@@ -34,8 +34,7 @@ public class PacketUpdateGolemTypeOrder implements IMessage, IMessageHandler<Pac
         try {
             this.mapping = (Map<String, Integer>) new ObjectInputStream(in).readObject();
             in.close();
-        } catch (Exception ignored) {
-        } // IOException | ClassNotFoundException ignored
+        } catch (Exception ignored) {} // IOException | ClassNotFoundException ignored
     }
 
     @Override
@@ -43,8 +42,7 @@ public class PacketUpdateGolemTypeOrder implements IMessage, IMessageHandler<Pac
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
             new ObjectOutputStream(out).writeObject(this.mapping);
-        } catch (IOException ignored) {
-        }
+        } catch (IOException ignored) {}
 
         byte[] data = out.toByteArray();
 
@@ -53,8 +51,7 @@ public class PacketUpdateGolemTypeOrder implements IMessage, IMessageHandler<Pac
 
         try {
             out.close();
-        } catch (IOException ignored) {
-        }
+        } catch (IOException ignored) {}
     }
 
     @Override

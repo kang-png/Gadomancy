@@ -1,24 +1,26 @@
 package makeo.gadomancy.common.items;
 
 import java.util.List;
+
 import makeo.gadomancy.common.registration.RegisteredItems;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
 import thaumcraft.common.items.ItemLootBag;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 19.12.2015 21:46
  */
 public class ItemFakeLootbag extends ItemLootBag {
+
     public ItemFakeLootbag() {
         this.setCreativeTab(null);
         this.setUnlocalizedName("ItemLootBag");

@@ -3,17 +3,18 @@ package makeo.gadomancy.common.data.config;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import makeo.gadomancy.common.registration.RegisteredEnchantments;
 import makeo.gadomancy.common.registration.RegisteredPotions;
+
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+
 import thaumcraft.api.aspects.Aspect;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 15.09.2015 18:25
  */
@@ -85,8 +86,8 @@ public class ModConfig {
                 31,
                 "Do not edit unless you know what are you doing! - Datawatcher ID of the Auracore's current aspects");
 
-        ModConfig.golemDatawatcherId = ModConfig.config.getInt(
-                "datawatcherId", "golem", 29, 0, 31, "Do not edit unless you know what are you doing!");
+        ModConfig.golemDatawatcherId = ModConfig.config
+                .getInt("datawatcherId", "golem", 29, 0, 31, "Do not edit unless you know what are you doing!");
 
         // Dimension stuff
         ModConfig.dimOuterId = ModConfig.config.getInt(

@@ -4,19 +4,20 @@ import makeo.gadomancy.client.models.ModelFocusPortalPart;
 import makeo.gadomancy.client.models.ModelManipulatorPart;
 import makeo.gadomancy.common.blocks.tiles.TileManipulationFocus;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
+
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+
 import org.lwjgl.opengl.GL11;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 28.10.2015 18:00
  */
 public class RenderTileManipulationFocus extends TileEntitySpecialRenderer {
+
     private static final ModelManipulatorPart RANDOM_FOCUS = new ModelManipulatorPart();
     private static final ModelFocusPortalPart PORTAL_FOCUS = new ModelFocusPortalPart();
 

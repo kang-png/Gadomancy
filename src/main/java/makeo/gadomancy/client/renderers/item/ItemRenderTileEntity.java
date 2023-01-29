@@ -2,22 +2,23 @@ package makeo.gadomancy.client.renderers.item;
 
 import makeo.gadomancy.common.blocks.tiles.TileManipulationFocus;
 import makeo.gadomancy.common.utils.world.fake.FakeWorld;
+
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 29.09.2015 18:29
  */
 public class ItemRenderTileEntity<T extends TileEntity> implements IItemRenderer {
+
     protected static final World FAKE_WORLD = new FakeWorld();
 
     protected TileEntitySpecialRenderer renderer;

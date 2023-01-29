@@ -1,8 +1,9 @@
 package makeo.gadomancy.common.blocks.tiles;
 
-import cpw.mods.fml.common.registry.GameData;
 import java.lang.reflect.Field;
+
 import makeo.gadomancy.common.utils.Injector;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
@@ -10,18 +11,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.common.tiles.TileJarFillable;
 import thaumcraft.common.tiles.TileJarFillableVoid;
+import cpw.mods.fml.common.registry.GameData;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 13.07.2015 15:48
  */
@@ -140,7 +141,11 @@ public class TileStickyJar extends TileJarFillable {
         ForgeDirection inputDir = this.placedOn.getOpposite();
 
         TileEntity te = ThaumcraftApiHelper.getConnectableTile(
-                this.parent.getWorldObj(), this.parent.xCoord, this.parent.yCoord, this.parent.zCoord, inputDir);
+                this.parent.getWorldObj(),
+                this.parent.xCoord,
+                this.parent.yCoord,
+                this.parent.zCoord,
+                inputDir);
         if (te != null) {
             IEssentiaTransport ic = (IEssentiaTransport) te;
             if (!ic.canOutputTo(ForgeDirection.DOWN)) {
@@ -154,8 +159,8 @@ public class TileStickyJar extends TileJarFillable {
             } else if ((ic.getEssentiaAmount(inputDir.getOpposite()) > 0)
                     && (ic.getSuctionAmount(inputDir.getOpposite()) < this.getSuctionAmount(ForgeDirection.UP))
                     && (this.getSuctionAmount(ForgeDirection.UP) >= ic.getMinimumSuction())) {
-                ta = ic.getEssentiaType(inputDir.getOpposite());
-            }
+                        ta = ic.getEssentiaType(inputDir.getOpposite());
+                    }
             if ((ta != null)
                     && (ic.getSuctionAmount(inputDir.getOpposite()) < this.getSuctionAmount(ForgeDirection.UP))) {
                 this.addToContainer(ta, ic.takeEssentia(ta, 1, inputDir.getOpposite()));

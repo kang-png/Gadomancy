@@ -1,10 +1,10 @@
 package makeo.gadomancy.common.api;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import makeo.gadomancy.api.AuraEffect;
 import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
@@ -19,18 +19,20 @@ import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.utils.GolemEnumHelper;
 import makeo.gadomancy.common.utils.NBTHelper;
 import makeo.gadomancy.common.utils.StringHelper;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.entities.golems.EntityGolemBase;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 14.10.2015 14:38
  */
@@ -47,8 +49,8 @@ public class DefaultApiHandler implements IApiHandler {
             GolemEnumHelper.addGolemType(uniqueName, newType);
 
             ItemAdditionalGolemPlacer placerItem = new ItemAdditionalGolemPlacer(newType);
-            GameRegistry.registerItem(
-                    placerItem, "item" + StringHelper.firstToUpper(name.toLowerCase()) + "GolemPlacer");
+            GameRegistry
+                    .registerItem(placerItem, "item" + StringHelper.firstToUpper(name.toLowerCase()) + "GolemPlacer");
             newType.setModId(modId);
             newType.setPlacerItem(placerItem);
 

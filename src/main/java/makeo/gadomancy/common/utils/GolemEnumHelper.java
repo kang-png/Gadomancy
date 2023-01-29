@@ -1,27 +1,29 @@
 package makeo.gadomancy.common.utils;
 
-import cpw.mods.fml.relauncher.Side;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.client.events.ResourceReloadListener;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.entities.golems.types.RemovedGolemType;
+
 import net.minecraftforge.common.util.EnumHelper;
+
 import thaumcraft.common.entities.golems.EnumGolemType;
+import cpw.mods.fml.relauncher.Side;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 29.07.2015 01:07
  */
 public class GolemEnumHelper {
+
     private static final RemovedGolemType REMOVED_GOLEM_TYPE = new RemovedGolemType();
     private static final Injector INJECTOR = new Injector(EnumGolemType.class);
     private static final Injector ENUM_INJECTOR = new Injector(Enum.class);
@@ -33,9 +35,8 @@ public class GolemEnumHelper {
         if (GolemEnumHelper.valuesField == null) {
             for (Field field : EnumGolemType.class.getDeclaredFields()) {
                 String name = field.getName();
-                if (name.equals("$VALUES")
-                        || name.equals(
-                                "ENUM$VALUES")) // Added 'ENUM$VALUES' because Eclipse's internal compiler doesn't
+                if (name.equals("$VALUES") || name.equals("ENUM$VALUES")) // Added 'ENUM$VALUES' because Eclipse's
+                                                                          // internal compiler doesn't
                 // follow standards
                 {
                     GolemEnumHelper.valuesField = field;
@@ -47,9 +48,8 @@ public class GolemEnumHelper {
         return GolemEnumHelper.valuesField;
     }
 
-    private static final Class[] ENUM_PARAMS = {
-        int.class, int.class, float.class, boolean.class, int.class, int.class, int.class, int.class
-    };
+    private static final Class[] ENUM_PARAMS = { int.class, int.class, float.class, boolean.class, int.class, int.class,
+            int.class, int.class };
 
     private static Field ordinalField;
 
@@ -57,14 +57,13 @@ public class GolemEnumHelper {
         if (GolemEnumHelper.ordinalField == null) {
             try {
                 GolemEnumHelper.ordinalField = Enum.class.getDeclaredField("ordinal");
-            } catch (NoSuchFieldException ignored) {
-            }
+            } catch (NoSuchFieldException ignored) {}
         }
         return GolemEnumHelper.ordinalField;
     }
 
-    private static final Class[] MAKE_ENUM_PARAMS = {Class.class, String.class, int.class, Class[].class, Object[].class
-    };
+    private static final Class[] MAKE_ENUM_PARAMS = { Class.class, String.class, int.class, Class[].class,
+            Object[].class };
 
     private static EnumGolemType createEnum(String name, int ordinal, AdditionalGolemType type) {
         return GolemEnumHelper.HELPER_INJECTOR.invokeMethod(
@@ -74,16 +73,8 @@ public class GolemEnumHelper {
                 name,
                 ordinal,
                 GolemEnumHelper.ENUM_PARAMS,
-                new Object[] {
-                    type.maxHealth,
-                    type.armor,
-                    type.movementSpeed,
-                    type.fireResist,
-                    type.upgradeAmount,
-                    type.carryLimit,
-                    type.regenDelay,
-                    type.strength
-                });
+                new Object[] { type.maxHealth, type.armor, type.movementSpeed, type.fireResist, type.upgradeAmount,
+                        type.carryLimit, type.regenDelay, type.strength });
     }
 
     private static void addEnum(int ordinal, EnumGolemType type) {
@@ -116,8 +107,7 @@ public class GolemEnumHelper {
     private static void setValues(EnumGolemType[] values) {
         try {
             EnumHelper.setFailsafeFieldValue(GolemEnumHelper.getValuesField(), null, values);
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
 
     public static EnumGolemType addGolemType(String name, AdditionalGolemType type) {
@@ -177,8 +167,8 @@ public class GolemEnumHelper {
     }
 
     private static void resetEnum() {
-        EnumGolemType[] newValues =
-                Arrays.copyOfRange(EnumGolemType.values(), 0, GolemEnumHelper.calcDefaultGolemCount());
+        EnumGolemType[] newValues = Arrays
+                .copyOfRange(EnumGolemType.values(), 0, GolemEnumHelper.calcDefaultGolemCount());
         GolemEnumHelper.setValues(newValues);
     }
 

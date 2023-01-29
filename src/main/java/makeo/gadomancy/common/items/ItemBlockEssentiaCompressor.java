@@ -1,16 +1,14 @@
 package makeo.gadomancy.common.items;
 
 import makeo.gadomancy.common.registration.RegisteredItems;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 /**
- * HellFirePvP@Admin
- * Date: 22.04.2016 / 21:58
- * on Gadomancy
- * ItemBlockEssentiaCompressor
+ * HellFirePvP@Admin Date: 22.04.2016 / 21:58 on Gadomancy ItemBlockEssentiaCompressor
  */
 public class ItemBlockEssentiaCompressor extends ItemBlock {
 

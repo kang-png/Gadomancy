@@ -2,7 +2,9 @@ package makeo.gadomancy.common.blocks.tiles;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import makeo.gadomancy.common.registration.RegisteredBlocks;
+
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -12,17 +14,17 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 28.09.2015 20:13
  */
 public class TileArcaneDropper extends TileEntity implements ISidedInventory {
+
     private static final double RADIUS = 1.5;
 
     private List<EntityItem> items = new ArrayList<EntityItem>();
@@ -222,7 +224,11 @@ public class TileArcaneDropper extends TileEntity implements ISidedInventory {
     @Override
     public boolean canInsertItem(int slot, ItemStack stack, int side) {
         return RegisteredBlocks.blockArcaneDropper.isSideSolid(
-                this.getWorldObj(), this.xCoord, this.yCoord, this.zCoord, ForgeDirection.getOrientation(side));
+                this.getWorldObj(),
+                this.xCoord,
+                this.yCoord,
+                this.zCoord,
+                ForgeDirection.getOrientation(side));
     }
 
     @Override

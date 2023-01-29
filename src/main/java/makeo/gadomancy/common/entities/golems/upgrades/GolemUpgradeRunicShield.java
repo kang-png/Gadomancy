@@ -1,24 +1,25 @@
 package makeo.gadomancy.common.entities.golems.upgrades;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
 import makeo.gadomancy.common.registration.RegisteredGolemStuff;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.EnumGolemType;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXShield;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 16.06.2015 12:50
  */
 public class GolemUpgradeRunicShield extends GolemUpgrade {
+
     private static final String LAST_DISCHARGE_TAG = "lastRunicDischarge";
 
     @Override
@@ -59,7 +60,11 @@ public class GolemUpgradeRunicShield extends GolemUpgrade {
         PacketHandler.INSTANCE.sendToAllAround(
                 new PacketFXShield(golem.getEntityId(), target),
                 new NetworkRegistry.TargetPoint(
-                        golem.worldObj.provider.dimensionId, golem.posX, golem.posY, golem.posZ, 64.0D));
+                        golem.worldObj.provider.dimensionId,
+                        golem.posX,
+                        golem.posY,
+                        golem.posZ,
+                        64.0D));
     }
 
     public float getCharge(EntityGolemBase golem) {
@@ -98,8 +103,7 @@ public class GolemUpgradeRunicShield extends GolemUpgrade {
     public int getChargeLimit(ItemStack stack) {
         EnumGolemType type = EnumGolemType.getType(stack.getItemDamage());
         float maxHealth = type.health;
-        if (stack.hasTagCompound()
-                && stack.getTagCompound().hasKey("deco")
+        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("deco")
                 && stack.getTagCompound().getString("deco").contains("H")) {
             maxHealth += 5;
         }

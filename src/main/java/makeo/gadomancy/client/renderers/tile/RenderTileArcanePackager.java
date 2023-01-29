@@ -4,21 +4,23 @@ import makeo.gadomancy.client.models.ModelArcanePackager;
 import makeo.gadomancy.client.models.ModelPackagerPiston;
 import makeo.gadomancy.common.blocks.tiles.TileArcanePackager;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
+
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.common.tiles.TileJarFillable;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 28.11.2015 19:08
  */
 public class RenderTileArcanePackager extends TileEntitySpecialRenderer {
+
     private static final ResourceLocation TEXTURE = new SimpleResourceLocation("/models/arcane_packager.png");
     private static final ModelArcanePackager MODEL = new ModelArcanePackager();
 

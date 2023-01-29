@@ -1,8 +1,8 @@
 package makeo.gadomancy.common.node;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.network.PacketHandler;
@@ -10,20 +10,21 @@ import makeo.gadomancy.common.network.packets.PacketAnimationAbsorb;
 import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.utils.ResearchHelper;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.tiles.TileNode;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 24.10.2015 10:50
  */
@@ -109,11 +110,8 @@ public class GrowingNodeBehavior {
     }
 
     public boolean mayZapNow() {
-        return this.overallHappiness
-                > this.owningNode
-                        .getWorldObj()
-                        .rand
-                        .nextInt(GrowingNodeBehavior.HAPPINESS_CAP * GrowingNodeBehavior.HAPPINESS_CAP);
+        return this.overallHappiness > this.owningNode.getWorldObj().rand
+                .nextInt(GrowingNodeBehavior.HAPPINESS_CAP * GrowingNodeBehavior.HAPPINESS_CAP);
     }
 
     public float getZapDamage() {
@@ -166,14 +164,11 @@ public class GrowingNodeBehavior {
 
     public boolean updateBehavior(boolean needUpdate) {
         if (this.fixedNode != null && this.owningNode.ticksExisted % 3 == 0) {
-            if (this.owningNode
-                                    .getWorldObj()
-                                    .getBlock(this.fixedNode.xCoord, this.fixedNode.yCoord, this.fixedNode.zCoord)
-                            != RegisteredBlocks.blockNode
-                    || this.owningNode
-                                    .getWorldObj()
-                                    .getTileEntity(this.fixedNode.xCoord, this.fixedNode.yCoord, this.fixedNode.zCoord)
-                            == null
+            if (this.owningNode.getWorldObj()
+                    .getBlock(this.fixedNode.xCoord, this.fixedNode.yCoord, this.fixedNode.zCoord)
+                    != RegisteredBlocks.blockNode
+                    || this.owningNode.getWorldObj()
+                            .getTileEntity(this.fixedNode.xCoord, this.fixedNode.yCoord, this.fixedNode.zCoord) == null
                     || this.fixedNode.isInvalid()) {
                 this.fixedNode = null;
                 return needUpdate;
@@ -187,8 +182,8 @@ public class GrowingNodeBehavior {
                 this.removeFixedNode(x, y, z);
                 return needUpdate;
             }
-            Aspect a = baseAspects
-                    .getAspects()[this.owningNode.getWorldObj().rand.nextInt(baseAspects.getAspects().length)];
+            Aspect a = baseAspects.getAspects()[this.owningNode.getWorldObj().rand
+                    .nextInt(baseAspects.getAspects().length)];
             if (baseAspects.getAmount(a) > 0) {
                 if (baseAspects.reduce(a, 1)) {
                     World world = this.owningNode.getWorldObj();
@@ -210,19 +205,28 @@ public class GrowingNodeBehavior {
 
                     EntityAspectOrb aspectOrb = new EntityAspectOrb(world, fx + 0.5D, fy + 0.5D, fz + 0.5D, a, 1);
                     Vec3 dir = Vec3.createVectorHelper(fx + 0.5D, fy + 0.5D, fz + 0.5D)
-                            .subtract(Vec3.createVectorHelper(ox + 0.5D, oy + 0.5D, oz + 0.5D))
-                            .normalize();
-                    dir.addVector(this.randOffset(), this.randOffset(), this.randOffset())
-                            .normalize();
+                            .subtract(Vec3.createVectorHelper(ox + 0.5D, oy + 0.5D, oz + 0.5D)).normalize();
+                    dir.addVector(this.randOffset(), this.randOffset(), this.randOffset()).normalize();
                     aspectOrb.motionX = dir.xCoord;
                     aspectOrb.motionY = dir.yCoord;
                     aspectOrb.motionZ = dir.zCoord;
                     this.fixedNode.getWorldObj().spawnEntityInWorld(aspectOrb);
 
                     NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(
-                            world.provider.dimensionId, ox + 0.5F, oy + 0.5F, oz + 0.5F, 32);
+                            world.provider.dimensionId,
+                            ox + 0.5F,
+                            oy + 0.5F,
+                            oz + 0.5F,
+                            32);
                     PacketTCNodeBolt bolt = new PacketTCNodeBolt(
-                            ox + 0.5F, oy + 0.5F, oz + 0.5F, fx + 0.5F, fy + 0.5F, fz + 0.5F, 0, false);
+                            ox + 0.5F,
+                            oy + 0.5F,
+                            oz + 0.5F,
+                            fx + 0.5F,
+                            fy + 0.5F,
+                            fz + 0.5F,
+                            0,
+                            false);
                     PacketHandler.INSTANCE.sendToAllAround(bolt, point);
 
                     PacketAnimationAbsorb packet = new PacketAnimationAbsorb(ox, oy, oz, fx, fy, fz, 7);
@@ -277,8 +281,9 @@ public class GrowingNodeBehavior {
         }
 
         if (this.aspectSaturation.containsKey(aspect)) {
-            double percentageToSaturation =
-                    this.aspectSaturation.get(aspect) / GrowingNodeBehavior.SATURATION_CAP; // 0.0 - 1.0
+            double percentageToSaturation = this.aspectSaturation.get(aspect) / GrowingNodeBehavior.SATURATION_CAP; // 0.0
+                                                                                                                    // -
+                                                                                                                    // 1.0
             boolean mayAdd = this.owningNode.getWorldObj().rand.nextFloat() > percentageToSaturation;
             if (mayAdd) {
                 double inc = 1D / (1D - percentageToSaturation);

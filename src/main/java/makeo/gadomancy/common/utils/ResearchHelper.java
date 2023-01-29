@@ -1,19 +1,19 @@
 package makeo.gadomancy.common.utils;
 
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.playerdata.PacketResearchComplete;
 import thaumcraft.common.lib.research.ResearchManager;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 30.10.2015 21:23
  */
@@ -27,8 +27,8 @@ public class ResearchHelper {
             EntityPlayer player = (EntityPlayer) pl;
             if (!ResearchManager.isResearchComplete(player.getCommandSenderName(), research)
                     && ResearchManager.doesPlayerHaveRequisites(player.getCommandSenderName(), research)) {
-                thaumcraft.common.lib.network.PacketHandler.INSTANCE.sendTo(
-                        new PacketResearchComplete(research), (EntityPlayerMP) player);
+                thaumcraft.common.lib.network.PacketHandler.INSTANCE
+                        .sendTo(new PacketResearchComplete(research), (EntityPlayerMP) player);
                 Thaumcraft.proxy.getResearchManager().completeResearch(player, research);
             }
         }

@@ -6,14 +6,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 27.10.2015 17:05
  */
 public class ItemBlockStoneMachine extends ItemBlock {
+
     public ItemBlockStoneMachine(Block block) {
         super(block);
         this.setMaxDamage(0);

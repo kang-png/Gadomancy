@@ -2,24 +2,26 @@ package makeo.gadomancy.client.renderers.tile;
 
 import makeo.gadomancy.client.models.ModelArcaneDropper;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.client.renderers.tile.TileBellowsRenderer;
 import thaumcraft.common.tiles.TileBellows;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 28.09.2015 20:00
  */
 public class RenderTileArcaneDropper extends TileEntitySpecialRenderer {
+
     private static final ResourceLocation RESOURCE = new SimpleResourceLocation("models/arcane_dropper.png");
     private static final ModelBase MODEL = new ModelArcaneDropper();
 

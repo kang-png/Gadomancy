@@ -2,6 +2,7 @@ package makeo.gadomancy.common.blocks;
 
 import java.util.List;
 import java.util.Random;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileArcanePackager;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
@@ -10,6 +11,7 @@ import makeo.gadomancy.common.blocks.tiles.TileManipulatorPillar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.ItemUtils;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -27,20 +29,20 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.TileJarFillable;
 import thaumcraft.common.tiles.TilePedestal;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 27.10.2015 13:16
  */
 public class BlockStoneMachine extends Block {
+
     public BlockStoneMachine() {
         super(Material.rock);
         this.setHardness(3.0F);
@@ -90,8 +92,7 @@ public class BlockStoneMachine extends Block {
 
     @Override
     public boolean hasTileEntity(int metadata) {
-        return metadata == 15
-                || metadata == 0
+        return metadata == 15 || metadata == 0
                 || metadata == 1
                 || metadata == 2
                 || metadata == 3
@@ -130,9 +131,9 @@ public class BlockStoneMachine extends Block {
             return new TileManipulationFocus();
         } else if (metadata == 4) {
             return new TileArcanePackager();
-        } /* else if(metadata == 5) {
-              return new TileAIShutdown();
-          }*/
+        } /*
+           * else if(metadata == 5) { return new TileAIShutdown(); }
+           */
         return null;
     }
 
@@ -191,8 +192,8 @@ public class BlockStoneMachine extends Block {
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase ent, ItemStack stack) {
         int metadata = world.getBlockMetadata(x, y, z);
         if (metadata == 2 || metadata == 4) {
-            ((TileJarFillable) world.getTileEntity(x, y, z)).facing =
-                    MathHelper.floor_double(-ent.rotationYaw * 4.0F / 360.0F + 0.5D) & 0x3;
+            ((TileJarFillable) world.getTileEntity(x, y, z)).facing = MathHelper
+                    .floor_double(-ent.rotationYaw * 4.0F / 360.0F + 0.5D) & 0x3;
         }
     }
 
@@ -253,8 +254,8 @@ public class BlockStoneMachine extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(
-            World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
+            float hitY, float hitZ) {
         int metadata = world.getBlockMetadata(x, y, z);
 
         if (metadata == 0 || metadata == 3) {
@@ -290,15 +291,15 @@ public class BlockStoneMachine extends Block {
             this.setBlockBounds(0, 0, 0, 1, 3 / 16f, 1);
         } else if (metadata == 4) {
             this.setBlockBounds(0, 0, 0, 1, 12 / 16f, 1);
-        } /* else if(metadata == 5) {
-              setBlockBounds(0, 0, 0, 1, 1, 1);
-          }*/
+        } /*
+           * else if(metadata == 5) { setBlockBounds(0, 0, 0, 1, 1, 1); }
+           */
         super.setBlockBoundsBasedOnState(world, x, y, z);
     }
 
     @Override
-    public void addCollisionBoxesToList(
-            World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List list, Entity entity) {
+    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List list,
+            Entity entity) {
         int metadata = world.getBlockMetadata(x, y, z);
         if (metadata == 11 || metadata == 15 || metadata == 1) {
             this.setBlockBounds(0, 0, 0, 1, 1, 1);

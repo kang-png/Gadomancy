@@ -1,29 +1,32 @@
 package makeo.gadomancy.common.integration.thaumichorizions;
 
-import com.kentington.thaumichorizons.client.renderer.entity.RenderGolemTH;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.client.renderers.entity.RenderGolemHelper;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
+import com.kentington.thaumichorizons.client.renderer.entity.RenderGolemTH;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 07.10.2015 13:09
  */
 @SideOnly(Side.CLIENT)
 public class RenderAdditionalGolemTH extends RenderGolemTH {
+
     private ItemStack toolItem;
 
     public RenderAdditionalGolemTH(ModelBase mainModel) {

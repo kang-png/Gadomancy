@@ -3,29 +3,29 @@ package makeo.gadomancy.common.blocks.tiles;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.WorldServer;
+
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.TileEldritchPortal;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 06.11.2015 23:32
  */
 public class TileAdditionalEldritchPortal extends TileEldritchPortal {
 
-    private static Map<EntityPlayer, ExtendedChunkCoordinates> trackedPortalActivity =
-            new HashMap<EntityPlayer, ExtendedChunkCoordinates>();
+    private static Map<EntityPlayer, ExtendedChunkCoordinates> trackedPortalActivity = new HashMap<EntityPlayer, ExtendedChunkCoordinates>();
     private EntityPlayer toTeleport;
     private int count;
 
@@ -50,13 +50,12 @@ public class TileAdditionalEldritchPortal extends TileEldritchPortal {
             List<EntityPlayerMP> players = this.worldObj.getEntitiesWithinAABB(
                     EntityPlayerMP.class,
                     AxisAlignedBB.getBoundingBox(
-                                    this.xCoord,
-                                    this.yCoord,
-                                    this.zCoord,
-                                    this.xCoord + 1,
-                                    this.yCoord + 1,
-                                    this.zCoord + 1)
-                            .expand(0.5D, 1.0D, 0.5D));
+                            this.xCoord,
+                            this.yCoord,
+                            this.zCoord,
+                            this.xCoord + 1,
+                            this.yCoord + 1,
+                            this.zCoord + 1).expand(0.5D, 1.0D, 0.5D));
             if (players != null && !players.isEmpty()) {
                 EntityPlayerMP toTeleport = players.get(0);
 

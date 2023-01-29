@@ -3,14 +3,13 @@ package makeo.gadomancy.common.utils;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.Random;
+
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by HellFirePvP @ 17.11.2015 18:40
  */
@@ -243,8 +242,9 @@ public class Vector3 {
 
     public ChunkCoordinates getAsFloatCC() {
         return new ChunkCoordinates(
-                Float.floatToIntBits((float) this.x), Float.floatToIntBits((float) this.y), Float.floatToIntBits((float)
-                        this.z));
+                Float.floatToIntBits((float) this.x),
+                Float.floatToIntBits((float) this.y),
+                Float.floatToIntBits((float) this.z));
     }
 
     public static Vector3 getFromFloatCC(ChunkCoordinates cc) {
@@ -252,8 +252,7 @@ public class Vector3 {
     }
 
     public boolean isInAABB(Vector3 min, Vector3 max) {
-        return (this.x >= min.x)
-                && (this.x <= max.x)
+        return (this.x >= min.x) && (this.x <= max.x)
                 && (this.y >= min.y)
                 && (this.y <= max.y)
                 && (this.z >= min.z)
@@ -346,8 +345,7 @@ public class Vector3 {
         }
         Vector3 other = (Vector3) obj;
 
-        return (Math.abs(this.x - other.x) < 1.0E-006D)
-                && (Math.abs(this.y - other.y) < 1.0E-006D)
+        return (Math.abs(this.x - other.x) < 1.0E-006D) && (Math.abs(this.y - other.y) < 1.0E-006D)
                 && (Math.abs(this.z - other.z) < 1.0E-006D)
                 && (this.getClass().equals(obj.getClass()));
     }

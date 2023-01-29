@@ -1,14 +1,15 @@
 package makeo.gadomancy.common.utils;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
 import java.util.ArrayList;
 import java.util.List;
+
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketAnimationAbsorb;
 import makeo.gadomancy.common.network.packets.PacketStartAnimation;
 import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,6 +18,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.Thaumcraft;
@@ -24,12 +26,11 @@ import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 25.10.2015 10:17
  */
@@ -39,16 +40,8 @@ public class ExplosionHelper {
         ExplosionHelper.taintplosion(world, x, y, z, taintBiome, chanceToTaint, 3.0F, 10, 80);
     }
 
-    public static void taintplosion(
-            World world,
-            int x,
-            int y,
-            int z,
-            boolean taintBiome,
-            int chanceToTaint,
-            float str,
-            int size,
-            int blocksAffected) {
+    public static void taintplosion(World world, int x, int y, int z, boolean taintBiome, int chanceToTaint, float str,
+            int size, int blocksAffected) {
         if (chanceToTaint < 1) chanceToTaint = 1;
         world.createExplosion(null, x + 0.5D, y + 0.5D, z + 0.5D, str, false);
         for (int a = 0; a < blocksAffected; a++) {
@@ -99,7 +92,8 @@ public class ExplosionHelper {
                     EntityLivingBase livingEntity = (EntityLivingBase) e;
                     if ((livingEntity.isEntityAlive()) && (!livingEntity.isEntityInvulnerable())) {
                         if (livingEntity instanceof EntityPlayer
-                                && ((EntityPlayer) livingEntity).capabilities.isCreativeMode) continue;
+                                && ((EntityPlayer) livingEntity).capabilities.isCreativeMode)
+                            continue;
                         if (this.world.rand.nextInt(16) != 0) continue;
                         livingEntity.attackEntityFrom(DamageSource.magic, 4F);
                         PacketTCNodeBolt packet = new PacketTCNodeBolt(
@@ -114,17 +108,28 @@ public class ExplosionHelper {
                         PacketHandler.INSTANCE.sendToAllAround(
                                 packet,
                                 new NetworkRegistry.TargetPoint(
-                                        this.world.provider.dimensionId, this.x, this.y, this.z, 32.0D));
+                                        this.world.provider.dimensionId,
+                                        this.x,
+                                        this.y,
+                                        this.z,
+                                        32.0D));
                     }
                 }
             }
             if (this.phase < 2 && this.world.rand.nextInt(this.phase == 0 ? 8 : 4) == 0) {
-                PacketStartAnimation packet =
-                        new PacketStartAnimation(PacketStartAnimation.ID_BURST, this.x, this.y, this.z);
+                PacketStartAnimation packet = new PacketStartAnimation(
+                        PacketStartAnimation.ID_BURST,
+                        this.x,
+                        this.y,
+                        this.z);
                 PacketHandler.INSTANCE.sendToAllAround(
                         packet,
                         new NetworkRegistry.TargetPoint(
-                                this.world.provider.dimensionId, this.x, this.y, this.z, 32.0D));
+                                this.world.provider.dimensionId,
+                                this.x,
+                                this.y,
+                                this.z,
+                                32.0D));
                 this.world.playSoundEffect(this.x + 0.5, this.y + 0.5, this.z + 0.5, "thaumcraft:ice", 0.8F, 1.0F);
             }
             switch (this.phase) {
@@ -164,12 +169,22 @@ public class ExplosionHelper {
                         Block b = this.world.getBlock(xx, yy, zz);
                         float hardness = b.getBlockHardness(this.world, xx, yy, zz);
                         if (b != Blocks.air && hardness > 0 && hardness <= 50 && b != RegisteredBlocks.blockNode) {
-                            PacketAnimationAbsorb absorb =
-                                    new PacketAnimationAbsorb(this.x, this.y, this.z, xx, yy, zz, 7);
+                            PacketAnimationAbsorb absorb = new PacketAnimationAbsorb(
+                                    this.x,
+                                    this.y,
+                                    this.z,
+                                    xx,
+                                    yy,
+                                    zz,
+                                    7);
                             PacketHandler.INSTANCE.sendToAllAround(
                                     absorb,
                                     new NetworkRegistry.TargetPoint(
-                                            this.world.provider.dimensionId, this.x, this.y, this.z, 32D));
+                                            this.world.provider.dimensionId,
+                                            this.x,
+                                            this.y,
+                                            this.z,
+                                            32D));
                             this.pastTickBlocks.add(Vec3.createVectorHelper(xx, yy, zz));
                         }
                         cnt--;
@@ -217,8 +232,12 @@ public class ExplosionHelper {
 
         private void sendRandomVortexLightningPacket(World world, int x, int y, int z) {
             PacketStartAnimation animationPacket = new PacketStartAnimation(PacketStartAnimation.ID_EX_VORTEX, x, y, z);
-            NetworkRegistry.TargetPoint point =
-                    new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32.0D);
+            NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(
+                    world.provider.dimensionId,
+                    x,
+                    y,
+                    z,
+                    32.0D);
             PacketHandler.INSTANCE.sendToAllAround(animationPacket, point);
         }
 

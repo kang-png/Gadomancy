@@ -1,7 +1,7 @@
 package makeo.gadomancy.common.blocks.tiles;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
 import java.util.List;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
@@ -9,6 +9,7 @@ import makeo.gadomancy.common.node.ExtendedNodeType;
 import makeo.gadomancy.common.node.GrowingNodeBehavior;
 import makeo.gadomancy.common.utils.ExplosionHelper;
 import makeo.gadomancy.common.utils.ResearchHelper;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -18,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.EnumDifficulty;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.common.entities.EntityAspectOrb;
@@ -26,12 +28,11 @@ import thaumcraft.common.items.ItemCrystalEssence;
 import thaumcraft.common.items.ItemManaBean;
 import thaumcraft.common.items.ItemWispEssence;
 import thaumcraft.common.tiles.TileNode;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 21.10.2015 23:39
  */
@@ -87,19 +88,19 @@ public class TileExtendedNode extends TileNode {
         List livingEntities = this.worldObj.getEntitiesWithinAABB(
                 EntityLivingBase.class,
                 AxisAlignedBB.getBoundingBox(
-                                this.xCoord,
-                                this.yCoord,
-                                this.zCoord,
-                                this.xCoord + 1,
-                                this.yCoord + 1,
-                                this.zCoord + 1)
-                        .expand(6.0D, 6.0D, 6.0D));
+                        this.xCoord,
+                        this.yCoord,
+                        this.zCoord,
+                        this.xCoord + 1,
+                        this.yCoord + 1,
+                        this.zCoord + 1).expand(6.0D, 6.0D, 6.0D));
         if ((livingEntities != null) && (livingEntities.size() > 0)) {
             for (Object e : livingEntities) {
                 EntityLivingBase livingEntity = (EntityLivingBase) e;
                 if ((livingEntity.isEntityAlive()) && (!livingEntity.isEntityInvulnerable())) {
                     if (livingEntity instanceof EntityPlayer
-                            && ((EntityPlayer) livingEntity).capabilities.isCreativeMode) continue;
+                            && ((EntityPlayer) livingEntity).capabilities.isCreativeMode)
+                        continue;
                     if (!this.behavior.mayZapNow()) continue;
 
                     ResearchHelper.distributeResearch(
@@ -113,7 +114,12 @@ public class TileExtendedNode extends TileNode {
                     livingEntity.attackEntityFrom(DamageSource.magic, this.behavior.getZapDamage());
 
                     this.worldObj.playSoundEffect(
-                            this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "thaumcraft:zap", 0.8F, 1.0F);
+                            this.xCoord + 0.5,
+                            this.yCoord + 0.5,
+                            this.zCoord + 0.5,
+                            "thaumcraft:zap",
+                            0.8F,
+                            1.0F);
 
                     PacketTCNodeBolt packet = new PacketTCNodeBolt(
                             this.xCoord + 0.5F,
@@ -127,7 +133,11 @@ public class TileExtendedNode extends TileNode {
                     PacketHandler.INSTANCE.sendToAllAround(
                             packet,
                             new NetworkRegistry.TargetPoint(
-                                    this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 32.0D));
+                                    this.worldObj.provider.dimensionId,
+                                    this.xCoord,
+                                    this.yCoord,
+                                    this.zCoord,
+                                    32.0D));
                 }
             }
         }
@@ -139,6 +149,7 @@ public class TileExtendedNode extends TileNode {
         if (this.extendedNodeType == null || this.extendedNodeType != ExtendedNodeType.GROWING) return needUpdate;
 
         needUpdate = this.doVortex(EntityAspectOrb.class, needUpdate, new GrowingNodeVortexRunnable<EntityAspectOrb>() {
+
             @Override
             public Aspect getAspect(EntityAspectOrb entity) {
                 return entity.getAspect();
@@ -150,6 +161,7 @@ public class TileExtendedNode extends TileNode {
             }
         });
         needUpdate = this.doVortex(EntityItem.class, needUpdate, new GrowingNodeVortexRunnable<EntityItem>() {
+
             @Override
             public boolean doesVortex(EntityItem entity) {
                 return entity.getEntityItem().getItem() instanceof ItemWispEssence
@@ -159,8 +171,7 @@ public class TileExtendedNode extends TileNode {
 
             @Override
             public Aspect getAspect(EntityItem entity) {
-                IEssentiaContainerItem container =
-                        (IEssentiaContainerItem) entity.getEntityItem().getItem();
+                IEssentiaContainerItem container = (IEssentiaContainerItem) entity.getEntityItem().getItem();
                 return container.getAspects(entity.getEntityItem()).getAspects().length > 0
                         ? container.getAspects(entity.getEntityItem()).getAspects()[0]
                         : null;
@@ -176,6 +187,7 @@ public class TileExtendedNode extends TileNode {
             }
         });
         needUpdate = this.doVortex(EntityWisp.class, needUpdate, new GrowingNodeVortexRunnable<EntityWisp>() {
+
             @Override
             public Aspect getAspect(EntityWisp entity) {
                 return Aspect.getAspect(entity.getType());
@@ -224,18 +236,17 @@ public class TileExtendedNode extends TileNode {
         }
     }
 
-    private <E extends Entity> boolean doVortex(
-            Class<E> entityClass, boolean needUpdate, GrowingNodeVortexRunnable<E> runnable) {
+    private <E extends Entity> boolean doVortex(Class<E> entityClass, boolean needUpdate,
+            GrowingNodeVortexRunnable<E> runnable) {
         List entities = this.worldObj.getEntitiesWithinAABB(
                 entityClass,
                 AxisAlignedBB.getBoundingBox(
-                                this.xCoord,
-                                this.yCoord,
-                                this.zCoord,
-                                this.xCoord + 1,
-                                this.yCoord + 1,
-                                this.zCoord + 1)
-                        .expand(15.0D, 15.0D, 15.0D));
+                        this.xCoord,
+                        this.yCoord,
+                        this.zCoord,
+                        this.xCoord + 1,
+                        this.yCoord + 1,
+                        this.zCoord + 1).expand(15.0D, 15.0D, 15.0D));
         if ((entities != null) && (entities.size() > 0)) {
             for (Object eObj : entities) {
                 E entity = (E) eObj;

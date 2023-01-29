@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import makeo.gadomancy.common.data.config.ModConfig;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -16,15 +18,14 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.EntityPermanentItem;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 08.11.2015 21:57
  */
@@ -58,15 +59,13 @@ public class FakeWorldTCGeneration extends FakeWorld {
             this.gettedTE.remove(cc);
         }
 
-        /*if(block == ConfigBlocks.blockEldritchNothing) {
-            if(BlockUtils.isBlockExposed(this, x, y, z)) {
-                meta = 1;
-            }
-        }*/
+        /*
+         * if(block == ConfigBlocks.blockEldritchNothing) { if(BlockUtils.isBlockExposed(this, x, y, z)) { meta = 1; } }
+         */
 
         buf.blockData[key] = block;
         buf.metaBuffer[key] = (byte) meta;
-        if (block.hasTileEntity(meta)) buf.tiles.add(new Integer[] {x, y, z, key});
+        if (block.hasTileEntity(meta)) buf.tiles.add(new Integer[] { x, y, z, key });
         return true;
     }
 
@@ -123,6 +122,7 @@ public class FakeWorldTCGeneration extends FakeWorld {
     }
 
     private static class FakeChunk extends Chunk {
+
         private ChunkBuffer buf;
 
         public FakeChunk(World world, int x, int z, ChunkBuffer buf) {
@@ -181,8 +181,8 @@ public class FakeWorldTCGeneration extends FakeWorld {
     }
 
     @Override
-    public void markTileEntityChunkModified(
-            int p_147476_1_, int p_147476_2_, int p_147476_3_, TileEntity p_147476_4_) {}
+    public void markTileEntityChunkModified(int p_147476_1_, int p_147476_2_, int p_147476_3_,
+            TileEntity p_147476_4_) {}
 
     @Override
     public void func_147453_f(int p_147453_1_, int p_147453_2_, int p_147453_3_, Block p_147453_4_) {}
@@ -190,15 +190,20 @@ public class FakeWorldTCGeneration extends FakeWorld {
     @Override
     public boolean spawnEntityInWorld(Entity entity) {
         if (entity instanceof EntityPermanentItem) {
-            this.bufferedEntities.add(new EntityPermItem(
-                    entity.posX, entity.posY, entity.posZ, ((EntityPermanentItem) entity).getEntityItem()));
+            this.bufferedEntities.add(
+                    new EntityPermItem(
+                            entity.posX,
+                            entity.posY,
+                            entity.posZ,
+                            ((EntityPermanentItem) entity).getEntityItem()));
         } else if (entity instanceof EntityEldritchGuardian) {
-            this.bufferedEntities.add(new EntityGuardianBuf(
-                    ((EntityEldritchGuardian) entity).getHomePosition(),
-                    entity.posX,
-                    entity.posY,
-                    entity.posZ,
-                    ((EntityEldritchGuardian) entity).func_110174_bM()));
+            this.bufferedEntities.add(
+                    new EntityGuardianBuf(
+                            ((EntityEldritchGuardian) entity).getHomePosition(),
+                            entity.posX,
+                            entity.posY,
+                            entity.posZ,
+                            ((EntityEldritchGuardian) entity).func_110174_bM()));
         }
         return true;
     }
@@ -245,6 +250,7 @@ public class FakeWorldTCGeneration extends FakeWorld {
     }
 
     public static class ChunkBuffer {
+
         private long key;
         public Block[] blockData = new Block[32768];
         public byte[] metaBuffer = new byte[32768];
@@ -270,6 +276,7 @@ public class FakeWorldTCGeneration extends FakeWorld {
     }
 
     public static class ChunkMap extends HashMap<Long, ChunkBuffer> {
+
         @Override
         public ChunkBuffer get(Object key) {
             if (!this.containsKey(key)) {
@@ -280,6 +287,7 @@ public class FakeWorldTCGeneration extends FakeWorld {
     }
 
     public static class TCFakeWorldProvider extends WorldProvider {
+
         private static TCFakeWorldProvider instance;
 
         static {

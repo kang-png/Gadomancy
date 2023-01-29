@@ -2,6 +2,7 @@ package makeo.gadomancy.common.blocks.tiles;
 
 import makeo.gadomancy.common.node.ExtendedNodeType;
 import makeo.gadomancy.common.utils.Injector;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -9,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.NodeModifier;
@@ -19,14 +21,11 @@ import thaumcraft.common.tiles.TileJarNode;
 import thaumcraft.common.tiles.TileNode;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
- * Original created by Azanor@Thaumcraft: thaumcraft.common.tiles.TileJar
- * Modified to create compatibility with ExtendedNodes
- * Created by HellFirePvP @ 25.10.2015 22:50
+ * Original created by Azanor@Thaumcraft: thaumcraft.common.tiles.TileJar Modified to create compatibility with
+ * ExtendedNodes Created by HellFirePvP @ 25.10.2015 22:50
  */
 public class TileExtendedNodeJar extends TileJarNode {
 
@@ -96,16 +95,11 @@ public class TileExtendedNodeJar extends TileJarNode {
             }
         }
         nbttagcompound.setByte("type", (byte) this.getNodeType().ordinal());
-        nbttagcompound.setByte(
-                "modifier",
-                this.getNodeModifier() == null
-                        ? -1
-                        : (byte) this.getNodeModifier().ordinal());
+        nbttagcompound
+                .setByte("modifier", this.getNodeModifier() == null ? -1 : (byte) this.getNodeModifier().ordinal());
         nbttagcompound.setByte(
                 "extendedNodeType",
-                this.getExtendedNodeType() == null
-                        ? -1
-                        : (byte) this.getExtendedNodeType().ordinal());
+                this.getExtendedNodeType() == null ? -1 : (byte) this.getExtendedNodeType().ordinal());
         if (this.behaviorSnapshot != null) {
             nbttagcompound.setTag("Behavior", this.behaviorSnapshot);
         }
@@ -225,7 +219,12 @@ public class TileExtendedNodeJar extends TileJarNode {
                     for (int xx = -1; xx < 2; xx++) {
                         for (int zz = -1; zz < 2; zz++) {
                             Thaumcraft.proxy.blockSparkle(
-                                    this.worldObj, this.xCoord + xx, this.yCoord + yy, this.zCoord + zz, -9999, 5);
+                                    this.worldObj,
+                                    this.xCoord + xx,
+                                    this.yCoord + yy,
+                                    this.zCoord + zz,
+                                    -9999,
+                                    5);
                         }
                     }
                 }
@@ -238,8 +237,8 @@ public class TileExtendedNodeJar extends TileJarNode {
 
     public boolean drop = true;
 
-    public int onWandRightClick(
-            World world, ItemStack wandstack, EntityPlayer player, int x, int y, int z, int side, int md) {
+    public int onWandRightClick(World world, ItemStack wandstack, EntityPlayer player, int x, int y, int z, int side,
+            int md) {
         if (!world.isRemote) {
             this.drop = false;
             world.setBlock(x, y, z, ConfigBlocks.blockAiry, 0, 3);

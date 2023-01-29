@@ -2,10 +2,12 @@ package makeo.gadomancy.common.utils.world;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+
 import makeo.gadomancy.common.blocks.tiles.TileAdditionalEldritchPortal;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.utils.world.fake.FakeWorldTCGeneration;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -14,6 +16,7 @@ import net.minecraft.util.*;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
+
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.world.dim.CellLoc;
 import thaumcraft.common.lib.world.dim.GenCommon;
@@ -21,10 +24,8 @@ import thaumcraft.common.lib.world.dim.MazeHandler;
 import thaumcraft.common.lib.world.dim.MazeThread;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by HellFirePvP @ 05.11.2015 10:40
  */
@@ -72,14 +73,13 @@ public class TCMazeHandler {
                     player.setPositionAndUpdate(cc.posX + 0.5, y, cc.posZ + 0.5);
                 }
             }
-            Iterator<Map.Entry<EntityPlayer, TCMazeSession>> it =
-                    TCMazeHandler.runningSessions.entrySet().iterator();
+            Iterator<Map.Entry<EntityPlayer, TCMazeSession>> it = TCMazeHandler.runningSessions.entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry<EntityPlayer, TCMazeSession> entry = it.next();
                 EntityPlayer player = entry.getKey();
-                if (player.worldObj.provider.dimensionId
-                        != ModConfig
-                                .dimOuterId) { // If the player left our dim, but he should still be in the session, ...
+                if (player.worldObj.provider.dimensionId != ModConfig.dimOuterId) { // If the player left our dim, but
+                                                                                    // he should still be in the
+                                                                                    // session, ...
                     // We close the session.
                     entry.getValue().closeSession(false);
                     it.remove();
@@ -96,12 +96,15 @@ public class TCMazeHandler {
         world.setBlock(lX, 52, lZ, ConfigBlocks.blockEldritch, 3, 3);
         world.setBlock(lX, 53, lZ, RegisteredBlocks.blockAdditionalEldrichPortal);
         GenCommon.genObelisk(world, lX, 54, lZ);
-        session.player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.GRAY
-                + StatCollector.translateToLocal("gadomancy.eldritch.portalSpawned")));
+        session.player.addChatMessage(
+                new ChatComponentText(
+                        EnumChatFormatting.ITALIC + ""
+                                + EnumChatFormatting.GRAY
+                                + StatCollector.translateToLocal("gadomancy.eldritch.portalSpawned")));
     }
 
     /*
-     *  Coordinates wanted here are the absolute Portal coordinates.
+     * Coordinates wanted here are the absolute Portal coordinates.
      */
     public static boolean createSessionWaitForTeleport(EntityPlayer player) {
         if (TCMazeHandler.hasOpenSession(player) || !TCMazeHandler.hasFreeSessionSpace()) return false;
@@ -125,8 +128,8 @@ public class TCMazeHandler {
 
     private static Map<CellLoc, Short> calculateCellLocs(WorldServer world) {
         ConcurrentHashMap<CellLoc, Short> oldDat = MazeHandler.labyrinth;
-        ConcurrentHashMap<CellLoc, Short> bufferOld =
-                new ConcurrentHashMap<CellLoc, Short>(TCMazeHandler.labyrinthCopy);
+        ConcurrentHashMap<CellLoc, Short> bufferOld = new ConcurrentHashMap<CellLoc, Short>(
+                TCMazeHandler.labyrinthCopy);
         MazeHandler.labyrinth = TCMazeHandler.labyrinthCopy;
         int chX = TCMazeHandler.getHighestPossibleRandWH(); // To ensure we're always +x and +z
         int chZ = TCMazeHandler.getHighestPossibleRandWH();
@@ -144,8 +147,8 @@ public class TCMazeHandler {
     }
 
     private static Map<CellLoc, Short> calculateDifferences(ConcurrentHashMap<CellLoc, Short> bufferOld) {
-        ConcurrentHashMap<CellLoc, Short> newDat =
-                MazeHandler.labyrinth; // Only the new data has data, the old one doesn't have.
+        ConcurrentHashMap<CellLoc, Short> newDat = MazeHandler.labyrinth; // Only the new data has data, the old one
+                                                                          // doesn't have.
         Map<CellLoc, Short> newlyEvaluatedMaze = new HashMap<CellLoc, Short>();
         for (CellLoc loc : newDat.keySet()) {
             if (!bufferOld.containsKey(loc)) {
@@ -160,7 +163,7 @@ public class TCMazeHandler {
     }
 
     /*
-    Change getHighestPossibleRandWH accordingly if modifying this.
+     * Change getHighestPossibleRandWH accordingly if modifying this.
      */
     private static int randWH(Random random) {
         return 17 + random.nextInt(2) * 2;
@@ -211,10 +214,8 @@ public class TCMazeHandler {
         }
 
         if ((TCMazeHandler.tickCounter & 15) == 0) {
-            Iterator<Map.Entry<TCMazeSession, Entity[]>> iterator =
-                    TCMazeHandler.watchedBosses.entrySet().iterator();
-            labelWhile:
-            while (iterator.hasNext()) {
+            Iterator<Map.Entry<TCMazeSession, Entity[]>> iterator = TCMazeHandler.watchedBosses.entrySet().iterator();
+            labelWhile: while (iterator.hasNext()) {
                 Map.Entry<TCMazeSession, Entity[]> entry = iterator.next();
                 TCMazeSession session = entry.getKey();
                 Entity[] bosses = entry.getValue();
@@ -246,8 +247,8 @@ public class TCMazeHandler {
         private final int originDimId;
         private final Vec3 originLocation;
 
-        public MazeBuilderThread(
-                EntityPlayerMP player, Map<CellLoc, Short> chunksAffected, int originDimId, Vec3 originLocation) {
+        public MazeBuilderThread(EntityPlayerMP player, Map<CellLoc, Short> chunksAffected, int originDimId,
+                Vec3 originLocation) {
             this.player = player;
             this.chunksAffected = chunksAffected;
             this.originDimId = originDimId;
@@ -269,8 +270,8 @@ public class TCMazeHandler {
                     for (int cX = 0; cX < 16; cX++) {
                         for (int cY = 51; cY < 61; cY++) {
                             for (int cZ = 0; cZ < 16; cZ++) {
-                                TCMazeHandler.GEN.updateLightByType(
-                                        EnumSkyBlock.Block, (l.x << 4) + cX, cY, (l.z << 4) + cZ);
+                                TCMazeHandler.GEN
+                                        .updateLightByType(EnumSkyBlock.Block, (l.x << 4) + cX, cY, (l.z << 4) + cZ);
                             }
                         }
                     }
@@ -282,8 +283,11 @@ public class TCMazeHandler {
 
         private void finishBuild() {
             TileAdditionalEldritchPortal.informSessionStart(this.player);
-            TCMazeSession session =
-                    new TCMazeSession(this.player, this.chunksAffected, this.originDimId, this.originLocation);
+            TCMazeSession session = new TCMazeSession(
+                    this.player,
+                    this.chunksAffected,
+                    this.originDimId,
+                    this.originLocation);
             TCMazeHandler.flagSessionForStart(session);
         }
     }

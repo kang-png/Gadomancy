@@ -2,18 +2,18 @@ package makeo.gadomancy.common.entities.golems.nbt;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
+
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.EnumGolemType;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 28.07.2015 18:11
  */
 public class OverrideRidingEntity extends Entity {
+
     private static final EnumGolemType DEFAULT_TYPE = EnumGolemType.WOOD;
 
     private EntityGolemBase golem;

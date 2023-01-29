@@ -2,6 +2,7 @@ package makeo.gadomancy.client.renderers.tile;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.effect.fx.FXVortex;
 import makeo.gadomancy.client.models.ModelEssentiaCompressor;
@@ -9,26 +10,25 @@ import makeo.gadomancy.client.models.ModelPackedCompressorBlock;
 import makeo.gadomancy.common.blocks.tiles.TileEssentiaCompressor;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import makeo.gadomancy.common.utils.world.fake.FakeWorld;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+
 import org.lwjgl.opengl.GL11;
 
 /**
- * HellFirePvP@Admin
- * Date: 22.04.2016 / 21:39
- * on Gadomancy
- * RenderTileEssentiaCompressor
+ * HellFirePvP@Admin Date: 22.04.2016 / 21:39 on Gadomancy RenderTileEssentiaCompressor
  */
 public class RenderTileEssentiaCompressor extends TileEntitySpecialRenderer {
 
     public static final ModelBase MODEL_ESSENTIA_COMPRESSOR = new ModelEssentiaCompressor();
     public static final ModelBase MODEL_PACKED_COMPRESSOR = new ModelPackedCompressorBlock();
-    public static final SimpleResourceLocation COMPRESSOR_TEXTURE =
-            new SimpleResourceLocation("models/essentia_compressor.png");
-    public static final SimpleResourceLocation PACKED_COMPRESSOR_TEXTURE =
-            new SimpleResourceLocation("blocks/block_packed_compressor.png");
+    public static final SimpleResourceLocation COMPRESSOR_TEXTURE = new SimpleResourceLocation(
+            "models/essentia_compressor.png");
+    public static final SimpleResourceLocation PACKED_COMPRESSOR_TEXTURE = new SimpleResourceLocation(
+            "blocks/block_packed_compressor.png");
 
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTicks) {
@@ -57,8 +57,7 @@ public class RenderTileEssentiaCompressor extends TileEntitySpecialRenderer {
                         tileEntity.xCoord + 0.5,
                         tileEntity.yCoord + 0.5,
                         tileEntity.zCoord + 0.5,
-                        (TileEssentiaCompressor) tileEntity
-                                .getWorldObj()
+                        (TileEssentiaCompressor) tileEntity.getWorldObj()
                                 .getTileEntity(tileEntity.xCoord, tileEntity.yCoord - 1, tileEntity.zCoord));
             }
             GL11.glPopMatrix();

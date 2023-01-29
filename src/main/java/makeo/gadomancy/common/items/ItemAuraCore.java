@@ -1,8 +1,10 @@
 package makeo.gadomancy.common.items;
 
 import java.util.List;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.registration.RegisteredItems;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,15 +14,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.blocks.BlockCustomOreItem;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 16.11.2015 15:23
  */
@@ -113,6 +115,7 @@ public class ItemAuraCore extends Item {
     }
 
     public enum AuraCoreType {
+
         BLANK("blank"),
 
         AIR(Aspect.AIR),
@@ -155,8 +158,7 @@ public class ItemAuraCore extends Item {
         }
 
         public String getLocalizedName() {
-            String name = this.isAspect()
-                    ? this.aspect.getName()
+            String name = this.isAspect() ? this.aspect.getName()
                     : StatCollector.translateToLocal("gadomancy.auracore." + this.unlocName);
             if (this.unused) {
                 name += " " + StatCollector.translateToLocal("gadomancy.auracore.unused");

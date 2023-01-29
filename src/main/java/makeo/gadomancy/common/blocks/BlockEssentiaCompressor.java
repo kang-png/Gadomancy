@@ -1,6 +1,5 @@
 package makeo.gadomancy.common.blocks;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileEssentiaCompressor;
 import makeo.gadomancy.common.network.PacketHandler;
@@ -10,6 +9,7 @@ import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.registration.RegisteredRecipes;
 import makeo.gadomancy.common.research.SimpleResearchItem;
 import makeo.gadomancy.common.utils.ExplosionHelper;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -21,16 +21,15 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.lib.research.ResearchManager;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 /**
- * HellFirePvP@Admin
- * Date: 22.04.2016 / 21:42
- * on Gadomancy
- * BlockEssentiaCompressor
+ * HellFirePvP@Admin Date: 22.04.2016 / 21:42 on Gadomancy BlockEssentiaCompressor
  */
 public class BlockEssentiaCompressor extends BlockContainer implements IBlockTransparent {
 
@@ -118,63 +117,75 @@ public class BlockEssentiaCompressor extends BlockContainer implements IBlockTra
     }
 
     @Override
-    public boolean onBlockActivated(
-            World world,
-            int x,
-            int y,
-            int z,
-            EntityPlayer player,
-            int these,
-            float are,
-            float some,
-            float variables) { // LUL side, hitx, hity, hitz
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int these, float are,
+            float some, float variables) { // LUL side, hitx, hity, hitz
         if (world.isRemote) return false;
         TileEntity te = world.getTileEntity(x, y, z);
         if (te == null || !(te instanceof TileEssentiaCompressor)) return false;
         if (((TileEssentiaCompressor) te).isMultiblockFormed()) {
             if (!((TileEssentiaCompressor) te).isMasterTile()) {
                 int yOffset = ((TileEssentiaCompressor) te).getMultiblockYIndex();
-                return RegisteredBlocks.blockEssentiaCompressor.onBlockActivated(
-                        world, x, y - yOffset, z, player, these, are, some, variables);
+                return RegisteredBlocks.blockEssentiaCompressor
+                        .onBlockActivated(world, x, y - yOffset, z, player, these, are, some, variables);
             }
         } else {
             ItemStack heldItem = player.getHeldItem();
-            if (heldItem != null
-                    && heldItem.getItem() instanceof ItemWandCasting
+            if (heldItem != null && heldItem.getItem() instanceof ItemWandCasting
                     && ResearchManager.isResearchComplete(
-                            player.getCommandSenderName(), SimpleResearchItem.getFullName("ESSENTIA_COMPRESSOR"))) {
+                            player.getCommandSenderName(),
+                            SimpleResearchItem.getFullName("ESSENTIA_COMPRESSOR"))) {
                 ChunkCoordinates lowest = this.findLowestCompressorBlock(world, x, y, z);
                 boolean canForm = lowest != null && this.isMuliblockPossible(world, lowest);
-                if (canForm
-                        && ThaumcraftApiHelper.consumeVisFromWandCrafting(
-                                player.getCurrentEquippedItem(),
-                                player,
-                                RegisteredRecipes.costsCompressorMultiblock,
-                                true)) {
+                if (canForm && ThaumcraftApiHelper.consumeVisFromWandCrafting(
+                        player.getCurrentEquippedItem(),
+                        player,
+                        RegisteredRecipes.costsCompressorMultiblock,
+                        true)) {
                     int multiblockID = TileEssentiaCompressor.getAndIncrementNewMultiblockId();
-                    TileEssentiaCompressor compressor =
-                            (TileEssentiaCompressor) world.getTileEntity(lowest.posX, lowest.posY, lowest.posZ);
+                    TileEssentiaCompressor compressor = (TileEssentiaCompressor) world
+                            .getTileEntity(lowest.posX, lowest.posY, lowest.posZ);
                     compressor.setInMultiblock(true, 0, multiblockID);
                     PacketStartAnimation pkt = new PacketStartAnimation(
-                            PacketStartAnimation.ID_SPARKLE_SPREAD, lowest.posX, lowest.posY, lowest.posZ);
+                            PacketStartAnimation.ID_SPARKLE_SPREAD,
+                            lowest.posX,
+                            lowest.posY,
+                            lowest.posZ);
                     NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(
-                            world.provider.dimensionId, lowest.posX, lowest.posY, lowest.posZ, 32);
+                            world.provider.dimensionId,
+                            lowest.posX,
+                            lowest.posY,
+                            lowest.posZ,
+                            32);
                     PacketHandler.INSTANCE.sendToAllAround(pkt, point);
-                    compressor =
-                            (TileEssentiaCompressor) world.getTileEntity(lowest.posX, lowest.posY + 1, lowest.posZ);
+                    compressor = (TileEssentiaCompressor) world
+                            .getTileEntity(lowest.posX, lowest.posY + 1, lowest.posZ);
                     compressor.setInMultiblock(false, 1, multiblockID);
                     pkt = new PacketStartAnimation(
-                            PacketStartAnimation.ID_SPARKLE_SPREAD, lowest.posX, lowest.posY + 1, lowest.posZ);
+                            PacketStartAnimation.ID_SPARKLE_SPREAD,
+                            lowest.posX,
+                            lowest.posY + 1,
+                            lowest.posZ);
                     point = new NetworkRegistry.TargetPoint(
-                            world.provider.dimensionId, lowest.posX, lowest.posY + 1, lowest.posZ, 32);
+                            world.provider.dimensionId,
+                            lowest.posX,
+                            lowest.posY + 1,
+                            lowest.posZ,
+                            32);
                     PacketHandler.INSTANCE.sendToAllAround(pkt, point);
-                    compressor =
-                            (TileEssentiaCompressor) world.getTileEntity(lowest.posX, lowest.posY + 2, lowest.posZ);
+                    compressor = (TileEssentiaCompressor) world
+                            .getTileEntity(lowest.posX, lowest.posY + 2, lowest.posZ);
                     compressor.setInMultiblock(false, 2, multiblockID);
                     pkt = new PacketStartAnimation(
-                            PacketStartAnimation.ID_SPARKLE_SPREAD, lowest.posX, lowest.posY + 2, lowest.posZ);
+                            PacketStartAnimation.ID_SPARKLE_SPREAD,
+                            lowest.posX,
+                            lowest.posY + 2,
+                            lowest.posZ);
                     point = new NetworkRegistry.TargetPoint(
-                            world.provider.dimensionId, lowest.posX, lowest.posY + 2, lowest.posZ, 32);
+                            world.provider.dimensionId,
+                            lowest.posX,
+                            lowest.posY + 2,
+                            lowest.posZ,
+                            32);
                     PacketHandler.INSTANCE.sendToAllAround(pkt, point);
                 }
             }
@@ -183,8 +194,7 @@ public class BlockEssentiaCompressor extends BlockContainer implements IBlockTra
     }
 
     private boolean isMuliblockPossible(World world, ChunkCoordinates lowest) {
-        return lowest != null
-                && this.isMultiblockable(world, lowest.posX, lowest.posY, lowest.posZ)
+        return lowest != null && this.isMultiblockable(world, lowest.posX, lowest.posY, lowest.posZ)
                 && this.isMultiblockable(world, lowest.posX, lowest.posY + 1, lowest.posZ)
                 && this.isMultiblockable(world, lowest.posX, lowest.posY + 2, lowest.posZ);
     }

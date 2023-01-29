@@ -1,12 +1,9 @@
 package makeo.gadomancy.common;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
 import makeo.gadomancy.client.ClientProxy;
 import makeo.gadomancy.common.aura.AuraEffects;
 import makeo.gadomancy.common.containers.ContainerArcanePackager;
@@ -22,21 +19,25 @@ import makeo.gadomancy.common.network.packets.PacketStartAnimation;
 import makeo.gadomancy.common.registration.*;
 import makeo.gadomancy.common.utils.Injector;
 import makeo.gadomancy.common.utils.world.WorldProviderTCEldrich;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
+
 import thaumcraft.api.wands.WandTriggerRegistry;
 import thaumcraft.common.entities.golems.ContainerGolem;
 import thaumcraft.common.entities.golems.EntityGolemBase;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 29.11.2014 14:18
  */
@@ -113,7 +114,8 @@ public class CommonProxy implements IGuiHandler {
                 Float.floatToIntBits(posZ),
                 Float.floatToIntBits(rangeAroundItem));
         PacketHandler.INSTANCE.sendToAllAround(
-                pkt, new NetworkRegistry.TargetPoint(world.provider.dimensionId, posX, posY, posZ, 32));
+                pkt,
+                new NetworkRegistry.TargetPoint(world.provider.dimensionId, posX, posY, posZ, 32));
     }
 
     @Override

@@ -2,11 +2,13 @@ package makeo.gadomancy.common.blocks;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.NBTHelper;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,19 +16,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
 import thaumcraft.common.blocks.BlockJar;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.tiles.TileJarFillable;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 14.10.2015 14:56
  */
 public class BlockRemoteJar extends BlockJar {
+
     public BlockRemoteJar() {
         this.setCreativeTab(RegisteredItems.creativeTab);
     }
@@ -68,13 +70,13 @@ public class BlockRemoteJar extends BlockJar {
     }
 
     @Override
-    public boolean onBlockActivated(
-            World world, int x, int y, int z, EntityPlayer player, int side, float these, float are, float variables) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float these,
+            float are, float variables) {
         ItemStack heldItem = player.getHeldItem();
         if (heldItem != null && heldItem.getItem() == ConfigItems.itemEssence) {
             if (!world.isRemote) {
-                BlockStickyJar.handlePhial(
-                        world, x, y, z, player, heldItem, (TileJarFillable) world.getTileEntity(x, y, z));
+                BlockStickyJar
+                        .handlePhial(world, x, y, z, player, heldItem, (TileJarFillable) world.getTileEntity(x, y, z));
             }
             return true;
         }

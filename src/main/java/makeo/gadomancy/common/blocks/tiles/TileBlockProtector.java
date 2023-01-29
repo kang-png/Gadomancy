@@ -2,6 +2,7 @@ package makeo.gadomancy.common.blocks.tiles;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -13,6 +14,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IEssentiaTransport;
@@ -20,14 +22,13 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.tiles.TileJarFillable;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 08.11.2015 17:36
  */
 public class TileBlockProtector extends TileJarFillable {
+
     private static final int UPDATE_TICKS = 15;
     private static final int MAX_RANGE = 15;
     private static final Aspect ASPECT = Aspect.ORDER;
@@ -162,8 +163,8 @@ public class TileBlockProtector extends TileJarFillable {
         }
 
         if (this.range > 0) {
-            for (EntityLivingBase entity : (List<EntityCreeper>)
-                    this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.getProtectedAABB())) {
+            for (EntityLivingBase entity : (List<EntityCreeper>) this.worldObj
+                    .getEntitiesWithinAABB(EntityLivingBase.class, this.getProtectedAABB())) {
                 if (entity instanceof EntityCreeper) {
                     ((EntityCreeper) entity).timeSinceIgnited = 0;
                 }
@@ -216,8 +217,8 @@ public class TileBlockProtector extends TileJarFillable {
     }
 
     private void fillJar() {
-        TileEntity te = ThaumcraftApiHelper.getConnectableTile(
-                this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.DOWN);
+        TileEntity te = ThaumcraftApiHelper
+                .getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.DOWN);
         if (te != null) {
             IEssentiaTransport ic = (IEssentiaTransport) te;
             if (!ic.canOutputTo(ForgeDirection.UP)) {
@@ -231,8 +232,8 @@ public class TileBlockProtector extends TileJarFillable {
             } else if ((ic.getEssentiaAmount(ForgeDirection.UP) > 0)
                     && (ic.getSuctionAmount(ForgeDirection.UP) < this.getSuctionAmount(ForgeDirection.DOWN))
                     && (this.getSuctionAmount(ForgeDirection.DOWN) >= ic.getMinimumSuction())) {
-                ta = ic.getEssentiaType(ForgeDirection.UP);
-            }
+                        ta = ic.getEssentiaType(ForgeDirection.UP);
+                    }
             if ((ta != null) && (ic.getSuctionAmount(ForgeDirection.UP) < this.getSuctionAmount(ForgeDirection.DOWN))) {
                 this.addToContainer(ta, ic.takeEssentia(ta, 1, ForgeDirection.UP));
             }
@@ -268,6 +269,7 @@ public class TileBlockProtector extends TileJarFillable {
 
     public static boolean isSpotProtected(World world, final double x, final double y, final double z) {
         return TileBlockProtector.isSpotProtected(world, new ProtectionHelper() {
+
             @Override
             public boolean checkProtection(TileBlockProtector tile) {
                 return TileBlockProtector.isSpotProtected(tile, x, y, z);
@@ -277,6 +279,7 @@ public class TileBlockProtector extends TileJarFillable {
 
     public static boolean isSpotProtected(World world, final Entity entity) {
         return TileBlockProtector.isSpotProtected(world, new ProtectionHelper() {
+
             @Override
             public boolean checkProtection(TileBlockProtector tile) {
                 return TileBlockProtector.isSpotProtected(tile, entity);
@@ -298,6 +301,7 @@ public class TileBlockProtector extends TileJarFillable {
     }
 
     private interface ProtectionHelper {
+
         boolean checkProtection(TileBlockProtector tile);
     }
 

@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 class CheckpointingSet<E> implements Iterable<E> {
+
     private final Set<E> main = new HashSet<>();
     private final Set<E> toAdd = Collections.synchronizedSet(new HashSet<>());
     private final Set<E> toRemove = Collections.synchronizedSet(new HashSet<>());
@@ -42,6 +43,7 @@ class CheckpointingSet<E> implements Iterable<E> {
     @Override
     public Iterator<E> iterator() {
         return new Iterator<E>() {
+
             private final Iterator<E> backing = main.iterator();
             private boolean initialized = false;
             private E cur = null;

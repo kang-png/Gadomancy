@@ -1,9 +1,11 @@
 package makeo.gadomancy.common.items;
 
 import java.util.List;
+
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
 import makeo.gadomancy.common.node.ExtendedNodeType;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
@@ -27,14 +30,11 @@ import thaumcraft.common.blocks.ItemJarNode;
 import thaumcraft.common.config.ConfigItems;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
- * Original created by Azanor@Thaumcraft: thaumcraft.common.blocks.ItemJarNode
- * Modified to create compatibility with ExtendedNodes
- * Created by HellFirePvP @ 25.10.2015 22:33
+ * Original created by Azanor@Thaumcraft: thaumcraft.common.blocks.ItemJarNode Modified to create compatibility with
+ * ExtendedNodes Created by HellFirePvP @ 25.10.2015 22:33
  */
 public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem {
 
@@ -85,43 +85,33 @@ public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem 
         super.addInformation(stack, player, list, par4);
     }
 
-    public boolean onItemUse(
-            ItemStack stack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float par8,
-            float par9,
-            float par10) {
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float par8, float par9, float par10) {
         Block var11 = world.getBlock(x, y, z);
         if (var11 == Blocks.snow_layer) {
             side = 1;
-        } else if ((var11 != Blocks.vine)
-                && (var11 != Blocks.tallgrass)
+        } else if ((var11 != Blocks.vine) && (var11 != Blocks.tallgrass)
                 && (var11 != Blocks.deadbush)
                 && ((var11.isAir(world, x, y, z)) || (!var11.isReplaceable(world, x, y, z)))) {
-            if (side == 0) {
-                y--;
-            }
-            if (side == 1) {
-                y++;
-            }
-            if (side == 2) {
-                z--;
-            }
-            if (side == 3) {
-                z++;
-            }
-            if (side == 4) {
-                x--;
-            }
-            if (side == 5) {
-                x++;
-            }
-        }
+                    if (side == 0) {
+                        y--;
+                    }
+                    if (side == 1) {
+                        y++;
+                    }
+                    if (side == 2) {
+                        z--;
+                    }
+                    if (side == 3) {
+                        z++;
+                    }
+                    if (side == 4) {
+                        x--;
+                    }
+                    if (side == 5) {
+                        x++;
+                    }
+                }
         if (stack.stackSize == 0) {
             return false;
         }
@@ -134,8 +124,8 @@ public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem 
         if (world.canPlaceEntityOnSide(RegisteredBlocks.blockExtendedNodeJar, x, y, z, false, side, player, stack)) {
             Block var12 = RegisteredBlocks.blockExtendedNodeJar;
             int var13 = 2;
-            int var14 =
-                    RegisteredBlocks.blockExtendedNodeJar.onBlockPlaced(world, x, y, z, side, par8, par9, par10, var13);
+            int var14 = RegisteredBlocks.blockExtendedNodeJar
+                    .onBlockPlaced(world, x, y, z, side, par8, par9, par10, var13);
             if (this.placeBlockAt(stack, player, world, x, y, z, side, par8, par9, par10, var14)) {
                 TileEntity te = world.getTileEntity(x, y, z);
 
@@ -167,18 +157,8 @@ public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem 
         return false;
     }
 
-    public boolean placeBlockAt(
-            ItemStack stack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float hitX,
-            float hitY,
-            float hitZ,
-            int metadata) {
+    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float hitX, float hitY, float hitZ, int metadata) {
         if (!world.setBlock(x, y, z, RegisteredBlocks.blockExtendedNodeJar, metadata, 3)) {
             return false;
         }
@@ -207,8 +187,8 @@ public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem 
         aspects.writeToNBT(itemstack.getTagCompound());
     }
 
-    public void setNodeAttributes(
-            ItemStack itemstack, NodeType type, NodeModifier mod, ExtendedNodeType extendedNodeType, String id) {
+    public void setNodeAttributes(ItemStack itemstack, NodeType type, NodeModifier mod,
+            ExtendedNodeType extendedNodeType, String id) {
         if (!itemstack.hasTagCompound()) {
             itemstack.setTagCompound(new NBTTagCompound());
         }

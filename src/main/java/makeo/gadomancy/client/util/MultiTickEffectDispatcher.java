@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
+
 import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.fx.particles.FXBubble;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.Thaumcraft;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 25.10.2015 18:54
  */
@@ -167,16 +167,8 @@ public class MultiTickEffectDispatcher {
         private int colorAsInt;
         private int randomOffset = -1;
 
-        public FloatyLineInfo(
-                int dimId,
-                double pedestalX,
-                double pedestalY,
-                double pedestalZ,
-                double originX,
-                double originY,
-                double originZ,
-                int tickCap,
-                int colorAsInt) {
+        public FloatyLineInfo(int dimId, double pedestalX, double pedestalY, double pedestalZ, double originX,
+                double originY, double originZ, int tickCap, int colorAsInt) {
             this.dimId = dimId;
             this.pedestalX = pedestalX;
             this.pedestalY = pedestalY;
@@ -216,16 +208,7 @@ public class MultiTickEffectDispatcher {
         private int renderTicks;
         private int tickCap;
 
-        public VortexDigInfo(
-                int dimId,
-                int oX,
-                int oY,
-                int oZ,
-                int tX,
-                int tY,
-                int tZ,
-                Block blockInstance,
-                int meta,
+        public VortexDigInfo(int dimId, int oX, int oY, int oZ, int tX, int tY, int tZ, Block blockInstance, int meta,
                 int tickDuration) {
             this.dimId = dimId;
             this.oX = oX;

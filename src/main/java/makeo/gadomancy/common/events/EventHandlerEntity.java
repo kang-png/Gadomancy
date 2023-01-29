@@ -1,9 +1,8 @@
 package makeo.gadomancy.common.events;
 
-import cpw.mods.fml.common.eventhandler.Event;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import java.util.ArrayList;
 import java.util.List;
+
 import makeo.gadomancy.common.aura.AuraEffects;
 import makeo.gadomancy.common.blocks.tiles.TileAIShutdown;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
@@ -12,6 +11,7 @@ import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.Vector3;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
+
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.boss.IBossDisplayData;
@@ -26,13 +26,14 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+
 import thaumcraft.common.items.armor.Hover;
+import cpw.mods.fml.common.eventhandler.Event;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by HellFirePvP @ 31.10.2015 15:28
  */
@@ -40,12 +41,11 @@ public class EventHandlerEntity {
 
     public static List<ChunkCoordinates> registeredLuxPylons = new ArrayList<ChunkCoordinates>();
 
-    /*@SubscribeEvent(priority = EventPriority.LOWEST)
-    public void on(EntityEvent.EntityConstructing e) {
-        if (e.entity instanceof EntityPlayer) {
-            //e.entity.registerExtendedProperties(Gadomancy.MODID, new ExtendedPlayerProperties((EntityPlayer) e.entity));
-        }
-    }*/
+    /*
+     * @SubscribeEvent(priority = EventPriority.LOWEST) public void on(EntityEvent.EntityConstructing e) { if (e.entity
+     * instanceof EntityPlayer) { //e.entity.registerExtendedProperties(Gadomancy.MODID, new
+     * ExtendedPlayerProperties((EntityPlayer) e.entity)); } }
+     */
 
     @SubscribeEvent
     public void on(LivingSpawnEvent.CheckSpawn event) {
@@ -71,12 +71,11 @@ public class EventHandlerEntity {
         }
     }
 
-    /*@SubscribeEvent
-    public void on(LivingSetAttackTargetEvent targetEvent) {
-        if (targetEvent.target instanceof EntityPlayer) {
-            FamiliarAIController_Old.notifyTargetEvent(targetEvent.entityLiving, (EntityPlayer) targetEvent.target);
-        }
-    }*/
+    /*
+     * @SubscribeEvent public void on(LivingSetAttackTargetEvent targetEvent) { if (targetEvent.target instanceof
+     * EntityPlayer) { FamiliarAIController_Old.notifyTargetEvent(targetEvent.entityLiving, (EntityPlayer)
+     * targetEvent.target); } }
+     */
 
     @SubscribeEvent
     public void on(LivingDeathEvent event) {
@@ -96,8 +95,7 @@ public class EventHandlerEntity {
             if (event.item instanceof EntityPermNoClipItem) {
                 EntityPermNoClipItem item = (EntityPermNoClipItem) event.item;
                 ChunkCoordinates master = (ChunkCoordinates) item.getDataWatcher()
-                        .getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId)
-                        .getObject();
+                        .getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId).getObject();
                 TileEntity te = event.entityPlayer.worldObj.getTileEntity(master.posX, master.posY, master.posZ);
                 if (!(te instanceof EntityPermNoClipItem.IItemMasterTile)) return;
                 ((EntityPermNoClipItem.IItemMasterTile) te).informItemRemoval();
@@ -109,8 +107,7 @@ public class EventHandlerEntity {
     public void on(LivingEvent.LivingUpdateEvent event) {
         if (!(event.entityLiving instanceof EntityPlayer)) return;
         EntityPlayer player = (EntityPlayer) event.entity;
-        if ((event.entity.worldObj.provider.dimensionId == ModConfig.dimOuterId)
-                && ((player.ticksExisted & 7) == 0)
+        if ((event.entity.worldObj.provider.dimensionId == ModConfig.dimOuterId) && ((player.ticksExisted & 7) == 0)
                 && ((player.capabilities.isFlying) || (Hover.getHover(player.getEntityId())))) {
             if (player.capabilities.isCreativeMode && MiscUtils.isANotApprovedOrMisunderstoodPersonFromMoreDoor(player))
                 return;

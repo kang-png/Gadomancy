@@ -1,7 +1,9 @@
 package makeo.gadomancy.client.renderers.entity;
 
 import java.awt.*;
+
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -15,19 +17,20 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.client.renderers.models.entities.ModelGolem;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 07.10.2015 13:18
  */
 public class RenderGolemHelper {
+
     private RenderGolemHelper() {}
 
     public static void renderCore(EntityGolemBase golem, AdditionalGolemCore core) {
@@ -45,8 +48,8 @@ public class RenderGolemHelper {
         float f3 = icon.getMinU();
         float f4 = icon.getMaxV();
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
-        ItemRenderer.renderItemIn2D(
-                Tessellator.instance, f1, f2, f3, f4, icon.getIconWidth(), icon.getIconHeight(), 0.2F);
+        ItemRenderer
+                .renderItemIn2D(Tessellator.instance, f1, f2, f3, f4, icon.getIconWidth(), icon.getIconHeight(), 0.2F);
 
         GL11.glPopMatrix();
     }
@@ -92,8 +95,8 @@ public class RenderGolemHelper {
         GL11.glPopMatrix();
     }
 
-    public static void renderToolItem(
-            EntityGolemBase golem, ItemStack itemstack, ModelBase mainModel, RenderManager renderManager) {
+    public static void renderToolItem(EntityGolemBase golem, ItemStack itemstack, ModelBase mainModel,
+            RenderManager renderManager) {
         GL11.glPushMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -109,22 +112,18 @@ public class RenderGolemHelper {
         float fs = 0.66F;
         GL11.glScalef(fs, fs, fs);
 
-        net.minecraftforge.client.IItemRenderer customRenderer =
-                net.minecraftforge.client.MinecraftForgeClient.getItemRenderer(
-                        itemstack, net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED);
-        boolean is3D = (customRenderer != null
-                && customRenderer.shouldUseRenderHelper(
-                        net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED,
-                        itemstack,
-                        net.minecraftforge.client.IItemRenderer.ItemRendererHelper.BLOCK_3D));
+        net.minecraftforge.client.IItemRenderer customRenderer = net.minecraftforge.client.MinecraftForgeClient
+                .getItemRenderer(itemstack, net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED);
+        boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(
+                net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED,
+                itemstack,
+                net.minecraftforge.client.IItemRenderer.ItemRendererHelper.BLOCK_3D));
 
         Item item = itemstack.getItem();
         float f1;
 
         if (item instanceof ItemBlock
-                && (is3D
-                        || RenderBlocks.renderItemIn3d(
-                                Block.getBlockFromItem(item).getRenderType()))) {
+                && (is3D || RenderBlocks.renderItemIn3d(Block.getBlockFromItem(item).getRenderType()))) {
             f1 = 0.5F;
             GL11.glTranslatef(0.0F, 0.1875F, -0.3125F);
             f1 *= 0.75F;

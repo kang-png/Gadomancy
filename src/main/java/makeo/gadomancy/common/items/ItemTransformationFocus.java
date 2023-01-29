@@ -1,8 +1,7 @@
 package makeo.gadomancy.common.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import makeo.gadomancy.common.Gadomancy;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -10,22 +9,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 13.07.2015 02:14
  */
 public class ItemTransformationFocus extends ItemFocusBasic {
-    private static final AspectList VIS_USAGE =
-            new AspectList().add(Aspect.AIR, 15).add(Aspect.EARTH, 15).add(Aspect.ORDER, 15);
+
+    private static final AspectList VIS_USAGE = new AspectList().add(Aspect.AIR, 15).add(Aspect.EARTH, 15)
+            .add(Aspect.ORDER, 15);
 
     private IIcon iconOrnament;
     private IIcon iconDepth;
@@ -37,8 +38,8 @@ public class ItemTransformationFocus extends ItemFocusBasic {
     }
 
     @Override
-    public ItemStack onFocusRightClick(
-            ItemStack wandStack, World world, EntityPlayer player, MovingObjectPosition movingobjectposition) {
+    public ItemStack onFocusRightClick(ItemStack wandStack, World world, EntityPlayer player,
+            MovingObjectPosition movingobjectposition) {
         player.setItemInUse(wandStack, 2147483647);
         // WandManager.setCooldown(player, -1);
         return wandStack;

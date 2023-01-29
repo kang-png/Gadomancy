@@ -1,10 +1,10 @@
 package makeo.gadomancy.common.entities.golems;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
+
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.common.registration.RegisteredItems;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,17 +12,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
 import thaumcraft.common.entities.golems.ItemGolemPlacer;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 02.06.2015 23:05
  */
 public class ItemAdditionalGolemPlacer extends Item {
+
     private final ItemGolemPlacer placer = new ItemGolemPlacer();
     private final AdditionalGolemType type;
 
@@ -45,8 +47,7 @@ public class ItemAdditionalGolemPlacer extends Item {
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
-        list.add(new ItemStack(
-                this.type.getPlacerItem(), 1, this.type.getEnumEntry().ordinal()));
+        list.add(new ItemStack(this.type.getPlacerItem(), 1, this.type.getEnumEntry().ordinal()));
     }
 
     public IIcon getIcon(ItemStack stack, int pass) {
@@ -95,17 +96,8 @@ public class ItemAdditionalGolemPlacer extends Item {
     }
 
     @Override
-    public boolean onItemUseFirst(
-            ItemStack stack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float hitX, float hitY, float hitZ) {
         return this.placer.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
     }
 }

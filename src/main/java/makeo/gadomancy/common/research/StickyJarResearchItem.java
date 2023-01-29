@@ -1,24 +1,26 @@
 package makeo.gadomancy.common.research;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.registration.RegisteredItems;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigBlocks;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 20.12.2015 01:01
  */
 public class StickyJarResearchItem extends AlternatingResearchItem {
+
     public StickyJarResearchItem(String key, int col, int row, int complex, AspectList tags) {
         super(key, col, row, complex, tags, new ItemStack(ConfigBlocks.blockJar));
     }

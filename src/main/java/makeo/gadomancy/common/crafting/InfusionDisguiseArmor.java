@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import makeo.gadomancy.common.research.SimpleResearchItem;
 import makeo.gadomancy.common.utils.NBTHelper;
+
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -14,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.InfusionRecipe;
@@ -22,30 +25,25 @@ import thaumcraft.common.lib.crafting.InfusionRunicAugmentRecipe;
 import thaumcraft.common.lib.research.ResearchManager;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 25.12.2015 15:35
  */
 public class InfusionDisguiseArmor extends InfusionRunicAugmentRecipe {
-    public static final ItemStack[] COMPONENTS = {
-        new ItemStack(Items.slime_ball),
-        new ItemStack(ConfigItems.itemResource, 1, 3),
-        new ItemStack(Items.slime_ball),
-        new ItemStack(ConfigItems.itemResource, 1, 3)
-    };
-    public static final AspectList ASPECTS =
-            new AspectList().add(Aspect.SLIME, 12).add(Aspect.ARMOR, 10).add(Aspect.MAGIC, 8);
+
+    public static final ItemStack[] COMPONENTS = { new ItemStack(Items.slime_ball),
+            new ItemStack(ConfigItems.itemResource, 1, 3), new ItemStack(Items.slime_ball),
+            new ItemStack(ConfigItems.itemResource, 1, 3) };
+    public static final AspectList ASPECTS = new AspectList().add(Aspect.SLIME, 12).add(Aspect.ARMOR, 10)
+            .add(Aspect.MAGIC, 8);
 
     private Map<ItemStack, List<ItemStack>> cachedItems = new HashMap<ItemStack, List<ItemStack>>();
 
     @Override
     public boolean matches(ArrayList<ItemStack> input, ItemStack central, World world, EntityPlayer player) {
-        if (input.size() != InfusionDisguiseArmor.COMPONENTS.length + 1
-                || !ResearchManager.isResearchComplete(
-                        player.getCommandSenderName(), SimpleResearchItem.getFullName("ARMORDISGUISE"))) {
+        if (input.size() != InfusionDisguiseArmor.COMPONENTS.length + 1 || !ResearchManager
+                .isResearchComplete(player.getCommandSenderName(), SimpleResearchItem.getFullName("ARMORDISGUISE"))) {
             return false;
         }
 
@@ -126,8 +124,7 @@ public class InfusionDisguiseArmor extends InfusionRunicAugmentRecipe {
     }
 
     private boolean isDisguised(ItemStack stack) {
-        return NBTHelper.hasPersistentData(stack)
-                && NBTHelper.getPersistentData(stack).hasKey("disguise");
+        return NBTHelper.hasPersistentData(stack) && NBTHelper.getPersistentData(stack).hasKey("disguise");
     }
 
     private boolean isInvisItem(ItemStack disguise) {

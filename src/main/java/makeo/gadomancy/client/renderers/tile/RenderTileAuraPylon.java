@@ -2,6 +2,7 @@ package makeo.gadomancy.client.renderers.tile;
 
 import java.awt.*;
 import java.util.Random;
+
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.effect.fx.Orbital;
 import makeo.gadomancy.client.models.ModelAuraPylon;
@@ -11,21 +12,22 @@ import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylonTop;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import makeo.gadomancy.common.utils.Vector3;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.fx.particles.FXWisp;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by HellFirePvP @ 12.11.2015 21:33
  */
@@ -34,11 +36,11 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
     public static final ModelBase MODEL_AURA_PYLON = new ModelAuraPylon();
     public static final ModelBase MODEL_AURA_PYLON_TOP = new ModelAuraPylonTop();
     public static final ModelBase MODEL_AURA_PYLON_BOTTOM = new ModelAuraPylonBottom();
-    public static final SimpleResourceLocation PYLON_TEXTURE_TOP =
-            new SimpleResourceLocation("models/aura_pylon_peak.png");
+    public static final SimpleResourceLocation PYLON_TEXTURE_TOP = new SimpleResourceLocation(
+            "models/aura_pylon_peak.png");
     public static final SimpleResourceLocation PYLON_TEXTURE = new SimpleResourceLocation("models/aura_pylon.png");
-    public static final SimpleResourceLocation PYLON_TEXTURE_BOTTOM =
-            new SimpleResourceLocation("models/aura_pylon_base.png");
+    public static final SimpleResourceLocation PYLON_TEXTURE_BOTTOM = new SimpleResourceLocation(
+            "models/aura_pylon_base.png");
 
     public void renderTileEntity(TileEntity tile, double x, double y, double z, float partTicks) {
         GL11.glPushMatrix();
@@ -85,7 +87,8 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
             TileAuraPylonTop ta = (TileAuraPylonTop) tile;
             if (ta.orbital == null && tile.getWorldObj() != null) {
                 ta.orbital = new Orbital(
-                        new Vector3(tile.xCoord + 0.5, tile.yCoord + 0.7, tile.zCoord + 0.5), tile.getWorldObj());
+                        new Vector3(tile.xCoord + 0.5, tile.yCoord + 0.7, tile.zCoord + 0.5),
+                        tile.getWorldObj());
             }
 
             if (ta.orbital != null && !ta.orbital.registered) {
@@ -137,8 +140,9 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
     }
 
     private void addNewOrbitalPoint(Orbital orbital, Random rand, Color color) {
-        Orbital.OrbitalRenderProperties properties =
-                new Orbital.OrbitalRenderProperties(Orbital.Axis.persisentRandomAxis(), rand.nextDouble() + 2D);
+        Orbital.OrbitalRenderProperties properties = new Orbital.OrbitalRenderProperties(
+                Orbital.Axis.persisentRandomAxis(),
+                rand.nextDouble() + 2D);
         properties.setColor(color).setTicksForFullCircle(60 + rand.nextInt(40)).setOffsetTicks(rand.nextInt(80));
         properties.setSubParticleColor(color.brighter().brighter());
         orbital.addOrbitalPoint(properties);

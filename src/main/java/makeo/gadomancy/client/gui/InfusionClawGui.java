@@ -1,12 +1,12 @@
 package makeo.gadomancy.client.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.awt.*;
+
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
 import makeo.gadomancy.common.utils.ColorHelper;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -14,18 +14,21 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 09.10.2015 20:21
  */
 @SideOnly(Side.CLIENT)
 public class InfusionClawGui extends GuiContainer {
+
     private static final ResourceLocation BACKGROUND = new SimpleResourceLocation("/gui/gui_infusion_claw.png");
 
     private ContainerInfusionClaw container;
@@ -43,10 +46,8 @@ public class InfusionClawGui extends GuiContainer {
         }
 
         ItemStack cursorStack = this.container.playerInv.getItemStack();
-        if (((TileInfusionClaw) this.container.clawInv).isRunning()
-                || (cursorStack != null
-                        && cursorStack.stackSize > 0
-                        && !this.container.clawInv.isItemValidForSlot(0, cursorStack))) {
+        if (((TileInfusionClaw) this.container.clawInv).isRunning() || (cursorStack != null && cursorStack.stackSize > 0
+                && !this.container.clawInv.isItemValidForSlot(0, cursorStack))) {
             GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
 
             GL11.glEnable(GL11.GL_BLEND);

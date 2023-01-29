@@ -3,21 +3,21 @@ package makeo.gadomancy.common.crafting;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.research.SimpleResearchItem;
 import makeo.gadomancy.common.utils.NBTHelper;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.IArcaneRecipe;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 13.07.2015 19:21
  */
@@ -25,8 +25,8 @@ public class RecipeStickyJar implements IArcaneRecipe {
 
     @Override
     public boolean matches(IInventory inv, World world, EntityPlayer player) {
-        return ThaumcraftApiHelper.isResearchComplete(
-                        player.getCommandSenderName(), SimpleResearchItem.getFullName("STICKYJAR"))
+        return ThaumcraftApiHelper
+                .isResearchComplete(player.getCommandSenderName(), SimpleResearchItem.getFullName("STICKYJAR"))
                 && this.getJarItem(inv) != null;
     }
 
@@ -64,8 +64,7 @@ public class RecipeStickyJar implements IArcaneRecipe {
                     }
 
                     boolean isSticky = RegisteredItems.isStickyableJar(current)
-                            && (!current.hasTagCompound()
-                                    || !current.getTagCompound().getBoolean("isStickyJar"));
+                            && (!current.hasTagCompound() || !current.getTagCompound().getBoolean("isStickyJar"));
                     if (current.getItem() != Items.slime_ball && !isSticky) {
                         return null;
                     }

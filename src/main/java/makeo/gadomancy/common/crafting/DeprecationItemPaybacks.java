@@ -2,9 +2,12 @@ package makeo.gadomancy.common.crafting;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import makeo.gadomancy.common.registration.RegisteredItems;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigBlocks;
@@ -13,10 +16,8 @@ import thaumcraft.common.items.ItemEssence;
 import thaumcraft.common.items.ItemWispEssence;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by HellFirePvP @ 29.12.2015 15:03
  */

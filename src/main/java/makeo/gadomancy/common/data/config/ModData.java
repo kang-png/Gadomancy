@@ -1,25 +1,26 @@
 package makeo.gadomancy.common.data.config;
 
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+
+import makeo.gadomancy.common.Gadomancy;
+
+import net.minecraft.server.MinecraftServer;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import cpw.mods.fml.common.FMLLog;
-import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import makeo.gadomancy.common.Gadomancy;
-import net.minecraft.server.MinecraftServer;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
- * Created by makeo @ 26.07.2015 18:15
- * Modified by bartimaeusnek @ 31.12.2018, 19:00 GMT+1
+ * Created by makeo @ 26.07.2015 18:15 Modified by bartimaeusnek @ 31.12.2018, 19:00 GMT+1
  */
 public class ModData {
+
     private static final Gson GSON = new Gson();
 
     private String name;
@@ -91,8 +92,7 @@ public class ModData {
                 try {
                     if (inOBJ != null) inOBJ.close();
                     if (in != null) in.close();
-                } catch (IOException ignored) {
-                }
+                } catch (IOException ignored) {}
             }
         }
         return true;
@@ -125,8 +125,7 @@ public class ModData {
             try {
                 if (outOBJ != null) outOBJ.close();
                 if (out != null) out.close();
-            } catch (IOException ignored) {
-            }
+            } catch (IOException ignored) {}
         }
         return true;
     }

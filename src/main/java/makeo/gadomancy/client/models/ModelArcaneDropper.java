@@ -5,15 +5,14 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
- * Created by makeo @ 30.09.2015 17:04
- * using Techne: http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-tools/1261123
+ * Created by makeo @ 30.09.2015 17:04 using Techne:
+ * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-tools/1261123
  */
 public class ModelArcaneDropper extends ModelBase {
+
     // fields
     ModelRenderer shape1;
     ModelRenderer shape2;

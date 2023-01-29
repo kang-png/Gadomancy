@@ -2,21 +2,22 @@ package makeo.gadomancy.common.entities.fake;
 
 import java.util.Collection;
 import java.util.UUID;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.WorldServer;
+
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 19.09.2015 18:02
  */
 public class GolemFakePlayer extends AdvancedFakePlayer {
+
     private EntityGolemBase golem;
 
     public GolemFakePlayer(WorldServer world, EntityGolemBase golem, UUID uuid) {

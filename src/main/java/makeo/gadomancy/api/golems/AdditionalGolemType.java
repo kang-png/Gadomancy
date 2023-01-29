@@ -5,17 +5,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+
 import thaumcraft.common.entities.golems.EnumGolemType;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 26.07.2015 20:55
  */
 public abstract class AdditionalGolemType {
+
     private EnumGolemType enumEntry;
     private Item placerItem;
     private String modId;
@@ -29,15 +29,8 @@ public abstract class AdditionalGolemType {
     public final int regenDelay;
     public final int strength;
 
-    public AdditionalGolemType(
-            int maxHealth,
-            int armor,
-            float movementSpeed,
-            boolean fireResist,
-            int upgradeAmount,
-            int carryLimit,
-            int regenDelay,
-            int strength) {
+    public AdditionalGolemType(int maxHealth, int armor, float movementSpeed, boolean fireResist, int upgradeAmount,
+            int carryLimit, int regenDelay, int strength) {
         this.maxHealth = maxHealth;
         this.armor = armor;
         this.movementSpeed = movementSpeed;

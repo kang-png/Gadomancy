@@ -1,34 +1,28 @@
 package makeo.gadomancy.common.crafting;
 
 import java.util.ArrayList;
+
 import makeo.gadomancy.common.familiar.FamiliarAugment;
 import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.InfusionRecipe;
 
 /**
- * HellFirePvP@Admin
- * Date: 19.04.2016 / 02:02
- * on Gadomancy
- * EtherealFamiliarUpgradeRecipe
+ * HellFirePvP@Admin Date: 19.04.2016 / 02:02 on Gadomancy EtherealFamiliarUpgradeRecipe
  */
 public class EtherealFamiliarUpgradeRecipe extends InfusionRecipe {
 
     private FamiliarAugment toAdd;
     private int requiredPreviousLevel;
 
-    public EtherealFamiliarUpgradeRecipe(
-            String research,
-            int inst,
-            AspectList aspects2,
-            ItemStack familiarIn,
-            FamiliarAugment toAdd,
-            int reqPrev,
-            ItemStack... surroundings) {
+    public EtherealFamiliarUpgradeRecipe(String research, int inst, AspectList aspects2, ItemStack familiarIn,
+            FamiliarAugment toAdd, int reqPrev, ItemStack... surroundings) {
         super(research, null, inst, aspects2, familiarIn, surroundings);
         this.toAdd = toAdd;
         this.requiredPreviousLevel = reqPrev;
@@ -36,8 +30,8 @@ public class EtherealFamiliarUpgradeRecipe extends InfusionRecipe {
 
     @Override
     public boolean matches(ArrayList<ItemStack> input, ItemStack in, World world, EntityPlayer player) {
-        if (in == null || !(in.getItem() instanceof ItemEtherealFamiliar))
-            return false; // We call it "FamiliarAugment" Recipe for a reason..
+        if (in == null || !(in.getItem() instanceof ItemEtherealFamiliar)) return false; // We call it "FamiliarAugment"
+                                                                                         // Recipe for a reason..
         if (this.getRecipeInput() == null || !(this.getRecipeInput().getItem() instanceof ItemEtherealFamiliar))
             return false; // A bit late but still working..
 

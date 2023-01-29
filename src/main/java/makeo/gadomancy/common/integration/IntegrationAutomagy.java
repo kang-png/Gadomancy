@@ -6,6 +6,7 @@ import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.Injector;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -13,29 +14,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
+
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigBlocks;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 04.10.2015 02:30
  */
 public class IntegrationAutomagy extends IntegrationMod {
 
     // TODO sync with Automagy some time...
-    private static final AspectList visCostAdvNodeJar = new AspectList()
-            .add(Aspect.FIRE, 125)
-            .add(Aspect.EARTH, 125)
-            .add(Aspect.ORDER, 125)
-            .add(Aspect.AIR, 125)
-            .add(Aspect.ENTROPY, 125)
-            .add(Aspect.WATER, 125);
+    private static final AspectList visCostAdvNodeJar = new AspectList().add(Aspect.FIRE, 125).add(Aspect.EARTH, 125)
+            .add(Aspect.ORDER, 125).add(Aspect.AIR, 125).add(Aspect.ENTROPY, 125).add(Aspect.WATER, 125);
 
     @Override
     public String getModId() {
@@ -63,8 +58,8 @@ public class IntegrationAutomagy extends IntegrationMod {
     }
 
     public boolean handleNodeJarVisCost(ItemStack wandStack, EntityPlayer player) {
-        return ThaumcraftApiHelper.consumeVisFromWandCrafting(
-                wandStack, player, IntegrationAutomagy.visCostAdvNodeJar, true);
+        return ThaumcraftApiHelper
+                .consumeVisFromWandCrafting(wandStack, player, IntegrationAutomagy.visCostAdvNodeJar, true);
     }
 
     public void tryFillGolemCrafttable(ChunkCoordinates cc, World world) {
@@ -84,8 +79,7 @@ public class IntegrationAutomagy extends IntegrationMod {
                 if (heat > impact) {
                     i.setField("craftingHeat", heat - 700);
                 }
-            } catch (Exception e) {
-            }
+            } catch (Exception e) {}
         }
     }
 }

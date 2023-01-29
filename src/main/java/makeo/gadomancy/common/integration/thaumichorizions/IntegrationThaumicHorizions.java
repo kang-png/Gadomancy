@@ -1,19 +1,12 @@
 package makeo.gadomancy.common.integration.thaumichorizions;
 
-import com.kentington.thaumichorizons.client.renderer.entity.RenderGolemTH;
-import com.kentington.thaumichorizons.common.entities.EntityGolemTH;
-import com.kentington.thaumichorizons.common.tiles.TileVat;
-import com.kentington.thaumichorizons.common.tiles.TileVatMatrix;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.client.ClientProxy;
 import makeo.gadomancy.common.CommonProxy;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.integration.IntegrationMod;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,15 +15,24 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
+import com.kentington.thaumichorizons.client.renderer.entity.RenderGolemTH;
+import com.kentington.thaumichorizons.common.entities.EntityGolemTH;
+import com.kentington.thaumichorizons.common.tiles.TileVat;
+import com.kentington.thaumichorizons.common.tiles.TileVatMatrix;
+
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 07.10.2015 13:10
  */
 public class IntegrationThaumicHorizions extends IntegrationMod {
+
     private static Block modMatrix;
 
     @Override
@@ -44,12 +46,14 @@ public class IntegrationThaumicHorizions extends IntegrationMod {
             RendererLivingEntity render = ClientProxy.unregisterRenderer(EntityGolemTH.class, RenderGolemTH.class);
             if (render != null) {
                 RenderingRegistry.registerEntityRenderingHandler(
-                        EntityGolemTH.class, new RenderAdditionalGolemTH(render.mainModel));
+                        EntityGolemTH.class,
+                        new RenderAdditionalGolemTH(render.mainModel));
             }
 
             IntegrationThaumicHorizions.modMatrix = Block.getBlockFromName("ThaumicHorizons:modMatrix");
 
             RegisteredBlocks.registerClawClickBehavior(new ClickBehavior(true) {
+
                 private TileVat vat;
 
                 @Override

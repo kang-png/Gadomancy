@@ -1,20 +1,19 @@
 package makeo.gadomancy.common.registration;
 
-import cpw.mods.fml.common.Loader;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.integration.*;
 import makeo.gadomancy.common.integration.mystcraft.IntegrationMystcraft;
 import makeo.gadomancy.common.utils.Injector;
+import cpw.mods.fml.common.Loader;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 09.07.2015 16:00
  */
 public class RegisteredIntegrations {
+
     public static IntegrationMorph morph;
     public static IntegrationThaumicExploration thaumicExploration;
     public static IntegrationAutomagy automagy;
@@ -26,16 +25,17 @@ public class RegisteredIntegrations {
 
     public static void init() {
         RegisteredIntegrations.morph = RegisteredIntegrations.registerIndependent(IntegrationMorph.class);
-        RegisteredIntegrations.thaumicExploration =
-                RegisteredIntegrations.registerIndependent(IntegrationThaumicExploration.class);
+        RegisteredIntegrations.thaumicExploration = RegisteredIntegrations
+                .registerIndependent(IntegrationThaumicExploration.class);
         RegisteredIntegrations.automagy = RegisteredIntegrations.registerIndependent(IntegrationAutomagy.class);
         RegisteredIntegrations.nei = RegisteredIntegrations.registerIndependent(IntegrationNEI.class);
         RegisteredIntegrations.mystcraft = RegisteredIntegrations.registerIndependent(IntegrationMystcraft.class);
-        RegisteredIntegrations.thaumicTinkerer =
-                RegisteredIntegrations.registerIndependent(IntegrationThaumicTinkerer.class);
+        RegisteredIntegrations.thaumicTinkerer = RegisteredIntegrations
+                .registerIndependent(IntegrationThaumicTinkerer.class);
 
         RegisteredIntegrations.registerDependent(
-                "ThaumicHorizons", "makeo.gadomancy.common.integration.thaumichorizions.IntegrationThaumicHorizions");
+                "ThaumicHorizons",
+                "makeo.gadomancy.common.integration.thaumichorizions.IntegrationThaumicHorizions");
         RegisteredIntegrations.registerDependent("Waila", "makeo.gadomancy.common.integration.waila.IntegrationWaila");
     }
 

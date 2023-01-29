@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.util.StatCollector;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 28.12.2015 23:44
  */
@@ -21,33 +21,48 @@ public class FamiliarAugment {
     private static final String FORMAT_NAME = "familiar.augment.%s.name";
 
     // Main effects
-    public static final FamiliarAugment SHOCK =
-            new FamiliarAugment("shock", new AspectList().add(Aspect.AIR, 3).add(Aspect.ENTROPY, 2));
+    public static final FamiliarAugment SHOCK = new FamiliarAugment(
+            "shock",
+            new AspectList().add(Aspect.AIR, 3).add(Aspect.ENTROPY, 2));
     public static final FamiliarAugment POISON = new FamiliarAugment(
-                    "poison", new AspectList().add(Aspect.WATER, 3).add(Aspect.ENTROPY, 4))
-            .addConflict(FamiliarAugment.SHOCK);
+            "poison",
+            new AspectList().add(Aspect.WATER, 3).add(Aspect.ENTROPY, 4)).addConflict(FamiliarAugment.SHOCK);
     public static final FamiliarAugment FIRE = new FamiliarAugment(
-                    "fire", new AspectList().add(Aspect.FIRE, 4).add(Aspect.ORDER, 2))
-            .addConflict(FamiliarAugment.SHOCK, FamiliarAugment.POISON);
+            "fire",
+            new AspectList().add(Aspect.FIRE, 4).add(Aspect.ORDER, 2))
+                    .addConflict(FamiliarAugment.SHOCK, FamiliarAugment.POISON);
     public static final FamiliarAugment WEAKNESS = new FamiliarAugment(
-                    "weakness", new AspectList().add(Aspect.ENTROPY, 3).add(Aspect.EARTH, 3))
-            .addConflict(FamiliarAugment.SHOCK, FamiliarAugment.POISON, FamiliarAugment.FIRE);
+            "weakness",
+            new AspectList().add(Aspect.ENTROPY, 3).add(Aspect.EARTH, 3))
+                    .addConflict(FamiliarAugment.SHOCK, FamiliarAugment.POISON, FamiliarAugment.FIRE);
 
     // Side effects
     public static final FamiliarAugment DAMAGE_INCREASE = new FamiliarAugment(
-                    "damage", new AspectList().add(Aspect.FIRE, 3))
-            .addCondition(new PreconditionAny(
-                    FamiliarAugment.SHOCK, FamiliarAugment.POISON, FamiliarAugment.FIRE, FamiliarAugment.WEAKNESS));
+            "damage",
+            new AspectList().add(Aspect.FIRE, 3)).addCondition(
+                    new PreconditionAny(
+                            FamiliarAugment.SHOCK,
+                            FamiliarAugment.POISON,
+                            FamiliarAugment.FIRE,
+                            FamiliarAugment.WEAKNESS));
     public static final FamiliarAugment RANGE_INCREASE = new FamiliarAugment(
-                    "range", new AspectList().add(Aspect.AIR, 2).add(Aspect.ORDER, 1))
-            .addConflict(FamiliarAugment.DAMAGE_INCREASE)
-            .addCondition(new PreconditionAny(
-                    FamiliarAugment.SHOCK, FamiliarAugment.POISON, FamiliarAugment.FIRE, FamiliarAugment.WEAKNESS));
+            "range",
+            new AspectList().add(Aspect.AIR, 2).add(Aspect.ORDER, 1)).addConflict(FamiliarAugment.DAMAGE_INCREASE)
+                    .addCondition(
+                            new PreconditionAny(
+                                    FamiliarAugment.SHOCK,
+                                    FamiliarAugment.POISON,
+                                    FamiliarAugment.FIRE,
+                                    FamiliarAugment.WEAKNESS));
     public static final FamiliarAugment ATTACK_SPEED = new FamiliarAugment(
-                    "speed", new AspectList().add(Aspect.ORDER, 2).add(Aspect.FIRE, 1))
-            .addConflict(FamiliarAugment.DAMAGE_INCREASE, FamiliarAugment.RANGE_INCREASE)
-            .addCondition(new PreconditionAny(
-                    FamiliarAugment.SHOCK, FamiliarAugment.POISON, FamiliarAugment.FIRE, FamiliarAugment.WEAKNESS));
+            "speed",
+            new AspectList().add(Aspect.ORDER, 2).add(Aspect.FIRE, 1))
+                    .addConflict(FamiliarAugment.DAMAGE_INCREASE, FamiliarAugment.RANGE_INCREASE).addCondition(
+                            new PreconditionAny(
+                                    FamiliarAugment.SHOCK,
+                                    FamiliarAugment.POISON,
+                                    FamiliarAugment.FIRE,
+                                    FamiliarAugment.WEAKNESS));
 
     private final String unlocalizedName;
     private List<FamiliarAugmentPrecondition> preconditions = new ArrayList<FamiliarAugmentPrecondition>();

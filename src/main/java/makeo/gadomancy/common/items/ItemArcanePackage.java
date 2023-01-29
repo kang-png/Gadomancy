@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.NBTHelper;
+
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryBasic;
@@ -18,17 +20,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 14.11.2015 12:34
  */
 public class ItemArcanePackage extends ItemFakeLootbag {
+
     private static final int MAX_PACKAGE_SIZE = 65536;
 
     public ItemArcanePackage() {
@@ -63,10 +65,10 @@ public class ItemArcanePackage extends ItemFakeLootbag {
         }
 
         Collections.sort(items, new Comparator<ItemStack>() {
+
             @Override
             public int compare(ItemStack i1, ItemStack i2) {
-                return i1.writeToNBT(new NBTTagCompound()).hashCode()
-                        - i2.writeToNBT(new NBTTagCompound()).hashCode();
+                return i1.writeToNBT(new NBTTagCompound()).hashCode() - i2.writeToNBT(new NBTTagCompound()).hashCode();
             }
         });
 
@@ -106,9 +108,8 @@ public class ItemArcanePackage extends ItemFakeLootbag {
             if (data.length > 0) {
                 NBTTagList stackList;
                 try {
-                    stackList =
-                            (NBTTagList) CompressedStreamTools.func_152457_a(data, new NBTSizeTracker(Long.MAX_VALUE))
-                                    .getTag("data");
+                    stackList = (NBTTagList) CompressedStreamTools
+                            .func_152457_a(data, new NBTSizeTracker(Long.MAX_VALUE)).getTag("data");
                 } catch (Exception e) {
                     return contents;
                 }

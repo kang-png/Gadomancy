@@ -1,6 +1,7 @@
 package makeo.gadomancy.client.models;
 
 import java.awt.*;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -14,7 +15,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.block.BlockRenderer;
 import thaumcraft.client.renderers.models.gear.ModelWand;
@@ -22,14 +25,14 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.items.wands.ItemWandCasting;
 
 /**
- * This class is NOT part of the Gadomancy Mod
- * This file is copied from Azanors thaumcraft.client.renderers.models.gear.ModelWand.java and contains small modifications
- * Thaumcraft: http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1292130
+ * This class is NOT part of the Gadomancy Mod This file is copied from Azanors
+ * thaumcraft.client.renderers.models.gear.ModelWand.java and contains small modifications Thaumcraft:
+ * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1292130
  *
- * Created by Azanor
- * Modified by makeo @ 10.10.2015 17:28
+ * Created by Azanor Modified by makeo @ 10.10.2015 17:28
  */
 public class ModelWandPart extends ModelWand {
+
     ModelRenderer Rod;
     ModelRenderer Focus;
     ModelRenderer Cap;
@@ -157,15 +160,15 @@ public class ModelWandPart extends ModelWand {
                 GL11.glPushMatrix();
                 GL11.glTranslatef(-0.25F, -0.1F, 0.0275F);
                 GL11.glScaled(0.5D, 0.5D, 0.5D);
-                ItemRenderer.renderItemIn2D(
-                        tessellator, f1, f2, f3, f4, icon.getIconWidth(), icon.getIconHeight(), 0.1F);
+                ItemRenderer
+                        .renderItemIn2D(tessellator, f1, f2, f3, f4, icon.getIconWidth(), icon.getIconHeight(), 0.1F);
                 GL11.glPopMatrix();
                 GL11.glPushMatrix();
                 GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
                 GL11.glTranslatef(-0.25F, -0.1F, 0.0275F);
                 GL11.glScaled(0.5D, 0.5D, 0.5D);
-                ItemRenderer.renderItemIn2D(
-                        tessellator, f1, f2, f3, f4, icon.getIconWidth(), icon.getIconHeight(), 0.1F);
+                ItemRenderer
+                        .renderItemIn2D(tessellator, f1, f2, f3, f4, icon.getIconWidth(), icon.getIconHeight(), 0.1F);
                 GL11.glPopMatrix();
                 GL11.glPopMatrix();
             }
@@ -182,7 +185,10 @@ public class ModelWandPart extends ModelWand {
                 Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
                 this.renderBlocks.setRenderBoundsFromBlock(Blocks.stone);
                 BlockRenderer.drawFaces(
-                        this.renderBlocks, null, wand.getFocus(wandStack).getFocusDepthLayerIcon(focusStack), false);
+                        this.renderBlocks,
+                        null,
+                        wand.getFocus(wandStack).getFocusDepthLayerIcon(focusStack),
+                        false);
                 GL11.glPopMatrix();
                 alpha = 0.6F;
             }

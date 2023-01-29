@@ -2,6 +2,7 @@ package makeo.gadomancy.common.entities.golems.cores;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.entities.ai.AIFollowOwner;
@@ -10,6 +11,7 @@ import makeo.gadomancy.common.entities.ai.AIUncheckedAttackOnCollide;
 import makeo.gadomancy.common.entities.ai.AIUncheckedDartAttack;
 import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
 import makeo.gadomancy.common.registration.RegisteredItems;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,19 +22,19 @@ import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigate;
+
 import thaumcraft.common.entities.ai.misc.AIOpenDoor;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.Marker;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 31.10.2015 15:35
  */
 public class BodyguardGolemCore extends AdditionalGolemCore {
+
     @Override
     public void setupGolem(EntityGolemBase golem) {
         WrappedGolem wrapped = new WrappedGolem(golem);
@@ -63,6 +65,7 @@ public class BodyguardGolemCore extends AdditionalGolemCore {
     }
 
     private static class WrappedGolem extends EntityTameable {
+
         private EntityGolemBase golem;
 
         public WrappedGolem(EntityGolemBase golem) {

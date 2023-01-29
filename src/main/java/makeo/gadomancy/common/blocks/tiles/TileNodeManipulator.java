@@ -1,7 +1,7 @@
 package makeo.gadomancy.common.blocks.tiles;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
 import java.util.*;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketStartAnimation;
@@ -13,6 +13,7 @@ import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredMultiblocks;
 import makeo.gadomancy.common.registration.RegisteredRecipes;
 import makeo.gadomancy.common.utils.MultiblockHelper;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -22,6 +23,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;
@@ -31,12 +33,11 @@ import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.TilePedestal;
 import thaumcraft.common.tiles.TileWandPedestal;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 26.10.2015 20:16
  */
@@ -83,14 +84,13 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
                     RegisteredMultiblocks.completeNodeManipulatorMultiblock)) {
                 this.multiblockType = MultiblockType.NODE_MANIPULATOR;
             } else if (MultiblockHelper.isMultiblockPresent(
-                            this.worldObj,
-                            this.xCoord,
-                            this.yCoord,
-                            this.zCoord,
-                            RegisteredMultiblocks.completeEldritchPortalCreator)
-                    && this.checkEldritchEyes(false)) {
-                this.multiblockType = MultiblockType.E_PORTAL_CREATOR;
-            }
+                    this.worldObj,
+                    this.xCoord,
+                    this.yCoord,
+                    this.zCoord,
+                    RegisteredMultiblocks.completeEldritchPortalCreator) && this.checkEldritchEyes(false)) {
+                        this.multiblockType = MultiblockType.E_PORTAL_CREATOR;
+                    }
         }
         if (this.multiblockType == null) {
             this.breakMultiblock();
@@ -133,10 +133,8 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
 
         int validPedestalsFound = 0;
 
-        labelIt:
-        for (int xDiff = -8; xDiff <= 8; xDiff++) {
-            labelZ:
-            for (int zDiff = -8; zDiff <= 8; zDiff++) {
+        labelIt: for (int xDiff = -8; xDiff <= 8; xDiff++) {
+            labelZ: for (int zDiff = -8; zDiff <= 8; zDiff++) {
                 for (int yDiff = -5; yDiff <= 10; yDiff++) {
                     int itX = this.xCoord + xDiff;
                     int itY = this.yCoord + yDiff;
@@ -145,8 +143,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
                     Block block = this.worldObj.getBlock(itX, itY, itZ);
                     int meta = this.worldObj.getBlockMetadata(itX, itY, itZ);
                     TileEntity te = this.worldObj.getTileEntity(itX, itY, itZ);
-                    if (block != null
-                            && block.equals(RegisteredBlocks.blockStoneMachine)
+                    if (block != null && block.equals(RegisteredBlocks.blockStoneMachine)
                             && meta == 1
                             && te != null
                             && te instanceof TilePedestal
@@ -174,7 +171,11 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
         if (this.workTick < 400) {
             if ((this.workTick & 15) == 0) {
                 PacketStartAnimation packet = new PacketStartAnimation(
-                        PacketStartAnimation.ID_RUNES, this.xCoord, this.yCoord, this.zCoord, (byte) 1);
+                        PacketStartAnimation.ID_RUNES,
+                        this.xCoord,
+                        this.yCoord,
+                        this.zCoord,
+                        (byte) 1);
                 PacketHandler.INSTANCE.sendToAllAround(packet, this.getTargetPoint(32));
             }
             if ((this.workTick & 7) == 0) {
@@ -182,10 +183,13 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
                 try {
                     ChunkCoordinates cc = this.bufferedCCPedestals.get(index);
                     PacketStartAnimation packet = new PacketStartAnimation(
-                            PacketStartAnimation.ID_RUNES, cc.posX, cc.posY, cc.posZ, (byte) 1);
+                            PacketStartAnimation.ID_RUNES,
+                            cc.posX,
+                            cc.posY,
+                            cc.posZ,
+                            (byte) 1);
                     PacketHandler.INSTANCE.sendToAllAround(packet, this.getTargetPoint(32));
-                } catch (Exception exc) {
-                }
+                } catch (Exception exc) {}
             }
             if (this.worldObj.rand.nextBoolean()) {
                 Vec3 rel = this.getRelPillarLoc(this.worldObj.rand.nextInt(4));
@@ -230,8 +234,8 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
 
         this.worldObj.removeTileEntity(this.xCoord, this.yCoord + 2, this.zCoord);
         this.worldObj.setBlockToAir(this.xCoord, this.yCoord + 2, this.zCoord);
-        this.worldObj.setBlock(
-                this.xCoord, this.yCoord + 2, this.zCoord, RegisteredBlocks.blockAdditionalEldrichPortal);
+        this.worldObj
+                .setBlock(this.xCoord, this.yCoord + 2, this.zCoord, RegisteredBlocks.blockAdditionalEldrichPortal);
 
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord + 2, this.zCoord);
@@ -243,11 +247,13 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
             try {
                 TilePedestal pedestal = (TilePedestal) this.worldObj.getTileEntity(cc.posX, cc.posY, cc.posZ);
                 pedestal.setInventorySlotContents(0, null);
-                PacketStartAnimation packet =
-                        new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, cc.posX, cc.posY, cc.posZ);
+                PacketStartAnimation packet = new PacketStartAnimation(
+                        PacketStartAnimation.ID_SPARKLE_SPREAD,
+                        cc.posX,
+                        cc.posY,
+                        cc.posZ);
                 PacketHandler.INSTANCE.sendToAllAround(packet, this.getTargetPoint(32));
-            } catch (Exception exc) {
-            }
+            } catch (Exception exc) {}
         }
     }
 
@@ -255,8 +261,11 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
         this.workTick++;
         if (this.workTick < 300) {
             if (this.workTick % 16 == 0) {
-                PacketStartAnimation packet =
-                        new PacketStartAnimation(PacketStartAnimation.ID_RUNES, this.xCoord, this.yCoord, this.zCoord);
+                PacketStartAnimation packet = new PacketStartAnimation(
+                        PacketStartAnimation.ID_RUNES,
+                        this.xCoord,
+                        this.yCoord,
+                        this.zCoord);
                 PacketHandler.INSTANCE.sendToAllAround(packet, this.getTargetPoint(32));
             }
             if (this.worldObj.rand.nextInt(4) == 0) {
@@ -281,8 +290,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
         try {
             ChunkCoordinates cc = this.bufferedCCPedestals.get(pedestalId);
             return Vec3.createVectorHelper(this.xCoord - cc.posX, this.yCoord - cc.posY, this.zCoord - cc.posZ);
-        } catch (Exception exc) {
-        }
+        } catch (Exception exc) {}
         return Vec3.createVectorHelper(0, 0, 0);
     }
 
@@ -321,7 +329,10 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
             result = NodeManipulatorResultHandler.getRandomResult(this.worldObj, node, percChanceForBetter);
         } while (!result.affect(this.worldObj, node));
         PacketStartAnimation packet = new PacketStartAnimation(
-                PacketStartAnimation.ID_SPARKLE_SPREAD, this.xCoord, this.yCoord + 2, this.zCoord);
+                PacketStartAnimation.ID_SPARKLE_SPREAD,
+                this.xCoord,
+                this.yCoord + 2,
+                this.zCoord);
         PacketHandler.INSTANCE.sendToAllAround(packet, this.getTargetPoint(32));
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord + 2, this.zCoord);
@@ -379,8 +390,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
     }
 
     private List<Aspect> getRandomlyOrderedPrimalAspectList() {
-        ArrayList<Aspect> primals =
-                (ArrayList<Aspect>) Aspect.getPrimalAspects().clone();
+        ArrayList<Aspect> primals = (ArrayList<Aspect>) Aspect.getPrimalAspects().clone();
         Collections.shuffle(primals);
         return primals;
     }
@@ -454,7 +464,8 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
             if (info.block == RegisteredBlocks.blockNode
                     || (info.block == RegisteredBlocks.blockStoneMachine && (info.meta == 0 || info.meta == 3))
                     || info.block == Blocks.air
-                    || info.block == RegisteredBlocks.blockNodeManipulator) continue;
+                    || info.block == RegisteredBlocks.blockNodeManipulator)
+                continue;
             int absX = v.x + this.xCoord;
             int absY = v.y + this.yCoord;
             int absZ = v.z + this.zCoord;
@@ -492,7 +503,8 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
                     || (info.block == RegisteredBlocks.blockStoneMachine
                             && (info.meta == 0 || info.meta == 1 || info.meta == 3))
                     || info.block == Blocks.air
-                    || info.block == RegisteredBlocks.blockNodeManipulator) continue;
+                    || info.block == RegisteredBlocks.blockNodeManipulator)
+                continue;
             int absX = v.x + this.xCoord;
             int absY = v.y + this.yCoord;
             int absZ = v.z + this.zCoord;
@@ -501,26 +513,38 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
             this.worldObj.markBlockForUpdate(absX, absY, absZ);
         }
         NetworkRegistry.TargetPoint target = this.getTargetPoint(32);
-        TileManipulatorPillar pillar = (TileManipulatorPillar)
-                this.worldObj.getTileEntity(this.xCoord + 1, this.yCoord, this.zCoord + 1); // wrong
+        TileManipulatorPillar pillar = (TileManipulatorPillar) this.worldObj
+                .getTileEntity(this.xCoord + 1, this.yCoord, this.zCoord + 1); // wrong
         pillar.setOrientation((byte) 5);
-        PacketStartAnimation animation =
-                new PacketStartAnimation(PacketStartAnimation.ID_RUNES, pillar.xCoord, pillar.yCoord, pillar.zCoord);
+        PacketStartAnimation animation = new PacketStartAnimation(
+                PacketStartAnimation.ID_RUNES,
+                pillar.xCoord,
+                pillar.yCoord,
+                pillar.zCoord);
         PacketHandler.INSTANCE.sendToAllAround(animation, target);
-        TileManipulatorPillar pillar2 =
-                (TileManipulatorPillar) this.worldObj.getTileEntity(this.xCoord - 1, this.yCoord, this.zCoord + 1);
+        TileManipulatorPillar pillar2 = (TileManipulatorPillar) this.worldObj
+                .getTileEntity(this.xCoord - 1, this.yCoord, this.zCoord + 1);
         pillar2.setOrientation((byte) 3);
-        animation =
-                new PacketStartAnimation(PacketStartAnimation.ID_RUNES, pillar2.xCoord, pillar2.yCoord, pillar2.zCoord);
+        animation = new PacketStartAnimation(
+                PacketStartAnimation.ID_RUNES,
+                pillar2.xCoord,
+                pillar2.yCoord,
+                pillar2.zCoord);
         PacketHandler.INSTANCE.sendToAllAround(animation, target);
-        TileManipulatorPillar pillar3 = (TileManipulatorPillar)
-                this.worldObj.getTileEntity(this.xCoord + 1, this.yCoord, this.zCoord - 1); // wrong
+        TileManipulatorPillar pillar3 = (TileManipulatorPillar) this.worldObj
+                .getTileEntity(this.xCoord + 1, this.yCoord, this.zCoord - 1); // wrong
         pillar3.setOrientation((byte) 4);
-        animation =
-                new PacketStartAnimation(PacketStartAnimation.ID_RUNES, pillar3.xCoord, pillar3.yCoord, pillar3.zCoord);
+        animation = new PacketStartAnimation(
+                PacketStartAnimation.ID_RUNES,
+                pillar3.xCoord,
+                pillar3.yCoord,
+                pillar3.zCoord);
         PacketHandler.INSTANCE.sendToAllAround(animation, target);
-        animation =
-                new PacketStartAnimation(PacketStartAnimation.ID_RUNES, this.xCoord - 1, this.yCoord, this.zCoord - 1);
+        animation = new PacketStartAnimation(
+                PacketStartAnimation.ID_RUNES,
+                this.xCoord - 1,
+                this.yCoord,
+                this.zCoord - 1);
         PacketHandler.INSTANCE.sendToAllAround(animation, target);
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         this.markDirty();
@@ -583,14 +607,13 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
                             RegisteredMultiblocks.completeNodeManipulatorMultiblock)) {
                         this.multiblockType = MultiblockType.NODE_MANIPULATOR;
                     } else if (MultiblockHelper.isMultiblockPresent(
-                                    this.worldObj,
-                                    this.xCoord,
-                                    this.yCoord,
-                                    this.zCoord,
-                                    RegisteredMultiblocks.completeEldritchPortalCreator)
-                            && this.checkEldritchEyes(false)) {
-                        this.multiblockType = MultiblockType.E_PORTAL_CREATOR;
-                    }
+                            this.worldObj,
+                            this.xCoord,
+                            this.yCoord,
+                            this.zCoord,
+                            RegisteredMultiblocks.completeEldritchPortalCreator) && this.checkEldritchEyes(false)) {
+                                this.multiblockType = MultiblockType.E_PORTAL_CREATOR;
+                            }
                 }
                 if (this.multiblockType == null) {
                     this.breakMultiblock();
@@ -610,11 +633,11 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
                     case E_PORTAL_CREATOR:
                         this.setMultiblockStructurePresent(
                                 MultiblockHelper.isMultiblockPresent(
-                                                this.worldObj,
-                                                this.xCoord,
-                                                this.yCoord,
-                                                this.zCoord,
-                                                RegisteredMultiblocks.completeEldritchPortalCreator)
+                                        this.worldObj,
+                                        this.xCoord,
+                                        this.yCoord,
+                                        this.zCoord,
+                                        RegisteredMultiblocks.completeEldritchPortalCreator)
                                         && this.checkEldritchEyes(false),
                                 MultiblockType.E_PORTAL_CREATOR);
                         break;
@@ -636,8 +659,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
     }
 
     private void checkForNonExistingMultiblock() {
-        Map<MultiblockHelper.MultiblockPattern, MultiblockType> patternMap =
-                new HashMap<MultiblockHelper.MultiblockPattern, MultiblockType>();
+        Map<MultiblockHelper.MultiblockPattern, MultiblockType> patternMap = new HashMap<MultiblockHelper.MultiblockPattern, MultiblockType>();
         patternMap.put(RegisteredMultiblocks.incompleteEldritchPortalCreator, MultiblockType.E_PORTAL_CREATOR);
         patternMap.put(RegisteredMultiblocks.incompleteNodeManipulatorMultiblock, MultiblockType.NODE_MANIPULATOR);
 
@@ -659,7 +681,11 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
 
     public NetworkRegistry.TargetPoint getTargetPoint(double radius) {
         return new NetworkRegistry.TargetPoint(
-                this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, radius);
+                this.worldObj.provider.dimensionId,
+                this.xCoord,
+                this.yCoord,
+                this.zCoord,
+                radius);
     }
 
     @Override
@@ -706,8 +732,8 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
     }
 
     @Override
-    public int onWandRightClick(
-            World world, ItemStack stack, EntityPlayer player, int i, int i2, int i3, int i4, int i5) {
+    public int onWandRightClick(World world, ItemStack stack, EntityPlayer player, int i, int i2, int i3, int i4,
+            int i5) {
         return 0;
     }
 
@@ -723,10 +749,10 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
     public void onWandStoppedUsing(ItemStack stack, World world, EntityPlayer player, int i) {}
 
     public enum MultiblockType {
-        NODE_MANIPULATOR(
-                Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR", RegisteredRecipes.costsNodeManipulatorMultiblock),
-        E_PORTAL_CREATOR(
-                Gadomancy.MODID.toUpperCase() + ".E_PORTAL_CREATOR",
+
+        NODE_MANIPULATOR(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR",
+                RegisteredRecipes.costsNodeManipulatorMultiblock),
+        E_PORTAL_CREATOR(Gadomancy.MODID.toUpperCase() + ".E_PORTAL_CREATOR",
                 RegisteredRecipes.costsEldritchPortalCreatorMultiblock);
 
         private String research;

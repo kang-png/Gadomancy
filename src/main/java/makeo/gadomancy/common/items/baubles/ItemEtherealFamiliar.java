@@ -1,10 +1,9 @@
 package makeo.gadomancy.common.items.baubles;
 
-import baubles.api.BaubleType;
-import baubles.api.IBauble;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.DataFamiliar;
 import makeo.gadomancy.common.data.SyncDataHolder;
@@ -12,6 +11,7 @@ import makeo.gadomancy.common.familiar.FamiliarAugment;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.NBTHelper;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,15 +21,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+
 import org.lwjgl.input.Keyboard;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.lib.research.ResearchManager;
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 28.12.2015 23:09
  */
@@ -80,22 +82,24 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
         List<String> newLore = new ArrayList<String>();
 
         if (ItemEtherealFamiliar.hasFamiliarAspect(stack)) {
-            newLore.add(EnumChatFormatting.GRAY
-                    + ItemEtherealFamiliar.getFamiliarAspect(stack).getName());
+            newLore.add(EnumChatFormatting.GRAY + ItemEtherealFamiliar.getFamiliarAspect(stack).getName());
         }
 
         List<FamiliarAugment.FamiliarAugmentPair> augments = ItemEtherealFamiliar.getAugments(stack);
         for (FamiliarAugment.FamiliarAugmentPair pair : augments) {
-            newLore.add(EnumChatFormatting.GRAY + pair.augment.getLocalizedName() + " "
-                    + MiscUtils.toRomanNumeral(pair.level));
+            newLore.add(
+                    EnumChatFormatting.GRAY + pair.augment.getLocalizedName()
+                            + " "
+                            + MiscUtils.toRomanNumeral(pair.level));
         }
 
         if (Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54)) {
             lore.addAll(newLore);
         } else {
-            if (!newLore.isEmpty())
-                lore.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC
-                        + StatCollector.translateToLocal("gadomancy.lore.hasAdditionalLore"));
+            if (!newLore.isEmpty()) lore.add(
+                    EnumChatFormatting.DARK_GRAY + ""
+                            + EnumChatFormatting.ITALIC
+                            + StatCollector.translateToLocal("gadomancy.lore.hasAdditionalLore"));
         }
     }
 
@@ -148,14 +152,12 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
         return augmentList;
     }
 
-    /*public static boolean doesAcceptAugment(ItemStack stack, FamiliarAugment augment, int level) {
-        if(stack == null || !(stack.getItem() instanceof ItemEtherealFamiliar)) return false;
-        FamiliarAugment.FamiliarAugmentList currentAugments = getAugments(stack);
-        for(FamiliarAugment.FamiliarAugmentPair pair : currentAugments) {
-            if(pair.augment.equals(augment)) return false;
-        }
-        return augment.checkConditions(currentAugments, level);
-    }*/
+    /*
+     * public static boolean doesAcceptAugment(ItemStack stack, FamiliarAugment augment, int level) { if(stack == null
+     * || !(stack.getItem() instanceof ItemEtherealFamiliar)) return false; FamiliarAugment.FamiliarAugmentList
+     * currentAugments = getAugments(stack); for(FamiliarAugment.FamiliarAugmentPair pair : currentAugments) {
+     * if(pair.augment.equals(augment)) return false; } return augment.checkConditions(currentAugments, level); }
+     */
 
     public static boolean incrementAugmentLevel(ItemStack stack, FamiliarAugment toAdd) {
         if (!ItemEtherealFamiliar.hasAugment(stack, toAdd)) {
@@ -166,10 +168,11 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
         }
     }
 
-    /*public static boolean addAugment(ItemStack stack, FamiliarAugment augment, int level) {
-        if(stack == null || !(stack.getItem() instanceof ItemEtherealFamiliar) || level <= 0) return false;
-        return doesAcceptAugment(stack, augment, level) && addAugmentUnsafe(stack, augment, level);
-    }*/
+    /*
+     * public static boolean addAugment(ItemStack stack, FamiliarAugment augment, int level) { if(stack == null ||
+     * !(stack.getItem() instanceof ItemEtherealFamiliar) || level <= 0) return false; return doesAcceptAugment(stack,
+     * augment, level) && addAugmentUnsafe(stack, augment, level); }
+     */
 
     public static boolean addAugmentUnsafe(ItemStack stack, FamiliarAugment augment, int level) {
         if (stack == null || !(stack.getItem() instanceof ItemEtherealFamiliar) || level <= 0) return false;
@@ -222,7 +225,8 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
     public boolean canEquip(ItemStack itemStack, EntityLivingBase entityLivingBase) {
         if (!(entityLivingBase instanceof EntityPlayer)) return false;
         return ResearchManager.isResearchComplete(
-                entityLivingBase.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".ETHEREAL_FAMILIAR");
+                entityLivingBase.getCommandSenderName(),
+                Gadomancy.MODID.toUpperCase() + ".ETHEREAL_FAMILIAR");
     }
 
     @Override

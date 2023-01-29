@@ -1,11 +1,13 @@
 package makeo.gadomancy.client.renderers.tile;
 
 import java.util.Random;
+
 import makeo.gadomancy.client.models.ModelInfusionClawPart;
 import makeo.gadomancy.client.models.ModelWandPart;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.utils.Injector;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -16,7 +18,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.client.renderers.entity.RenderPrimalOrb;
 import thaumcraft.client.renderers.item.ItemWandRenderer;
 import thaumcraft.common.Thaumcraft;
@@ -25,14 +29,13 @@ import thaumcraft.common.entities.projectile.EntityPrimalOrb;
 import thaumcraft.common.items.wands.ItemWandCasting;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 05.10.2015 21:39
  */
 public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
+
     private static final ResourceLocation RESOURCE = new SimpleResourceLocation("models/infusion_claw.png");
     private static final ModelInfusionClawPart[] MODELS;
     private static final Random RANDOM = new Random();
@@ -212,8 +215,8 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
         }
     }
 
-    private void createZap(
-            TileEntity tile, float startX, float startY, float startZ, float endX, float endY, float endZ) {
+    private void createZap(TileEntity tile, float startX, float startY, float startZ, float endX, float endY,
+            float endZ) {
         Thaumcraft.proxy.nodeBolt(
                 Thaumcraft.proxy.getClientWorld(),
                 tile.xCoord + startX,
@@ -225,16 +228,14 @@ public class RenderTileInfusionClaw extends TileEntitySpecialRenderer {
     }
 
     private void playZapSound(float x, float y, float z) {
-        Thaumcraft.proxy
-                .getClientWorld()
-                .playSound(
-                        x,
-                        y,
-                        z,
-                        "thaumcraft:zap",
-                        0.1F,
-                        1.0F + Thaumcraft.proxy.getClientWorld().rand.nextFloat() * 0.2F,
-                        false);
+        Thaumcraft.proxy.getClientWorld().playSound(
+                x,
+                y,
+                z,
+                "thaumcraft:zap",
+                0.1F,
+                1.0F + Thaumcraft.proxy.getClientWorld().rand.nextFloat() * 0.2F,
+                false);
     }
 
     private void renderSides(TileInfusionClaw tile, World world, int x, int y, int z, float elapsed) {

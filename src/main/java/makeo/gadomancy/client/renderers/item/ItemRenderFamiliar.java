@@ -2,10 +2,12 @@ package makeo.gadomancy.client.renderers.item;
 
 import java.awt.*;
 import java.util.Random;
+
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
 import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.world.fake.FakeWorld;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.Tessellator;
@@ -14,7 +16,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.lib.UtilsFX;
@@ -22,10 +26,8 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.monster.EntityWisp;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by HellFirePvP @ 01.11.2015 12:55
  */
@@ -62,10 +64,8 @@ public class ItemRenderFamiliar implements IItemRenderer {
             if (ItemEtherealFamiliar.hasFamiliarAspect(item)) {
                 if (ItemRenderFamiliar.ENTITY_WISP == null)
                     ItemRenderFamiliar.ENTITY_WISP = new EntityWisp(new FakeWorld());
-                ItemRenderFamiliar.ENTITY_WISP.ticksExisted =
-                        FamiliarHandlerClient.PartialEntityFamiliar.DUMMY_FAMILIAR.ticksExisted;
-                ItemRenderFamiliar.ENTITY_WISP.setType(
-                        ItemEtherealFamiliar.getFamiliarAspect(item).getTag());
+                ItemRenderFamiliar.ENTITY_WISP.ticksExisted = FamiliarHandlerClient.PartialEntityFamiliar.DUMMY_FAMILIAR.ticksExisted;
+                ItemRenderFamiliar.ENTITY_WISP.setType(ItemEtherealFamiliar.getFamiliarAspect(item).getTag());
                 ItemRenderFamiliar.renderEntityWispFor(null, ItemRenderFamiliar.ENTITY_WISP, 0, 0, 0, 0, 0);
             }
         } finally {
@@ -122,8 +122,8 @@ public class ItemRenderFamiliar implements IItemRenderer {
 
     private static int size1;
 
-    public static void renderEntityWispFor(
-            EntityPlayer owner, EntityWisp wisp, double x, double y, double z, float fq, float pticks) {
+    public static void renderEntityWispFor(EntityPlayer owner, EntityWisp wisp, double x, double y, double z, float fq,
+            float pticks) {
         if (ItemRenderFamiliar.size1 == 0) {
             ItemRenderFamiliar.size1 = UtilsFX.getTextureSize("textures/misc/wisp.png", 64);
         }

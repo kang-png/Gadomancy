@@ -1,31 +1,33 @@
 package makeo.gadomancy.client.effect.fx;
 
 import java.util.Random;
+
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.events.ClientHandler;
 import makeo.gadomancy.common.blocks.tiles.TileEssentiaCompressor;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.Vector3;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.client.lib.QuadHelper;
 import thaumcraft.client.lib.UtilsFX;
 
 /**
- * HellFirePvP@Admin
- * Date: 24.04.2016 / 00:45
- * on Gadomancy
- * FXVortex
+ * HellFirePvP@Admin Date: 24.04.2016 / 00:45 on Gadomancy FXVortex
  */
 public class FXVortex {
 
     private static final Random RAND = new Random();
-    public static final ResourceLocation TC_VORTEX_TEXTURE =
-            new ResourceLocation("thaumcraft", "textures/misc/vortex.png");
+    public static final ResourceLocation TC_VORTEX_TEXTURE = new ResourceLocation(
+            "thaumcraft",
+            "textures/misc/vortex.png");
     private static final float RAD = (float) (Math.PI * 2);
 
     private TileEssentiaCompressor parent;

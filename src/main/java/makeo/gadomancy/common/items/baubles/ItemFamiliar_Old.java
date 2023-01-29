@@ -1,13 +1,13 @@
 package makeo.gadomancy.common.items.baubles;
 
-import baubles.api.BaubleType;
-import baubles.api.IBauble;
 import java.util.ArrayList;
 import java.util.List;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.crafting.DeprecationItemPaybacks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.NBTHelper;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,14 +16,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+
 import org.lwjgl.input.Keyboard;
+
 import thaumcraft.api.aspects.Aspect;
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 31.10.2015 11:38
  */
@@ -52,8 +54,7 @@ public class ItemFamiliar_Old extends Item implements IBauble {
             }
 
             if (Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54)) {
-                if (this.hasUpgrade(stack, FamiliarUpgrade.ATTACK_1)
-                        || this.hasUpgrade(stack, FamiliarUpgrade.ATTACK_2)
+                if (this.hasUpgrade(stack, FamiliarUpgrade.ATTACK_1) || this.hasUpgrade(stack, FamiliarUpgrade.ATTACK_2)
                         || this.hasUpgrade(stack, FamiliarUpgrade.ATTACK_3)) {
                     String strength = EnumChatFormatting.DARK_RED + "Strength ";
                     if (this.hasUpgrade(stack, FamiliarUpgrade.ATTACK_1)) strength += "I";
@@ -71,8 +72,10 @@ public class ItemFamiliar_Old extends Item implements IBauble {
                 }
             } else {
                 if (this.hasAnyUpgrade(stack)) {
-                    lore.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC
-                            + StatCollector.translateToLocal("gadomancy.lore.hasAdditionalLore"));
+                    lore.add(
+                            EnumChatFormatting.DARK_GRAY + ""
+                                    + EnumChatFormatting.ITALIC
+                                    + StatCollector.translateToLocal("gadomancy.lore.hasAdditionalLore"));
                 }
             }
         }
@@ -117,52 +120,35 @@ public class ItemFamiliar_Old extends Item implements IBauble {
     @Override
     public void onWornTick(ItemStack itemStack, EntityLivingBase entity) {
         /*
-        if(itemStack == null) return;
-        if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar_Old) {
-            DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
-            Aspect a = getAspect(itemStack);
-            if(a != null) {
-                familiarData.equipTick(((EntityPlayer) entity).worldObj, (EntityPlayer) entity, a);
-            }
-
-            if(((EntityPlayer) entity).worldObj.isRemote) return;
-
-            int probability = 0;
-            if(hasUpgrade(itemStack, FamiliarUpgrade.ATTACK_2)) probability += 1;
-            if(hasUpgrade(itemStack, FamiliarUpgrade.ATTACK_3)) probability += 1;
-            if(probability > 0) {
-                int rand = itemRand.nextInt(20000 / probability);
-                if(rand == 42) {
-                    Thaumcraft.addWarpToPlayer((EntityPlayer) entity, 1 + itemRand.nextInt(4), true);
-                }
-            }
-        }*/
+         * if(itemStack == null) return; if(entity instanceof EntityPlayer && itemStack.getItem() instanceof
+         * ItemFamiliar_Old) { DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData"); Aspect a =
+         * getAspect(itemStack); if(a != null) { familiarData.equipTick(((EntityPlayer) entity).worldObj, (EntityPlayer)
+         * entity, a); } if(((EntityPlayer) entity).worldObj.isRemote) return; int probability = 0;
+         * if(hasUpgrade(itemStack, FamiliarUpgrade.ATTACK_2)) probability += 1; if(hasUpgrade(itemStack,
+         * FamiliarUpgrade.ATTACK_3)) probability += 1; if(probability > 0) { int rand = itemRand.nextInt(20000 /
+         * probability); if(rand == 42) { Thaumcraft.addWarpToPlayer((EntityPlayer) entity, 1 + itemRand.nextInt(4),
+         * true); } } }
+         */
     }
 
     @Override
     public void onEquipped(ItemStack itemStack, EntityLivingBase entity) {
         /*
-        if(itemStack == null) return;
-        if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar_Old) {
-            DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
-            Aspect a = getAspect(itemStack);
-            if(a != null) {
-                familiarData.handleEquip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity, a);
-            }
-        }*/
+         * if(itemStack == null) return; if(entity instanceof EntityPlayer && itemStack.getItem() instanceof
+         * ItemFamiliar_Old) { DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData"); Aspect a =
+         * getAspect(itemStack); if(a != null) { familiarData.handleEquip(((EntityPlayer) entity).worldObj,
+         * (EntityPlayer) entity, a); } }
+         */
     }
 
     @Override
     public void onUnequipped(ItemStack itemStack, EntityLivingBase entity) {
         /*
-        if(itemStack == null) return;
-        if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar_Old) {
-            DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
-            Aspect a = getAspect(itemStack);
-            if(a != null) {
-                familiarData.handleUnequip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity, a);
-            }
-        }*/
+         * if(itemStack == null) return; if(entity instanceof EntityPlayer && itemStack.getItem() instanceof
+         * ItemFamiliar_Old) { DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData"); Aspect a =
+         * getAspect(itemStack); if(a != null) { familiarData.handleUnequip(((EntityPlayer) entity).worldObj,
+         * (EntityPlayer) entity, a); } }
+         */
     }
 
     @Override
@@ -252,6 +238,7 @@ public class ItemFamiliar_Old extends Item implements IBauble {
     }
 
     public enum FamiliarUpgrade {
+
         ATTACK_1("AttackUpgrade1"),
         ATTACK_2("AttackUpgrade2", FamiliarUpgrade.ATTACK_1),
         ATTACK_3("AttackUpgrade3", FamiliarUpgrade.ATTACK_2),

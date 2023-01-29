@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.entities.player;
 
 import makeo.gadomancy.common.utils.NBTHelper;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -8,14 +9,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 05.07.2015 12:39
  */
 public class ExtendedPlayerProperties implements IExtendedEntityProperties {
+
     private static final int TRANSFORM_INDEX = 26;
 
     private static final ExtendedPlayerProperties DEFAULTS = new ExtendedPlayerProperties(null);
@@ -39,8 +39,8 @@ public class ExtendedPlayerProperties implements IExtendedEntityProperties {
     public void loadNBTData(NBTTagCompound compound) {
         NBTTagCompound modData = NBTHelper.getPersistentData(compound);
 
-        this.isTransformed =
-                NBTHelper.getBoolean(modData, "isTransformed", ExtendedPlayerProperties.DEFAULTS.isTransformed);
+        this.isTransformed = NBTHelper
+                .getBoolean(modData, "isTransformed", ExtendedPlayerProperties.DEFAULTS.isTransformed);
         this.player.getDataWatcher().updateObject(ExtendedPlayerProperties.TRANSFORM_INDEX, this.isTransformed);
     }
 

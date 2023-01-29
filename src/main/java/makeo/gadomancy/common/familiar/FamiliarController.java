@@ -1,16 +1,16 @@
 package makeo.gadomancy.common.familiar;
 
-import baubles.api.BaublesApi;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
 import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketFamiliarBolt;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.Vector3;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,16 +20,17 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.items.baubles.ItemAmuletVis;
 import thaumcraft.common.items.wands.ItemWandCasting;
+import baubles.api.BaublesApi;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 29.12.2015 18:12
  */
@@ -76,8 +77,7 @@ public class FamiliarController {
             FamiliarAugment.FamiliarAugmentPair effectElement = null;
             for (FamiliarAugment.FamiliarAugmentPair pair : augments) {
                 FamiliarAugment augment = pair.augment;
-                if (augment.equals(FamiliarAugment.SHOCK)
-                        || augment.equals(FamiliarAugment.FIRE)
+                if (augment.equals(FamiliarAugment.SHOCK) || augment.equals(FamiliarAugment.FIRE)
                         || augment.equals(FamiliarAugment.POISON)
                         || augment.equals(FamiliarAugment.WEAKNESS)) {
                     effectElement = pair;
@@ -111,8 +111,8 @@ public class FamiliarController {
             double damage = FamiliarController.DMG_DEF + (dmgLevel != -1 ? FamiliarController.DMG_INC * dmgLevel : 0);
             int ticksUntilNextAttack = FamiliarController.AS_DELAY_DEF
                     - (attackSpeedLevel != -1 ? FamiliarController.AS_INC * attackSpeedLevel : 0);
-            double range =
-                    FamiliarController.RANGE_DEF + (rangeLevel != -1 ? FamiliarController.RANGE_INC * rangeLevel : 0);
+            double range = FamiliarController.RANGE_DEF
+                    + (rangeLevel != -1 ? FamiliarController.RANGE_INC * rangeLevel : 0);
 
             if (effectElement != null) {
                 for (int i = 0; i < effectElement.level; i++) {
@@ -172,9 +172,7 @@ public class FamiliarController {
             for (EntityLivingBase entity : toAttack) {
                 if (FamiliarController.RAND.nextBoolean()) {
                     Vector3 vel = MiscUtils.getPositionVector(entity)
-                            .subtract(MiscUtils.getPositionVector(this.owningPlayer))
-                            .normalize()
-                            .divide(2)
+                            .subtract(MiscUtils.getPositionVector(this.owningPlayer)).normalize().divide(2)
                             .multiply(0.8 * effectLevel);
                     if (vel.getY() < 0) vel.setY(-vel.getY());
                     entity.motionX += vel.getX();
@@ -259,7 +257,12 @@ public class FamiliarController {
     private void attack(EntityLivingBase toAttack, double damage, int boltType) {
         toAttack.attackEntityFrom(DamageSource.magic, (float) damage);
         toAttack.worldObj.playSoundEffect(
-                toAttack.posX + 0.5, toAttack.posY + 0.5, toAttack.posZ + 0.5, "thaumcraft:zap", 0.8F, 1.0F);
+                toAttack.posX + 0.5,
+                toAttack.posY + 0.5,
+                toAttack.posZ + 0.5,
+                "thaumcraft:zap",
+                0.8F,
+                1.0F);
         PacketFamiliarBolt bolt = new PacketFamiliarBolt(
                 this.owningPlayer.getCommandSenderName(),
                 (float) toAttack.posX,

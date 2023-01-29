@@ -1,11 +1,11 @@
 package makeo.gadomancy.common.events;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
+
 import makeo.gadomancy.common.registration.RegisteredEnchantments;
 import makeo.gadomancy.common.registration.RegisteredPotions;
 import makeo.gadomancy.common.utils.MiscUtils;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -17,18 +17,20 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.config.ConfigItems;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by HellFirePvP @ 15.12.2015 14:57
  */
 public class EventHandlerRedirect {
+
     private static final ItemStack ITEM_GOGGLES = new ItemStack(ConfigItems.itemGoggles);
 
     private static boolean hasChanged;
@@ -78,33 +80,29 @@ public class EventHandlerRedirect {
 
     public static int getAdditionalVisDiscount(EntityPlayer player, Aspect aspect, int currentTotalDiscount) {
         if (player.isPotionActive(RegisteredPotions.VIS_DISCOUNT)) {
-            currentTotalDiscount += (player.getActivePotionEffect(RegisteredPotions.VIS_DISCOUNT)
-                                    .getAmplifier()
-                            + 1)
+            currentTotalDiscount += (player.getActivePotionEffect(RegisteredPotions.VIS_DISCOUNT).getAmplifier() + 1)
                     * 8;
         }
         return currentTotalDiscount;
     }
 
     public static int getFortuneLevel(EntityLivingBase entity) {
-        int fortuneLevel =
-                EventHandlerRedirect.getRealEnchantmentLevel(Enchantment.fortune.effectId, entity.getHeldItem());
+        int fortuneLevel = EventHandlerRedirect
+                .getRealEnchantmentLevel(Enchantment.fortune.effectId, entity.getHeldItem());
         if (entity.isPotionActive(RegisteredPotions.POTION_LUCK)) {
-            int lvl =
-                    entity.getActivePotionEffect(RegisteredPotions.POTION_LUCK).getAmplifier()
-                            + 1; // Amplifier 0-indexed
+            int lvl = entity.getActivePotionEffect(RegisteredPotions.POTION_LUCK).getAmplifier() + 1; // Amplifier
+                                                                                                      // 0-indexed
             fortuneLevel += lvl;
         }
         return fortuneLevel;
     }
 
     public static int getLootingLevel(EntityLivingBase entity) {
-        int lootingLevel =
-                EventHandlerRedirect.getRealEnchantmentLevel(Enchantment.looting.effectId, entity.getHeldItem());
+        int lootingLevel = EventHandlerRedirect
+                .getRealEnchantmentLevel(Enchantment.looting.effectId, entity.getHeldItem());
         if (entity.isPotionActive(RegisteredPotions.POTION_LUCK)) {
-            int lvl =
-                    entity.getActivePotionEffect(RegisteredPotions.POTION_LUCK).getAmplifier()
-                            + 1; // Amplifier 0-indexed
+            int lvl = entity.getActivePotionEffect(RegisteredPotions.POTION_LUCK).getAmplifier() + 1; // Amplifier
+                                                                                                      // 0-indexed
             lootingLevel += lvl;
         }
         return lootingLevel;

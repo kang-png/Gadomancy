@@ -2,8 +2,10 @@ package makeo.gadomancy.common.blocks.tiles;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.ItemUtils;
+
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -12,18 +14,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.tiles.TileJarFillable;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 14.11.2015 12:22
  */
 public class TileArcanePackager extends TileJarFillable implements ISidedInventory {
+
     private static final Aspect ASPECT = Aspect.CLOTH;
 
     private ItemStack[] contents = new ItemStack[12];
@@ -84,8 +86,8 @@ public class TileArcanePackager extends TileJarFillable implements ISidedInvento
             }
         } else {
             if (this.redstoneState == null) {
-                this.redstoneState =
-                        this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
+                this.redstoneState = this.worldObj
+                        .isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
             }
 
             if (this.progress >= 47) {
@@ -175,14 +177,18 @@ public class TileArcanePackager extends TileJarFillable implements ISidedInvento
                     this.setInventorySlotContents(i, null);
                 }
             } else {
-                this.worldObj.newExplosion(
-                        null, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, 1, false, false);
+                this.worldObj
+                        .newExplosion(null, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, 1, false, false);
 
                 for (int i = 0; i < 9; i++) {
                     ItemStack stack = this.contents[i];
                     if (stack != null) {
                         EntityItem entityItem = new EntityItem(
-                                this.worldObj, this.xCoord + 0.5, this.yCoord + (13 / 16f), this.zCoord + 0.5, stack);
+                                this.worldObj,
+                                this.xCoord + 0.5,
+                                this.yCoord + (13 / 16f),
+                                this.zCoord + 0.5,
+                                stack);
                         ItemUtils.applyRandomDropOffset(entityItem, this.worldObj.rand);
                         this.worldObj.spawnEntityInWorld(entityItem);
                         this.contents[i] = null;
@@ -318,16 +324,16 @@ public class TileArcanePackager extends TileJarFillable implements ISidedInvento
         } else return slot != 11;
     }
 
-    private static final int[] ORIENTATION_MAPPING = {-1, -1, 0, 2, 1, 3};
+    private static final int[] ORIENTATION_MAPPING = { -1, -1, 0, 2, 1, 3 };
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
         if (side == 0) {
-            return new int[] {11};
+            return new int[] { 11 };
         }
 
         if (TileArcanePackager.ORIENTATION_MAPPING[side] == super.facing) {
-            return new int[] {9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8};
+            return new int[] { 9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8 };
         }
 
         return new int[0];

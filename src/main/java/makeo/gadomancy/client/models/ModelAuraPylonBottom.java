@@ -5,6 +5,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 public class ModelAuraPylonBottom extends ModelBase {
+
     // fields
     ModelRenderer outerpylon;
     ModelRenderer lowerconduit;

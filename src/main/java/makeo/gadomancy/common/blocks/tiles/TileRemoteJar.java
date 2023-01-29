@@ -1,20 +1,22 @@
 package makeo.gadomancy.common.blocks.tiles;
 
 import java.util.*;
+
 import makeo.gadomancy.common.utils.NBTHelper;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+
 import thaumcraft.common.tiles.TileJarFillable;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 14.10.2015 15:06
  */
 public class TileRemoteJar extends TileJarFillable {
+
     public UUID networkId;
 
     private int count;
@@ -24,8 +26,7 @@ public class TileRemoteJar extends TileJarFillable {
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if (this.count % 3 == 0
-                && !this.getWorldObj().isRemote
+        if (this.count % 3 == 0 && !this.getWorldObj().isRemote
                 && this.networkId != null
                 && (!this.registered_to_network || this.amount < this.maxAmount)) {
             this.count = 0;
@@ -61,6 +62,7 @@ public class TileRemoteJar extends TileJarFillable {
     private static Map<UUID, JarNetwork> networks = new HashMap<UUID, JarNetwork>();
 
     private static class JarNetwork {
+
         private long lastTime;
         private List<TileJarFillable> jars = new ArrayList<TileJarFillable>();
 
@@ -69,6 +71,7 @@ public class TileRemoteJar extends TileJarFillable {
             if (time > this.lastTime) {
                 if (this.jars.size() > 1) {
                     Collections.sort(this.jars, new Comparator<TileJarFillable>() {
+
                         @Override
                         public int compare(TileJarFillable o1, TileJarFillable o2) {
                             return o2.amount - o1.amount;
@@ -96,8 +99,7 @@ public class TileRemoteJar extends TileJarFillable {
         }
 
         private static boolean isValid(TileJarFillable jar) {
-            return jar != null
-                    && jar.getWorldObj() != null
+            return jar != null && jar.getWorldObj() != null
                     && !jar.isInvalid()
                     && jar.getWorldObj().blockExists(jar.xCoord, jar.yCoord, jar.zCoord);
         }

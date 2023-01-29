@@ -1,11 +1,11 @@
 package makeo.gadomancy.common.blocks.tiles;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import java.util.*;
+
 import makeo.gadomancy.client.effect.fx.Orbital;
 import makeo.gadomancy.common.registration.AIShutdownWhitelist;
 import makeo.gadomancy.common.utils.Injector;
+
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -16,17 +16,19 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.aspects.IEssentiaTransport;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 08.06.2016 22:56
  */
@@ -80,8 +82,8 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
 
     private void handleIO() {
         if (this.storedAmount < TileAIShutdown.MAX_AMT) {
-            TileEntity te = ThaumcraftApiHelper.getConnectableTile(
-                    this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.UP);
+            TileEntity te = ThaumcraftApiHelper
+                    .getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.UP);
             if (te != null) {
                 IEssentiaTransport ic = (IEssentiaTransport) te;
                 if (!ic.canOutputTo(ForgeDirection.DOWN)) {
@@ -98,10 +100,10 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
     private void killAI() {
         ChunkCoordinates cc = this.getCoords();
         List objEntityList = this.worldObj.getEntitiesWithinAABB(
-                EntityLivingBase.class, TileAIShutdown.BOX.copy().offset(this.xCoord, this.yCoord, this.zCoord));
+                EntityLivingBase.class,
+                TileAIShutdown.BOX.copy().offset(this.xCoord, this.yCoord, this.zCoord));
         for (Object o : objEntityList) {
-            if (o != null
-                    && o instanceof EntityLiving
+            if (o != null && o instanceof EntityLiving
                     && !((EntityLiving) o).isDead
                     && this.canAffect((EntityLiving) o)) {
                 EntityLiving el = (EntityLiving) o;
@@ -120,10 +122,10 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
         }
 
         UUID uu = el.getUniqueID();
-        List<EntityAITasks.EntityAITaskEntry> tasks =
-                new ArrayList<EntityAITasks.EntityAITaskEntry>(el.tasks.taskEntries);
-        List<EntityAITasks.EntityAITaskEntry> targetTasks =
-                new ArrayList<EntityAITasks.EntityAITaskEntry>(el.targetTasks.taskEntries);
+        List<EntityAITasks.EntityAITaskEntry> tasks = new ArrayList<EntityAITasks.EntityAITaskEntry>(
+                el.tasks.taskEntries);
+        List<EntityAITasks.EntityAITaskEntry> targetTasks = new ArrayList<EntityAITasks.EntityAITaskEntry>(
+                el.targetTasks.taskEntries);
 
         List<Class<? extends EntityAIBase>> entries = AIShutdownWhitelist.getWhitelistedAIClasses(el);
 
@@ -331,8 +333,7 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
         if (TileAIShutdown.trackedEntities.containsKey(cc)) {
             for (AffectedEntity ae : TileAIShutdown.trackedEntities.get(cc)) {
                 for (Object objE : world.getLoadedEntityList()) {
-                    if (objE != null
-                            && objE instanceof EntityLiving
+                    if (objE != null && objE instanceof EntityLiving
                             && !((EntityLiving) objE).isDead
                             && ((EntityLiving) objE).getUniqueID().equals(ae.eUUID)) {
                         ((EntityLiving) objE).tasks.taskEntries = ae.tasks;
@@ -353,9 +354,7 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
         public List<EntityAITasks.EntityAITaskEntry> tasks;
         public List<EntityAITasks.EntityAITaskEntry> targetTasks;
 
-        public AffectedEntity(
-                UUID eUUID,
-                List<EntityAITasks.EntityAITaskEntry> tasks,
+        public AffectedEntity(UUID eUUID, List<EntityAITasks.EntityAITaskEntry> tasks,
                 List<EntityAITasks.EntityAITaskEntry> targetTasks) {
             this.eUUID = eUUID;
             this.tasks = tasks;

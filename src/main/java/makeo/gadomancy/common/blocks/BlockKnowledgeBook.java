@@ -1,10 +1,12 @@
 package makeo.gadomancy.common.blocks;
 
 import java.util.ArrayList;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileKnowledgeBook;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -16,14 +18,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 
 /**
- * HellFirePvP@Admin
- * Date: 19.04.2016 / 14:52
- * on Gadomancy
- * BlockKnowledgeBook
+ * HellFirePvP@Admin Date: 19.04.2016 / 14:52 on Gadomancy BlockKnowledgeBook
  */
 public class BlockKnowledgeBook extends BlockContainer
         implements IBlockTransparent, TileKnowledgeBook.IKnowledgeProvider {
@@ -54,26 +54,18 @@ public class BlockKnowledgeBook extends BlockContainer
     }
 
     @Override
-    public boolean onBlockActivated(
-            World world,
-            int x,
-            int y,
-            int z,
-            EntityPlayer player,
-            int p_149727_6_,
-            float p_149727_7_,
-            float p_149727_8_,
-            float p_149727_9_) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_,
+            float p_149727_7_, float p_149727_8_, float p_149727_9_) {
         ItemStack thaumonomicon = new ItemStack(ConfigItems.itemThaumonomicon);
         ConfigItems.itemThaumonomicon.onItemRightClick(thaumonomicon, world, player);
-        /*if(world.isRemote) {
-            try {
-                player.openGui(Thaumcraft.instance, 12, world, x, y, z);
-                Minecraft.getMinecraft().theWorld.playSound(Minecraft.getMinecraft().thePlayer.posX, Minecraft.getMinecraft().thePlayer.posY, Minecraft.getMinecraft().thePlayer.posZ, "thaumcraft:page", 0.66F, 1.0F, false);
-            } catch (Throwable tr) {
-                Gadomancy.log.warn("Error on opening Thaumcraft Thaumonomicon via KnowledgeBook at world " + world.getWorldInfo().getWorldName() + ", x=" + x + ", y=" + y + ", z=" + z);
-            }
-        }*/
+        /*
+         * if(world.isRemote) { try { player.openGui(Thaumcraft.instance, 12, world, x, y, z);
+         * Minecraft.getMinecraft().theWorld.playSound(Minecraft.getMinecraft().thePlayer.posX,
+         * Minecraft.getMinecraft().thePlayer.posY, Minecraft.getMinecraft().thePlayer.posZ, "thaumcraft:page", 0.66F,
+         * 1.0F, false); } catch (Throwable tr) {
+         * Gadomancy.log.warn("Error on opening Thaumcraft Thaumonomicon via KnowledgeBook at world " +
+         * world.getWorldInfo().getWorldName() + ", x=" + x + ", y=" + y + ", z=" + z); } }
+         */
         return true;
     }
 

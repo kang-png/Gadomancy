@@ -1,17 +1,18 @@
 package makeo.gadomancy.common.familiar;
 
-import baubles.api.BaublesApi;
 import java.util.*;
+
 import makeo.gadomancy.common.registration.RegisteredFamiliarAI_Old;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+import baubles.api.BaublesApi;
+
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 31.10.2015 14:08
  */
@@ -19,8 +20,7 @@ public class FamiliarAIController_Old {
 
     private static final Random RAND = new Random();
 
-    private static Map<EntityPlayer, LinkedList<EntityLivingBase>> targetMap =
-            new HashMap<EntityPlayer, LinkedList<EntityLivingBase>>();
+    private static Map<EntityPlayer, LinkedList<EntityLivingBase>> targetMap = new HashMap<EntityPlayer, LinkedList<EntityLivingBase>>();
 
     private List<FamiliarAIProcess_Old> availableTasks = new ArrayList<FamiliarAIProcess_Old>();
     private Map<FamiliarAIProcess_Old, Integer> cooldownProcesses = new HashMap<FamiliarAIProcess_Old, Integer>();
@@ -75,12 +75,12 @@ public class FamiliarAIController_Old {
             int index = (randIndex + i) % size;
             FamiliarAIProcess_Old process = this.availableTasks.get(index);
             if (process.canRun(
-                            this.owningPlayer.worldObj,
-                            this.owningPlayer.posX,
-                            this.owningPlayer.posY,
-                            this.owningPlayer.posZ,
-                            this.owningPlayer,
-                            BaublesApi.getBaubles(this.owningPlayer).getStackInSlot(0))
+                    this.owningPlayer.worldObj,
+                    this.owningPlayer.posX,
+                    this.owningPlayer.posY,
+                    this.owningPlayer.posZ,
+                    this.owningPlayer,
+                    BaublesApi.getBaubles(this.owningPlayer).getStackInSlot(0))
                     && !this.cooldownProcesses.containsKey(process)) {
                 this.runningTask = process;
             }
@@ -88,8 +88,7 @@ public class FamiliarAIController_Old {
     }
 
     private void reduceRunningCooldowns() {
-        Iterator<FamiliarAIProcess_Old> itProcesses =
-                this.cooldownProcesses.keySet().iterator();
+        Iterator<FamiliarAIProcess_Old> itProcesses = this.cooldownProcesses.keySet().iterator();
         while (itProcesses.hasNext()) {
             FamiliarAIProcess_Old process = itProcesses.next();
             int cd = this.cooldownProcesses.get(process) - 1;
@@ -118,8 +117,7 @@ public class FamiliarAIController_Old {
 
     public static void cleanTargetterList(EntityPlayer player) {
         if (!FamiliarAIController_Old.targetMap.containsKey(player)) return;
-        Iterator<EntityLivingBase> it =
-                FamiliarAIController_Old.targetMap.get(player).iterator();
+        Iterator<EntityLivingBase> it = FamiliarAIController_Old.targetMap.get(player).iterator();
         while (it.hasNext()) {
             EntityLivingBase living = it.next();
             if (living.isDead) it.remove();

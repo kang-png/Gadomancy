@@ -4,14 +4,13 @@ import net.minecraft.entity.ai.EntityAIFollowOwner;
 import net.minecraft.entity.passive.EntityTameable;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by makeo @ 31.10.2015 15:55
  */
 public class AIFollowOwner extends EntityAIFollowOwner {
+
     private EntityTameable entity;
 
     public AIFollowOwner(EntityTameable entity, float minDist, float maxDist) {

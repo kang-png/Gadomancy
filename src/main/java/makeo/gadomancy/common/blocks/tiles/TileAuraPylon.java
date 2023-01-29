@@ -1,12 +1,12 @@
 package makeo.gadomancy.common.blocks.tiles;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.List;
+
 import makeo.gadomancy.common.aura.AuraEffectHandler;
 import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.utils.NBTHelper;
+
 import net.minecraft.block.Block;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
@@ -17,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -27,12 +28,12 @@ import thaumcraft.client.fx.particles.FXEssentiaTrail;
 import thaumcraft.common.entities.EntityPermanentItem;
 import thaumcraft.common.entities.EntitySpecialItem;
 import thaumcraft.common.items.ItemCrystalEssence;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by HellFirePvP @ 11.11.2015 14:30
  */
@@ -107,7 +108,12 @@ public class TileAuraPylon extends SynchronizedTileEntity
         if (!this.isMasterTile()) return;
         if (this.worldObj.isRemote) return;
         AuraEffectHandler.distributeEffects(
-                aspect, this.worldObj, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, this.ticksExisted);
+                aspect,
+                this.worldObj,
+                this.xCoord + 0.5,
+                this.yCoord + 0.5,
+                this.zCoord + 0.5,
+                this.ticksExisted);
     }
 
     private void drainEssentia(TileAuraPylon io) {
@@ -143,10 +149,10 @@ public class TileAuraPylon extends SynchronizedTileEntity
                 1);
         essentiaTrail.noClip = true;
         essentiaTrail.motionY = (0.1F + MathHelper.sin(count / 3.0F) * 0.01F);
-        essentiaTrail.motionX =
-                (MathHelper.sin(count / 10.0F) * 0.001F + this.worldObj.rand.nextGaussian() * 0.002000000094994903D);
-        essentiaTrail.motionZ =
-                (MathHelper.sin(count / 10.0F) * 0.001F + this.worldObj.rand.nextGaussian() * 0.002000000094994903D);
+        essentiaTrail.motionX = (MathHelper.sin(count / 10.0F) * 0.001F
+                + this.worldObj.rand.nextGaussian() * 0.002000000094994903D);
+        essentiaTrail.motionZ = (MathHelper.sin(count / 10.0F) * 0.001F
+                + this.worldObj.rand.nextGaussian() * 0.002000000094994903D);
         ParticleEngine.instance.addEffect(tile.getWorldObj(), essentiaTrail);
     }
 
@@ -175,26 +181,22 @@ public class TileAuraPylon extends SynchronizedTileEntity
         List entityItems = this.worldObj.selectEntitiesWithinAABB(
                 EntityItem.class,
                 AxisAlignedBB.getBoundingBox(
-                                this.xCoord - 0.5,
-                                yC - 0.5,
-                                this.zCoord - 0.5,
-                                this.xCoord + 0.5,
-                                yC + 0.5,
-                                this.zCoord + 0.5)
-                        .expand(8, 8, 8),
+                        this.xCoord - 0.5,
+                        yC - 0.5,
+                        this.zCoord - 0.5,
+                        this.xCoord + 0.5,
+                        yC + 0.5,
+                        this.zCoord + 0.5).expand(8, 8, 8),
                 new IEntitySelector() {
+
                     @Override
                     public boolean isEntityApplicable(Entity e) {
-                        return !(e instanceof EntityPermanentItem)
-                                && !(e instanceof EntitySpecialItem)
+                        return !(e instanceof EntityPermanentItem) && !(e instanceof EntitySpecialItem)
                                 && e instanceof EntityItem
                                 && ((EntityItem) e).getEntityItem() != null
                                 && ((EntityItem) e).getEntityItem().getItem() instanceof ItemCrystalEssence
-                                && ((ItemCrystalEssence) ((EntityItem) e)
-                                                        .getEntityItem()
-                                                        .getItem())
-                                                .getAspects(((EntityItem) e).getEntityItem())
-                                        != null;
+                                && ((ItemCrystalEssence) ((EntityItem) e).getEntityItem().getItem())
+                                        .getAspects(((EntityItem) e).getEntityItem()) != null;
                     }
                 });
         Entity dummy = new EntityItem(this.worldObj);
@@ -242,8 +244,7 @@ public class TileAuraPylon extends SynchronizedTileEntity
             this.timeSinceLastItemInfo = 0;
 
             this.holdingAspect = ((ItemCrystalEssence) this.crystalEssentiaStack.getItem())
-                    .getAspects(this.crystalEssentiaStack)
-                    .getAspects()[0];
+                    .getAspects(this.crystalEssentiaStack).getAspects()[0];
             this.distributeAspectInformation();
 
             if (inter.stackSize <= 0) entity.setDead();
@@ -274,11 +275,10 @@ public class TileAuraPylon extends SynchronizedTileEntity
 
     // Special to inputTile only!
     private void handleIO() {
-        if ((!this.worldObj.isRemote)
-                && ((this.ticksExisted & 15) == 0)
+        if ((!this.worldObj.isRemote) && ((this.ticksExisted & 15) == 0)
                 && (this.getEssentiaAmount() < this.getMaxAmount())) {
-            TileEntity te = ThaumcraftApiHelper.getConnectableTile(
-                    this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.DOWN);
+            TileEntity te = ThaumcraftApiHelper
+                    .getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.DOWN);
             if (te != null) {
                 IEssentiaTransport ic = (IEssentiaTransport) te;
                 if (!ic.canOutputTo(ForgeDirection.UP)) {
@@ -355,8 +355,12 @@ public class TileAuraPylon extends SynchronizedTileEntity
         if (pylon != null) {
             ArrayList<ItemStack> stacks = pylon.getDrops(this.worldObj, this.xCoord, this.yCoord, this.zCoord, meta, 0);
             for (ItemStack i : stacks) {
-                EntityItem item =
-                        new EntityItem(this.worldObj, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, i);
+                EntityItem item = new EntityItem(
+                        this.worldObj,
+                        this.xCoord + 0.5,
+                        this.yCoord + 0.5,
+                        this.zCoord + 0.5,
+                        i);
                 // ItemUtils.applyRandomDropOffset(item, worldObj.rand);
                 this.worldObj.spawnEntityInWorld(item);
             }

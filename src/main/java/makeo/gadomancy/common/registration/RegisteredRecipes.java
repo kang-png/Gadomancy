@@ -1,9 +1,9 @@
 package makeo.gadomancy.common.registration;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.crafting.*;
@@ -14,11 +14,13 @@ import makeo.gadomancy.common.items.ItemElement;
 import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
 import makeo.gadomancy.common.research.SimpleResearchItem;
 import makeo.gadomancy.common.utils.RandomizedAspectList;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -31,45 +33,28 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.ItemWispEssence;
 import thaumcraft.common.items.wands.ItemWandCasting;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 16.06.2015 01:17
  */
 public class RegisteredRecipes {
+
     private RegisteredRecipes() {}
 
-    public static AspectList costsNodeManipulatorMultiblock = new AspectList()
-            .add(Aspect.FIRE, 100)
-            .add(Aspect.WATER, 100)
-            .add(Aspect.EARTH, 100)
-            .add(Aspect.AIR, 100)
-            .add(Aspect.ORDER, 100)
+    public static AspectList costsNodeManipulatorMultiblock = new AspectList().add(Aspect.FIRE, 100)
+            .add(Aspect.WATER, 100).add(Aspect.EARTH, 100).add(Aspect.AIR, 100).add(Aspect.ORDER, 100)
             .add(Aspect.ENTROPY, 100);
-    public static AspectList costsEldritchPortalCreatorMultiblock = new AspectList()
-            .add(Aspect.FIRE, 150)
-            .add(Aspect.WATER, 150)
-            .add(Aspect.EARTH, 150)
-            .add(Aspect.AIR, 150)
-            .add(Aspect.ORDER, 150)
+    public static AspectList costsEldritchPortalCreatorMultiblock = new AspectList().add(Aspect.FIRE, 150)
+            .add(Aspect.WATER, 150).add(Aspect.EARTH, 150).add(Aspect.AIR, 150).add(Aspect.ORDER, 150)
             .add(Aspect.ENTROPY, 150);
-    public static AspectList costsAuraPylonMultiblock = new AspectList()
-            .add(Aspect.FIRE, 150)
-            .add(Aspect.WATER, 150)
-            .add(Aspect.EARTH, 150)
-            .add(Aspect.AIR, 150)
-            .add(Aspect.ORDER, 150)
-            .add(Aspect.ENTROPY, 150);
-    public static AspectList costsCompressorMultiblock = new AspectList()
-            .add(Aspect.WATER, 140)
-            .add(Aspect.EARTH, 80)
-            .add(Aspect.AIR, 150)
-            .add(Aspect.ORDER, 20)
-            .add(Aspect.ENTROPY, 140);
+    public static AspectList costsAuraPylonMultiblock = new AspectList().add(Aspect.FIRE, 150).add(Aspect.WATER, 150)
+            .add(Aspect.EARTH, 150).add(Aspect.AIR, 150).add(Aspect.ORDER, 150).add(Aspect.ENTROPY, 150);
+    public static AspectList costsCompressorMultiblock = new AspectList().add(Aspect.WATER, 140).add(Aspect.EARTH, 80)
+            .add(Aspect.AIR, 150).add(Aspect.ORDER, 20).add(Aspect.ENTROPY, 140);
     // public static AspectList costsAuraCoreStart = new AspectList().add(Aspect.FIRE, 70).add(Aspect.WATER,
     // 70).add(Aspect.EARTH, 70).add(Aspect.AIR, 70).add(Aspect.ORDER, 70).add(Aspect.ENTROPY, 70);
 
@@ -118,41 +103,27 @@ public class RegisteredRecipes {
         AdditionalGolemType typeSilverwood = RegisteredGolemStuff.typeSilverwood;
         RegisteredRecipes.recipeGolemSilverwood = ThaumcraftApi.addInfusionCraftingRecipe(
                 SimpleResearchItem.getFullName("GOLEMSILVERWOOD"),
-                /*new ItemStack(Items.bread, 1, 0),*/ new ItemStack(
+                /* new ItemStack(Items.bread, 1, 0), */ new ItemStack(
                         typeSilverwood.getPlacerItem(),
                         1,
                         typeSilverwood.getEnumEntry().ordinal()),
                 7,
-                new AspectList()
-                        .add(Aspect.MOTION, 16)
-                        .add(Aspect.MAGIC, 16)
-                        .add(Aspect.MAN, 16)
+                new AspectList().add(Aspect.MOTION, 16).add(Aspect.MAGIC, 16).add(Aspect.MAN, 16)
                         .add(Aspect.SENSES, 16),
                 new ItemStack(ConfigBlocks.blockMagicalLog, 1, 1),
-                new ItemStack[] {
-                    new ItemStack(ConfigItems.itemResource, 1, 15),
-                    new ItemStack(ConfigItems.itemResource, 1, 14),
-                    new ItemStack(ConfigItems.itemResource, 1, 9),
-                    new ItemStack(ConfigItems.itemResource, 1, 3),
-                    new ItemStack(ConfigItems.itemResource, 1, 14),
-                    new ItemStack(ConfigItems.itemResource, 1, 9),
-                    new ItemStack(ConfigItems.itemResource, 1, 3)
-                });
+                new ItemStack[] { new ItemStack(ConfigItems.itemResource, 1, 15),
+                        new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigItems.itemResource, 1, 9),
+                        new ItemStack(ConfigItems.itemResource, 1, 3), new ItemStack(ConfigItems.itemResource, 1, 14),
+                        new ItemStack(ConfigItems.itemResource, 1, 9), new ItemStack(ConfigItems.itemResource, 1, 3) });
 
         RegisteredRecipes.recipesGolemRunicShield = InfusionUpgradeRecipe.createRecipes(
                 SimpleResearchItem.getFullName("GOLEMRUNICSHIELD"),
                 RegisteredGolemStuff.upgradeRunicShield,
                 5,
-                new AspectList()
-                        .add(Aspect.MAGIC, 16)
-                        .add(Aspect.ENERGY, 16)
-                        .add(Aspect.ARMOR, 8)
-                        .add(Aspect.AURA, 4),
-                new ItemStack[] {
-                    new ItemStack(ConfigItems.itemGirdleRunic, 1, 0),
-                    new ItemStack(ConfigItems.itemResource, 1, 14),
-                    new ItemStack(ConfigItems.itemResource, 1, 14)
-                });
+                new AspectList().add(Aspect.MAGIC, 16).add(Aspect.ENERGY, 16).add(Aspect.ARMOR, 8).add(Aspect.AURA, 4),
+                new ItemStack[] { new ItemStack(ConfigItems.itemGirdleRunic, 1, 0),
+                        new ItemStack(ConfigItems.itemResource, 1, 14),
+                        new ItemStack(ConfigItems.itemResource, 1, 14) });
         ThaumcraftApi.getCraftingRecipes().addAll(Arrays.asList(RegisteredRecipes.recipesGolemRunicShield));
 
         RegisteredRecipes.recipeStickyJar = new RecipeStickyJar();
@@ -180,35 +151,24 @@ public class RegisteredRecipes {
                 3,
                 new AspectList().add(Aspect.ENTROPY, 16).add(Aspect.TOOL, 24).add(Aspect.MECHANISM, 16),
                 new ItemStack(ConfigItems.itemGolemCore, 1, 3),
-                new ItemStack[] {
-                    new ItemStack(ConfigItems.itemShovelElemental),
-                    new ItemStack(ConfigItems.itemPickElemental),
-                    new ItemStack(ConfigItems.itemAxeElemental)
-                });
+                new ItemStack[] { new ItemStack(ConfigItems.itemShovelElemental),
+                        new ItemStack(ConfigItems.itemPickElemental), new ItemStack(ConfigItems.itemAxeElemental) });
 
         RegisteredRecipes.recipeInfusionClaw = ThaumcraftApi.addInfusionCraftingRecipe(
                 SimpleResearchItem.getFullName("INFUSIONCLAW"),
                 new ItemStack(RegisteredBlocks.blockInfusionClaw),
                 10,
-                new AspectList()
-                        .add(Aspect.ELDRITCH, 25)
-                        .add(Aspect.MECHANISM, 20)
-                        .add(Aspect.MAGIC, 16)
-                        .add(Aspect.ORDER, 20)
-                        .add(Aspect.DARKNESS, 12),
+                new AspectList().add(Aspect.ELDRITCH, 25).add(Aspect.MECHANISM, 20).add(Aspect.MAGIC, 16)
+                        .add(Aspect.ORDER, 20).add(Aspect.DARKNESS, 12),
                 new ItemStack(ConfigBlocks.blockStoneDevice, 1, 5),
-                new ItemStack[] {
-                    new ItemStack(ConfigItems.itemFocusPrimal), /*new ItemStack(Items.redstone),*/
-                    new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6),
-                    new ItemStack(ConfigItems.itemGolemCore, 1, 8),
-                    new ItemStack(ConfigItems.itemResource, 1, 16),
-                    new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6),
-                    new ItemStack(ConfigItems.itemResource, 1, 15), /*new ItemStack(Items.redstone),*/
-                    new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6),
-                    new ItemStack(ConfigItems.itemZombieBrain),
-                    new ItemStack(ConfigItems.itemResource, 1, 16),
-                    new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6)
-                });
+                new ItemStack[] { new ItemStack(ConfigItems.itemFocusPrimal), /* new ItemStack(Items.redstone), */
+                        new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6),
+                        new ItemStack(ConfigItems.itemGolemCore, 1, 8), new ItemStack(ConfigItems.itemResource, 1, 16),
+                        new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6),
+                        new ItemStack(ConfigItems.itemResource, 1, 15), /* new ItemStack(Items.redstone), */
+                        new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6),
+                        new ItemStack(ConfigItems.itemZombieBrain), new ItemStack(ConfigItems.itemResource, 1, 16),
+                        new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6) });
 
         RegisteredRecipes.recipeRemoteJar = ThaumcraftApi.addArcaneCraftingRecipe(
                 SimpleResearchItem.getFullName("REMOTEJAR"),
@@ -221,79 +181,52 @@ public class RegisteredRecipes {
                 'J',
                 new ItemStack(ConfigBlocks.blockJar),
                 'M',
-                (Config.allowMirrors
-                        ? new ItemStack(ConfigBlocks.blockMirror, 1, 6)
+                (Config.allowMirrors ? new ItemStack(ConfigBlocks.blockMirror, 1, 6)
                         : new ItemStack(ConfigItems.itemResource, 1, 10)));
 
         RegisteredRecipes.recipeNodeManipulator = ThaumcraftApi.addInfusionCraftingRecipe(
                 Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR",
                 new ItemStack(RegisteredBlocks.blockNodeManipulator, 1, 5),
                 10,
-                new AspectList()
-                        .add(Aspect.AURA, 42)
-                        .add(Aspect.ELDRITCH, 22)
-                        .add(Aspect.MAGIC, 38)
-                        .add(Aspect.MECHANISM, 28)
-                        .add(Aspect.DARKNESS, 14),
+                new AspectList().add(Aspect.AURA, 42).add(Aspect.ELDRITCH, 22).add(Aspect.MAGIC, 38)
+                        .add(Aspect.MECHANISM, 28).add(Aspect.DARKNESS, 14),
                 new ItemStack(ConfigBlocks.blockStoneDevice, 1, 5),
-                new ItemStack[] {
-                    new ItemStack(ConfigBlocks.blockStoneDevice, 1, 9),
-                    new ItemStack(ConfigBlocks.blockCrystal, 1, 6),
-                    new ItemStack(ConfigItems.itemResource, 1, 17),
-                    new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11),
-                    new ItemStack(ConfigItems.itemResource, 1, 1),
-                    new ItemStack(ConfigItems.itemResource, 1, 15),
-                    new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 3),
-                    new ItemStack(ConfigBlocks.blockCrystal, 1, 6),
-                    new ItemStack(ConfigItems.itemResource, 1, 17),
-                    new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11),
-                    new ItemStack(ConfigItems.itemResource, 1, 1),
-                    new ItemStack(ConfigItems.itemResource, 1, 15)
-                });
+                new ItemStack[] { new ItemStack(ConfigBlocks.blockStoneDevice, 1, 9),
+                        new ItemStack(ConfigBlocks.blockCrystal, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 17),
+                        new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11),
+                        new ItemStack(ConfigItems.itemResource, 1, 1), new ItemStack(ConfigItems.itemResource, 1, 15),
+                        new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 3),
+                        new ItemStack(ConfigBlocks.blockCrystal, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 17),
+                        new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11),
+                        new ItemStack(ConfigItems.itemResource, 1, 1),
+                        new ItemStack(ConfigItems.itemResource, 1, 15) });
 
         RegisteredRecipes.recipeRandomizationFocus = ThaumcraftApi.addInfusionCraftingRecipe(
                 Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR",
                 new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 0),
                 7,
-                new AspectList()
-                        .add(Aspect.ELDRITCH, 18)
-                        .add(Aspect.MAGIC, 18)
-                        .add(Aspect.MECHANISM, 20)
-                        .add(Aspect.DARKNESS, 28)
-                        .add(Aspect.ORDER, 30),
+                new AspectList().add(Aspect.ELDRITCH, 18).add(Aspect.MAGIC, 18).add(Aspect.MECHANISM, 20)
+                        .add(Aspect.DARKNESS, 28).add(Aspect.ORDER, 30),
                 new ItemStack(ConfigBlocks.blockStoneDevice, 1, 8),
-                new ItemStack[] {
-                    new ItemStack(ConfigItems.itemResource, 1, 15),
-                    new ItemStack(ConfigItems.itemResource, 1, 16),
-                    new ItemStack(ConfigBlocks.blockCrystal, 1, 6),
-                    new ItemStack(ConfigItems.itemResource, 1, 16),
-                    new ItemStack(ConfigItems.itemResource, 1, 15),
-                    new ItemStack(ConfigItems.itemResource, 1, 16),
-                    new ItemStack(ConfigBlocks.blockCrystal, 1, 6),
-                    new ItemStack(ConfigItems.itemResource, 1, 16)
-                });
+                new ItemStack[] { new ItemStack(ConfigItems.itemResource, 1, 15),
+                        new ItemStack(ConfigItems.itemResource, 1, 16), new ItemStack(ConfigBlocks.blockCrystal, 1, 6),
+                        new ItemStack(ConfigItems.itemResource, 1, 16), new ItemStack(ConfigItems.itemResource, 1, 15),
+                        new ItemStack(ConfigItems.itemResource, 1, 16), new ItemStack(ConfigBlocks.blockCrystal, 1, 6),
+                        new ItemStack(ConfigItems.itemResource, 1, 16) });
 
         RegisteredRecipes.recipePortalFocus = ThaumcraftApi.addInfusionCraftingRecipe(
                 Gadomancy.MODID.toUpperCase() + ".E_PORTAL_CREATOR",
                 new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 3),
                 7,
-                new AspectList()
-                        .add(Aspect.ELDRITCH, 22)
-                        .add(Aspect.VOID, 38)
-                        .add(Aspect.MECHANISM, 30)
-                        .add(Aspect.DARKNESS, 28)
-                        .add(Aspect.EXCHANGE, 38),
+                new AspectList().add(Aspect.ELDRITCH, 22).add(Aspect.VOID, 38).add(Aspect.MECHANISM, 30)
+                        .add(Aspect.DARKNESS, 28).add(Aspect.EXCHANGE, 38),
                 new ItemStack(ConfigBlocks.blockStoneDevice, 1, 8),
-                new ItemStack[] {
-                    new ItemStack(ConfigItems.itemEldritchObject, 1, 0),
-                    new ItemStack(ConfigBlocks.blockCrystal, 1, 5),
-                    new ItemStack(ConfigItems.itemResource, 1, 16),
-                    new ItemStack(ConfigBlocks.blockCrystal, 1, 5),
-                    new ItemStack(ConfigItems.itemEldritchObject, 1, 0),
-                    new ItemStack(ConfigBlocks.blockCrystal, 1, 5),
-                    new ItemStack(ConfigItems.itemResource, 1, 16),
-                    new ItemStack(ConfigBlocks.blockCrystal, 1, 5)
-                });
+                new ItemStack[] { new ItemStack(ConfigItems.itemEldritchObject, 1, 0),
+                        new ItemStack(ConfigBlocks.blockCrystal, 1, 5), new ItemStack(ConfigItems.itemResource, 1, 16),
+                        new ItemStack(ConfigBlocks.blockCrystal, 1, 5),
+                        new ItemStack(ConfigItems.itemEldritchObject, 1, 0),
+                        new ItemStack(ConfigBlocks.blockCrystal, 1, 5), new ItemStack(ConfigItems.itemResource, 1, 16),
+                        new ItemStack(ConfigBlocks.blockCrystal, 1, 5) });
 
         RegisteredRecipes.multiblockNodeManipulator = Arrays.asList(
                 RegisteredRecipes.costsNodeManipulatorMultiblock,
@@ -329,7 +262,7 @@ public class RegisteredRecipes {
                         null,
                         new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15)));
 
-        //                                                                                    x  y  z
+        // x y z
         RegisteredRecipes.multiblockEldritchPortalCreator = Arrays.asList(
                 RegisteredRecipes.costsEldritchPortalCreatorMultiblock,
                 7,
@@ -499,18 +432,12 @@ public class RegisteredRecipes {
                 Gadomancy.MODID.toUpperCase() + ".GOLEMCOREBODYGUARD",
                 new ItemStack(RegisteredItems.itemGolemCoreBreak, 1, 1),
                 3,
-                new AspectList()
-                        .add(Aspect.TOOL, 28)
-                        .add(Aspect.MECHANISM, 20)
-                        .add(Aspect.WEAPON, 10)
+                new AspectList().add(Aspect.TOOL, 28).add(Aspect.MECHANISM, 20).add(Aspect.WEAPON, 10)
                         .add(Aspect.ARMOR, 16),
                 new ItemStack(ConfigItems.itemGolemCore, 1, 4),
-                new ItemStack[] {
-                    new ItemStack(ConfigItems.itemBootsTraveller, 1, 0),
-                    new ItemStack(Items.ender_pearl, 1, 0),
-                    new ItemStack(ConfigItems.itemSwordElemental, 1, 0),
-                    new ItemStack(Items.ender_pearl, 1, 0)
-                });
+                new ItemStack[] { new ItemStack(ConfigItems.itemBootsTraveller, 1, 0),
+                        new ItemStack(Items.ender_pearl, 1, 0), new ItemStack(ConfigItems.itemSwordElemental, 1, 0),
+                        new ItemStack(Items.ender_pearl, 1, 0) });
 
         RegisteredRecipes.recipeAncientPedestal = ThaumcraftApi.addArcaneCraftingRecipe(
                 Gadomancy.MODID.toUpperCase() + ".E_PORTAL_CREATOR",
@@ -626,10 +553,7 @@ public class RegisteredRecipes {
                     Gadomancy.MODID.toUpperCase() + ".ANCIENT_STONES",
                     new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15),
                     new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7),
-                    new AspectList()
-                            .add(Aspect.ELDRITCH, 8)
-                            .add(Aspect.EXCHANGE, 8)
-                            .add(Aspect.ENTROPY, 12));
+                    new AspectList().add(Aspect.ELDRITCH, 8).add(Aspect.EXCHANGE, 8).add(Aspect.ENTROPY, 12));
         }
 
         ItemAuraCore.AuraCoreType[] auraCoreTypes = ItemAuraCore.AuraCoreType.values();
@@ -641,14 +565,13 @@ public class RegisteredRecipes {
                     Gadomancy.MODID.toUpperCase() + ".CLEAN_AURA_CORE",
                     new ItemStack(RegisteredItems.itemAuraCore),
                     new ItemStack(RegisteredItems.itemAuraCore, 1, i),
-                    new AspectList()
-                            .add(Aspect.MAGIC, 12)
-                            .add(Aspect.WATER, 12)
-                            .add(Aspect.HEAL, 18)); // damn those heal potions
+                    new AspectList().add(Aspect.MAGIC, 12).add(Aspect.WATER, 12).add(Aspect.HEAL, 18)); // damn those
+                                                                                                        // heal potions
 
             if (auraCoreTypes[i].isUnused()) {
                 GameRegistry.addShapelessRecipe(
-                        new ItemStack(RegisteredItems.itemAuraCore), new ItemStack(RegisteredItems.itemAuraCore, 1, i));
+                        new ItemStack(RegisteredItems.itemAuraCore),
+                        new ItemStack(RegisteredItems.itemAuraCore, 1, i));
 
                 List list = CraftingManager.getInstance().getRecipeList();
                 recipesUndoAuraCore.add((IRecipe) list.get(list.size() - 1));
@@ -663,36 +586,22 @@ public class RegisteredRecipes {
                 Gadomancy.MODID.toUpperCase() + ".AURA_CORE",
                 blankCore,
                 6,
-                new RandomizedAspectList()
-                        .setHalfCap(true)
-                        .addAspectRandomBase(Aspect.AURA, 9)
-                        .addAspectRandomBase(Aspect.MAGIC, 19)
-                        .addAspectRandomBase(Aspect.ELDRITCH, 17)
+                new RandomizedAspectList().setHalfCap(true).addAspectRandomBase(Aspect.AURA, 9)
+                        .addAspectRandomBase(Aspect.MAGIC, 19).addAspectRandomBase(Aspect.ELDRITCH, 17)
                         .addAspectRandomBase(Aspect.VOID, 34),
                 new ItemStack(ConfigItems.itemResource, 1, 15),
-                new ItemStack[] {
-                    new ItemStack(ConfigItems.itemShard, 1, 6),
-                    new ItemStack(ConfigItems.itemResource, 1, 2),
-                    new ItemStack(ConfigItems.itemResource, 1, 2),
-                    new ItemStack(ConfigItems.itemShard, 1, 6),
-                    new ItemStack(ConfigItems.itemResource, 1, 2),
-                    new ItemStack(ConfigItems.itemResource, 1, 2),
-                    new ItemStack(ConfigItems.itemShard, 1, 6),
-                    new ItemStack(ConfigItems.itemResource, 1, 2),
-                    new ItemStack(ConfigItems.itemResource, 1, 2),
-                    new ItemStack(ConfigItems.itemShard, 1, 6),
-                    new ItemStack(ConfigItems.itemResource, 1, 2),
-                    new ItemStack(ConfigItems.itemResource, 1, 2)
-                });
+                new ItemStack[] { new ItemStack(ConfigItems.itemShard, 1, 6),
+                        new ItemStack(ConfigItems.itemResource, 1, 2), new ItemStack(ConfigItems.itemResource, 1, 2),
+                        new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 2),
+                        new ItemStack(ConfigItems.itemResource, 1, 2), new ItemStack(ConfigItems.itemShard, 1, 6),
+                        new ItemStack(ConfigItems.itemResource, 1, 2), new ItemStack(ConfigItems.itemResource, 1, 2),
+                        new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 2),
+                        new ItemStack(ConfigItems.itemResource, 1, 2) });
 
         RegisteredRecipes.recipeAuraPylon = ThaumcraftApi.addArcaneCraftingRecipe(
                 Gadomancy.MODID.toUpperCase() + ".AURA_PYLON",
                 new ItemStack(RegisteredBlocks.blockAuraPylon, 1, 0),
-                new AspectList()
-                        .add(Aspect.ORDER, 80)
-                        .add(Aspect.WATER, 50)
-                        .add(Aspect.FIRE, 50)
-                        .add(Aspect.AIR, 50),
+                new AspectList().add(Aspect.ORDER, 80).add(Aspect.WATER, 50).add(Aspect.FIRE, 50).add(Aspect.AIR, 50),
                 "TST",
                 "S S",
                 "TJT",
@@ -735,8 +644,7 @@ public class RegisteredRecipes {
                 'S',
                 new ItemStack(Blocks.piston),
                 'G',
-                (Config.wardedStone
-                        ? new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 2)
+                (Config.wardedStone ? new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 2)
                         : new ItemStack(Blocks.glass)),
                 'C',
                 aerCore,
@@ -751,11 +659,7 @@ public class RegisteredRecipes {
         RegisteredRecipes.recipeKnowledgeBook = ThaumcraftApi.addArcaneCraftingRecipe(
                 Gadomancy.MODID.toUpperCase() + ".KNOWLEDGE_BOOK",
                 new ItemStack(RegisteredBlocks.blockKnowledgeBook),
-                new AspectList()
-                        .add(Aspect.ORDER, 70)
-                        .add(Aspect.ENTROPY, 20)
-                        .add(Aspect.AIR, 20)
-                        .add(Aspect.FIRE, 30),
+                new AspectList().add(Aspect.ORDER, 70).add(Aspect.ENTROPY, 20).add(Aspect.AIR, 20).add(Aspect.FIRE, 30),
                 "STS",
                 "BOB",
                 "MGM",
@@ -779,23 +683,12 @@ public class RegisteredRecipes {
                 Gadomancy.MODID.toUpperCase() + ".ESSENTIA_COMPRESSOR",
                 new ItemStack(RegisteredItems.itemElement, 1, ItemElement.EnumElementType.DARKNESS.ordinal()),
                 6,
-                new RandomizedAspectList()
-                        .setHalfCap(true)
-                        .addAspectRandomBase(Aspect.VOID, 22)
-                        .addAspectRandomBase(Aspect.DARKNESS, 18)
-                        .addAspectRandomBase(Aspect.ELDRITCH, 20)
+                new RandomizedAspectList().setHalfCap(true).addAspectRandomBase(Aspect.VOID, 22)
+                        .addAspectRandomBase(Aspect.DARKNESS, 18).addAspectRandomBase(Aspect.ELDRITCH, 20)
                         .addAspectRandomBase(Aspect.AURA, 10),
                 new ItemStack(ConfigItems.itemResource, 1, 17),
-                new ItemStack[] {
-                    alumentum,
-                    voidMetalIngot,
-                    voidMetalIngot,
-                    salisMundus,
-                    alumentum,
-                    voidMetalIngot,
-                    voidMetalIngot,
-                    salisMundus
-                });
+                new ItemStack[] { alumentum, voidMetalIngot, voidMetalIngot, salisMundus, alumentum, voidMetalIngot,
+                        voidMetalIngot, salisMundus });
 
         ItemStack waterCore = new ItemStack(RegisteredItems.itemAuraCore);
         RegisteredItems.itemAuraCore.setCoreType(waterCore, ItemAuraCore.AuraCoreType.WATER);
@@ -803,13 +696,8 @@ public class RegisteredRecipes {
         RegisteredRecipes.recipeEssentiaCompressor = ThaumcraftApi.addArcaneCraftingRecipe(
                 Gadomancy.MODID.toUpperCase() + ".ESSENTIA_COMPRESSOR",
                 new ItemStack(RegisteredBlocks.blockEssentiaCompressor, 3),
-                new AspectList()
-                        .add(Aspect.WATER, 190)
-                        .add(Aspect.ORDER, 150)
-                        .add(Aspect.ENTROPY, 120)
-                        .add(Aspect.FIRE, 100)
-                        .add(Aspect.AIR, 160)
-                        .add(Aspect.EARTH, 60),
+                new AspectList().add(Aspect.WATER, 190).add(Aspect.ORDER, 150).add(Aspect.ENTROPY, 120)
+                        .add(Aspect.FIRE, 100).add(Aspect.AIR, 160).add(Aspect.EARTH, 60),
                 "LRL",
                 "TET",
                 "LCL",
@@ -837,16 +725,17 @@ public class RegisteredRecipes {
         ItemStack earthCore = new ItemStack(RegisteredItems.itemAuraCore);
         RegisteredItems.itemAuraCore.setCoreType(earthCore, ItemAuraCore.AuraCoreType.EARTH);
 
-        /*recipeAiShutdown = ThaumcraftApi.addInfusionCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".AI_SHUTDOWN", new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 5), 9,
-        new AspectList().add(Aspect.ENTROPY, 16).add(Aspect.BEAST, 23).add(Aspect.EARTH, 22).add(Aspect.AURA, 12).add(Aspect.MIND, 17),
-        earthCore, new ItemStack[] {
-                new ItemStack(ConfigItems.itemZombieBrain), new ItemStack(ConfigBlocks.blockTube),
-                new ItemStack(ConfigItems.itemWandRod), new ItemStack(ConfigItems.itemShard, 1, 5),
-                new ItemStack(ConfigBlocks.blockJar), new ItemStack(ConfigBlocks.blockTube),
-                new ItemStack(ConfigItems.itemZombieBrain), new ItemStack(ConfigBlocks.blockTube),
-                new ItemStack(ConfigBlocks.blockJar), new ItemStack(ConfigItems.itemShard, 1, 5),
-                new ItemStack(ConfigItems.itemWandRod), new ItemStack(ConfigBlocks.blockTube)
-        });*/
+        /*
+         * recipeAiShutdown = ThaumcraftApi.addInfusionCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".AI_SHUTDOWN",
+         * new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 5), 9, new AspectList().add(Aspect.ENTROPY,
+         * 16).add(Aspect.BEAST, 23).add(Aspect.EARTH, 22).add(Aspect.AURA, 12).add(Aspect.MIND, 17), earthCore, new
+         * ItemStack[] { new ItemStack(ConfigItems.itemZombieBrain), new ItemStack(ConfigBlocks.blockTube), new
+         * ItemStack(ConfigItems.itemWandRod), new ItemStack(ConfigItems.itemShard, 1, 5), new
+         * ItemStack(ConfigBlocks.blockJar), new ItemStack(ConfigBlocks.blockTube), new
+         * ItemStack(ConfigItems.itemZombieBrain), new ItemStack(ConfigBlocks.blockTube), new
+         * ItemStack(ConfigBlocks.blockJar), new ItemStack(ConfigItems.itemShard, 1, 5), new
+         * ItemStack(ConfigItems.itemWandRod), new ItemStack(ConfigBlocks.blockTube) });
+         */
 
         RegisteredRecipes.auraCoreRecipes = RegisteredRecipes.createAuraCoreRecipes();
 
@@ -857,11 +746,9 @@ public class RegisteredRecipes {
                 RegisteredEnchantments.revealer,
                 4,
                 new AspectList().add(Aspect.SENSES, 16).add(Aspect.MAGIC, 8),
-                new ItemStack[] {
-                    new ItemStack(ConfigItems.itemGoggles),
-                    new ItemStack(ConfigItems.itemResource, 1, 14),
-                    new ItemStack(ConfigItems.itemResource, 1, 14)
-                });
+                new ItemStack[] { new ItemStack(ConfigItems.itemGoggles),
+                        new ItemStack(ConfigItems.itemResource, 1, 14),
+                        new ItemStack(ConfigItems.itemResource, 1, 14) });
 
         CraftingManager.getInstance().getRecipeList().add(new FamiliarUndoRecipe());
     }
@@ -890,12 +777,8 @@ public class RegisteredRecipes {
                     cost.add(Aspect.ENTROPY, 84);
                     break;
                 case 6:
-                    cost.add(Aspect.AIR, 14)
-                            .add(Aspect.FIRE, 14)
-                            .add(Aspect.WATER, 14)
-                            .add(Aspect.EARTH, 14)
-                            .add(Aspect.ORDER, 14)
-                            .add(Aspect.ENTROPY, 14);
+                    cost.add(Aspect.AIR, 14).add(Aspect.FIRE, 14).add(Aspect.WATER, 14).add(Aspect.EARTH, 14)
+                            .add(Aspect.ORDER, 14).add(Aspect.ENTROPY, 14);
             }
 
             ItemWandCasting item = (ItemWandCasting) ConfigItems.itemWandCasting;
@@ -932,17 +815,10 @@ public class RegisteredRecipes {
     }
 
     /*
-    Indexing:
-    0 = Shock 0 -> 1; 3 = Fire 0 -> 1; 6 = Poison 0 -> 1
-    1 = Shock 1 -> 2; 4 = Fire 1 -> 2; 7 = Poison 1 -> 2
-    2 = Shock 2 -> 3; 5 = Fire 2 -> 3; 8 = Poison 2 -> 3
-
-     9 = Enervation 0 -> 1; 12 = Damage 0 -> 1
-    10 = Enervation 1 -> 2; 13 = Damage 1 -> 2
-    11 = Enervation 2 -> 3; 14 = Damage 2 -> 3
-
-    15 = Range 0 -> 1; 17 = Speed 0 -> 1
-    16 = Range 1 -> 2; 18 = Speed 1 -> 2
+     * Indexing: 0 = Shock 0 -> 1; 3 = Fire 0 -> 1; 6 = Poison 0 -> 1 1 = Shock 1 -> 2; 4 = Fire 1 -> 2; 7 = Poison 1 ->
+     * 2 2 = Shock 2 -> 3; 5 = Fire 2 -> 3; 8 = Poison 2 -> 3 9 = Enervation 0 -> 1; 12 = Damage 0 -> 1 10 = Enervation
+     * 1 -> 2; 13 = Damage 1 -> 2 11 = Enervation 2 -> 3; 14 = Damage 2 -> 3 15 = Range 0 -> 1; 17 = Speed 0 -> 1 16 =
+     * Range 1 -> 2; 18 = Speed 1 -> 2
      */
     private static InfusionRecipe[][] createEtherealFamiliarUpgradeRecipes() {
         List<Aspect> aspects = new ArrayList<Aspect>(Aspect.aspects.values());
@@ -996,11 +872,7 @@ public class RegisteredRecipes {
             infusion = new EtherealFamiliarUpgradeRecipe(
                     modid + ".FAMILIAR_SHOCK",
                     5,
-                    new AspectList()
-                            .add(Aspect.MOTION, 22)
-                            .add(a, 28)
-                            .add(Aspect.AURA, 20)
-                            .add(Aspect.WEAPON, 18)
+                    new AspectList().add(Aspect.MOTION, 22).add(a, 28).add(Aspect.AURA, 20).add(Aspect.WEAPON, 18)
                             .add(Aspect.AIR, 38),
                     famIn,
                     FamiliarAugment.SHOCK,
@@ -1031,11 +903,7 @@ public class RegisteredRecipes {
             infusion = new EtherealFamiliarUpgradeRecipe(
                     modid + ".FAMILIAR_SHOCK",
                     8,
-                    new AspectList()
-                            .add(Aspect.MOTION, 40)
-                            .add(Aspect.AURA, 28)
-                            .add(a, 38)
-                            .add(Aspect.WEAPON, 20)
+                    new AspectList().add(Aspect.MOTION, 40).add(Aspect.AURA, 28).add(a, 38).add(Aspect.WEAPON, 20)
                             .add(Aspect.AIR, 36),
                     famIn,
                     FamiliarAugment.SHOCK,
@@ -1093,11 +961,7 @@ public class RegisteredRecipes {
             infusion = new EtherealFamiliarUpgradeRecipe(
                     modid + ".FAMILIAR_FIRE",
                     6,
-                    new AspectList()
-                            .add(Aspect.FIRE, 38)
-                            .add(a, 24)
-                            .add(Aspect.ENERGY, 32)
-                            .add(Aspect.WEAPON, 18),
+                    new AspectList().add(Aspect.FIRE, 38).add(a, 24).add(Aspect.ENERGY, 32).add(Aspect.WEAPON, 18),
                     famIn,
                     FamiliarAugment.FIRE,
                     1,
@@ -1126,11 +990,7 @@ public class RegisteredRecipes {
             infusion = new EtherealFamiliarUpgradeRecipe(
                     modid + ".FAMILIAR_FIRE",
                     9,
-                    new AspectList()
-                            .add(Aspect.FIRE, 48)
-                            .add(a, 32)
-                            .add(Aspect.ENERGY, 42)
-                            .add(Aspect.WEAPON, 32)
+                    new AspectList().add(Aspect.FIRE, 48).add(a, 32).add(Aspect.ENERGY, 42).add(Aspect.WEAPON, 32)
                             .add(Aspect.AURA, 30),
                     famIn,
                     FamiliarAugment.FIRE,
@@ -1163,11 +1023,7 @@ public class RegisteredRecipes {
             infusion = new EtherealFamiliarUpgradeRecipe(
                     modid + ".FAMILIAR_POISON",
                     5,
-                    new AspectList()
-                            .add(Aspect.WATER, 16)
-                            .add(a, 14)
-                            .add(Aspect.POISON, 8)
-                            .add(Aspect.ELDRITCH, 4),
+                    new AspectList().add(Aspect.WATER, 16).add(a, 14).add(Aspect.POISON, 8).add(Aspect.ELDRITCH, 4),
                     famIn,
                     FamiliarAugment.POISON,
                     0,
@@ -1194,11 +1050,7 @@ public class RegisteredRecipes {
             infusion = new EtherealFamiliarUpgradeRecipe(
                     modid + ".FAMILIAR_POISON",
                     7,
-                    new AspectList()
-                            .add(a, 26)
-                            .add(Aspect.POISON, 28)
-                            .add(Aspect.ELDRITCH, 12)
-                            .add(Aspect.WATER, 22)
+                    new AspectList().add(a, 26).add(Aspect.POISON, 28).add(Aspect.ELDRITCH, 12).add(Aspect.WATER, 22)
                             .add(Aspect.AURA, 8),
                     famIn,
                     FamiliarAugment.POISON,
@@ -1227,11 +1079,7 @@ public class RegisteredRecipes {
             infusion = new EtherealFamiliarUpgradeRecipe(
                     modid + ".FAMILIAR_POISON",
                     9,
-                    new AspectList()
-                            .add(a, 36)
-                            .add(Aspect.POISON, 38)
-                            .add(Aspect.ELDRITCH, 22)
-                            .add(Aspect.WATER, 48)
+                    new AspectList().add(a, 36).add(Aspect.POISON, 38).add(Aspect.ELDRITCH, 22).add(Aspect.WATER, 48)
                             .add(Aspect.AURA, 36),
                     famIn,
                     FamiliarAugment.POISON,
@@ -1264,11 +1112,7 @@ public class RegisteredRecipes {
             infusion = new EtherealFamiliarUpgradeRecipe(
                     modid + ".FAMILIAR_WEAKNESS",
                     6,
-                    new AspectList()
-                            .add(a, 12)
-                            .add(Aspect.DEATH, 18)
-                            .add(Aspect.AURA, 6)
-                            .add(Aspect.ELDRITCH, 18)
+                    new AspectList().add(a, 12).add(Aspect.DEATH, 18).add(Aspect.AURA, 6).add(Aspect.ELDRITCH, 18)
                             .add(Aspect.ENTROPY, 8),
                     famIn,
                     FamiliarAugment.WEAKNESS,
@@ -1293,13 +1137,8 @@ public class RegisteredRecipes {
             infusion = new EtherealFamiliarUpgradeRecipe(
                     modid + ".FAMILIAR_WEAKNESS",
                     8,
-                    new AspectList()
-                            .add(a, 30)
-                            .add(Aspect.DEATH, 28)
-                            .add(Aspect.AURA, 26)
-                            .add(Aspect.ELDRITCH, 28)
-                            .add(Aspect.ENTROPY, 48)
-                            .add(Aspect.TRAP, 14),
+                    new AspectList().add(a, 30).add(Aspect.DEATH, 28).add(Aspect.AURA, 26).add(Aspect.ELDRITCH, 28)
+                            .add(Aspect.ENTROPY, 48).add(Aspect.TRAP, 14),
                     famIn,
                     FamiliarAugment.WEAKNESS,
                     1,
@@ -1324,13 +1163,8 @@ public class RegisteredRecipes {
             infusion = new EtherealFamiliarUpgradeRecipe(
                     modid + ".FAMILIAR_WEAKNESS",
                     10,
-                    new AspectList()
-                            .add(a, 46)
-                            .add(Aspect.DEATH, 42)
-                            .add(Aspect.AURA, 38)
-                            .add(Aspect.ELDRITCH, 20)
-                            .add(Aspect.ENTROPY, 56)
-                            .add(Aspect.TRAP, 32),
+                    new AspectList().add(a, 46).add(Aspect.DEATH, 42).add(Aspect.AURA, 38).add(Aspect.ELDRITCH, 20)
+                            .add(Aspect.ENTROPY, 56).add(Aspect.TRAP, 32),
                     famIn,
                     FamiliarAugment.WEAKNESS,
                     2,
@@ -1362,11 +1196,7 @@ public class RegisteredRecipes {
             infusion = new EtherealFamiliarUpgradeRecipe(
                     modid + ".FAMILIAR_DAMAGE",
                     6,
-                    new AspectList()
-                            .add(a, 14)
-                            .add(Aspect.WEAPON, 10)
-                            .add(Aspect.ENERGY, 12)
-                            .add(Aspect.FIRE, 16),
+                    new AspectList().add(a, 14).add(Aspect.WEAPON, 10).add(Aspect.ENERGY, 12).add(Aspect.FIRE, 16),
                     famIn,
                     FamiliarAugment.DAMAGE_INCREASE,
                     0,
@@ -1392,11 +1222,7 @@ public class RegisteredRecipes {
             infusion = new EtherealFamiliarUpgradeRecipe(
                     modid + ".FAMILIAR_DAMAGE",
                     10,
-                    new AspectList()
-                            .add(a, 22)
-                            .add(Aspect.WEAPON, 28)
-                            .add(Aspect.ENERGY, 34)
-                            .add(Aspect.FIRE, 30)
+                    new AspectList().add(a, 22).add(Aspect.WEAPON, 28).add(Aspect.ENERGY, 34).add(Aspect.FIRE, 30)
                             .add(Aspect.AURA, 14),
                     famIn,
                     FamiliarAugment.DAMAGE_INCREASE,
@@ -1425,11 +1251,7 @@ public class RegisteredRecipes {
             infusion = new EtherealFamiliarUpgradeRecipe(
                     modid + ".FAMILIAR_DAMAGE",
                     10,
-                    new AspectList()
-                            .add(a, 34)
-                            .add(Aspect.WEAPON, 38)
-                            .add(Aspect.ENERGY, 46)
-                            .add(Aspect.FIRE, 58)
+                    new AspectList().add(a, 34).add(Aspect.WEAPON, 38).add(Aspect.ENERGY, 46).add(Aspect.FIRE, 58)
                             .add(Aspect.AURA, 38),
                     famIn,
                     FamiliarAugment.DAMAGE_INCREASE,
@@ -1461,11 +1283,7 @@ public class RegisteredRecipes {
             infusion = new EtherealFamiliarUpgradeRecipe(
                     modid + ".FAMILIAR_RANGE",
                     6,
-                    new AspectList()
-                            .add(a, 24)
-                            .add(Aspect.AURA, 30)
-                            .add(Aspect.ELDRITCH, 22)
-                            .add(Aspect.WEAPON, 12),
+                    new AspectList().add(a, 24).add(Aspect.AURA, 30).add(Aspect.ELDRITCH, 22).add(Aspect.WEAPON, 12),
                     famIn,
                     FamiliarAugment.RANGE_INCREASE,
                     0,
@@ -1487,11 +1305,7 @@ public class RegisteredRecipes {
             infusion = new EtherealFamiliarUpgradeRecipe(
                     modid + ".FAMILIAR_RANGE",
                     9,
-                    new AspectList()
-                            .add(a, 42)
-                            .add(Aspect.AURA, 36)
-                            .add(Aspect.ELDRITCH, 34)
-                            .add(Aspect.WEAPON, 28)
+                    new AspectList().add(a, 42).add(Aspect.AURA, 36).add(Aspect.ELDRITCH, 34).add(Aspect.WEAPON, 28)
                             .add(Aspect.AIR, 40),
                     famIn,
                     FamiliarAugment.RANGE_INCREASE,
@@ -1523,11 +1337,7 @@ public class RegisteredRecipes {
             infusion = new EtherealFamiliarUpgradeRecipe(
                     modid + ".FAMILIAR_SPEED",
                     6,
-                    new AspectList()
-                            .add(a, 30)
-                            .add(Aspect.AURA, 28)
-                            .add(Aspect.MOTION, 38)
-                            .add(Aspect.ELDRITCH, 20)
+                    new AspectList().add(a, 30).add(Aspect.AURA, 28).add(Aspect.MOTION, 38).add(Aspect.ELDRITCH, 20)
                             .add(Aspect.AIR, 36),
                     famIn,
                     FamiliarAugment.ATTACK_SPEED,
@@ -1553,13 +1363,8 @@ public class RegisteredRecipes {
             infusion = new EtherealFamiliarUpgradeRecipe(
                     modid + ".FAMILIAR_SPEED",
                     9,
-                    new AspectList()
-                            .add(a, 46)
-                            .add(Aspect.AURA, 38)
-                            .add(Aspect.MOTION, 52)
-                            .add(Aspect.ELDRITCH, 38)
-                            .add(Aspect.AIR, 48)
-                            .add(Aspect.WEAPON, 28),
+                    new AspectList().add(a, 46).add(Aspect.AURA, 38).add(Aspect.MOTION, 52).add(Aspect.ELDRITCH, 38)
+                            .add(Aspect.AIR, 48).add(Aspect.WEAPON, 28),
                     famIn,
                     FamiliarAugment.ATTACK_SPEED,
                     1,
@@ -1605,14 +1410,10 @@ public class RegisteredRecipes {
                     4,
                     new AspectList().add(aspect, 10).add(Aspect.AURA, 12).add(Aspect.MAGIC, 18),
                     new ItemStack(ConfigItems.itemAmuletRunic, 1, 0),
-                    new ItemStack[] {
-                        wispyEssence,
-                        new ItemStack(ConfigItems.itemResource, 1, 14),
-                        new ItemStack(ConfigItems.itemResource, 1, 1),
-                        wispyEssence,
-                        new ItemStack(ConfigItems.itemResource, 1, 14),
-                        new ItemStack(ConfigItems.itemResource, 1, 1)
-                    });
+                    new ItemStack[] { wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 14),
+                            new ItemStack(ConfigItems.itemResource, 1, 1), wispyEssence,
+                            new ItemStack(ConfigItems.itemResource, 1, 14),
+                            new ItemStack(ConfigItems.itemResource, 1, 1) });
         }
         return recipes;
     }

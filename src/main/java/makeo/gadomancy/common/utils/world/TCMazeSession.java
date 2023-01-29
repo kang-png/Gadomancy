@@ -1,7 +1,9 @@
 package makeo.gadomancy.common.utils.world;
 
 import java.util.Map;
+
 import makeo.gadomancy.common.data.config.ModConfig;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -11,16 +13,16 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
+
 import org.apache.logging.log4j.LogManager;
+
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.world.dim.Cell;
 import thaumcraft.common.lib.world.dim.CellLoc;
 
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by HellFirePvP @ 05.11.2015 14:12
  */
@@ -65,7 +67,9 @@ public class TCMazeSession {
         if (teleport) {
             WorldUtil.tryTeleportBack(this.player, this.originDimId);
             this.player.setPositionAndUpdate(
-                    this.originLocation.xCoord, this.originLocation.yCoord, this.originLocation.zCoord);
+                    this.originLocation.xCoord,
+                    this.originLocation.yCoord,
+                    this.originLocation.zCoord);
         }
     }
 
@@ -82,13 +86,14 @@ public class TCMazeSession {
         }
 
         if (this.portalCell == null) {
-            LogManager.getLogger()
-                    .error(
-                            "Thaumcraft didn't generate a portal! Stopping instance! PLEASE REPORT THIS ERROR!",
-                            new IllegalStateException());
+            LogManager.getLogger().error(
+                    "Thaumcraft didn't generate a portal! Stopping instance! PLEASE REPORT THIS ERROR!",
+                    new IllegalStateException());
             this.closeSession(false);
-            this.player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED
-                    + "Thaumcraft didn't generate a portal in the Eldritch dimension. Sorry, we can't teleport you.."));
+            this.player.addChatMessage(
+                    new ChatComponentText(
+                            EnumChatFormatting.RED
+                                    + "Thaumcraft didn't generate a portal in the Eldritch dimension. Sorry, we can't teleport you.."));
         } else {
             WorldUtil.teleportToFakeOuter(this.player);
             int x = this.portalCell.x * 16 + 8;

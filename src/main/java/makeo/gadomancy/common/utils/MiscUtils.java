@@ -1,8 +1,8 @@
 package makeo.gadomancy.common.utils;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,11 +13,11 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
+
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  * <p/>
  * Created by HellFirePvP @ 17.11.2015 18:39
  */
@@ -25,8 +25,8 @@ public final class MiscUtils {
 
     private MiscUtils() {}
 
-    private static final int[] R_NUMBERS = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
-    private static final String[] R_CHARS = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+    private static final int[] R_NUMBERS = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
+    private static final String[] R_CHARS = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
 
     public static String toRomanNumeral(int number) {
         if (number < 0 || number > 3999) {
@@ -82,13 +82,17 @@ public final class MiscUtils {
     }
 
     public static NetworkRegistry.TargetPoint getTargetPoint(World world, TileEntity tileEntity, double range) {
-        return MiscUtils.getTargetPoint(
-                world, range, new Vector3(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord));
+        return MiscUtils
+                .getTargetPoint(world, range, new Vector3(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord));
     }
 
     public static NetworkRegistry.TargetPoint getTargetPoint(World world, double range, Vector3 target) {
         return new NetworkRegistry.TargetPoint(
-                world.provider.dimensionId, target.getX(), target.getY(), target.getZ(), range);
+                world.provider.dimensionId,
+                target.getX(),
+                target.getY(),
+                target.getZ(),
+                range);
     }
 
     // Nothing to see here. Please move on.
@@ -130,10 +134,7 @@ public final class MiscUtils {
             return true;
         }
         if (MinecraftServer.getServer().getConfigurationManager().playerEntityList == null) return true;
-        return !MinecraftServer.getServer()
-                .getConfigurationManager()
-                .playerEntityList
-                .contains(player);
+        return !MinecraftServer.getServer().getConfigurationManager().playerEntityList.contains(player);
     }
 
     public static Vector3 getPositionVector(Entity e) {
