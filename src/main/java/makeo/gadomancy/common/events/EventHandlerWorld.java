@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.events;
 
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -54,7 +55,7 @@ import thaumcraft.common.tiles.TileJarFillable;
  */
 public class EventHandlerWorld {
 
-    public Map<EntityItem, Long> trackedItems = new HashMap<EntityItem, Long>();
+    public Map<EntityItem, Long> trackedItems = new ConcurrentHashMap<>();
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void on(EntityJoinWorldEvent event) {
